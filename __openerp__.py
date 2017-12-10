@@ -28,5 +28,37 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+#
+# da completare -
+# le date e orario in stampa
+# luogo di partenza da location id andare a capo
+# aggiungere al stock location il ddt_type per predisporre il tipo automaticamente
+#   vedi riga 30 easy_ddt.py
+# per la fattura accompagnatoria abilitare il tab solo se il picking é done
+# stampa se scelgo più righe stampa troppo
+# traduzioni
+# _ che cosa è
 
-from . import models
+
+{
+    'name': 'Easy DDT',
+    'version': '8.0.1.0.0',
+    'category': 'Localization/Italy',
+    'summary': 'Documento di Trasporto',
+    'author': 'Marco Calcagni, Odoo Community Association (OCA),',
+    'website': 'http://www.dinamicheaziendali.it/',
+    'license': 'AGPL-3',
+    'depends': [
+        'sale_stock',
+        'stock_account',
+        ],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/ddt_data.xml',
+        'views/easy_ddt_add.xml',
+        'views/easy_ddt.xml',
+        'views/partner.xml',
+        'views/report_easy_ddt.xml',
+        ],
+    'installable': True,
+}

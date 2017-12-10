@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="delivery_data">
+
+            <style type="text/css">
+                table.delivery_data td h6 { margin: 0; }
+                .signature { min-height: 2em; }
+            </style>
+
+            <table class="table table-condensed table-bordered delivery_data">
+                <tr>
+                    <td>
+                        <h6>
+                            Transportation Reason
+                            <div t-field="ddt.transportation_reason_id"></div>
+                        </h6>
+                    </td>
+                    <td>
+                        <h6>
+                            Carriage Condition
+                            <div t-field="ddt.carriage_condition_id"></div>
+                        </h6>
+                    </td>
+                    <td>
+                        <h6>
+                            Goods Description
+                            <div t-field="ddt.goods_description_id"></div>
+                        </h6>
+                    </td>
+                    <td>
+                        <h6>
+                            Gross Weight
+                            <div class="text-right" t-field="ddt.weight"></div>
+                        </h6>
+                    </td>
+                    <td>
+                        <h6>
+                            Net Weight
+                            <div class="text-right"
+                                 t-field="ddt.weight_net"></div>
+                        </h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <h6>Notes
+                            <div class="signature" t-field="ddt.ddt_notes"/>
+                        </h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <h6>Method of Transportation / Carrier</h6>
+                        <div>
+                            <span t-field="ddt.transportation_method_id"/>
+                            <span t-field="ddt.carrier_id.name"/>
+                            <span t-if="ddt.carrier_tracking_ref">
+                                <br/>
+                                <h6>traking reference :
+                                    <span t-field="ddt.carrier_tracking_ref"/>
+                                </h6>
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <h6>Withdrawal Date
+                            <div>
+                                <span t-field="ddt.date_transport_ddt"/>
+                            </div>
+                        </h6>
+                    </td>
+                    <td>
+                        <!-- jammy95 da stampare in formato ora -->
+                        <h6>Time :
+                            <br/>
+                            <span t-field="ddt.time_transport_ddt"/>
+                        </h6>
+                    </td>
+                    <td>
+                        <h6>Parcels
+                            <div t-field="ddt.number_of_packages"></div>
+                        </h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <table class="table table-condensed delivery_data">
+                            <tr>
+                                <td>
+                                    <h6>Carrier's Signature</h6>
+                                    <div class="signature"/>
+                                </td>
+                                <td>
+                                    <h6>Driver's Signature</h6>
+                                    <div class="signature"/>
+                                </td>
+                                <td>
+                                    <h6>Recipient's Signature</h6>
+                                    <div class="signature"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </template>
+
+        <template id="report_easy_ddt">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <h2>Recipient</h2>
+                                    <t t-esc = "o.ddt_get_location(o.move_lines[0].location_id.id)" />
+                                    <!--<span t-field="o.company_id"/>-->
+                                    <!--<br/>-->
+                                    <!--<span t-field="o.company_id.street"/>-->
+                                    <!--<br/>-->
+                                    <!--(<span t-field="o.company_id.zip"/>)-->
+                                    <!--<span t-field="o.company_id.city"/>-->
+                                    <!--<span t-field="o.company_id.state_id"/>-->
+                                    <!--<br/>-->
+                                    <!--<span t-field="o.company_id.country_id"/>-->
+                                </div>
+                                <div class="col-xs-6">
+                                    <h2>Transferee</h2>
+                                    <div t-field="o.partner_id"
+                                         t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
+                                    <div t-if="o.partner_id">VAT number:
+                                        <span t-field="o.partner_id.vat"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <span t-if="o.ddt_number">
+                                <!--jammy95  la data deve essere data e non data time -->
+                                <h3>DDT number:
+                                    <span t-field="o.ddt_number"></span>
+                                    of :
+                                    <span t-field="o.min_date"></span>
+                                </h3>
+                            </span>
+                            <span t-if="o.ddt_number == false">
+                                <!--jammy95  la data deve essere data e non data time -->
+                                <h3>DDT Draft - of :
+                                    <span t-field="o.min_date"></span>
+                                </h3>
+                            </span>
+                            <span t-if="o.origin">
+                                <h6>Origin :
+                                    <span t-field="o.origin"></span>
+                                </h6>
+                            </span>
+
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <strong>Code</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Description</strong>
+                                        </th>
+                                        <th>
+                                            <strong>UM</strong>
+                                        </th>
+                                        <th class="text-right">
+                                            <strong>Quantity</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.move_lines" t-as="move">
+                                        <tr>
+                                            <td>
+                                                <span t-field="move.product_id.product_tmpl_id.default_code"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="move.product_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="move.product_uos"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-field="move.product_uos_qty"/>
+                                            </td>
+                                        </tr>
+                                        <div t-if="move.lot_ids">
+                                            <tr>
+                                                <td colspan="4">
+                                                    Lott or SN.:
+                                                    <span t-field="move.lot_ids.name"/>
+                                                    <span t-if="move.lot_ids.use_date">
+                                                        Best before date:
+                                                        <span t-field="move.lot_ids.use_date"/>
+                                                        <!--jammy95  la data deve essere data e non data time -->
+                                                        <!--Best before date: <span t-esc="move.lot_ids.use_date.strftime('%d/%m/%Y')"/>-->
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </div>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <t t-call="easy_ddt.delivery_data">
+                                <t t-set="ddt" t-value="o"/>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_easy_ddt_main">
+            <t t-call="report.html_container">
+                <t t-foreach="doc_ids" t-as="doc_id">
+                    <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'easy_ddt.report_easy_ddt')"/>
+                </t>
+            </t>
+        </template>
+
+        <report
+                string="DDT"
+                id="action_report_easy_ddt"
+                model="stock.picking"
+                report_type="qweb-pdf"
+                name="easy_ddt.report_easy_ddt_main"
+                file="easy_ddt.report_easy_ddt_main"/>
+
+    </data>
+</openerp>
