@@ -57,6 +57,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/ddt_data.xml',
+        'views/account.xml',
         'views/easy_ddt_add.xml',
         'views/easy_ddt.xml',
         'views/partner.xml',
