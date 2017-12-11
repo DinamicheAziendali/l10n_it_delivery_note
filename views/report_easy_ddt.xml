@@ -75,7 +75,8 @@
                         <!-- jammy95 da stampare in formato ora -->
                         <h6>Time :
                             <br/>
-                            <span t-field="ddt.time_transport_ddt" t-options='{"widget": "float_time"}'/>
+                            <!--<span t-field="ddt.time_transport_ddt" t-options='{"widget": "float_time"}'/>-->
+                            <t t-esc = "ddt.ddt_time_report(ddt.time_transport_ddt)" />
                         </h6>
                     </td>
                     <td>

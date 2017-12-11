@@ -92,3 +92,13 @@ class StockPicking(models.Model):
               warehouse.partner_id.city + ' ' +
               '(' +warehouse.partner_id.state_id.name +')')
         return data
+
+    @api.multi
+    def ddt_time_report(self, time_ddt):
+        hh = int(time_ddt)
+        mm = time_ddt - hh
+        mms = str(int(round(mm*60)))
+        if(len(mms)==1):
+            mms='0'+mms
+        data = str(hh)+":"+mms
+        return data
