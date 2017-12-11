@@ -32,12 +32,11 @@
 # da completare -
 # le date e orario in stampa
 # luogo di partenza da location id andare a capo
+# stampa se scelgo più righe stampa troppo
+# per la fattura accompagnatoria abilitare il tab solo se il picking é done
+# traduzioni
 # aggiungere al stock location il ddt_type per predisporre il tipo automaticamente
 #   vedi riga 30 easy_ddt.py
-# per la fattura accompagnatoria abilitare il tab solo se il picking é done
-# stampa se scelgo più righe stampa troppo
-# traduzioni
-# _ che cosa è
 
 
 {

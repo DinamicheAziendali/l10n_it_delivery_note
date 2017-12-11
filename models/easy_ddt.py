@@ -83,7 +83,7 @@ class StockPicking(models.Model):
         # data=warehouse.partner_id.id
         data=(warehouse.partner_id.name + '\n' +
               warehouse.partner_id.street + '\n' +
-              '('+warehouse.partner_id.zip + ') ' +
+              warehouse.partner_id.zip + ' ' +
               warehouse.partner_id.city + ' ' +
-              warehouse.partner_id.state_id.name)
+              '(' +warehouse.partner_id.state_id.name +')')
         return data
