@@ -25,20 +25,5 @@
             </field>
         </record>
 
-
-
-
-        <record id="view_order_form_inherit2" model="ir.ui.view">
-            <field name="name">sale.order.form.inherit2</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale_stock.view_order_form_inherit"/>
-            <field name="arch" type="xml">
-                <field name="order_policy" position="replace"/>
-                <field name="pricelist_id" position="after">
-                    <field name="order_policy"/>
-                </field>
-            </field>
-        </record>
-
     </data>
 </openerp>
