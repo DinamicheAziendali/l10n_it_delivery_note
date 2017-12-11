@@ -22,6 +22,11 @@
 from openerp import models, fields, api
 
 
+# class StockPicking(models.Model):
+#     _inherit = 'stock.location'
+#
+#     ddt_type_id = fields.Many2one('stock.ddt.type', string='DdT Type')
+
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
