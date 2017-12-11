@@ -192,10 +192,11 @@
                                                     Lott or SN.:
                                                     <span t-field="move.lot_ids.name"/>
                                                     <!--<span t-if="o.company_id.module_product_expiry"-->
-                                                    <span t-if="move.lot_ids.use_date">
-                                                        Best before date:
-                                                        <span t-field="move.lot_ids.use_date" t-field-options='{"format": "d/M/y"}'/>
-                                                    </span>
+                                                    <!--<span t-if="move.lot_ids.use_date">-->
+                                                        <!--Best before date:-->
+                                                        <!--<span t-field="move.lot_ids.use_date" t-field-options='{"format": "d/M/y"}'/>-->
+                                                    <!--</span>-->
+                                                    <!--</span>-->
                                                 </td>
                                             </tr>
                                         </div>
