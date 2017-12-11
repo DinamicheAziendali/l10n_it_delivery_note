@@ -31,7 +31,9 @@
 #
 # da completare -
 # le date e orario in stampa
+
 # luogo di partenza da location id andare a capo
+
 # aggiungere al stock location il ddt_type per predisporre il tipo automaticamente
 #   vedi riga 30 easy_ddt.py
 # per la fattura accompagnatoria abilitare il tab solo se il picking é done

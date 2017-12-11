@@ -75,7 +75,7 @@
                         <!-- jammy95 da stampare in formato ora -->
                         <h6>Time :
                             <br/>
-                            <span t-field="ddt.time_transport_ddt"/>
+                            <span t-field="ddt.time_transport_ddt" t-options='{"widget": "float_time"}'/>
                         </h6>
                     </td>
                     <td>
@@ -136,17 +136,15 @@
                                 </div>
                             </div>
                             <span t-if="o.ddt_number">
-                                <!--jammy95  la data deve essere data e non data time -->
                                 <h3>DDT number:
                                     <span t-field="o.ddt_number"></span>
                                     of :
-                                    <span t-field="o.min_date"></span>
+                                    <span t-field="o.min_date" t-field-options='{"format": "d/M/y"}'></span>
                                 </h3>
                             </span>
                             <span t-if="o.ddt_number == false">
-                                <!--jammy95  la data deve essere data e non data time -->
                                 <h3>DDT Draft - of :
-                                    <span t-field="o.min_date"></span>
+                                    <span t-field="o.min_date" t-field-options='{"format": "d/M/y"}'></span>
                                 </h3>
                             </span>
                             <span t-if="o.origin">
@@ -193,11 +191,10 @@
                                                 <td colspan="4">
                                                     Lott or SN.:
                                                     <span t-field="move.lot_ids.name"/>
+                                                    <!--<span t-if="o.company_id.module_product_expiry"-->
                                                     <span t-if="move.lot_ids.use_date">
                                                         Best before date:
-                                                        <span t-field="move.lot_ids.use_date"/>
-                                                        <!--jammy95  la data deve essere data e non data time -->
-                                                        <!--Best before date: <span t-esc="move.lot_ids.use_date.strftime('%d/%m/%Y')"/>-->
+                                                        <span t-field="move.lot_ids.use_date" t-field-options='{"format": "d/M/y"}'/>
                                                     </span>
                                                 </td>
                                             </tr>
