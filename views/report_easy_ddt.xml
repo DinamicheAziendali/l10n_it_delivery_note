@@ -75,7 +75,8 @@
                         <!-- jammy95 da stampare in formato ora -->
                         <h6>Time :
                             <br/>
-                            <span t-field="ddt.time_transport_ddt" t-options='{"widget": "float_time"}'/>
+                            <!--<span t-field="ddt.time_transport_ddt" t-options='{"widget": "float_time"}'/>-->
+                            <t t-esc = "ddt.ddt_time_report(ddt.time_transport_ddt)" />
                         </h6>
                     </td>
                     <td>
@@ -192,10 +193,11 @@
                                                     Lott or SN.:
                                                     <span t-field="move.lot_ids.name"/>
                                                     <!--<span t-if="o.company_id.module_product_expiry"-->
-                                                    <span t-if="move.lot_ids.use_date">
-                                                        Best before date:
-                                                        <span t-field="move.lot_ids.use_date" t-field-options='{"format": "d/M/y"}'/>
-                                                    </span>
+                                                    <!--<span t-if="move.lot_ids.use_date">-->
+                                                        <!--Best before date:-->
+                                                        <!--<span t-field="move.lot_ids.use_date" t-field-options='{"format": "d/M/y"}'/>-->
+                                                    <!--</span>-->
+                                                    <!--</span>-->
                                                 </td>
                                             </tr>
                                         </div>
