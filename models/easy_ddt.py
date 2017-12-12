@@ -50,6 +50,7 @@ class StockPicking(models.Model):
     date_transport_ddt = fields.Date(string='Delivery note Date')
     time_transport_ddt = fields.Float(string='Delivery Note Start Time')
     ddt_notes = fields.Text(string='Delivery Note Notes')
+    picking_type_code = fields.Selection(related="picking_type_id.code")
 
     @api.onchange('partner_id', 'ddt_type_id')
     def on_change_partner(self):

@@ -18,8 +18,12 @@
                     <xpath expr="//form/sheet/group/group/field[@name='partner_id']"
                            position="after">
                         <field name="ddt_number"
-                               attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_id','!=',2),]}"
-                               readonly="1"/>
+                               attrs="{'invisible': ['|',('picking_type_code','=','internal'),'&amp;', ('state','!=','done'),  ('picking_type_code','=','outgoing'),],
+                               'readonly': [('picking_type_code','=','outgoing')]}"/>
+                               <!--readonly="1"/>-->
+                        <!--<field name="ddt_number"-->
+                               <!--attrs="{'invisible': [('picking_type_code','!=','incoming' ),]}"/>-->
+
                         <field name="ddt_type_id" widget="selection"
                                attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_id','!=',2)],
                                 'readonly': [('ddt_number', '!=', False)]}"/>

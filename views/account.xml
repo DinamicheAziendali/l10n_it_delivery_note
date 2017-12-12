@@ -18,7 +18,7 @@
                                 widget="selection"/>
                             <field name="transportation_method_id"
                                 widget="selection"/>
-                            <field name="parcels" />
+                            <field name="number_of_packages"/>
                         </group>
                     </page>
                 </xpath>
