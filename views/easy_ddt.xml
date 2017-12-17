@@ -13,24 +13,20 @@
                                 string="Print Delivery Note"
                                 groups="stock.group_stock_user"
                                 type="object"
-                                attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_id','!=',2),]}"/>
+                                attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_code','==','incoming')]}"/>
                     </xpath>
                     <xpath expr="//form/sheet/group/group/field[@name='partner_id']"
                            position="after">
                         <field name="ddt_number"
-                               attrs="{'invisible': ['|',('picking_type_code','=','internal'),'&amp;', ('state','!=','done'),  ('picking_type_code','=','outgoing'),],
-                               'readonly': [('picking_type_code','=','outgoing')]}"/>
-                               <!--readonly="1"/>-->
-                        <!--<field name="ddt_number"-->
-                               <!--attrs="{'invisible': [('picking_type_code','!=','incoming' ),]}"/>-->
-
+                               attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_code','==','incoming')]}"
+                               readonly="1"/>
                         <field name="ddt_type_id" widget="selection"
-                               attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_id','!=',2)],
+                               attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_code','==','incoming')],
                                 'readonly': [('ddt_number', '!=', False)]}"/>
                     </xpath>
                     <xpath expr="//page[3]" position="after">
                         <page string="Shipping Info"
-                              attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_id','!=',2),]}">
+                              attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_code','==','incoming')]}">
                             <group string="Shipping Informations">
                                 <field name="goods_description_id"
                                        widget="selection"/>

@@ -12,31 +12,31 @@
             <table class="table table-condensed table-bordered delivery_data">
                 <tr>
                     <td>
-                        <h6>
+                        <h6 name="transport">
                             Transportation Reason
                             <div t-field="ddt.transportation_reason_id"></div>
                         </h6>
                     </td>
                     <td>
-                        <h6>
+                        <h6 name="carriage">
                             Carriage Condition
                             <div t-field="ddt.carriage_condition_id"></div>
                         </h6>
                     </td>
                     <td>
-                        <h6>
+                        <h6 name="good_description">
                             Goods Description
                             <div t-field="ddt.goods_description_id"></div>
                         </h6>
                     </td>
                     <td>
-                        <h6>
+                        <h6 name="gross_weight">
                             Gross Weight
                             <div class="text-right" t-field="ddt.weight"></div>
                         </h6>
                     </td>
                     <td>
-                        <h6>
+                        <h6 name="net_weight">
                             Net Weight
                             <div class="text-right"
                                  t-field="ddt.weight_net"></div>
@@ -44,22 +44,25 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="5" class="notes">
                         <h6>Notes
                             <div class="signature" t-field="ddt.ddt_notes"/>
                         </h6>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
+                    <td colspan="2" name="method_trasport">
                         <h6>Method of Transportation / Carrier</h6>
                         <div>
-                            <span t-field="ddt.transportation_method_id"/>
-                            <span t-field="ddt.carrier_id.name"/>
+                            <span t-field="ddt.transportation_method_id"
+                                  name="transportation_method_id"/>
+                            <span t-field="ddt.carrier_id.name"
+                                  name="carrier_id"/>
                             <span t-if="ddt.carrier_tracking_ref">
                                 <br/>
                                 <h6>traking reference :
-                                    <span t-field="ddt.carrier_tracking_ref"/>
+                                    <span t-field="ddt.carrier_tracking_ref"
+                                          name="carrier_tracking_ref"/>
                                 </h6>
                             </span>
                         </div>
@@ -67,21 +70,22 @@
                     <td>
                         <h6>Withdrawal Date
                             <div>
-                                <span t-field="ddt.date_transport_ddt"/>
+                                <span t-field="ddt.date_transport_ddt"
+                                      name="date_trasport"/>
                             </div>
                         </h6>
                     </td>
                     <td>
-                        <!-- jammy95 da stampare in formato ora -->
                         <h6>Time :
                             <br/>
-                            <!--<span t-field="ddt.time_transport_ddt" t-options='{"widget": "float_time"}'/>-->
-                            <t t-esc = "ddt.ddt_time_report(ddt.time_transport_ddt)" />
+                            <t t-esc="ddt.ddt_time_report(ddt.time_transport_ddt)"
+                               name="time_trasport"/>
                         </h6>
                     </td>
                     <td>
                         <h6>Parcels
-                            <div t-field="ddt.number_of_packages"></div>
+                            <div t-field="ddt.number_of_packages"
+                                 name="parcel"></div>
                         </h6>
                     </td>
                 </tr>
@@ -90,15 +94,21 @@
                         <table class="table table-condensed delivery_data">
                             <tr>
                                 <td>
-                                    <h6>Carrier's Signature</h6>
+                                    <h6 name="carrier_signature">Carrier's
+                                        Signature
+                                    </h6>
                                     <div class="signature"/>
                                 </td>
                                 <td>
-                                    <h6>Driver's Signature</h6>
+                                    <h6 name="driver_signature">Driver's
+                                        Signature
+                                    </h6>
                                     <div class="signature"/>
                                 </td>
                                 <td>
-                                    <h6>Recipient's Signature</h6>
+                                    <h6 name="recipint_signature">Recipient's
+                                        Signature
+                                    </h6>
                                     <div class="signature"/>
                                 </td>
                             </tr>
@@ -114,41 +124,111 @@
                     <t t-call="report.external_layout">
                         <div class="page">
                             <div class="row">
-                                <div class="col-xs-6">
-                                    <h2>Recipient</h2>
-                                    <t t-esc = "o.ddt_get_location(o.move_lines[0].location_id.id)" />
-                                    <!--<span t-field="o.company_id"/>-->
-                                    <!--<br/>-->
-                                    <!--<span t-field="o.company_id.street"/>-->
-                                    <!--<br/>-->
-                                    <!--(<span t-field="o.company_id.zip"/>)-->
-                                    <!--<span t-field="o.company_id.city"/>-->
-                                    <!--<span t-field="o.company_id.state_id"/>-->
-                                    <!--<br/>-->
-                                    <!--<span t-field="o.company_id.country_id"/>-->
-                                </div>
-                                <div class="col-xs-6">
-                                    <h2>Transferee</h2>
-                                    <div t-field="o.partner_id"
-                                         t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
-                                    <div t-if="o.partner_id">VAT number:
-                                        <span t-field="o.partner_id.vat"/>
+                                <!--if is an outgoing move -->
+                                <div t-if="o.picking_type_id.code=='outgoing'">
+                                    <div class="col-xs-6" name="header_left">
+                                        <div t-if="o.partner_id">
+                                            <span>
+                                                <h4>
+                                                    <strong>Customer :</strong>
+                                                </h4>
+                                            </span>
+                                            <div name="invoice_partner"
+                                                 t-if="o.picking_type_id.code == 'outgoing' and o.sale_id and o.sale_id.partner_invoice_id">
+                                                <div t-field="o.sale_id.partner_invoice_id"
+                                                     t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                                            </div>
+                                            <div name="order_partner"
+                                                 t-if="o.picking_type_id.code == 'outgoing' and o.sale_id and o.sale_id.partner_invoice_id == false">
+                                                <div t-field="o.sale_id.partner_id"
+                                                     t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-5 col-xs-offset-1"
+                                         name="header_right">
+                                        <div name="ddt_client_delivery"
+                                             t-if="o.picking_type_id.code=='outgoing' and o.partner_id">
+                                            <span>
+                                                <h4>
+                                                    <strong>Delivery Address:
+                                                    </strong>
+                                                </h4>
+                                            </span>
+                                            <div name="ddt_delivery_address"
+                                                 t-field="o.partner_id"
+                                                 t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                                            <p t-if="o.partner_id.vat">VAT:
+                                                <span t-field="o.partner_id.vat"/>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12"
+                                         name="warehouses_div">
+                                        <strong>Warehouse :</strong>
+                                        <t t-foreach="o.ddt_get_location(o.move_lines[0].location_id.id)"
+                                           t-as="loca">
+                                            <t t-esc="loca"/>,
+                                        </t>
                                     </div>
                                 </div>
+
+                                <!--if is a internal move -->
+                                <div name="ddt_wharehouse_source"
+                                     t-if="o.picking_type_id.code=='internal'">
+                                    <div class="col-xs-6"
+                                         name="header_internal_left">
+                                        <span>
+                                            <h4>
+                                                <strong>Warehouse :</strong>
+                                            </h4>
+                                        </span>
+                                        <t t-foreach="o.ddt_get_location(o.move_lines[0].location_id.id)"
+                                           t-as="loca">
+                                            <p>
+                                                <t t-esc="loca"/>
+                                            </p>
+                                        </t>
+                                    </div>
+
+                                    <div class="col-xs-5 col-xs-offset-1"
+                                         name="header_internal_right">
+                                        <span>
+                                            <h4>
+                                                <strong>Delivery Address:
+                                                </strong>
+                                            </h4>
+                                        </span>
+                                        <t t-foreach="o.ddt_get_location(o.move_lines[0].location_dest_id.id)"
+                                           t-as="loca">
+                                            <p>
+                                                <t t-esc="loca"/>
+                                            </p>
+                                        </t>
+                                    </div>
+                                </div>
+
                             </div>
-                            <span t-if="o.ddt_number">
+                            <span t-if="o.ddt_number" name="ddt_row">
                                 <h3>DDT number:
-                                    <span t-field="o.ddt_number"></span>
+                                    <span t-field="o.ddt_number"
+                                          name="ddt_number"></span>
                                     of :
-                                    <span t-field="o.min_date" t-field-options='{"format": "d/M/y"}'></span>
+                                    <span t-field="o.min_date"
+                                          t-field-options='{"format": "d/M/y"}'
+                                          name="ddt_date"></span>
                                 </h3>
                             </span>
-                            <span t-if="o.ddt_number == false">
+                            <span t-if="o.ddt_number == false" name="ddt_draft">
                                 <h3>DDT Draft - of :
-                                    <span t-field="o.min_date" t-field-options='{"format": "d/M/y"}'></span>
+                                    <span t-field="o.min_date"
+                                          t-field-options='{"format": "d/M/y"}'
+                                          name="ddt_draft_date"></span>
                                 </h3>
                             </span>
-                            <span t-if="o.origin">
+                            <span t-if="o.origin" name="origin">
                                 <h6>Origin :
                                     <span t-field="o.origin"></span>
                                 </h6>
@@ -192,12 +272,11 @@
                                                 <td colspan="4">
                                                     Lott or SN.:
                                                     <span t-field="move.lot_ids.name"/>
-                                                    <!--<span t-if="o.company_id.module_product_expiry"-->
-                                                    <!--<span t-if="move.lot_ids.use_date">-->
-                                                        <!--Best before date:-->
-                                                        <!--<span t-field="move.lot_ids.use_date" t-field-options='{"format": "d/M/y"}'/>-->
-                                                    <!--</span>-->
-                                                    <!--</span>-->
+                                                    <t t-if="'use_date' in move.lot_ids.fields_get() and move.lot_ids.use_date">
+                                                        Best before date:
+                                                        <span t-field="move.lot_ids.use_date"
+                                                              t-field-options='{"format": "d/M/y"}'/>
+                                                    </t>
                                                 </td>
                                             </tr>
                                         </div>
