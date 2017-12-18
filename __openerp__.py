@@ -39,7 +39,6 @@
 # per la fattura accompagnatoria abilitare il tab solo se il picking é done
 # stampa se scelgo più righe stampa troppo
 # traduzioni
-# _ che cosa è
 
 
 {
@@ -51,6 +50,7 @@
     'website': 'http://www.dinamicheaziendali.it/',
     'license': 'AGPL-3',
     'depends': [
+        'delivery',
         'sale_stock',
         'stock_account',
         ],
