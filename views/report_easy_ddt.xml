@@ -305,6 +305,7 @@
                 id="action_report_easy_ddt"
                 model="stock.picking"
                 report_type="qweb-pdf"
+                menu="False"
                 name="easy_ddt.report_easy_ddt_main"
                 file="easy_ddt.report_easy_ddt_main"/>
 
