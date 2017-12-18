@@ -6,14 +6,34 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-11 21:11+0000\n"
-"PO-Revision-Date: 2017-12-11 21:11+0000\n"
+"POT-Creation-Date: 2017-12-18 08:43+0000\n"
+"PO-Revision-Date: 2017-12-18 08:43+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: easy_ddt
+#: view:website:easy_ddt.report_easy_ddt
+msgid "Best before date:"
+msgstr "Data scadenza Lotto:"
+
+#. module: easy_ddt
+#: model:stock.picking.goods_description,name:easy_ddt.goods_description_CAR
+msgid "Box"
+msgstr "Cartone"
+
+#. module: easy_ddt
+#: model:stock.picking.goods_description,name:easy_ddt.goods_description_CBA
+msgid "Box-Pallet"
+msgstr "Cartone-Bancale"
+
+#. module: easy_ddt
+#: model:stock.picking.goods_description,name:easy_ddt.goods_description_SFU
+msgid "Bulk"
+msgstr "Sfusi"
 
 #. module: easy_ddt
 #: field:account.invoice,carriage_condition_id:0
@@ -34,9 +54,31 @@ msgid "Carriage Conditions"
 msgstr "Resa merce"
 
 #. module: easy_ddt
+#: model:stock.picking.carriage_condition,name:easy_ddt.carriage_condition_PA
+msgid "Carriage Forward"
+msgstr "Porto Assegnato"
+
+#. module: easy_ddt
+#: model:stock.picking.carriage_condition,name:easy_ddt.carriage_condition_PF
+msgid "Carriage Paid"
+msgstr "Porto Franco"
+
+#. module: easy_ddt
+#: model:stock.picking.transportation_method,name:easy_ddt.transportation_method_COR
+msgid "Carrier"
+msgstr "Corriere"
+
+#. module: easy_ddt
 #: view:website:easy_ddt.delivery_data
-msgid "Carrier's Signature"
-msgstr "Firma del Corriere"
+msgid "Carrier's\n"
+"                                        Signature"
+msgstr "Trasportatore\n"
+"                                        Firma"
+
+#. module: easy_ddt
+#: model:stock.picking.carriage_condition,name:easy_ddt.carriage_condition_PAF
+msgid "Charged in Invoice"
+msgstr "Con addebito in fattura"
 
 #. module: easy_ddt
 #: view:website:easy_ddt.report_easy_ddt
@@ -47,6 +89,11 @@ msgstr "Codice"
 #: field:stock.ddt.type,company_id:0
 msgid "Company"
 msgstr "Azienda"
+
+#. module: easy_ddt
+#: view:website:easy_ddt.report_easy_ddt
+msgid "Customer :"
+msgstr "Cliente :"
 
 #. module: easy_ddt
 #: model:ir.actions.report.xml,name:easy_ddt.action_report_easy_ddt
@@ -82,6 +129,11 @@ msgstr "Numero DDT"
 #: field:stock.picking,ddt_type_id:0
 msgid "DdT Type"
 msgstr "Tipo DDT"
+
+#. module: easy_ddt
+#: view:website:easy_ddt.report_easy_ddt
+msgid "Delivery Address:"
+msgstr "indirizzo di Consegna:"
 
 #. module: easy_ddt
 #: field:stock.picking,ddt_notes:0
@@ -131,8 +183,10 @@ msgstr "Nome da visualizzare"
 
 #. module: easy_ddt
 #: view:website:easy_ddt.delivery_data
-msgid "Driver's Signature"
-msgstr "Firma del Conducente"
+msgid "Driver's\n"
+"                                        Signature"
+msgstr "Autista \n"
+"                                        Firma"
 
 #. module: easy_ddt
 #: field:stock.ddt.type,message_follower_ids:0
@@ -143,6 +197,11 @@ msgstr "Followers"
 #: view:website:easy_ddt.delivery_data
 msgid "Goods Description"
 msgstr "Aspetto esteriore dei beni"
+
+#. module: easy_ddt
+#: model:stock.picking.transportation_reason,name:easy_ddt.transportation_reason_VIS
+msgid "Goods on approval"
+msgstr "Conto visione"
 
 #. module: easy_ddt
 #: view:website:easy_ddt.delivery_data
@@ -245,12 +304,21 @@ msgid "Notes"
 msgstr "Note"
 
 #. module: easy_ddt
+#: field:account.invoice,number_of_packages:0
+msgid "Number of packages"
+msgstr "Number of packages"
+
+#. module: easy_ddt
 #: view:website:easy_ddt.report_easy_ddt
 msgid "Origin :"
 msgstr "Riferimento :"
 
 #. module: easy_ddt
-#: field:account.invoice,parcels:0
+#: model:stock.picking.goods_description,name:easy_ddt.goods_description_BAN
+msgid "Pallet"
+msgstr "Bancale"
+
+#. module: easy_ddt
 #: view:website:easy_ddt.delivery_data
 msgid "Parcels"
 msgstr "Colli"
@@ -297,14 +365,31 @@ msgid "Reasons for Transportation"
 msgstr "Causali trasporto"
 
 #. module: easy_ddt
-#: view:website:easy_ddt.report_easy_ddt
+#: model:stock.picking.transportation_method,name:easy_ddt.transportation_method_DES
 msgid "Recipient"
 msgstr "Destinatario"
 
 #. module: easy_ddt
 #: view:website:easy_ddt.delivery_data
-msgid "Recipient's Signature"
-msgstr "Firma del Destinatario"
+msgid "Recipient's\n"
+"                                        Signature"
+msgstr "Destinatario\n"
+"                                        Firma"
+
+#. module: easy_ddt
+#: model:stock.picking.transportation_reason,name:easy_ddt.transportation_reason_RES
+msgid "Returned"
+msgstr "Reso"
+
+#. module: easy_ddt
+#: model:stock.picking.transportation_reason,name:easy_ddt.transportation_reason_VEN
+msgid "Sale"
+msgstr "Vendita"
+
+#. module: easy_ddt
+#: model:stock.picking.transportation_method,name:easy_ddt.transportation_method_MIT
+msgid "Sender"
+msgstr "Mittente"
 
 #. module: easy_ddt
 #: field:stock.ddt.type,sequence_id:0
@@ -336,12 +421,7 @@ msgstr "Riepilogo"
 #. module: easy_ddt
 #: view:website:easy_ddt.delivery_data
 msgid "Time :"
-msgstr "Time :"
-
-#. module: easy_ddt
-#: view:website:easy_ddt.report_easy_ddt
-msgid "Transferee"
-msgstr "Cessionario"
+msgstr "Ora :"
 
 #. module: easy_ddt
 #: view:website:easy_ddt.delivery_data
@@ -362,8 +442,13 @@ msgstr "Messaggi non letti"
 
 #. module: easy_ddt
 #: view:website:easy_ddt.report_easy_ddt
-msgid "VAT number:"
-msgstr "Partita IVA:"
+msgid "VAT:"
+msgstr "IVA:"
+
+#. module: easy_ddt
+#: view:website:easy_ddt.report_easy_ddt
+msgid "Warehouse :"
+msgstr "Magazzino :"
 
 #. module: easy_ddt
 #: view:website:easy_ddt.delivery_data
@@ -379,4 +464,3 @@ msgstr "del :"
 #: view:website:easy_ddt.delivery_data
 msgid "traking reference :"
 msgstr "traking reference :"
-

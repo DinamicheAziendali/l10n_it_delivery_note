@@ -306,7 +306,7 @@
                 model="stock.picking"
                 report_type="qweb-pdf"
                 name="easy_ddt.report_easy_ddt_main"
-                file="easy_ddt.report_easy_ddt_main"/>
-
+                file="easy_ddt.report_easy_ddt_main"
+                menu="False"/>
     </data>
 </openerp>
