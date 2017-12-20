@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2017 Dinamiche Aziendali Srl (http://www.dinamicheaziendali.it)
+#    Copyright (C) 2017 Dinamiche Aziendali Srl
+#        (http://www.dinamicheaziendali.it)
 #    @author Gianmarco Conte <gconte@dinamicheaziendali.it>
 #            Marco Calcagni <mcalcagni@dinamicheaziendali.it>
 #
