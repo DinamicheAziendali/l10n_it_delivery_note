@@ -89,10 +89,11 @@ class StockPicking(models.Model):
              ])
         data=[warehouse.partner_id.id, warehouse.partner_id.name]
         data= [warehouse.partner_id.name,
-              warehouse.partner_id.street,
-               (warehouse.partner_id.zip + ' ' +
-              warehouse.partner_id.city + ' ' +
-              '(' +warehouse.partner_id.state_id.name +')'),]
+              '{street}'.format(street=warehouse.partner_id.street),
+               ('{zip}'.format(zip=warehouse.partner_id.zip)+ ' ' +
+               # (warehouse.partner_id.zip + ' ' +
+              '{city}'.format(city=warehouse.partner_id.city) + ' ' +
+              '(' +'{state}'.format(state=warehouse.partner_id.state_id.name) +')'),]
         return data
 
     @api.multi
