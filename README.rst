@@ -12,7 +12,10 @@ sequence depending on the typology of DDT.
 
 This module is similar to DDT l10n_it_ddt but is easyer(I belive) to used by
 warehouse worker. But is not possible to add on the fly product like the DDT
-module does. 
+module does.
+
+next improvment is to add to a picking a ddt sequence of another picking with the
+same destnation.
 
 Bug Tracker
 ===========
