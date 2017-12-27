@@ -32,7 +32,6 @@ class StockPicking(models.Model):
 
     def _default_ddt_type(self):
         return self.env['stock.ddt.type'].search([], limit=1)
-        # return self.env['stock.ddt.type'].search([[('posx', '=', move_lines[0].location_id.id)]], limit=1)
 
     ddt_type_id = fields.Many2one(
         'stock.ddt.type', string='DdT Type', default=_default_ddt_type)
@@ -71,7 +70,6 @@ class StockPicking(models.Model):
     @api.multi
     def get_ddt_number(self):
         for ddt in self:
-            addr = ddt.partner_id.address_get(['delivery', 'invoice'])
             if not ddt.ddt_number and ddt.ddt_type_id:
                 obj_sequence = self.env["ir.sequence"]
                 sequence = ddt.ddt_type_id.sequence_id
@@ -87,12 +85,13 @@ class StockPicking(models.Model):
             [('lot_stock_id', '=',
               location_id),
              ])
-        data=[warehouse.partner_id.id, warehouse.partner_id.name]
-        data= [warehouse.partner_id.name,
-              warehouse.partner_id.street,
-               (warehouse.partner_id.zip + ' ' +
-              warehouse.partner_id.city + ' ' +
-              '(' +warehouse.partner_id.state_id.name +')'),]
+        data = [warehouse.partner_id.name,
+                '{street}'.format(street=warehouse.partner_id.street),
+                ('{zip}'.format(zip=warehouse.partner_id.zip) + ' ' +
+                 '{city}'.format(city=warehouse.partner_id.city) + ' ' +
+                 '(' + '{state}'.format(
+                    state=warehouse.partner_id.state_id.name)
+                 + ')'), ]
         return data
 
     @api.multi
@@ -100,9 +99,7 @@ class StockPicking(models.Model):
         hh = int(time_ddt)
         mm = time_ddt - hh
         mms = str(int(round(mm*60)))
-        if(len(mms)==1):
-            mms='0'+mms
+        if(len(mms) == 1):
+            mms = '0' + mms
         data = str(hh)+":"+mms
         return data
-
-    # self.partner_id.address_get(['delivery', 'invoice'])
