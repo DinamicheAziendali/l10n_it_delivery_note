@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
     <data noupdate="1">
 
         <!-- DdT Sequence -->
-        <record id="seq_type_ddt" model="ir.sequence.type">
-            <field name="name">DDT</field>
-            <field name="code">stock.ddt</field>
-        </record>
+        <!--<record id="seq_type_ddt" model="ir.sequence.type">-->
+            <!--<field name="name">DDT</field>-->
+            <!--<field name="code">stock.ddt</field>-->
+        <!--</record>-->
         <record id="seq_ddt" model="ir.sequence">
             <field name="name">DDT</field>
             <field name="code">stock.ddt</field>
@@ -15,9 +15,10 @@
         </record>
 
         <!-- DdT Type -->
+
         <record id="ddt_type_ddt" model="stock.ddt.type">
             <field name="name">DdT</field>
-            <field name="sequence_id" ref="seq_ddt" />
+            <field name="sequence_id" ref="seq_ddt"/>
         </record>
 
         <!-- carriage conditions -->
@@ -68,4 +69,4 @@
         </record>
 
      </data>
-</openerp>
+</odoo>

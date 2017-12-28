@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
+<odoo>
 
         <record id="invoice_form_view_ddt" model="ir.ui.view">
             <field name="name">account.invoice.form.ddt</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//page[@string='Other Info']" position="after">
+                <xpath expr="//page[@name='other_info']" position="after">
                     <page string="Shipping Informations">
                         <group string="Shipping Informations">
                             <field name="goods_description_id"
@@ -25,5 +24,4 @@
             </field>
         </record>
 
-    </data>
-</openerp>
+</odoo>

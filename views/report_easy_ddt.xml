@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
+<odoo>
 
-        <template id="delivery_data">
+        <template id="easy_ddt.delivery_data">
 
             <style type="text/css">
                 table.delivery_data td h6 { margin: 0; }
@@ -38,8 +37,8 @@
                     <td>
                         <h6 name="net_weight">
                             Net Weight
-                            <div class="text-right"
-                                 t-field="ddt.weight_net"></div>
+                            <!--<div class="text-right"-->
+                                 <!--t-field="ddt.weight_net"></div>-->
                         </h6>
                     </td>
                 </tr>
@@ -260,12 +259,21 @@
                                             <td>
                                                 <span t-field="move.product_id.name"/>
                                             </td>
+                                            <!--<td>-->
+                                                <!--<span t-field="move.product_uos"/>-->
+                                            <!--</td>-->
+                                            <!--<td class="text-right">-->
+                                                <!--<span t-field="move.product_uos_qty"/>-->
+                                            <!--</td>-->
                                             <td>
-                                                <span t-field="move.product_uos"/>
+                                                <span t-field="move.product_uom"/>
                                             </td>
                                             <td class="text-right">
-                                                <span t-field="move.product_uos_qty"/>
+                                                <span t-field="move.product_uom_qty"/>
                                             </td>
+
+
+
                                         </tr>
                                         <div t-if="move.lot_ids">
                                             <tr>
@@ -295,7 +303,9 @@
         <template id="report_easy_ddt_main">
             <t t-call="report.html_container">
                 <t t-foreach="doc_ids" t-as="doc_id">
-                    <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'easy_ddt.report_easy_ddt')"/>
+                    <!--<t t-raw="translate_doc(doc_id, doc_model, 'easy_ddt.report_easy_ddt')"/>-->
+                    <!--<t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'easy_ddt.report_easy_ddt')"/>-->
+                    <t t-call="easy_ddt.report_easy_ddt" t-lang="docs.partner_id.lang"/>
                 </t>
             </t>
         </template>
@@ -308,5 +318,4 @@
                 name="easy_ddt.report_easy_ddt_main"
                 file="easy_ddt.report_easy_ddt_main"
                 menu="False"/>
-    </data>
-</openerp>
+</odoo>

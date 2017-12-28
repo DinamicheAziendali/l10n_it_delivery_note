@@ -2,6 +2,7 @@
 ##############################################################################
 #
 #    Copyright (C) 2017 Dinamiche Aziendali srl
+#    @author Gianmarco Conte <gconte@dinamicheaziendali.it>
 #    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,7 +20,7 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
+from odoo import models, fields, api
 
 
 # class StockPicking(models.Model):
@@ -50,6 +51,7 @@ class StockPicking(models.Model):
     time_transport_ddt = fields.Float(string='Delivery Note Start Time')
     ddt_notes = fields.Text(string='Delivery Note Notes')
     picking_type_code = fields.Selection(related="picking_type_id.code")
+    # weight_net = fields.Float(string="Net Weight") #da inserire in form
 
     @api.onchange('partner_id', 'ddt_type_id')
     def on_change_partner(self):
@@ -70,10 +72,12 @@ class StockPicking(models.Model):
     @api.multi
     def get_ddt_number(self):
         for ddt in self:
+            addr = ddt.partner_id.address_get(['delivery', 'invoice'])
             if not ddt.ddt_number and ddt.ddt_type_id:
                 obj_sequence = self.env["ir.sequence"]
                 sequence = ddt.ddt_type_id.sequence_id
-                ddt.ddt_number = obj_sequence.next_by_id(sequence.id)
+                ddt.ddt_number = sequence.next_by_id()
+                # ddt.ddt_number = obj_sequence.next_by_id(sequence.id)
             return self.env['report'].\
                 get_action(self, 'easy_ddt.report_easy_ddt_main')
         return True
@@ -85,13 +89,12 @@ class StockPicking(models.Model):
             [('lot_stock_id', '=',
               location_id),
              ])
-        data = [warehouse.partner_id.name,
-                '{street}'.format(street=warehouse.partner_id.street),
-                ('{zip}'.format(zip=warehouse.partner_id.zip) + ' ' +
-                 '{city}'.format(city=warehouse.partner_id.city) + ' ' +
-                 '(' + '{state}'.format(
-                    state=warehouse.partner_id.state_id.name)
-                 + ')'), ]
+        data=[warehouse.partner_id.id, warehouse.partner_id.name]
+        data= [warehouse.partner_id.name,
+              warehouse.partner_id.street,
+               (warehouse.partner_id.zip + ' ' +
+              warehouse.partner_id.city + ' ' +
+              '(' +warehouse.partner_id.state_id.name +')'),]
         return data
 
     @api.multi
@@ -99,7 +102,9 @@ class StockPicking(models.Model):
         hh = int(time_ddt)
         mm = time_ddt - hh
         mms = str(int(round(mm*60)))
-        if(len(mms) == 1):
-            mms = '0' + mms
+        if(len(mms)==1):
+            mms='0'+mms
         data = str(hh)+":"+mms
         return data
+
+    # self.partner_id.address_get(['delivery', 'invoice'])

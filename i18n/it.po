@@ -306,7 +306,7 @@ msgstr "Note"
 #. module: easy_ddt
 #: field:account.invoice,number_of_packages:0
 msgid "Number of packages"
-msgstr "Numero di Colli"
+msgstr "Number of packages"
 
 #. module: easy_ddt
 #: view:website:easy_ddt.report_easy_ddt
@@ -464,4 +464,3 @@ msgstr "del :"
 #: view:website:easy_ddt.delivery_data
 msgid "traking reference :"
 msgstr "traking reference :"
-

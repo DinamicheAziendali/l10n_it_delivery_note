@@ -1,16 +1,9 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2017
+#    Copyright (C) 2017 Dinamiche Aziendali Srl <www.dinamicheaziendali.it>
 #    Marco Calcagni (<mcalcagni@dinamicheaziendali.it>)
 #    Gianmarco Conte (<gconte@dinamicheaziendali.it>)
-#
-#    same parts :
-#    Copyright (C) 2014 Abstract (http://www.abstract.it)
-#    @author Davide Corio <davide.corio@abstract.it>
-#    Copyright (C) 2014-2015 Agile Business Group (http://www.agilebg.com)
-#    Copyright (C) 2015 Apulia Software s.r.l. (http://www.apuliasoftware.it)
-#    @author Francesco Apruzzese <f.apruzzese@apuliasoftware.it>
 #
 #    All Rights Reserved
 #

@@ -43,7 +43,7 @@
 
 {
     'name': 'Easy DDT',
-    'version': '8.0.1.0.0',
+    'version': '10.0.1.0.0',
     'category': 'Localization/Italy',
     'summary': 'Documento di Trasporto',
     'author': 'Marco Calcagni, Odoo Community Association (OCA),',
