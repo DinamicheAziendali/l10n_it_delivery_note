@@ -81,9 +81,9 @@ msgid "Charged in Invoice"
 msgstr "Con addebito in fattura"
 
 #. module: easy_ddt
-#: view:website:easy_ddt.report_easy_ddt
-msgid "Code"
-msgstr "Codice"
+#: model:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
+msgid "<strong>Code</strong>"
+msgstr "<strong>Codice</strong>"
 
 #. module: easy_ddt
 #: field:stock.ddt.type,company_id:0
@@ -91,9 +91,9 @@ msgid "Company"
 msgstr "Azienda"
 
 #. module: easy_ddt
-#: view:website:easy_ddt.report_easy_ddt
-msgid "Customer :"
-msgstr "Cliente :"
+#: model:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
+msgid "<strong>Customer :</strong>"
+msgstr "<strong>Cliente :</strong>"
 
 #. module: easy_ddt
 #: model:ir.actions.report.xml,name:easy_ddt.action_report_easy_ddt
@@ -131,11 +131,6 @@ msgid "DdT Type"
 msgstr "Tipo DDT"
 
 #. module: easy_ddt
-#: view:website:easy_ddt.report_easy_ddt
-msgid "Delivery Address:"
-msgstr "indirizzo di Consegna:"
-
-#. module: easy_ddt
 #: field:stock.picking,ddt_notes:0
 msgid "Delivery Note Notes"
 msgstr "Note del DDT"
@@ -151,9 +146,9 @@ msgid "Delivery note Date"
 msgstr "Data Inizio Trasporto"
 
 #. module: easy_ddt
-#: view:website:easy_ddt.report_easy_ddt
-msgid "Description"
-msgstr "Descrizione"
+#: model:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
+msgid "<strong>Description</strong>"
+msgstr "<strong>Descrizione</strong>"
 
 #. module: easy_ddt
 #: field:account.invoice,goods_description_id:0
@@ -339,9 +334,9 @@ msgid "Print Delivery Note"
 msgstr "Stampa DDT"
 
 #. module: easy_ddt
-#: view:website:easy_ddt.report_easy_ddt
-msgid "Quantity"
-msgstr "Quantità"
+#: model:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
+msgid "<strong>Quantity</strong>"
+msgstr "<strong>Quantità</strong>"
 
 #. module: easy_ddt
 #: field:stock.picking.transportation_reason,name:0
@@ -446,9 +441,9 @@ msgid "VAT:"
 msgstr "IVA:"
 
 #. module: easy_ddt
-#: view:website:easy_ddt.report_easy_ddt
-msgid "Warehouse :"
-msgstr "Magazzino :"
+#: model:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
+msgid "<strong>Warehouse :</strong>"
+msgstr "<strong>Magazzino :</strong>"
 
 #. module: easy_ddt
 #: view:website:easy_ddt.delivery_data
@@ -464,3 +459,10 @@ msgstr "del :"
 #: view:website:easy_ddt.delivery_data
 msgid "traking reference :"
 msgstr "traking reference :"
+
+#. module: easy_ddt
+#: model:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
+msgid "<strong>Delivery Address:\n"
+"                                                    </strong>"
+msgstr "<strong>Indirizzo di Consegna:\n"
+"                                                    </strong>"
