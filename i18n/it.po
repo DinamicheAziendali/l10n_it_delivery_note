@@ -151,16 +151,6 @@ msgid "<strong>Description</strong>"
 msgstr "<strong>Descrizione</strong>"
 
 #. module: easy_ddt
-#: field:account.invoice,goods_description_id:0
-#: model:ir.model,name:easy_ddt.model_stock_picking_goods_description
-#: field:res.partner,goods_description_id:0
-#: field:stock.picking,goods_description_id:0
-#: view:stock.picking.goods_description:easy_ddt.stock_goods_description_form
-#: field:stock.picking.goods_description,name:0
-msgid "Description of Goods"
-msgstr "Aspetto dei beni"
-
-#. module: easy_ddt
 #: model:ir.actions.act_window,name:easy_ddt.action_goods_description_tree
 #: model:ir.ui.menu,name:easy_ddt.menu_action_good_description_tree
 #: view:stock.picking.goods_description:easy_ddt.view_goods_description_tree
@@ -466,3 +456,46 @@ msgid "<strong>Delivery Address:\n"
 "                                                    </strong>"
 msgstr "<strong>Indirizzo di Consegna:\n"
 "                                                    </strong>"
+
+#. module: easy_ddt
+#: model:ir.model,name:easy_ddt.model_stock_picking_goods_description
+#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice_goods_description_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_goods_description_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_goods_description_id_9100
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_goods_description_name
+#: model:ir.ui.view,arch_db:easy_ddt.stock_goods_description_form
+msgid "Description of Goods"
+msgstr "Aspetto dei beni"
+
+#. module: easy_ddt
+#: model:ir.actions.act_window,name:easy_ddt.action_goods_description_tree
+#: model:ir.ui.menu,name:easy_ddt.menu_action_good_description_tree
+#: model:ir.ui.view,arch_db:easy_ddt.view_goods_description_tree
+msgid "Descriptions of Goods"
+msgstr "Aspetto dei beni"
+
+#. module: easy_ddt
+#: model:ir.model,name:easy_ddt.model_stock_picking_carriage_condition
+#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice_carriage_condition_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_carriage_condition_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_carriage_condition_id_9099
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_carriage_condition_name
+#: model:ir.ui.view,arch_db:easy_ddt.delivery_data
+#: model:ir.ui.view,arch_db:easy_ddt.view_carriage_condition_form
+msgid "Carriage Condition"
+msgstr "Resa merce"
+
+#. module: easy_ddt
+#: model:ir.model,name:easy_ddt.model_stock_picking_transportation_reason
+#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice_transportation_reason_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_transportation_reason_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_users_transportation_reason_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_transportation_reason_id_9092
+#: model:ir.ui.view,arch_db:easy_ddt.view_transportation_reason_form
+msgid "Reason for Transportation"
+msgstr "Causale trasporto"
+
+#. module: easy_ddt
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_time_transport_ddt
+msgid "Delivery Note Start Time"
+msgstr "Ora Ddt"
