@@ -461,7 +461,8 @@ msgstr "<strong>Indirizzo di Consegna:\n"
 #: model:ir.model,name:easy_ddt.model_stock_picking_goods_description
 #: model:ir.model.fields,field_description:easy_ddt.field_account_invoice_goods_description_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner_goods_description_id
-#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_goods_description_id_9100
+#: model:ir.model.fields,field_description:easy_ddt.field_res_users_goods_description_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_goods_description_id_9099
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_goods_description_name
 #: model:ir.ui.view,arch_db:easy_ddt.stock_goods_description_form
 msgid "Description of Goods"
@@ -499,3 +500,41 @@ msgstr "Causale trasporto"
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_time_transport_ddt
 msgid "Delivery Note Start Time"
 msgstr "Ora Ddt"
+
+#. module: easy_ddt
+#: model:ir.model,name:easy_ddt.model_stock_picking_carriage_condition
+#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice_carriage_condition_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_carriage_condition_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_users_carriage_condition_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_carriage_condition_id_9098
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_carriage_condition_name
+#: model:ir.ui.view,arch_db:easy_ddt.delivery_data
+#: model:ir.ui.view,arch_db:easy_ddt.view_carriage_condition_form
+msgid "Carriage Condition"
+msgstr "Resa merce"
+
+#. module: easy_ddt
+#: model:ir.model,name:easy_ddt.model_stock_picking_transportation_method
+#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice_transportation_method_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_transportation_method_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_users_transportation_method_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_transportation_method_id_9094
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_transportation_method_name
+#: model:ir.ui.view,arch_db:easy_ddt.view_transportation_method_form
+msgid "Method of Transportation"
+msgstr "Metodo di trasporto"
+
+#. module: easy_ddt
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_date_transport_ddt
+msgid "Delivery note Date"
+msgstr "Data Ddt"
+
+#. module: easy_ddt
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_ddt_notes
+msgid "Delivery Note Notes"
+msgstr "Note Ddt"
+
+#. module: easy_ddt
+#: model:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
+msgid "DDT number:"
+msgstr "Numero DDT:"
