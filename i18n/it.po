@@ -538,3 +538,13 @@ msgstr "Note Ddt"
 #: model:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
 msgid "DDT number:"
 msgstr "Numero DDT:"
+
+#. module: easy_ddt
+#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice_number_of_packages
+msgid "Number of packages"
+msgstr "Colli"
+
+#. module: easy_ddt
+#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice_ddt_notes
+msgid "Delivery Note Notes"
+msgstr "Note DDT"
