@@ -286,11 +286,13 @@
                                         <tr>
                                             <td colspan="4">
                                                 Lott or SN.:
-                                                <span t-field="move.lot_ids.name"/>
-                                                <t t-if="'use_date' in move.lot_ids.fields_get() and move.lot_ids.use_date">
+                                                <t t-foreach="move.lot_ids" t-as="lot">
+                                                <span t-field="lot.name"/>
+                                                <t t-if="'use_date' in move.lot_ids.fields_get() and lot.use_date">
                                                     Best before date:
-                                                    <span t-field="move.lot_ids.use_date"
+                                                    <span t-field="lot.use_date"
                                                           t-field-options='{"format": "d/M/y"}'/>
+                                                </t>
                                                 </t>
                                             </td>
                                         </tr>
