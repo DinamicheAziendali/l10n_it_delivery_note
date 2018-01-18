@@ -21,6 +21,7 @@
 ##############################################################################
 
 from odoo import models, fields, api
+from datetime import datetime
 
 
 # class StockPicking(models.Model):
@@ -77,6 +78,7 @@ class StockPicking(models.Model):
                 obj_sequence = self.env["ir.sequence"]
                 sequence = ddt.ddt_type_id.sequence_id
                 ddt.ddt_number = sequence.next_by_id()
+                ddt.min_date = datetime.now()
                 # ddt.ddt_number = obj_sequence.next_by_id(sequence.id)
             return self.env['report'].\
                 get_action(self, 'easy_ddt.report_easy_ddt_main')
