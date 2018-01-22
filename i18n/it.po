@@ -76,6 +76,13 @@ msgstr "Trasportatore\n"
 "                                        Firma"
 
 #. module: easy_ddt
+#: model:ir.ui.view,arch_db:easy_ddt.delivery_data
+msgid "Carrier's\n"
+"                                    Signature"
+msgstr "Trasportatore\n"
+"                                    Firma"
+
+#. module: easy_ddt
 #: model:stock.picking.carriage_condition,name:easy_ddt.carriage_condition_PAF
 msgid "Charged in Invoice"
 msgstr "Con addebito in fattura"
@@ -172,6 +179,13 @@ msgid "Driver's\n"
 "                                        Signature"
 msgstr "Autista \n"
 "                                        Firma"
+
+#. module: easy_ddt
+#: model:ir.ui.view,arch_db:easy_ddt.delivery_data
+msgid "Driver's\n"
+"                                    Signature"
+msgstr "Autista\n"
+"                                    Firma"
 
 #. module: easy_ddt
 #: field:stock.ddt.type,message_follower_ids:0
@@ -362,6 +376,13 @@ msgstr "Destinatario\n"
 "                                        Firma"
 
 #. module: easy_ddt
+#: model:ir.ui.view,arch_db:easy_ddt.delivery_data
+msgid "Recipient's\n"
+"                                    Signature"
+msgstr "Destinatario\n"
+"                                    Firma"
+
+#. module: easy_ddt
 #: model:stock.picking.transportation_reason,name:easy_ddt.transportation_reason_RES
 msgid "Returned"
 msgstr "Reso"
@@ -458,6 +479,13 @@ msgstr "<strong>Indirizzo di Consegna:\n"
 "                                                    </strong>"
 
 #. module: easy_ddt
+#: model:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
+msgid "<strong>Delivery Address:\n"
+"                                                </strong>"
+msgstr "<strong>Indirizzo di Consegna:\n"
+"                                                </strong>"
+
+#. module: easy_ddt
 #: model:ir.model,name:easy_ddt.model_stock_picking_goods_description
 #: model:ir.model.fields,field_description:easy_ddt.field_account_invoice_goods_description_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner_goods_description_id
@@ -548,3 +576,10 @@ msgstr "Colli"
 #: model:ir.model.fields,field_description:easy_ddt.field_account_invoice_ddt_notes
 msgid "Delivery Note Notes"
 msgstr "Note DDT"
+
+#. module: easy_ddt
+#: model:ir.ui.view,arch_db:easy_ddt.delivery_data
+msgid "Time :\n"
+"                        <br/>"
+msgstr "Ora :\n"
+"                        <br/>"

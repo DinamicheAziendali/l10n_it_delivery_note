@@ -123,10 +123,12 @@
                 <t t-call="report.external_layout">
                     <div class="page">
                         <div class="row">
+
+
                             <!--if is an outgoing move -->
                             <div t-if="o.picking_type_id.code=='outgoing'">
                                 <div class="col-xs-6" name="header_left">
-                                    <div t-if="o.partner_id">
+                                    <div t-if="o.sale_id.partner_invoice_id">
                                         <span>
                                             <h4>
                                                 <strong>Customer :</strong>
