@@ -583,3 +583,10 @@ msgid "Time :\n"
 "                        <br/>"
 msgstr "Ora :\n"
 "                        <br/>"
+
+#. module: easy_ddt
+#: model:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
+msgid "<strong>Delivery Address:\n"
+"                                            </strong>"
+msgstr "<strong>Indirizzo di Consegna:\n"
+"
