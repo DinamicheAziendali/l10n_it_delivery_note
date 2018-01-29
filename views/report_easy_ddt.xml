@@ -210,12 +210,19 @@
                                             </strong>
                                         </h4>
                                     </span>
-                                    <t t-foreach="o.ddt_get_location(o.move_lines[0].location_dest_id.id)"
-                                       t-as="loca">
-                                        <p>
-                                            <t t-esc="loca"/>
-                                        </p>
-                                    </t>
+                                    <!--Commentato per far stampare indirizzo spedizione WH/INT/00009 che è interno-->
+                                    <!--<t t-foreach="o.ddt_get_location(o.move_lines[0].location_dest_id.id)"-->
+                                       <!--t-as="loca">-->
+                                        <!--<p>-->
+                                            <!--<t t-esc="loca"/>-->
+                                        <!--</p>-->
+                                    <!--</t>-->
+                                    <div name="ddt_delivery_address"
+                                             t-field="o.partner_id"
+                                             t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                                        <!--<p t-if="o.partner_id.vat">VAT:-->
+                                            <!--<span t-field="o.partner_id.vat"/>-->
+                                        <!--</p>-->
                                 </div>
                             </div>
 
