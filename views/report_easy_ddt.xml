@@ -232,6 +232,7 @@
                                 <span t-field="o.ddt_number"
                                       name="ddt_number"></span>
                                 of :
+                                <!--<span t-field="o.ddt_date"-->
                                 <span t-field="o.ddt_date"
                                       t-field-options='{"format": "d/M/y"}'
                                       name="ddt_date"></span>
@@ -321,10 +322,12 @@
     <template id="report_easy_ddt_main">
         <t t-call="report.html_container">
             <t t-foreach="doc_ids" t-as="doc_id">
-                <!--<t t-raw="translate_doc(doc_id, doc_model, 'easy_ddt.report_easy_ddt')"/>-->
-                <!--<t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'easy_ddt.report_easy_ddt')"/>-->
-                <t t-call="easy_ddt.report_easy_ddt"
-                   t-lang="docs.partner_id.lang"/>
+                <t t-if="docs.partner_id">
+                    <t t-call="easy_ddt.report_easy_ddt" t-lang="docs.partner_id.lang"/>
+                </t>
+                <t t-if="not docs.partner_id">
+                    <t t-call="easy_ddt.report_easy_ddt" t-lang="docs.company_id.partner_id.lang"/>
+                </t>
             </t>
         </t>
     </template>

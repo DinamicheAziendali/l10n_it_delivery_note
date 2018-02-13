@@ -459,7 +459,7 @@ msgstr "<strong>Magazzino :</strong>"
 #. module: easy_ddt
 #: view:website:easy_ddt.delivery_data
 msgid "Withdrawal Date"
-msgstr "Data DDT"
+msgstr "Data inizio trasporto"
 
 #. module: easy_ddt
 #: view:website:easy_ddt.report_easy_ddt
@@ -555,7 +555,7 @@ msgstr "Metodo di trasporto"
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_date_transport_ddt
 msgid "Delivery note Date"
-msgstr "Data Ddt"
+msgstr "Data inizio trasporto"
 
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_ddt_notes
