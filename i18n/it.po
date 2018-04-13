@@ -590,3 +590,8 @@ msgid "<strong>Delivery Address:\n"
 "                                            </strong>"
 msgstr "<strong>Indirizzo di Consegna:\n"
 "
+
+#. module: easy_ddt
+#: model:ir.ui.view,arch_db:easy_ddt.delivery_data
+msgid "Note:"
+msgstr "Note Spedizione:"
