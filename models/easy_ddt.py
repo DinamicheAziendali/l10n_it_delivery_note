@@ -38,6 +38,7 @@ class StockPicking(models.Model):
     ddt_type_id = fields.Many2one(
         'stock.ddt.type', string='DdT Type', default=_default_ddt_type)
     ddt_number = fields.Char(string='DdT Number',  copy=False)
+    ddt_date = fields.Date(string='DDT Date')
     carriage_condition_id = fields.Many2one(
         'stock.picking.carriage_condition', string='Carriage Condition')
     goods_description_id = fields.Many2one(
