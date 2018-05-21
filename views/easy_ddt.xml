@@ -12,7 +12,7 @@
                             string="Print Delivery Note"
                             groups="stock.group_stock_user"
                             type="object"
-                            attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_code','==','incoming')]}"/>
+                            attrs="{'invisible': [('state','!=','done')]}"/>
                 </xpath>
                 <xpath expr="//form/sheet/group/group/field[@name='partner_id']"
                        position="after">
