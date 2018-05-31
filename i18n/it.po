@@ -595,3 +595,13 @@ msgstr "<strong>Indirizzo di Consegna:\n"
 #: model:ir.ui.view,arch_db:easy_ddt.delivery_data
 msgid "Note:"
 msgstr "Note Spedizione:"
+
+#. module: easy_ddt
+#: model:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
+msgid "<strong>Product</strong>"
+msgstr "<strong>Prodotto</strong>"
+
+#. module: easy_ddt
+#: model:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
+msgid "<strong>Lot/Serial Number</strong>"
+msgstr "<strong>Lotto/Numero di serie</strong>"
