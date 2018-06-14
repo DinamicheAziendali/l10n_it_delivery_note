@@ -263,9 +263,9 @@
                                     <th class="text-right">
                                         <strong>Quantity</strong>
                                     </th>
-                                    <th t-if="has_barcode" class="text-center">
-                                        <strong>Barcode</strong>
-                                    </th>
+                                    <!--<th t-if="has_barcode" class="text-center">-->
+                                        <!--<strong>Barcode</strong>-->
+                                    <!--</th>-->
                                     <th t-if="has_serial_number">
                                         <strong>Lot/Serial Number</strong>
                                     </th>
@@ -292,16 +292,16 @@
                                         <span t-field="pack_operation.product_qty"/>
                                         <span t-field="pack_operation.product_uom_id" groups="product.group_uom"/>
                                     </td>
-                                    <td t-if="has_barcode">
-                                        <span t-if="pack_operation.product_id and pack_operation.product_id.barcode">
-                                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', pack_operation.product_id.barcode, 600, 100)"
-                                                 style="width:300px;height:50px"/>
-                                        </span>
-                                        <span t-if="pack_operation.package_id and not pack_operation.product_id">
-                                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', pack_operation.package_id.name, 600, 100)"
-                                                 style="width:300px;height:50px"/>
-                                        </span>
-                                    </td>
+                                    <!--<td t-if="has_barcode">-->
+                                        <!--<span t-if="pack_operation.product_id and pack_operation.product_id.barcode">-->
+                                            <!--<img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', pack_operation.product_id.barcode, 600, 100)"-->
+                                                 <!--style="width:300px;height:50px"/>-->
+                                        <!--</span>-->
+                                        <!--<span t-if="pack_operation.package_id and not pack_operation.product_id">-->
+                                            <!--<img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', pack_operation.package_id.name, 600, 100)"-->
+                                                 <!--style="width:300px;height:50px"/>-->
+                                        <!--</span>-->
+                                    <!--</td>-->
                                     <td t-if="has_serial_number">
                                         <table class="table table-condensed" t-if="pack_operation.pack_lot_ids">
                                             <tr t-foreach="pack_operation.pack_lot_ids" t-as="packlot">
