@@ -81,8 +81,8 @@ class StockPicking(models.Model):
                 ddt.ddt_number = sequence.next_by_id()
                 ddt.min_date = datetime.now()
                 # ddt.ddt_number = obj_sequence.next_by_id(sequence.id)
-            return self.env['report'].\
-                get_action(self, 'easy_ddt.report_easy_ddt_main')
+        # return self.env['ir.actions.report']._get_report_from_name('easy_ddt.report_easy_ddt_main')
+            return self.env.ref('easy_ddt.action_report_easy_ddt').report_action(self)
         return True
 
     # @api.multi
