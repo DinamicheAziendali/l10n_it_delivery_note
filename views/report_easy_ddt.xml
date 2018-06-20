@@ -31,14 +31,14 @@
                 <td>
                     <h6 name="gross_weight">
                         Gross Weight
-                        <div class="text-right" t-field="ddt.weight"></div>
+                        <div class="text-right" t-field="ddt.gross_weight"></div>
                     </h6>
                 </td>
                 <td>
                     <h6 name="net_weight">
                         Net Weight
-                        <!--<div class="text-right"-->
-                        <!--t-field="ddt.weight_net"></div>-->
+                        <div class="text-right"
+                        t-field="ddt.weight"></div>
                     </h6>
                 </td>
             </tr>

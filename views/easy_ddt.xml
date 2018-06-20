@@ -49,6 +49,20 @@
         </field>
     </record>
 
+    <record id="stock_picking_delivery_view_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.inherit.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
+        <field name="arch" type="xml">
+            <!--<xpath expr="//group/group[2]/div" position="after">-->
+                <!--<field name="gross_weight"/>-->
+            <!--</xpath>-->
+            <field name="number_of_packages" position="before">
+                <field name="gross_weight"/>
+            </field>
+        </field>
+    </record>
+
     <record id="stock_picking_tree_view_inherit" model="ir.ui.view">
         <field name="name">stock.picking.inherit.tree</field>
         <field name="model">stock.picking</field>
