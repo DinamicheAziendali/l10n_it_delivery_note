@@ -210,19 +210,9 @@
                                             </strong>
                                         </h4>
                                     </span>
-                                    <!--Commentato per far stampare indirizzo spedizione WH/INT/00009 che è interno-->
-                                    <!--<t t-foreach="o.ddt_get_location(o.move_lines[0].location_dest_id.id)"-->
-                                    <!--t-as="loca">-->
-                                    <!--<p>-->
-                                    <!--<t t-esc="loca"/>-->
-                                    <!--</p>-->
-                                    <!--</t>-->
                                     <div name="ddt_delivery_address"
                                          t-field="o.partner_id"
                                          t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
-                                    <!--<p t-if="o.partner_id.vat">VAT:-->
-                                    <!--<span t-field="o.partner_id.vat"/>-->
-                                    <!--</p>-->
                                 </div>
                             </div>
 
@@ -285,14 +275,6 @@
                                             <table width="100%">
                                                 <tr t-foreach="move.move_line_ids.sorted(key=lambda ml: ml.location_id.id)"
                                                     t-as="ml">
-                                                    <!--<td width="20%">-->
-                                                    <!--<t t-if="o.picking_type_id.code != 'incoming'">-->
-                                                    <!--<span t-esc="ml.location_id.display_name"/>-->
-                                                    <!--<t t-if="ml.package_id">-->
-                                                    <!-- - <span t-field="ml.package_id"/>-->
-                                                    <!--</t>-->
-                                                    <!--</t>-->
-                                                    <!--</td>-->
                                                     <td width="50%">
                                                         <t t-if="has_serial_number and ml.product_id.tracking != 'none'">
                                                             <div class="col-xs-4">
@@ -304,19 +286,8 @@
                                                             <t t-if="ml.lot_id or ml.lot_name">
                                                                 <span t-field="ml.qty_done"/>
                                                             </t>
-                                                            <!--<t t-if="o.state!='done'">-->
-                                                            <!--/ <span t-field="ml.product_uom_qty"/>-->
-                                                            <!--</t>-->
                                                         </div>
                                                     </td>
-                                                    <!--<td width="30%" align="right">-->
-                                                    <!--<div>-->
-                                                    <!--<span t-field="ml.location_dest_id"/>-->
-                                                    <!--<t t-if="ml.result_package_id">-->
-                                                    <!-- - <span t-field="ml.result_package_id"/>-->
-                                                    <!--</t>-->
-                                                    <!--</div>-->
-                                                    <!--</td>-->
                                                 </tr>
                                             </table>
                                         </t>

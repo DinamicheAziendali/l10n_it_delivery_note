@@ -6,9 +6,6 @@
 #    Gianmarco Conte (<gconte@dinamicheaziendali.it>)
 #
 #    same parts :
-#    Copyright (C) 2014 Abstract (http://www.abstract.it)
-#    @author Davide Corio <davide.corio@abstract.it>
-#    Copyright (C) 2014-2015 Agile Business Group (http://www.agilebg.com)
 #    Copyright (C) 2015 Apulia Software s.r.l. (http://www.apuliasoftware.it)
 #    @author Francesco Apruzzese <f.apruzzese@apuliasoftware.it>
 #
@@ -28,18 +25,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-#
-# da completare -
-# le date e orario in stampa
-
-# luogo di partenza da location id andare a capo
-
-# aggiungere al stock location il ddt_type per predisporre il tipo automaticamente
-#   vedi riga 30 easy_ddt.py
-# per la fattura accompagnatoria abilitare il tab solo se il picking é done
-# stampa se scelgo più righe stampa troppo
-# traduzioni
-
 
 {
     'name': 'Easy DDT',
