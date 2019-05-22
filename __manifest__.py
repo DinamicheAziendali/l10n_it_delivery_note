@@ -28,7 +28,7 @@
 
 {
     'name': 'Easy DDT',
-    'version': '11.0.1.0.0',
+    'version': '12.0.1.0.0',
     'category': 'Localization/Italy',
     'summary': 'Documento di Trasporto',
     'author': 'Marco Calcagni, Odoo Community Association (OCA),',
