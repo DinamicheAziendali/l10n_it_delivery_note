@@ -54,11 +54,10 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
         <field name="arch" type="xml">
-            <!--<xpath expr="//group/group[2]/div" position="after">-->
-                <!--<field name="gross_weight"/>-->
-            <!--</xpath>-->
             <field name="shipping_weight" position="after">
                 <field name="gross_weight"/>
+                <field name="parcels"/>
+                <field name="volume"/>
             </field>
         </field>
     </record>

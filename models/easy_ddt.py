@@ -55,6 +55,31 @@ class StockPicking(models.Model):
     picking_type_code = fields.Selection(related="picking_type_id.code")
     gross_weight = fields.Float(string="Gross Weight") #da inserire in form
 
+    #nuovi campi per v12
+    partner_shipping_id = fields.Many2one(
+        'res.partner', string="Shipping Address")
+    # carrier_id = fields.Many2one(
+    #     'res.partner', string='Carrier')
+    parcels = fields.Integer('Parcels')
+    # display_name = fields.Char(
+    #     string='Name', compute='_compute_clean_display_name')
+    invoice_id = fields.Many2one(
+        'account.invoice', string='Invoice', readonly=True, copy=False)
+    to_be_invoiced = fields.Boolean(
+        string='To be Invoiced',
+        help="This depends on 'To be Invoiced' field of the Reason for "
+             "Transportation of this TD")
+    show_price = fields.Boolean(string='Show prices on report')
+    weight_manual = fields.Float(
+        string="Force Net Weight",
+        help="Fill this field with the value you want to be used as weight. "
+             "Leave empty to let the system to compute it")
+    # check_if_picking_done = fields.Boolean(
+    #     compute='_compute_check_if_picking_done',
+    # )
+
+
+
     @api.onchange('partner_id', 'ddt_type_id')
     def on_change_partner(self):
         if self.ddt_type_id:
@@ -79,7 +104,8 @@ class StockPicking(models.Model):
                 obj_sequence = self.env["ir.sequence"]
                 sequence = ddt.ddt_type_id.sequence_id
                 ddt.ddt_number = sequence.next_by_id()
-                ddt.min_date = datetime.now()
+                if not ddt.ddt_date:
+                    ddt.ddt_date = datetime.now().date()
                 # ddt.ddt_number = obj_sequence.next_by_id(sequence.id)
         # return self.env['ir.actions.report']._get_report_from_name('easy_ddt.report_easy_ddt_main')
             return self.env.ref('easy_ddt.action_report_easy_ddt').report_action(self)
