@@ -152,7 +152,7 @@ msgstr "Data DDT"
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
 msgid "DDT Draft - of :"
-msgstr DDT in bozza - del :""
+msgstr "DDT in bozza - del :"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.report_easy_ddt
@@ -172,7 +172,7 @@ msgstr "Numero DDT"
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__ddt_type_id
 msgid "DdT Type"
-msgstr Tipo DDT""
+msgstr "Tipo DDT"
 
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__ddt_notes
@@ -245,7 +245,7 @@ msgstr "Followers (Partner)"
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__weight_manual
 msgid "Force Net Weight"
-msgstr Forza Peso Netto""
+msgstr "Forza Peso Netto"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_data
@@ -395,7 +395,7 @@ msgstr "Note"
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_account_invoice__number_of_packages
 msgid "Number Of Packages"
-msgstr Numero di pacchi""
+msgstr "Numero di pacchi"
 
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_ddt_type__message_needaction_counter
@@ -532,7 +532,7 @@ msgstr "Ora:"
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__to_be_invoiced
 msgid "To be Invoiced"
-msgstr Da Fatturare""
+msgstr "Da Fatturare"
 
 #. module: easy_ddt
 #: model:ir.model,name:easy_ddt.model_stock_picking
