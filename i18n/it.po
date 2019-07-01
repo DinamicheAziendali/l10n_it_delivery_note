@@ -499,7 +499,7 @@ msgstr "Indirizzo di spedizione"
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
 msgid "Shipping Info"
-msgstr Info Spedizione""
+msgstr "Info Spedizione"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.invoice_form_view_ddt
