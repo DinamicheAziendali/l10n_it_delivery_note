@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_ddt" model="ir.ui.view">
+        <field name="name">ddt.stock.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//header/button[@name='do_unreserve']"
+                       position="after">
+                    <button name="get_ddt_number"
+                            string="Print Delivery Note"
+                            groups="stock.group_stock_user"
+                            type="object"
+                            attrs="{'invisible': [('state','!=','done')]}"/>
+                </xpath>
+                <xpath expr="//form/sheet/group/group/field[@name='partner_id']"
+                       position="after">
+                    <field name="ddt_number"
+                           attrs="{'invisible': [('state','!=','done')]}"/>
+                    <field name="ddt_type_id" widget="selection"
+                           attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_code','==','incoming')],
+                                'readonly': [('ddt_number', '!=', False)]}"/>
+                </xpath>
+                <xpath expr="//form/sheet/group/group/field[@name='origin']"
+                       position="after">
+                        <field name="ddt_date"/>
+                </xpath>
+                <xpath expr="//page[3]" position="after">
+                    <page string="Shipping Info"
+                          attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_code','==','incoming')]}">
+                        <group string="Shipping Informations">
+                            <field name="goods_description_id"
+                                   widget="selection"/>
+                            <field name="carriage_condition_id"
+                                   widget="selection"/>
+                            <field name="transportation_reason_id"
+                                   widget="selection"/>
+                            <field name="transportation_method_id"
+                                   widget="selection"/>
+                            <field name="date_transport_ddt"/>
+                            <field name="time_transport_ddt"
+                                   widget="float_time"/>
+                            <field name="ddt_notes"/>
+                        </group>
+                    </page>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="stock_picking_delivery_view_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.inherit.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
+        <field name="arch" type="xml">
+            <field name="shipping_weight" position="after">
+                <field name="gross_weight"/>
+                <field name="parcels"/>
+                <field name="volume"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="stock_picking_tree_view_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.inherit.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="ddt_number"/>
+            </field>
+        </field>
+    </record>
+</odoo>
