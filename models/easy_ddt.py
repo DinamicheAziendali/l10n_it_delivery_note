@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2014-2019 Dinamiche Aziendali srl (http://www.dinamicheaziendali.it/)
 # @author: Marco Calcagni <mcalcagni@dinamicheaziendali.it>
 # @author: Gianmarco Conte <gconte@dinamicheaziendali.it>
@@ -6,6 +5,7 @@
 
 from odoo import models, fields, api
 from datetime import datetime
+
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -56,8 +56,6 @@ class StockPicking(models.Model):
     #     compute='_compute_check_if_picking_done',
     # )
 
-
-
     @api.onchange('partner_id', 'ddt_type_id')
     def on_change_partner(self):
         if self.ddt_type_id:
@@ -88,7 +86,6 @@ class StockPicking(models.Model):
         # return self.env['ir.actions.report']._get_report_from_name('easy_ddt.report_easy_ddt_main')
             return self.env.ref('easy_ddt.action_report_easy_ddt').report_action(self)
         return True
-
 
     @api.multi
     def ddt_get_location(self, location_id):

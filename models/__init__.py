@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2014-2019 Dinamiche Aziendali srl (http://www.dinamicheaziendali.it/)
 # @author: Marco Calcagni <mcalcagni@dinamicheaziendali.it>
 # @author: Gianmarco Conte <gconte@dinamicheaziendali.it>
