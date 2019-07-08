@@ -13,17 +13,15 @@ from odoo import models, fields
 
 
 class StockPickingCarriageCondition(models.Model):
-
-    _name = "stock.picking.carriage_condition"
-    _description = "Carriage Condition"
+    _name = "stock.picking.transport.condition"
+    _description = "Transport Condition"
 
     name = fields.Char(
-        string='Carriage Condition', required=True, translate=True)
+        string='Transport Condition', required=True, translate=True)
     note = fields.Text(string='Note', translate=True)
 
 
 class StockPickingGoodsDescription(models.Model):
-
     _name = 'stock.picking.goods_description'
     _description = "Description of Goods"
 
@@ -33,7 +31,6 @@ class StockPickingGoodsDescription(models.Model):
 
 
 class StockPickingTransportationReason(models.Model):
-
     _name = 'stock.picking.transportation_reason'
     _description = 'Reason for Transportation'
 
@@ -43,7 +40,6 @@ class StockPickingTransportationReason(models.Model):
 
 
 class StockPickingTransportationMethod(models.Model):
-
     _name = 'stock.picking.transportation_method'
     _description = 'Method of Transportation'
 
@@ -53,7 +49,6 @@ class StockPickingTransportationMethod(models.Model):
 
 
 class StockDdtType(models.Model):
-
     _name = 'stock.ddt.type'
     _description = 'Stock DdT Type'
     _inherit = ['mail.thread']

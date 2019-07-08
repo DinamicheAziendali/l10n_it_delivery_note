@@ -33,23 +33,23 @@
         <menuitem action="action_ddt_type_tree" id="menu_action_ddt_type_tree"
                   parent="menu_stock_ddt_data"/>
 
-        <record id="view_carriage_condition_tree" model="ir.ui.view">
-            <field name="name">stock.picking.carriage_condition.tree</field>
-            <field name="model">stock.picking.carriage_condition</field>
+        <record id="view_transport_condition_tree" model="ir.ui.view">
+            <field name="name">stock.picking.transport.condition.tree</field>
+            <field name="model">stock.picking.transport.condition</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Carriage Conditions">
+                <tree string="Transport Conditions">
                     <field name="name"/>
                 </tree>
             </field>
         </record>
 
-        <record id="view_carriage_condition_form" model="ir.ui.view">
-            <field name="name">stock.picking.carriage_condition.form</field>
-            <field name="model">stock.picking.carriage_condition</field>
+        <record id="view_transport_condition_form" model="ir.ui.view">
+            <field name="name">stock.picking.transport.condition.form</field>
+            <field name="model">stock.picking.transport.condition</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Carriage Condition">
+                <form string="Transport Condition">
                     <group>
                         <field name="name"/>
                         <field name="note"/>
@@ -58,17 +58,17 @@
             </field>
         </record>
 
-        <record id="action_carriage_condition_tree"
+        <record id="action_transport_condition_tree"
                 model="ir.actions.act_window">
-            <field name="name">Carriage Conditions</field>
-            <field name="res_model">stock.picking.carriage_condition</field>
+            <field name="name">Transport Conditions</field>
+            <field name="res_model">stock.picking.transport.condition</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem action="action_carriage_condition_tree"
-                  id="menu_action_carriage_condition_tree"
+        <menuitem action="action_transport_condition_tree"
+                  id="menu_action_transport_condition_tree"
                   parent="menu_stock_ddt_data"/>
 
         <record id="view_goods_description_tree" model="ir.ui.view">

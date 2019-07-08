@@ -10,7 +10,7 @@
                     <group string="Shipping Informations">
                         <field name="goods_description_id"
                                widget="selection"/>
-                        <field name="carriage_condition_id"
+                        <field name="transport_condition_id"
                                widget="selection"/>
                         <field name="transportation_reason_id"
                                widget="selection"/>

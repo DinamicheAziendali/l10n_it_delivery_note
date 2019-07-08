@@ -3,7 +3,7 @@
 # @author: Gianmarco Conte <gconte@dinamicheaziendali.it>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import models, fields, api
+from odoo import _, api, fields, models
 from datetime import datetime
 
 
@@ -17,8 +17,8 @@ class StockPicking(models.Model):
         'stock.ddt.type', string='DdT Type', default=_default_ddt_type)
     ddt_number = fields.Char(string='DdT Number',  copy=False)
     ddt_date = fields.Date(string='DDT Date')
-    carriage_condition_id = fields.Many2one(
-        'stock.picking.carriage_condition', string='Carriage Condition')
+    transport_condition_id = fields.Many2one(
+        'stock.picking.transport.condition', string=_("Transport Condition"))
     goods_description_id = fields.Many2one(
         'stock.picking.goods_description', string='Description of Goods')
     transportation_reason_id = fields.Many2one(
@@ -59,9 +59,9 @@ class StockPicking(models.Model):
     @api.onchange('partner_id', 'ddt_type_id')
     def on_change_partner(self):
         if self.ddt_type_id:
-            self.carriage_condition_id = \
-                self.partner_id.carriage_condition_id.id \
-                if self.partner_id.carriage_condition_id else False
+            self.transport_condition_id = \
+                self.partner_id.transport_condition_id.id \
+                if self.partner_id.transport_condition_id else False
             self.goods_description_id = \
                 self.partner_id.goods_description_id.id \
                 if self.partner_id.goods_description_id else False

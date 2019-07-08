@@ -16,14 +16,14 @@
             <field name="sequence_id" ref="seq_ddt"/>
         </record>
 
-        <!-- carriage conditions -->
-        <record id="carriage_condition_PF" model="stock.picking.carriage_condition">
+        <!-- transport conditions -->
+        <record id="transport_condition_PF" model="stock.picking.transport.condition">
             <field name="name">Carriage Paid</field>
         </record>
-        <record id="carriage_condition_PA" model="stock.picking.carriage_condition">
+        <record id="transport_condition_PA" model="stock.picking.transport.condition">
             <field name="name">Carriage Forward</field>
         </record>
-        <record id="carriage_condition_PAF" model="stock.picking.carriage_condition">
+        <record id="transport_condition_PAF" model="stock.picking.transport.condition">
             <field name="name">Charged in Invoice</field>
         </record>
 

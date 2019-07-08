@@ -18,8 +18,8 @@
                 </td>
                 <td>
                     <h6 name="carriage">
-                        Carriage Condition
-                        <div t-field="ddt.carriage_condition_id"></div>
+                        Transport Condition
+                        <div t-field="ddt.transport_condition_id"></div>
                     </h6>
                 </td>
                 <td>
