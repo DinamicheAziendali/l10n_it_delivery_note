@@ -57,10 +57,8 @@
                 <td colspan="2" name="method_trasport">
                     <h6>Method of Transportation / Carrier</h6>
                     <div>
-                        <span t-field="ddt.transportation_method_id"
-                              name="transportation_method_id"/>
-                        <span t-field="ddt.carrier_id.name"
-                              name="carrier_id"/>
+                        <span t-field="ddt.transport_method_id" ame="transport_method_id"/>
+                        <span t-field="ddt.carrier_id.name" name="carrier_id"/>
                         <span t-if="ddt.carrier_tracking_ref">
                             <br/>
                             <h6>traking reference :

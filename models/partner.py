@@ -21,6 +21,5 @@ class ResPartner(models.Model):
         'stock.picking.goods_description', 'Description of Goods')
     transport_reason_id = fields.Many2one(
         'stock.picking.transport.reason', string=_("Transport Reason"))
-    transportation_method_id = fields.Many2one(
-        'stock.picking.transportation_method',
-        'Method of Transportation')
+    transport_method_id = fields.Many2one(
+        'stock.picking.transport.method', string=_("Transport Method"))

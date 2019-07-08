@@ -23,9 +23,8 @@ class StockPicking(models.Model):
         'stock.picking.goods_description', string='Description of Goods')
     transport_reason_id = fields.Many2one(
         'stock.picking.transport.reason', string=_("Transport Reason"))
-    transportation_method_id = fields.Many2one(
-        'stock.picking.transportation_method',
-        string='Method of Transportation')
+    transport_method_id = fields.Many2one(
+        'stock.picking.transport.method', string=_("Transport Method"))
     date_transport_ddt = fields.Date(string='Delivery note Date')
     time_transport_ddt = fields.Float(string='Delivery Note Start Time')
     ddt_notes = fields.Text(string='Delivery Note Notes')
@@ -67,9 +66,9 @@ class StockPicking(models.Model):
             self.transport_reason_id = \
                 self.partner_id.transport_reason_id.id \
                 if self.partner_id.transport_reason_id else False
-            self.transportation_method_id = \
-                self.partner_id.transportation_method_id.id \
-                if self.partner_id.transportation_method_id else False
+            self.transport_method_id = \
+                self.partner_id.transport_method_id.id \
+                if self.partner_id.transport_method_id else False
 
     @api.multi
     def get_ddt_number(self):

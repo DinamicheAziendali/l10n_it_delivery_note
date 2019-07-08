@@ -41,7 +41,7 @@
             <field name="name">Box-Pallet</field>
         </record>
 
-        <!-- trasportation reasons -->
+        <!-- transport reasons -->
         <record id="transport_reason_VEN" model="stock.picking.transport.reason">
             <field name="name">Sale</field>
         </record>
@@ -52,14 +52,14 @@
             <field name="name">Returned</field>
         </record>
 
-        <!-- trasportation methods -->
-        <record id="transportation_method_MIT" model="stock.picking.transportation_method">
+        <!-- transport methods -->
+        <record id="transport_method_MIT" model="stock.picking.transport.method">
             <field name="name">Sender</field>
         </record>
-        <record id="transportation_method_DES" model="stock.picking.transportation_method">
+        <record id="transport_method_DES" model="stock.picking.transport.method">
             <field name="name">Recipient</field>
         </record>
-        <record id="transportation_method_COR" model="stock.picking.transportation_method">
+        <record id="transport_method_COR" model="stock.picking.transport.method">
             <field name="name">Carrier</field>
         </record>
 

@@ -144,9 +144,9 @@
                   id="menu_action_transport_reason_tree"
                   parent="menu_stock_ddt_data"/>
 
-        <record id="view_transportation_method_tree" model="ir.ui.view">
-            <field name="name">stock.picking.transportation_method.tree</field>
-            <field name="model">stock.picking.transportation_method</field>
+        <record id="view_transport_method_tree" model="ir.ui.view">
+            <field name="name">stock.picking.transport.method.tree</field>
+            <field name="model">stock.picking.transport.method</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Methods of Transportation">
@@ -154,9 +154,9 @@
                 </tree>
             </field>
         </record>
-        <record id="view_transportation_method_form" model="ir.ui.view">
-            <field name="name">stock.picking.transportation_method.form</field>
-            <field name="model">stock.picking.transportation_method</field>
+        <record id="view_transport_method_form" model="ir.ui.view">
+            <field name="name">stock.picking.transport.method.form</field>
+            <field name="model">stock.picking.transport.method</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Method of Transportation">
@@ -168,17 +168,17 @@
             </field>
         </record>
 
-        <record id="action_transportation_method_tree"
+        <record id="action_transport_method_tree"
                 model="ir.actions.act_window">
-            <field name="name">Methods of Transportation</field>
-            <field name="res_model">stock.picking.transportation_method</field>
+            <field name="name">Transport Methods</field>
+            <field name="res_model">stock.picking.transport.method</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem action="action_transportation_method_tree"
-                  id="menu_action_transportation_method_tree"
+        <menuitem action="action_transport_method_tree"
+                  id="menu_action_transport_method_tree"
                   parent="menu_stock_ddt_data"/>
 
 </odoo>

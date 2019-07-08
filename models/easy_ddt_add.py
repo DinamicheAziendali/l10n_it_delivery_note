@@ -40,11 +40,11 @@ class StockPickingTransportationReason(models.Model):
 
 
 class StockPickingTransportationMethod(models.Model):
-    _name = 'stock.picking.transportation_method'
-    _description = 'Method of Transportation'
+    _name = 'stock.picking.transport.method'
+    _description = "Transport Method"
 
     name = fields.Char(
-        string='Method of Transportation', required=True, translate=True)
+        string=_("Method name"), required=True, translate=True)
     note = fields.Text(string='Note', translate=True)
 
 
@@ -58,4 +58,4 @@ class StockDdtType(models.Model):
     note = fields.Text(string='Note')
     company_id = fields.Many2one(
         'res.company', string='Company',
-        default=lambda self: self.env.user.company_id, )
+        default=lambda self: self.env.user.company_id)
