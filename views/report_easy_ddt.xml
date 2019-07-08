@@ -28,8 +28,8 @@
                 </td>
                 <td>
                     <h6 name="good_description">
-                        Goods Description
-                        <div t-field="ddt.goods_description_id"></div>
+                        Appearance of Goods
+                        <div t-field="ddt.goods_appearance_id"></div>
                     </h6>
                 </td>
                 <td>
@@ -41,8 +41,7 @@
                 <td>
                     <h6 name="net_weight">
                         Net Weight
-                        <div class="text-right"
-                             t-field="ddt.weight"></div>
+                        <div class="text-right" t-field="ddt.weight"></div>
                     </h6>
                 </td>
             </tr>
@@ -55,7 +54,7 @@
             </tr>
             <tr>
                 <td colspan="2" name="method_trasport">
-                    <h6>Method of Transportation / Carrier</h6>
+                    <h6>Transport Method / Carrier</h6>
                     <div>
                         <span t-field="ddt.transport_method_id" ame="transport_method_id"/>
                         <span t-field="ddt.carrier_id.name" name="carrier_id"/>

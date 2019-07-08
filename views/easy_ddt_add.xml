@@ -71,9 +71,9 @@
                   id="menu_action_transport_condition_tree"
                   parent="menu_stock_ddt_data"/>
 
-        <record id="view_goods_description_tree" model="ir.ui.view">
-            <field name="name">stock.picking.goods_description.tree</field>
-            <field name="model">stock.picking.goods_description</field>
+        <record id="view_goods_appearance_tree" model="ir.ui.view">
+            <field name="name">stock.picking.goods.appearance.tree</field>
+            <field name="model">stock.picking.goods.appearance</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Descriptions of Goods">
@@ -81,9 +81,9 @@
                 </tree>
             </field>
         </record>
-        <record id="stock_goods_description_form" model="ir.ui.view">
-            <field name="name">stock.picking.goods_description.form</field>
-            <field name="model">stock.picking.goods_description</field>
+        <record id="stock_goods_appearance_form" model="ir.ui.view">
+            <field name="name">stock.picking.goods.appearance.form</field>
+            <field name="model">stock.picking.goods.appearance</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Description of Goods">
@@ -95,17 +95,17 @@
             </field>
         </record>
 
-        <record id="action_goods_description_tree"
+        <record id="action_goods_appearance_tree"
                 model="ir.actions.act_window">
-            <field name="name">Descriptions of Goods</field>
-            <field name="res_model">stock.picking.goods_description</field>
+            <field name="name">Appearance of Goods</field>
+            <field name="res_model">stock.picking.goods.appearance</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem action="action_goods_description_tree"
-                  id="menu_action_good_description_tree"
+        <menuitem action="action_goods_appearance_tree"
+                  id="menu_action_good_appearance_tree"
                   parent="menu_stock_ddt_data"/>
 
         <record id="view_transport_reason_tree" model="ir.ui.view">
@@ -149,7 +149,7 @@
             <field name="model">stock.picking.transport.method</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Methods of Transportation">
+                <tree string="Transport Methods">
                     <field name="name"/>
                 </tree>
             </field>
@@ -159,7 +159,7 @@
             <field name="model">stock.picking.transport.method</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Method of Transportation">
+                <form string="Transport Methods">
                     <group>
                         <field name="name"/>
                         <field name="note"/>

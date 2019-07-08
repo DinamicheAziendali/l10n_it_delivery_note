@@ -27,17 +27,17 @@
             <field name="name">Charged in Invoice</field>
         </record>
 
-        <!-- goods descriptions -->
-        <record id="goods_description_CAR" model="stock.picking.goods_description">
+        <!-- goods appearance -->
+        <record id="goods_appearance_CAR" model="stock.picking.goods.appearance">
             <field name="name">Box</field>
         </record>
-        <record id="goods_description_BAN" model="stock.picking.goods_description">
+        <record id="goods_appearance_BAN" model="stock.picking.goods.appearance">
             <field name="name">Pallet</field>
         </record>
-        <record id="goods_description_SFU" model="stock.picking.goods_description">
+        <record id="goods_appearance_SFU" model="stock.picking.goods.appearance">
             <field name="name">Bulk</field>
         </record>
-        <record id="goods_description_CBA" model="stock.picking.goods_description">
+        <record id="goods_appearance_CBA" model="stock.picking.goods.appearance">
             <field name="name">Box-Pallet</field>
         </record>
 

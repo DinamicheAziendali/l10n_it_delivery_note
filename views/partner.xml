@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='sales_purchases']/group[1]">
                     <group string="Shipping Informations">
-                        <field name="goods_description_id" widget="selection"/>
+                        <field name="goods_appearance_id" widget="selection"/>
                         <field name="transport_condition_id" widget="selection"/>
                         <field name="transport_reason_id" widget="selection"/>
                         <field name="transport_method_id" widget="selection"/>

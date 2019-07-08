@@ -19,8 +19,8 @@ class StockPicking(models.Model):
     ddt_date = fields.Date(string='DDT Date')
     transport_condition_id = fields.Many2one(
         'stock.picking.transport.condition', string=_("Transport Condition"))
-    goods_description_id = fields.Many2one(
-        'stock.picking.goods_description', string='Description of Goods')
+    goods_appearance_id = fields.Many2one(
+        'stock.picking.goods.appearance', string=_("Appearance of Goods"))
     transport_reason_id = fields.Many2one(
         'stock.picking.transport.reason', string=_("Transport Reason"))
     transport_method_id = fields.Many2one(
@@ -60,9 +60,9 @@ class StockPicking(models.Model):
             self.transport_condition_id = \
                 self.partner_id.transport_condition_id.id \
                 if self.partner_id.transport_condition_id else False
-            self.goods_description_id = \
-                self.partner_id.goods_description_id.id \
-                if self.partner_id.goods_description_id else False
+            self.goods_appearance_id = \
+                self.partner_id.goods_appearance_id.id \
+                if self.partner_id.goods_appearance_id else False
             self.transport_reason_id = \
                 self.partner_id.transport_reason_id.id \
                 if self.partner_id.transport_reason_id else False

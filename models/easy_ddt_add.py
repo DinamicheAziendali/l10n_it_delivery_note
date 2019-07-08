@@ -21,16 +21,16 @@ class StockPickingCarriageCondition(models.Model):
     note = fields.Text(string='Note', translate=True)
 
 
-class StockPickingGoodsDescription(models.Model):
-    _name = 'stock.picking.goods_description'
-    _description = "Description of Goods"
+class StockPickingGoodsAppearance(models.Model):
+    _name = 'stock.picking.goods.appearance'
+    _description = "Appearance of Goods"
 
     name = fields.Char(
-        string='Description of Goods', required=True, translate=True)
+        string=_("Appearance of Goods name"), required=True, translate=True)
     note = fields.Text(string='Note', translate=True)
 
 
-class StockPickingTransportationReason(models.Model):
+class StockPickingTransportReason(models.Model):
     _name = 'stock.picking.transport.reason'
     _description = "Transport Reason"
 
@@ -39,7 +39,7 @@ class StockPickingTransportationReason(models.Model):
     note = fields.Text(string='Note', translate=True)
 
 
-class StockPickingTransportationMethod(models.Model):
+class StockPickingTransportMethod(models.Model):
     _name = 'stock.picking.transport.method'
     _description = "Transport Method"
 

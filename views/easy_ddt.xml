@@ -30,7 +30,7 @@
                     <page string="Shipping Info"
                           attrs="{'invisible': ['|', ('state','!=','done'), ('picking_type_code','==','incoming')]}">
                         <group string="Shipping Informations">
-                            <field name="goods_description_id" widget="selection"/>
+                            <field name="goods_appearance_id" widget="selection"/>
                             <field name="transport_condition_id" widget="selection"/>
                             <field name="transport_reason_id" widget="selection"/>
                             <field name="transport_method_id" widget="selection"/>

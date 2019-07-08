@@ -17,8 +17,8 @@ class ResPartner(models.Model):
 
     transport_condition_id = fields.Many2one(
         'stock.picking.transport.condition', string=_("Transport Condition"))
-    goods_description_id = fields.Many2one(
-        'stock.picking.goods_description', 'Description of Goods')
+    goods_appearance_id = fields.Many2one(
+        'stock.picking.goods.appearance', string=_("Appearance of Goods"))
     transport_reason_id = fields.Many2one(
         'stock.picking.transport.reason', string=_("Transport Reason"))
     transport_method_id = fields.Many2one(
