@@ -9,7 +9,7 @@
 #
 ##############################################################################
 
-from odoo import models, fields
+from odoo import _, fields, models
 
 
 class StockPickingCarriageCondition(models.Model):
@@ -17,7 +17,7 @@ class StockPickingCarriageCondition(models.Model):
     _description = "Transport Condition"
 
     name = fields.Char(
-        string='Transport Condition', required=True, translate=True)
+        string=_("Condition name"), required=True, translate=True)
     note = fields.Text(string='Note', translate=True)
 
 
@@ -31,11 +31,11 @@ class StockPickingGoodsDescription(models.Model):
 
 
 class StockPickingTransportationReason(models.Model):
-    _name = 'stock.picking.transportation_reason'
-    _description = 'Reason for Transportation'
+    _name = 'stock.picking.transport.reason'
+    _description = "Transport Reason"
 
     name = fields.Char(
-        string='Reason For Transportation', required=True, translate=True)
+        string=_("Reason name"), required=True, translate=True)
     note = fields.Text(string='Note', translate=True)
 
 

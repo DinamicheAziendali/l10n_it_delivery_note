@@ -16,8 +16,8 @@
             <tr>
                 <td>
                     <h6 name="transport">
-                        Transportation Reason
-                        <div t-field="ddt.transportation_reason_id"></div>
+                        Transport Reason
+                        <div t-field="ddt.transport_reason_id"></div>
                     </h6>
                 </td>
                 <td>

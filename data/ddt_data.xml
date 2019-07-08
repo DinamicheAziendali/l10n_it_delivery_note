@@ -42,13 +42,13 @@
         </record>
 
         <!-- trasportation reasons -->
-        <record id="transportation_reason_VEN" model="stock.picking.transportation_reason">
+        <record id="transport_reason_VEN" model="stock.picking.transport.reason">
             <field name="name">Sale</field>
         </record>
-        <record id="transportation_reason_VIS" model="stock.picking.transportation_reason">
+        <record id="transport_reason_VIS" model="stock.picking.transport.reason">
             <field name="name">Goods on approval</field>
         </record>
-        <record id="transportation_reason_RES" model="stock.picking.transportation_reason">
+        <record id="transport_reason_RES" model="stock.picking.transport.reason">
             <field name="name">Returned</field>
         </record>
 

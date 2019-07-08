@@ -8,7 +8,7 @@
 #    migrated from V8
 ##############################################################################
 
-from odoo import fields, models
+from odoo import _, fields, models
 
 
 class ResPartner(models.Model):
@@ -16,12 +16,11 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     transport_condition_id = fields.Many2one(
-        'stock.picking.transport.condition', 'Transport Condition')
+        'stock.picking.transport.condition', string=_("Transport Condition"))
     goods_description_id = fields.Many2one(
         'stock.picking.goods_description', 'Description of Goods')
-    transportation_reason_id = fields.Many2one(
-        'stock.picking.transportation_reason',
-        'Reason for Transportation')
+    transport_reason_id = fields.Many2one(
+        'stock.picking.transport.reason', string=_("Transport Reason"))
     transportation_method_id = fields.Many2one(
         'stock.picking.transportation_method',
         'Method of Transportation')
