@@ -14,49 +14,81 @@ from odoo import _, fields, models
 
 class StockPickingCarriageCondition(models.Model):
     _name = 'stock.picking.transport.condition'
-    _description = "Transport Condition"
+    _description = "Condition of transport"
+    _order = 'sequence, name, id'
 
-    name = fields.Char(
-        string=_("Condition name"), required=True, translate=True)
-    note = fields.Text(string=_("Internal note"))
+    active = fields.Boolean(string=_("Active"), default=True)
+    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
+    name = fields.Char(string=_("Condition name"), index=True, required=True, translate=True)
+    note = fields.Html(string=_("Internal note"))
+
+    _sql_constraints = [(
+        'name_uniq',
+        'unique(name)',
+        "This condition of transport name is already used!"
+    )]
 
 
 class StockPickingGoodsAppearance(models.Model):
     _name = 'stock.picking.goods.appearance'
-    _description = "Appearance of Goods"
+    _description = "Appearance of goods"
+    _order = 'sequence, name, id'
 
-    name = fields.Char(
-        string=_("Appearance of Goods name"), required=True, translate=True)
-    note = fields.Text(string=_("Internal note"))
+    active = fields.Boolean(string=_("Active"), default=True)
+    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
+    name = fields.Char(string=_("Appearance name"), index=True, required=True, translate=True)
+    note = fields.Html(string=_("Internal note"))
+
+    _sql_constraints = [(
+        'name_uniq',
+        'unique(name)',
+        "This appearance of goods name is already used!"
+    )]
 
 
 class StockPickingTransportReason(models.Model):
     _name = 'stock.picking.transport.reason'
-    _description = "Transport Reason"
+    _description = "Reason of transport"
+    _order = 'sequence, name, id'
 
-    name = fields.Char(
-        string=_("Reason name"), required=True, translate=True)
-    note = fields.Text(string=_("Internal note"))
+    active = fields.Boolean(string=_("Active"), default=True)
+    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
+    name = fields.Char(string=_("Reason name"), index=True, required=True, translate=True)
+    note = fields.Html(string=_("Internal note"))
+
+    _sql_constraints = [(
+        'name_uniq',
+        'unique(name)',
+        "This reason of transport name is already used!"
+    )]
 
 
 class StockPickingTransportMethod(models.Model):
     _name = 'stock.picking.transport.method'
-    _description = "Transport Method"
+    _description = "Method of transport"
+    _order = 'sequence, name, id'
 
-    name = fields.Char(
-        string=_("Method name"), required=True, translate=True)
-    note = fields.Text(string=_("Internal note"))
+    active = fields.Boolean(string=_("Active"), default=True)
+    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
+    name = fields.Char(string=_("Method name"), index=True, required=True, translate=True)
+    note = fields.Html(string=_("Internal note"))
+
+    _sql_constraints = [(
+        'name_uniq',
+        'unique(name)',
+        "This method of transport name is already used!"
+    )]
 
 
 class StockDdtType(models.Model):
     _name = 'stock.ddt.type'
     _inherit = 'mail.thread'
-    _description = "Stock DdT Type"
+    _description = "Transport note type"
+    _order = 'sequence, name, id'
 
-    name = fields.Char(required=True)
+    active = fields.Boolean(string=_("Active"), default=True)
+    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
+    name = fields.Char(string=_(""), index=True, required=True, translate=True)
     sequence_id = fields.Many2one('ir.sequence', required=True)
-    note = fields.Text(string=_("Internal note"))
-    company_id = fields.Many2one(
-        'res.company',
-        string=_("Company"),
-        default=lambda self: self.env.user.company_id)
+    company_id = fields.Many2one('res.company', string=_("Company"), default=lambda self: self.env.user.company_id)
+    note = fields.Html(string=_("Internal note"))

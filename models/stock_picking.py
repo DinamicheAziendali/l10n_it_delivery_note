@@ -13,18 +13,20 @@ class StockPicking(models.Model):
     def _default_ddt_type(self):
         return self.env['stock.ddt.type'].search([], limit=1)
 
+    delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"))
+
     ddt_type_id = fields.Many2one(
         'stock.ddt.type', string='DdT Type', default=_default_ddt_type)
     ddt_number = fields.Char(string='DdT Number', copy=False)
     ddt_date = fields.Date(string='DDT Date')
     transport_condition_id = fields.Many2one(
-        'stock.picking.transport.condition', string=_("Transport Condition"))
+        'stock.picking.transport.condition', string=_("Condition of transport"))
     goods_appearance_id = fields.Many2one(
-        'stock.picking.goods.appearance', string=_("Appearance of Goods"))
+        'stock.picking.goods.appearance', string=_("Appearance of goods"))
     transport_reason_id = fields.Many2one(
-        'stock.picking.transport.reason', string=_("Transport Reason"))
+        'stock.picking.transport.reason', string=_("Reason of transport"))
     transport_method_id = fields.Many2one(
-        'stock.picking.transport.method', string=_("Transport Method"))
+        'stock.picking.transport.method', string=_("Method of transport"))
     date_transport_ddt = fields.Date(string='Delivery note Date')
     time_transport_ddt = fields.Float(string='Delivery Note Start Time')
     ddt_notes = fields.Html(string='Delivery Note Notes')

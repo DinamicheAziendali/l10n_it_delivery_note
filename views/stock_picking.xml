@@ -29,6 +29,11 @@
                           string="Shipping Info"
                           attrs="{'invisible': ['|', ('state', '!=', 'done'),
                                                      ('picking_type_code', '==', 'incoming')]}">
+                        <group>
+                            <group>
+                                <field name="delivery_note_id" />
+                            </group>
+                        </group>
                         <group name="ddt_fields">
                             <group>
                                 <field name="goods_appearance_id" widget="selection" />

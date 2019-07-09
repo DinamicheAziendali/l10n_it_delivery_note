@@ -10,13 +10,13 @@
         <field name="implementation">no_gap</field>
     </record>
 
-    <!-- DdT Type -->
+    <!-- Transport note types -->
     <record id="ddt_type_ddt" model="stock.ddt.type">
         <field name="name">DdT</field>
         <field name="sequence_id" ref="seq_ddt" />
     </record>
 
-    <!-- transport conditions -->
+    <!-- Conditions of transport -->
     <record id="transport_condition_PF" model="stock.picking.transport.condition">
         <field name="name">Carriage Paid</field>
     </record>
@@ -27,7 +27,7 @@
         <field name="name">Charged in Invoice</field>
     </record>
 
-    <!-- goods appearance -->
+    <!-- Goods appearance -->
     <record id="goods_appearance_CAR" model="stock.picking.goods.appearance">
         <field name="name">Box</field>
     </record>
@@ -41,7 +41,7 @@
         <field name="name">Box-Pallet</field>
     </record>
 
-    <!-- transport reasons -->
+    <!-- Reasons of transport -->
     <record id="transport_reason_VEN" model="stock.picking.transport.reason">
         <field name="name">Sale</field>
     </record>
@@ -52,7 +52,7 @@
         <field name="name">Returned</field>
     </record>
 
-    <!-- transport methods -->
+    <!-- Methods of transport -->
     <record id="transport_method_MIT" model="stock.picking.transport.method">
         <field name="name">Sender</field>
     </record>

@@ -10,12 +10,12 @@ class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
     transport_condition_id = fields.Many2one(
-        'stock.picking.transport.condition', string=_("Transport Condition"))
+        'stock.picking.transport.condition', string=_("Condition of transport"))
     goods_appearance_id = fields.Many2one(
-        'stock.picking.goods.appearance', string=_("Appearance of Goods"))
+        'stock.picking.goods.appearance', string=_("Appearance of goods"))
     transport_reason_id = fields.Many2one(
-        'stock.picking.transport.reason', string=_("Transport Reason"))
+        'stock.picking.transport.reason', string=_("Reason of transport"))
     transport_method_id = fields.Many2one(
-        'stock.picking.transport.method', string=_("Transport Method"))
+        'stock.picking.transport.method', string=_("Method of transport"))
 
     number_of_packages = fields.Integer()

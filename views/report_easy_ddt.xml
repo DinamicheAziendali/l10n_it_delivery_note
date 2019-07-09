@@ -17,19 +17,19 @@
             <tr>
                 <td>
                     <h6 name="transport">
-                        Transport Reason
+                        Reason of transport
                         <div t-field="ddt.transport_reason_id" />
                     </h6>
                 </td>
                 <td>
                     <h6 name="carriage">
-                        Transport Condition
+                        Condition of transport
                         <div t-field="ddt.transport_condition_id" />
                     </h6>
                 </td>
                 <td>
                     <h6 name="good_description">
-                        Appearance of Goods
+                        Appearance of goods
                         <div t-field="ddt.goods_appearance_id" />
                     </h6>
                 </td>
@@ -54,7 +54,7 @@
             </tr>
             <tr>
                 <td colspan="2" name="method_trasport">
-                    <h6>Transport Method / Carrier</h6>
+                    <h6>Method of transport / carrier</h6>
                     <div>
                         <span t-field="ddt.transport_method_id" ame="transport_method_id" />
                         <span t-if="ddt.carrier_tracking_ref">
