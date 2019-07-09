@@ -1,184 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <odoo>
 
-        <menuitem id="menu_stock_ddt_data" name="DdT Data"
-                  parent="stock.menu_stock_root"/>
+    <menuitem id="menu_stock_ddt_data"
+              name="DdT Data"
+              parent="stock.menu_stock_root" />
 
 
-        <record id="view_ddt_type_form" model="ir.ui.view">
-            <field name="name">stock.ddt.type.form</field>
-            <field name="model">stock.ddt.type</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <form string="Type">
-                    <group>
-                        <field name="name"/>
-                        <field name="sequence_id"/>
-                        <field name="company_id"
-                               groups="base.group_multi_company"/>
-                        <field name="note"/>
-                    </group>
-                </form>
-            </field>
-        </record>
+    <record id="view_ddt_type_form" model="ir.ui.view">
+        <field name="name">stock.ddt.type.form</field>
+        <field name="model">stock.ddt.type</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Type">
+                <group>
+                    <field name="name" />
+                    <field name="sequence_id" />
+                    <field name="company_id"
+                           groups="base.group_multi_company" />
+                    <field name="note" />
+                </group>
+            </form>
+        </field>
+    </record>
 
-        <record id="action_ddt_type_tree" model="ir.actions.act_window">
-            <field name="name">Type</field>
-            <field name="res_model">stock.ddt.type</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-        </record>
+    <record id="action_ddt_type_tree" model="ir.actions.act_window">
+        <field name="name">Type</field>
+        <field name="res_model">stock.ddt.type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
-        <menuitem action="action_ddt_type_tree" id="menu_action_ddt_type_tree"
-                  parent="menu_stock_ddt_data"/>
+    <menuitem action="action_ddt_type_tree"
+              id="menu_action_ddt_type_tree"
+              parent="menu_stock_ddt_data" />
 
-        <record id="view_transport_condition_tree" model="ir.ui.view">
-            <field name="name">stock.picking.transport.condition.tree</field>
-            <field name="model">stock.picking.transport.condition</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <tree string="Transport Conditions">
-                    <field name="name"/>
-                </tree>
-            </field>
-        </record>
+    <record id="view_transport_condition_tree" model="ir.ui.view">
+        <field name="name">stock.picking.transport.condition.tree</field>
+        <field name="model">stock.picking.transport.condition</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Transport Conditions">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
 
-        <record id="view_transport_condition_form" model="ir.ui.view">
-            <field name="name">stock.picking.transport.condition.form</field>
-            <field name="model">stock.picking.transport.condition</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <form string="Transport Condition">
-                    <group>
-                        <field name="name"/>
-                        <field name="note"/>
-                    </group>
-                </form>
-            </field>
-        </record>
+    <record id="view_transport_condition_form" model="ir.ui.view">
+        <field name="name">stock.picking.transport.condition.form</field>
+        <field name="model">stock.picking.transport.condition</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Transport Condition">
+                <group>
+                    <field name="name" />
+                    <field name="note" />
+                </group>
+            </form>
+        </field>
+    </record>
 
-        <record id="action_transport_condition_tree"
-                model="ir.actions.act_window">
-            <field name="name">Transport Conditions</field>
-            <field name="res_model">stock.picking.transport.condition</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-        </record>
+    <record id="action_transport_condition_tree" model="ir.actions.act_window">
+        <field name="name">Transport Conditions</field>
+        <field name="res_model">stock.picking.transport.condition</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
-        <menuitem action="action_transport_condition_tree"
-                  id="menu_action_transport_condition_tree"
-                  parent="menu_stock_ddt_data"/>
+    <menuitem action="action_transport_condition_tree"
+              id="menu_action_transport_condition_tree"
+              parent="menu_stock_ddt_data" />
 
-        <record id="view_goods_appearance_tree" model="ir.ui.view">
-            <field name="name">stock.picking.goods.appearance.tree</field>
-            <field name="model">stock.picking.goods.appearance</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <tree string="Descriptions of Goods">
-                    <field name="name"/>
-                </tree>
-            </field>
-        </record>
-        <record id="stock_goods_appearance_form" model="ir.ui.view">
-            <field name="name">stock.picking.goods.appearance.form</field>
-            <field name="model">stock.picking.goods.appearance</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <form string="Description of Goods">
-                    <group>
-                        <field name="name"/>
-                        <field name="note"/>
-                    </group>
-                </form>
-            </field>
-        </record>
+    <record id="view_goods_appearance_tree" model="ir.ui.view">
+        <field name="name">stock.picking.goods.appearance.tree</field>
+        <field name="model">stock.picking.goods.appearance</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Appearance of Goods">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
 
-        <record id="action_goods_appearance_tree"
-                model="ir.actions.act_window">
-            <field name="name">Appearance of Goods</field>
-            <field name="res_model">stock.picking.goods.appearance</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-        </record>
+    <record id="stock_goods_appearance_form" model="ir.ui.view">
+        <field name="name">stock.picking.goods.appearance.form</field>
+        <field name="model">stock.picking.goods.appearance</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Appearance of Goods">
+                <group>
+                    <field name="name" />
+                    <field name="note" />
+                </group>
+            </form>
+        </field>
+    </record>
 
-        <menuitem action="action_goods_appearance_tree"
-                  id="menu_action_good_appearance_tree"
-                  parent="menu_stock_ddt_data"/>
+    <record id="action_goods_appearance_tree" model="ir.actions.act_window">
+        <field name="name">Appearance of Goods</field>
+        <field name="res_model">stock.picking.goods.appearance</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
-        <record id="view_transport_reason_tree" model="ir.ui.view">
-            <field name="name">stock.picking.transport.reason.tree</field>
-            <field name="model">stock.picking.transport.reason</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <tree string="Transport Reasons">
-                    <field name="name"/>
-                </tree>
-            </field>
-        </record>
-        <record id="view_transport_reason_form" model="ir.ui.view">
-            <field name="name">stock.picking.transport.reason.form</field>
-            <field name="model">stock.picking.transport.reason</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <form string="Transport Reasons">
-                    <group>
-                        <field name="name"/>
-                        <field name="note"/>
-                    </group>
-                </form>
-            </field>
-        </record>
+    <menuitem action="action_goods_appearance_tree"
+              id="menu_action_good_appearance_tree"
+              parent="menu_stock_ddt_data" />
 
-        <record id="action_transport_reason_tree" model="ir.actions.act_window">
-            <field name="name">Transport Reasons</field>
-            <field name="res_model">stock.picking.transport.reason</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-        </record>
+    <record id="view_transport_reason_tree" model="ir.ui.view">
+        <field name="name">stock.picking.transport.reason.tree</field>
+        <field name="model">stock.picking.transport.reason</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Transport Reasons">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
 
-        <menuitem action="action_transport_reason_tree"
-                  id="menu_action_transport_reason_tree"
-                  parent="menu_stock_ddt_data"/>
+    <record id="view_transport_reason_form" model="ir.ui.view">
+        <field name="name">stock.picking.transport.reason.form</field>
+        <field name="model">stock.picking.transport.reason</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Transport Reasons">
+                <group>
+                    <field name="name" />
+                    <field name="note" />
+                </group>
+            </form>
+        </field>
+    </record>
 
-        <record id="view_transport_method_tree" model="ir.ui.view">
-            <field name="name">stock.picking.transport.method.tree</field>
-            <field name="model">stock.picking.transport.method</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <tree string="Transport Methods">
-                    <field name="name"/>
-                </tree>
-            </field>
-        </record>
-        <record id="view_transport_method_form" model="ir.ui.view">
-            <field name="name">stock.picking.transport.method.form</field>
-            <field name="model">stock.picking.transport.method</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <form string="Transport Methods">
-                    <group>
-                        <field name="name"/>
-                        <field name="note"/>
-                    </group>
-                </form>
-            </field>
-        </record>
+    <record id="action_transport_reason_tree" model="ir.actions.act_window">
+        <field name="name">Transport Reasons</field>
+        <field name="res_model">stock.picking.transport.reason</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
-        <record id="action_transport_method_tree"
-                model="ir.actions.act_window">
-            <field name="name">Transport Methods</field>
-            <field name="res_model">stock.picking.transport.method</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-        </record>
+    <menuitem action="action_transport_reason_tree"
+              id="menu_action_transport_reason_tree"
+              parent="menu_stock_ddt_data" />
 
-        <menuitem action="action_transport_method_tree"
-                  id="menu_action_transport_method_tree"
-                  parent="menu_stock_ddt_data"/>
+    <record id="view_transport_method_tree" model="ir.ui.view">
+        <field name="name">stock.picking.transport.method.tree</field>
+        <field name="model">stock.picking.transport.method</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Transport Methods">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_transport_method_form" model="ir.ui.view">
+        <field name="name">stock.picking.transport.method.form</field>
+        <field name="model">stock.picking.transport.method</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Transport Methods">
+                <group>
+                    <field name="name" />
+                    <field name="note" />
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_transport_method_tree" model="ir.actions.act_window">
+        <field name="name">Transport Methods</field>
+        <field name="res_model">stock.picking.transport.method</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_transport_method_tree"
+              id="menu_action_transport_method_tree"
+              parent="menu_stock_ddt_data" />
 
 </odoo>

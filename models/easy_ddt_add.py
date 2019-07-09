@@ -13,12 +13,12 @@ from odoo import _, fields, models
 
 
 class StockPickingCarriageCondition(models.Model):
-    _name = "stock.picking.transport.condition"
+    _name = 'stock.picking.transport.condition'
     _description = "Transport Condition"
 
     name = fields.Char(
         string=_("Condition name"), required=True, translate=True)
-    note = fields.Text(string='Note', translate=True)
+    note = fields.Text(string=_("Internal note"))
 
 
 class StockPickingGoodsAppearance(models.Model):
@@ -27,7 +27,7 @@ class StockPickingGoodsAppearance(models.Model):
 
     name = fields.Char(
         string=_("Appearance of Goods name"), required=True, translate=True)
-    note = fields.Text(string='Note', translate=True)
+    note = fields.Text(string=_("Internal note"))
 
 
 class StockPickingTransportReason(models.Model):
@@ -36,7 +36,7 @@ class StockPickingTransportReason(models.Model):
 
     name = fields.Char(
         string=_("Reason name"), required=True, translate=True)
-    note = fields.Text(string='Note', translate=True)
+    note = fields.Text(string=_("Internal note"))
 
 
 class StockPickingTransportMethod(models.Model):
@@ -45,17 +45,18 @@ class StockPickingTransportMethod(models.Model):
 
     name = fields.Char(
         string=_("Method name"), required=True, translate=True)
-    note = fields.Text(string='Note', translate=True)
+    note = fields.Text(string=_("Internal note"))
 
 
 class StockDdtType(models.Model):
     _name = 'stock.ddt.type'
-    _description = 'Stock DdT Type'
-    _inherit = ['mail.thread']
+    _inherit = 'mail.thread'
+    _description = "Stock DdT Type"
 
     name = fields.Char(required=True)
     sequence_id = fields.Many2one('ir.sequence', required=True)
-    note = fields.Text(string='Note')
+    note = fields.Text(string=_("Internal note"))
     company_id = fields.Many2one(
-        'res.company', string='Company',
+        'res.company',
+        string=_("Company"),
         default=lambda self: self.env.user.company_id)

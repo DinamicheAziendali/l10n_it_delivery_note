@@ -17,5 +17,5 @@ class AccountInvoice(models.Model):
         'stock.picking.transport.reason', string=_("Transport Reason"))
     transport_method_id = fields.Many2one(
         'stock.picking.transport.method', string=_("Transport Method"))
-    # parcels = fields.Integer()
+
     number_of_packages = fields.Integer()

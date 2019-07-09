@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="stock_picking_delivery_note_create_form_view" model="ir.ui.view">
+        <field name="name">stock.picking.delivery.note.create.form</field>
+        <field name="model">stock.picking.delivery.note.create.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group />
+                <notebook>
+                    <page name="pickings" string="Pickings">
+                        <field name="picking_ids" />
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+</odoo>

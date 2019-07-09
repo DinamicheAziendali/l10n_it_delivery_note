@@ -12,7 +12,6 @@ from odoo import _, fields, models
 
 
 class ResPartner(models.Model):
-
     _inherit = 'res.partner'
 
     transport_condition_id = fields.Many2one(

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="view_picking_form_ddt" model="ir.ui.view">
+        <field name="name">ddt.stock.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//header/button[@name='do_unreserve']" position="after">
+                    <button name="get_ddt_number"
+                            string="Print Delivery Note"
+                            groups="stock.group_stock_user"
+                            type="object"
+                            attrs="{'invisible': [('state', '!=', 'done')]}" />
+                </xpath>
+                <xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="after">
+                    <field name="ddt_number" attrs="{'invisible': [('state', '!=', 'done')]}" />
+                    <field name="ddt_type_id" widget="selection"
+                           attrs="{'invisible': ['|', ('state', '!=', 'done'), ('picking_type_code', '==', 'incoming')],
+                                   'readonly': [('ddt_number', '!=', False)]}" />
+                </xpath>
+                <xpath expr="//form/sheet/group/group/field[@name='origin']" position="after">
+                    <field name="ddt_date" />
+                </xpath>
+                <xpath expr="//page[3]" position="after">
+                    <page name="shipping_info"
+                          string="Shipping Info"
+                          attrs="{'invisible': ['|', ('state', '!=', 'done'),
+                                                     ('picking_type_code', '==', 'incoming')]}">
+                        <group name="ddt_fields">
+                            <group>
+                                <field name="goods_appearance_id" widget="selection" />
+                                <field name="transport_reason_id" widget="selection" />
+                                <field name="date_transport_ddt" />
+                            </group>
+                            <group>
+                                <field name="transport_condition_id" widget="selection" />
+                                <field name="transport_method_id" widget="selection" />
+                                <field name="time_transport_ddt" widget="float_time" />
+                            </group>
+                        </group>
+                        <group string="Delivery notes">
+                            <field name="ddt_notes" nolabel="1" />
+                        </group>
+                    </page>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="stock_picking_delivery_view_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.inherit.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form" />
+        <field name="arch" type="xml">
+            <field name="shipping_weight" position="after">
+                <field name="gross_weight" />
+                <field name="parcels" />
+                <field name="volume" />
+            </field>
+        </field>
+    </record>
+
+    <record id="stock_picking_tree_view_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.inherit.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree" />
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="ddt_number" />
+            </field>
+        </field>
+    </record>
+
+    <act_window id="stock_picking_delivery_note_create_action"
+                key2="client_action_multi"
+                name="Create a Delivery Note"
+                res_model="stock.picking.delivery.note.create.wizard"
+                src_model="stock.picking"
+                view_mode="form"
+                view_type="form"
+                target="new"
+                multi="True" />
+
+</odoo>
