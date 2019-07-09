@@ -84,7 +84,7 @@
         </field>
     </record>
 
-    <record id="stock_goods_appearance_form" model="ir.ui.view">
+    <record id="view_goods_appearance_form" model="ir.ui.view">
         <field name="name">stock.picking.goods.appearance.form</field>
         <field name="model">stock.picking.goods.appearance</field>
         <field name="type">form</field>

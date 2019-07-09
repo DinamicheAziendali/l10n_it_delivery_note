@@ -8,7 +8,7 @@
     'name': 'Easy DDT',
     'summary': 'Documento di Trasporto',
 
-    'version': '12.0.1.0.0',
+    'version': '12.0.2.0.0',
     'category': 'Localization/Italy',
     'license': 'AGPL-3',
 
