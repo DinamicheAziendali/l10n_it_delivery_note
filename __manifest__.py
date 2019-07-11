@@ -17,6 +17,7 @@
 
     'depends': [
         'delivery',
+        'mail',
         'sale_stock',
         'stock_account'
     ],
@@ -24,12 +25,13 @@
     'data': [
         'security/ir.model.access.csv',
 
-        'data/ddt_data.xml',
+        'data/delivery_note_data.xml',
 
         'views/account.xml',
         'views/easy_ddt_add.xml',
         'views/partner.xml',
         'views/report_easy_ddt.xml',
+        'views/stock_delivery_note.xml',
         'views/stock_picking.xml',
 
         'wizard/delivery_note_create.xml'

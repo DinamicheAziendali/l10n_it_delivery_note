@@ -6,4 +6,5 @@
 from . import account
 from . import easy_ddt_add
 from . import partner
+from . import stock_delivery_note
 from . import stock_picking

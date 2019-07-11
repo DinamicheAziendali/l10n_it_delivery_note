@@ -2,14 +2,14 @@
 
 <odoo>
 
-    <menuitem id="menu_stock_ddt_data"
-              name="DdT Data"
-              parent="stock.menu_stock_root" />
-
+    <menuitem id="stock_delivery_note_config_menu"
+              parent="stock.menu_stock_config_settings"
+              name="Delivery notes"
+              sequence="25" />
 
     <record id="view_ddt_type_form" model="ir.ui.view">
-        <field name="name">stock.ddt.type.form</field>
-        <field name="model">stock.ddt.type</field>
+        <field name="name">stock.delivery.note.type.form</field>
+        <field name="model">stock.delivery.note.type</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form>
@@ -28,6 +28,7 @@
                     <group>
                         <group>
                             <field name="sequence_id" />
+                            <field name="next_sequence_number" />
                         </group>
                         <group>
                             <field name="company_id" groups="base.group_multi_company" />
@@ -44,16 +45,18 @@
     </record>
 
     <record id="action_ddt_type_tree" model="ir.actions.act_window">
-        <field name="name">Transport note type</field>
-        <field name="res_model">stock.ddt.type</field>
+        <field name="name">Delivery note types</field>
+        <field name="res_model">stock.delivery.note.type</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem action="action_ddt_type_tree"
-              id="menu_action_ddt_type_tree"
-              parent="menu_stock_ddt_data" />
+    <menuitem id="menu_action_ddt_type_tree"
+              parent="stock.menu_warehouse_config"
+              action="action_ddt_type_tree"
+              name="Delivery note types"
+              sequence="10" />
 
     <record id="view_transport_condition_tree" model="ir.ui.view">
         <field name="name">stock.picking.transport.condition.tree</field>
@@ -61,6 +64,7 @@
         <field name="type">tree</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="sequence" widget="handle" />
                 <field name="name" />
             </tree>
         </field>
@@ -103,9 +107,11 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem action="action_transport_condition_tree"
-              id="menu_action_transport_condition_tree"
-              parent="menu_stock_ddt_data" />
+    <menuitem id="menu_action_transport_condition_tree"
+              parent="stock_delivery_note_config_menu"
+              action="action_transport_condition_tree"
+              name="Conditions of transport"
+              sequence="20" />
 
     <record id="view_goods_appearance_tree" model="ir.ui.view">
         <field name="name">stock.picking.goods.appearance.tree</field>
@@ -113,6 +119,7 @@
         <field name="type">tree</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="sequence" widget="handle" />
                 <field name="name" />
             </tree>
         </field>
@@ -148,16 +155,18 @@
     </record>
 
     <record id="action_goods_appearance_tree" model="ir.actions.act_window">
-        <field name="name">Appearance of goods</field>
+        <field name="name">Appearances of goods</field>
         <field name="res_model">stock.picking.goods.appearance</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem action="action_goods_appearance_tree"
-              id="menu_action_good_appearance_tree"
-              parent="menu_stock_ddt_data" />
+    <menuitem id="menu_action_good_appearance_tree"
+              parent="stock_delivery_note_config_menu"
+              action="action_goods_appearance_tree"
+              name="Appearances of goods"
+              sequence="30" />
 
     <record id="view_transport_reason_tree" model="ir.ui.view">
         <field name="name">stock.picking.transport.reason.tree</field>
@@ -165,6 +174,7 @@
         <field name="type">tree</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="sequence" widget="handle" />
                 <field name="name" />
             </tree>
         </field>
@@ -200,16 +210,18 @@
     </record>
 
     <record id="action_transport_reason_tree" model="ir.actions.act_window">
-        <field name="name">Reason of transport</field>
+        <field name="name">Reasons of transport</field>
         <field name="res_model">stock.picking.transport.reason</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem action="action_transport_reason_tree"
-              id="menu_action_transport_reason_tree"
-              parent="menu_stock_ddt_data" />
+    <menuitem id="menu_action_transport_reason_tree"
+              parent="stock_delivery_note_config_menu"
+              action="action_transport_reason_tree"
+              name="Reasons of transport"
+              sequence="40" />
 
     <record id="view_transport_method_tree" model="ir.ui.view">
         <field name="name">stock.picking.transport.method.tree</field>
@@ -217,6 +229,7 @@
         <field name="type">tree</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="sequence" widget="handle" />
                 <field name="name" />
             </tree>
         </field>
@@ -252,15 +265,17 @@
     </record>
 
     <record id="action_transport_method_tree" model="ir.actions.act_window">
-        <field name="name">Method of transport</field>
+        <field name="name">Methods of transport</field>
         <field name="res_model">stock.picking.transport.method</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem action="action_transport_method_tree"
-              id="menu_action_transport_method_tree"
-              parent="menu_stock_ddt_data" />
+    <menuitem id="menu_action_transport_method_tree"
+              parent="stock_delivery_note_config_menu"
+              action="action_transport_method_tree"
+              name="Methods of transport"
+              sequence="50" />
 
 </odoo>

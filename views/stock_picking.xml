@@ -17,7 +17,8 @@
                 </xpath>
                 <xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="after">
                     <field name="ddt_number" attrs="{'invisible': [('state', '!=', 'done')]}" />
-                    <field name="ddt_type_id" widget="selection"
+                    <field name="ddt_type_id"
+                           widget="selection"
                            attrs="{'invisible': ['|', ('state', '!=', 'done'), ('picking_type_code', '==', 'incoming')],
                                    'readonly': [('ddt_number', '!=', False)]}" />
                 </xpath>

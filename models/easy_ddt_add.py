@@ -80,15 +80,16 @@ class StockPickingTransportMethod(models.Model):
     )]
 
 
-class StockDdtType(models.Model):
-    _name = 'stock.ddt.type'
+class StockDeliveryNoteType(models.Model):
+    _name = 'stock.delivery.note.type'
     _inherit = 'mail.thread'
-    _description = "Transport note type"
+    _description = "Delivery note type"
     _order = 'sequence, name, id'
 
     active = fields.Boolean(string=_("Active"), default=True)
     sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
     name = fields.Char(string=_(""), index=True, required=True, translate=True)
     sequence_id = fields.Many2one('ir.sequence', required=True)
+    next_sequence_number = fields.Integer(related='sequence_id.number_next_actual')
     company_id = fields.Many2one('res.company', string=_("Company"), default=lambda self: self.env.user.company_id)
     note = fields.Html(string=_("Internal note"))

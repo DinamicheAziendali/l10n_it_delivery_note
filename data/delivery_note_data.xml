@@ -2,18 +2,18 @@
 
 <odoo noupdate="1">
 
-    <!-- DdT Sequence -->
-    <record id="seq_ddt" model="ir.sequence">
-        <field name="name">DDT</field>
-        <field name="code">stock.ddt</field>
+    <!-- Delivery note sequences -->
+    <record id="delivery_note_sequence_ddt" model="ir.sequence">
+        <field name="name">DdT sequence</field>
+        <field name="code">stock.delivery.note.ddt</field>
         <field name="prefix">DDT/</field>
         <field name="implementation">no_gap</field>
     </record>
 
-    <!-- Transport note types -->
-    <record id="ddt_type_ddt" model="stock.ddt.type">
+    <!-- Delivery note types -->
+    <record id="delivery_note_type_ddt" model="stock.delivery.note.type">
         <field name="name">DdT</field>
-        <field name="sequence_id" ref="seq_ddt" />
+        <field name="sequence_id" ref="delivery_note_sequence_ddt" />
     </record>
 
     <!-- Conditions of transport -->

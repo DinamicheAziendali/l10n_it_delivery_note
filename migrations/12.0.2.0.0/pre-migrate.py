@@ -1,52 +1,74 @@
 import logging
 
+from odoo import api, SUPERUSER_ID
+from openupgradelib import openupgrade
+
 _logger = logging.getLogger(__name__)
 
-RENAME_TABLE_QUERY = """ALTER TABLE "%s" RENAME TO "%s";"""
-TABLES_TO_RENAME = (
+TABLES_TO_RENAME = [
+    ('stock_ddt_type', 'stock_delivery_note_type'),
     ('stock_picking_carriage_condition', 'stock_picking_transport_condition'),
     ('stock_picking_goods_description', 'stock_picking_goods_appearance'),
     ('stock_picking_transportation_reason', 'stock_picking_transport_reason'),
     ('stock_picking_transportation_method', 'stock_picking_transport_method')
-)
-
-RENAME_FIELDS_QUERY = """ALTER TABLE "%s" RENAME COLUMN "%s" TO "%s";"""
-FIELDS_TO_RENAME = (
-    ('carriage_condition_id', 'transport_condition_id'),
-    ('goods_description_id', 'goods_appearance_id'),
-    ('transportation_reason_id', 'transport_reason_id'),
-    ('transportation_method_id', 'transport_method_id')
-)
-TABLES_WITH_FIELDS_TO_RENAME = (
-    'account_invoice',
-    'res_partner',
-    'stock_picking'
-)
-
-RENAME_MODEL_QUERY = """UPDATE "ir_model_data" SET "model" = %s WHERE "model" = %s;"""
+]
 MODELS_TO_RENAME = (
+    ('stock.ddt.type', 'stock.delivery.note.type'),
     ('stock.picking.carriage_condition', 'stock.picking.transport.condition'),
     ('stock.picking.goods_description', 'stock.picking.goods.appearance'),
     ('stock.picking.transportation_reason', 'stock.picking.transport.reason'),
     ('stock.picking.transportation_method', 'stock.picking.transport.method')
 )
 
-RENAME_EXT_ID_QUERY = """UPDATE "ir_model_data" SET "name" = %s WHERE "name" = %s;"""
-EXT_ID_TO_RENAME = (
-    ('carriage_condition_PF', 'transport_condition_PF'),
-    ('carriage_condition_PA', 'transport_condition_PA'),
-    ('carriage_condition_PAF', 'transport_condition_PAF'),
-    ('goods_description_CAR', 'goods_appearance_CAR'),
-    ('goods_description_BAN', 'goods_appearance_BAN'),
-    ('goods_description_SFU', 'goods_appearance_SFU'),
-    ('goods_description_CBA', 'goods_appearance_CBA'),
-    ('transportation_reason_VEN', 'transport_reason_VEN'),
-    ('transportation_reason_VIS', 'transport_reason_VIS'),
-    ('transportation_reason_RES', 'transport_reason_RES'),
-    ('transportation_method_MIT', 'transport_method_MIT'),
-    ('transportation_method_DES', 'transport_method_DES'),
-    ('transportation_method_COR', 'transport_method_COR')
+FIELDS_TO_RENAME = [
+    ('account.invoice', 'account_invoice', 'carriage_condition_id', 'transport_condition_id'),
+    ('account.invoice', 'account_invoice', 'goods_description_id', 'goods_appearance_id'),
+    ('account.invoice', 'account_invoice', 'transportation_reason_id', 'transport_reason_id'),
+    ('account.invoice', 'account_invoice', 'transportation_method_id', 'transport_method_id'),
+
+    ('res.partner', 'res_partner', 'carriage_condition_id', 'transport_condition_id'),
+    ('res.partner', 'res_partner', 'goods_description_id', 'goods_appearance_id'),
+    ('res.partner', 'res_partner', 'transportation_reason_id', 'transport_reason_id'),
+    ('res.partner', 'res_partner', 'transportation_method_id', 'transport_method_id'),
+
+    ('stock.picking', 'stock_picking', 'carriage_condition_id', 'transport_condition_id'),
+    ('stock.picking', 'stock_picking', 'goods_description_id', 'goods_appearance_id'),
+    ('stock.picking', 'stock_picking', 'transportation_reason_id', 'transport_reason_id'),
+    ('stock.picking', 'stock_picking', 'transportation_method_id', 'transport_method_id')
+]
+
+XMLIDS_TO_RENAME = (
+    ('easy_ddt.stock_ddt_type_comp_rule', 'easy_ddt.stock_delivery_note_type_company_rule'),
+
+    ('easy_ddt.seq_ddt', 'easy_ddt.delivery_note_sequence_ddt'),
+    ('easy_ddt.ddt_type_ddt', 'easy_ddt.delivery_note_type_ddt'),
+    ('easy_ddt.carriage_condition_PF', 'easy_ddt.transport_condition_PF'),
+    ('easy_ddt.carriage_condition_PA', 'easy_ddt.transport_condition_PA'),
+    ('easy_ddt.carriage_condition_PAF', 'easy_ddt.transport_condition_PAF'),
+    ('easy_ddt.goods_description_CAR', 'easy_ddt.goods_appearance_CAR'),
+    ('easy_ddt.goods_description_BAN', 'easy_ddt.goods_appearance_BAN'),
+    ('easy_ddt.goods_description_SFU', 'easy_ddt.goods_appearance_SFU'),
+    ('easy_ddt.goods_description_CBA', 'easy_ddt.goods_appearance_CBA'),
+    ('easy_ddt.transportation_reason_VEN', 'easy_ddt.transport_reason_VEN'),
+    ('easy_ddt.transportation_reason_VIS', 'easy_ddt.transport_reason_VIS'),
+    ('easy_ddt.transportation_reason_RES', 'easy_ddt.transport_reason_RES'),
+    ('easy_ddt.transportation_method_MIT', 'easy_ddt.transport_method_MIT'),
+    ('easy_ddt.transportation_method_DES', 'easy_ddt.transport_method_DES'),
+    ('easy_ddt.transportation_method_COR', 'easy_ddt.transport_method_COR')
 )
+
+
+def _adjust_database_structure(env):
+    _logger.info("Rinomino le tabelle dei vecchi modelli...")
+    openupgrade.rename_tables(env.cr, TABLES_TO_RENAME)
+    _logger.info("Aggiorno i modelli dei vecchi dati...")
+    openupgrade.rename_models(env.cr, MODELS_TO_RENAME)
+
+    _logger.info("Rinomino i campi dei vecchi modelli...")
+    openupgrade.rename_fields(env, FIELDS_TO_RENAME)
+
+    _logger.info("Aggiorno gli XML IDs dei vecchi dati...")
+    openupgrade.rename_xmlids(env.cr, XMLIDS_TO_RENAME)
 
 
 def migrate(cr, version):
@@ -55,21 +77,9 @@ def migrate(cr, version):
 
         return
 
-    _logger.info("Rinomino le tabelle dei vecchi modelli...")
-    for old, new in TABLES_TO_RENAME:
-        cr.execute(RENAME_TABLE_QUERY % (old, new))
+    env = api.Environment(cr, SUPERUSER_ID, {})
 
-    _logger.info("Rinomino i campi dei vecchi modelli...")
-    for table in TABLES_WITH_FIELDS_TO_RENAME:
-        for old, new in FIELDS_TO_RENAME:
-            cr.execute(RENAME_FIELDS_QUERY % (table, old, new))
-
-    _logger.info("Aggiorno i modelli dei vecchi dati...")
-    for old, new in MODELS_TO_RENAME:
-        cr.execute(RENAME_MODEL_QUERY, (new, old))
-
-    _logger.info("Aggiorno gli external IDs dei vecchi dati...")
-    for old, new in EXT_ID_TO_RENAME:
-        cr.execute(RENAME_EXT_ID_QUERY, (new, old))
+    _logger.info("Adatto la struttura del database al nuovo codice...")
+    _adjust_database_structure(env)
 
     _logger.info("Ho terminato l'esecuzione della migration del modulo. Esco.")

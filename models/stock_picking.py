@@ -11,12 +11,12 @@ class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
     def _default_ddt_type(self):
-        return self.env['stock.ddt.type'].search([], limit=1)
+        return self.env['stock.delivery.note.type'].search([], limit=1)
 
     delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"))
 
     ddt_type_id = fields.Many2one(
-        'stock.ddt.type', string='DdT Type', default=_default_ddt_type)
+        'stock.delivery.note.type', string='DdT Type', default=_default_ddt_type)
     ddt_number = fields.Char(string='DdT Number', copy=False)
     ddt_date = fields.Date(string='DDT Date')
     transport_condition_id = fields.Many2one(
