@@ -3,8 +3,8 @@
 # @author: Gianmarco Conte <gconte@dinamicheaziendali.it>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import _, api, fields, models
 from datetime import datetime
+from odoo import _, api, fields, models
 
 
 class StockPicking(models.Model):
@@ -107,3 +107,71 @@ class StockPicking(models.Model):
         data = str(hh) + ":" + mms
 
         return data
+
+
+class StockPickingTransportCondition(models.Model):
+    _name = 'stock.picking.transport.condition'
+    _description = "Condition of transport"
+    _order = 'sequence, name, id'
+
+    active = fields.Boolean(string=_("Active"), default=True)
+    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
+    name = fields.Char(string=_("Condition name"), index=True, required=True, translate=True)
+    note = fields.Html(string=_("Internal note"))
+
+    _sql_constraints = [(
+        'name_uniq',
+        'unique(name)',
+        "This condition of transport already exists!"
+    )]
+
+
+class StockPickingGoodsAppearance(models.Model):
+    _name = 'stock.picking.goods.appearance'
+    _description = "Appearance of goods"
+    _order = 'sequence, name, id'
+
+    active = fields.Boolean(string=_("Active"), default=True)
+    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
+    name = fields.Char(string=_("Appearance name"), index=True, required=True, translate=True)
+    note = fields.Html(string=_("Internal note"))
+
+    _sql_constraints = [(
+        'name_uniq',
+        'unique(name)',
+        "This appearance of goods already exists!"
+    )]
+
+
+class StockPickingTransportReason(models.Model):
+    _name = 'stock.picking.transport.reason'
+    _description = "Reason of transport"
+    _order = 'sequence, name, id'
+
+    active = fields.Boolean(string=_("Active"), default=True)
+    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
+    name = fields.Char(string=_("Reason name"), index=True, required=True, translate=True)
+    note = fields.Html(string=_("Internal note"))
+
+    _sql_constraints = [(
+        'name_uniq',
+        'unique(name)',
+        "This reason of transport already exists!"
+    )]
+
+
+class StockPickingTransportMethod(models.Model):
+    _name = 'stock.picking.transport.method'
+    _description = "Method of transport"
+    _order = 'sequence, name, id'
+
+    active = fields.Boolean(string=_("Active"), default=True)
+    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
+    name = fields.Char(string=_("Method name"), index=True, required=True, translate=True)
+    note = fields.Html(string=_("Internal note"))
+
+    _sql_constraints = [(
+        'name_uniq',
+        'unique(name)',
+        "This method of transport already exists!"
+    )]

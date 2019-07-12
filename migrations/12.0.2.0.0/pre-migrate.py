@@ -25,6 +25,7 @@ FIELDS_TO_RENAME = [
     ('account.invoice', 'account_invoice', 'goods_description_id', 'goods_appearance_id'),
     ('account.invoice', 'account_invoice', 'transportation_reason_id', 'transport_reason_id'),
     ('account.invoice', 'account_invoice', 'transportation_method_id', 'transport_method_id'),
+    ('account.invoice', 'account_invoice', 'number_of_packages', 'packages_number'),
 
     ('res.partner', 'res_partner', 'carriage_condition_id', 'transport_condition_id'),
     ('res.partner', 'res_partner', 'goods_description_id', 'goods_appearance_id'),

@@ -5,15 +5,14 @@
 
 # noinspection PyStatementEffect
 {
-    'name': 'Easy DDT',
-    'summary': 'Documento di Trasporto',
+    'name': "Easy DDT",
+    'summary': "Documento di Trasporto",
+
+    'author': "Marco Calcagni, Gianmarco Conte, Link IT Srl",
+    'website': "http://www.dinamicheaziendali.it/",
 
     'version': '12.0.2.0.0',
-    'category': 'Localization/Italy',
-    'license': 'AGPL-3',
-
-    'author': 'Marco Calcagni',
-    'website': 'http://www.dinamicheaziendali.it/',
+    'category': "Localization",
 
     'depends': [
         'delivery',
@@ -21,21 +20,22 @@
         'sale_stock',
         'stock_account'
     ],
+    'external_dependencies': {
+        'python': ['openupgradelib']
+    },
 
     'data': [
-        'security/ir.model.access.csv',
-
         'data/delivery_note_data.xml',
+        'report/report_easy_ddt.xml',
 
-        'views/account.xml',
-        'views/easy_ddt_add.xml',
-        'views/partner.xml',
-        'views/report_easy_ddt.xml',
+        'security/ir.model.access.csv',
+        'security/ir_rule.xml',
+
+        'views/account_invoice.xml',
+        'views/res_partner.xml',
         'views/stock_delivery_note.xml',
         'views/stock_picking.xml',
 
         'wizard/delivery_note_create.xml'
-    ],
-
-    'installable': True
+    ]
 }

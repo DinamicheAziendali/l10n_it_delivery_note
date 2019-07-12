@@ -17,4 +17,14 @@
         </field>
     </record>
 
+    <act_window id="stock_picking_delivery_note_create_action"
+                key2="client_action_multi"
+                name="Create a delivery note"
+                res_model="stock.picking.delivery.note.create.wizard"
+                src_model="stock.picking"
+                view_mode="form"
+                view_type="form"
+                target="new"
+                multi="True" />
+
 </odoo>

@@ -15,18 +15,24 @@
                             class="oe_highlight"
                             groups="base.group_user"
                             string="Reset to draft" />
-                    <button name="action_done"
+                    <button name="action_confirm"
                             type="object"
                             states="draft"
+                            class="oe_highlight"
+                            groups="base.group_user"
+                            string="Validate" />
+                    <button name="action_done"
+                            type="object"
+                            states="confirm"
                             class="oe_highlight"
                             groups="base.group_user"
                             string="Set done" />
                     <button name="action_cancel"
                             type="object"
-                            states="draft"
+                            states="confirm,done"
                             groups="base.group_user"
                             string="Cancel" />
-                    <field name="state" widget="statusbar" statusbar_visible="draft,done" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm" />
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -35,10 +41,15 @@
                         </button>
                     </div>
                     <div class="oe_title">
-                        <label class="oe_edit_only" for="name" />
-                        <h1>
-                            <field name="name" default_focus="true" />
-                        </h1>
+                        <div attrs="{'invisible': [('name', 'not in', [False, ''])]}">
+                            <label for="name" string="Draft delivery note" />
+                        </div>
+                        <div attrs="{'invisible': [('name', 'in', [False, ''])]}">
+                            <label for="name" string="Delivery note" />
+                            <h1>
+                                <field name="name" class="oe_inline" readonly="True" />
+                            </h1>
+                        </div>
                     </div>
                     <group>
                         <group>
@@ -46,7 +57,31 @@
                             <field name="partner_shipping_id" options="{'no_create': True, 'no_open': True}" />
                         </group>
                         <group>
+                            <field name="type_id" />
+                            <field name="date" />
                             <field name="transport_datetime" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="parcels" />
+                            <label for="volume" />
+                            <div class="o_row">
+                                <field name="volume" />
+                                <field name="volume_uom_id" groups="uom.group_uom" widget="selection" />
+                            </div>
+                        </group>
+                        <group>
+                            <label for="gross_weight" />
+                            <div class="o_row">
+                                <field name="gross_weight" />
+                                <field name="gross_weight_uom_id" groups="uom.group_uom" widget="selection" />
+                            </div>
+                            <label for="net_weight" />
+                            <div class="o_row">
+                                <field name="net_weight" />
+                                <field name="net_weight_uom_id" groups="uom.group_uom" widget="selection" />
+                            </div>
                         </group>
                     </group>
                     <group>
@@ -82,7 +117,9 @@
         <field name="model">stock.delivery.note</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name" />
+                <field name="display_name" string="Name" />
+                <field name="partner_id" />
+                <field name="state" />
             </tree>
         </field>
     </record>
@@ -93,6 +130,7 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name" />
+                <field name="partner_id" />
                 <separator />
                 <filter name="inactive" string="Archived" domain="[('active', '=', False)]" />
             </search>
@@ -118,6 +156,62 @@
               parent="stock.menu_stock_warehouse_mgmt"
               action="stock_delivery_note_action"
               name="Delivery notes"
+              sequence="10" />
+
+    <menuitem id="stock_delivery_note_config_menu"
+              parent="stock.menu_stock_config_settings"
+              name="Delivery notes"
+              sequence="25" />
+
+    <record id="stock_delivery_note_type_form_view" model="ir.ui.view">
+        <field name="name">stock.delivery.note.type.form</field>
+        <field name="model">stock.delivery.note.type</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" class="oe_stat_button" name="toggle_active" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options="{'terminology': 'archive'}" />
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label class="oe_edit_only" for="name" />
+                        <h1>
+                            <field name="name" default_focus="true" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="sequence_id" />
+                            <field name="next_sequence_number" />
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="internal_notes" string="Internal notes">
+                            <field name="note" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_delivery_note_type_action" model="ir.actions.act_window">
+        <field name="name">Delivery note types</field>
+        <field name="res_model">stock.delivery.note.type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="stock_delivery_note_type_menu"
+              parent="stock.menu_warehouse_config"
+              action="stock_delivery_note_type_action"
+              name="Delivery note types"
               sequence="10" />
 
 </odoo>
