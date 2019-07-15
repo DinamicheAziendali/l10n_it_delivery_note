@@ -10,9 +10,10 @@
     & > .header
     {
         border-bottom: 1px solid #ced4da;
+        min-height: 34px;
         padding-left: 16px;
 
-        & > .btn
+        & > div > .btn
         {
             margin: 4px 3px 4px 0px;
             min-height: 25px;

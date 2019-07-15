@@ -8,101 +8,99 @@
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
             <data>
-                <xpath expr="//header/button[@name='do_unreserve']" position="after">
+                <!--<xpath expr="//header/button[@name='do_unreserve']" position="after">
                     <button name="get_ddt_number"
                             string="Print Delivery Note"
                             groups="stock.group_stock_user"
                             type="object"
                             attrs="{'invisible': [('state', '!=', 'done')]}" />
-                </xpath>
-                <xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="after">
-                    <field name="ddt_number" attrs="{'invisible': [('state', '!=', 'done')]}" />
-                    <field name="ddt_type_id"
-                           widget="selection"
-                           attrs="{'invisible': ['|', ('state', '!=', 'done'), ('picking_type_code', '==', 'incoming')],
-                                   'readonly': [('ddt_number', '!=', False)]}" />
-                </xpath>
-                <xpath expr="//form/sheet/group/group/field[@name='origin']" position="after">
-                    <field name="ddt_date" />
-                </xpath>
+                </xpath>-->
                 <xpath expr="//page[3]" position="after">
-                    <page name="shipping_info"
-                          string="Shipping Info"
+                    <page name="delivery_note"
+                          string="Delivery note"
                           attrs="{'invisible': ['|', ('state', '!=', 'done'),
                                                      ('picking_type_code', '==', 'incoming')]}">
-                        <group>
-                            <group>
-                                <field name="delivery_note_id" />
-                            </group>
-                        </group>
-                        <group name="ddt_fields">
-                            <group>
-                                <field name="goods_appearance_id" widget="selection" />
-                                <field name="transport_reason_id" widget="selection" />
-                                <field name="date_transport_ddt" />
-                            </group>
-                            <group>
-                                <field name="transport_condition_id" widget="selection" />
-                                <field name="transport_method_id" widget="selection" />
-                                <field name="time_transport_ddt" widget="float_time" />
-                            </group>
-                        </group>
-                        <group string="Delivery notes">
-                            <field name="ddt_notes" nolabel="1" />
-                        </group>
-                    </page>
-                </xpath>
-                <xpath expr="//notebook" position="inside">
-                    <page name="delivery_note" string="Delivery note">
                         <div class="no-margin-page-content">
                             <div class="header">
-                                <button name="action_draft"
-                                        type="object"
-                                        class="oe_highlight"
-                                        string="Prova" />
-                                <button name="action_draft"
-                                        type="object"
-                                        string="Annulla" />
-                                <button name="action_draft"
-                                        type="object"
-                                        string="Stampa" />
+                                <div attrs="{'invisible': [('delivery_note_id', '=', False)]}">
+                                    <button name="action_delivery_note_validate"
+                                            type="object"
+                                            class="oe_highlight"
+                                            string="Validate" />
+                                    <button name="action_delivery_note_print"
+                                            type="object"
+                                            string="Print" />
+                                </div>
+                                <div attrs="{'invisible': [('delivery_note_id', '!=', False)]}">
+                                    <button name="action_delivery_note_create"
+                                            type="object"
+                                            class="oe_highlight"
+                                            string="Create new" />
+                                    <button name="action_delivery_note_select"
+                                            type="object"
+                                            string="Select existing" />
+                                </div>
                             </div>
                             <div class="content">
                                 <group>
                                     <group>
-                                        <field name="delivery_note_id" />
+                                        <field name="delivery_note_id"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                        <field name="ddt_number"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                        <field name="ddt_type_id"
+                                               widget="selection"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                    </group>
+                                    <group>
+                                        <field name="ddt_date"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
                                     </group>
                                 </group>
                                 <group>
                                     <group>
-                                        <field name="goods_appearance_id" widget="selection" />
-                                        <field name="transport_reason_id" widget="selection" />
-                                        <field name="date_transport_ddt" />
+                                        <field name="parcels"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                        <field name="volume"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
                                     </group>
                                     <group>
-                                        <field name="transport_condition_id" widget="selection" />
-                                        <field name="transport_method_id" widget="selection" />
-                                        <field name="time_transport_ddt" widget="float_time" />
+                                        <field name="gross_weight"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
                                     </group>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="goods_appearance_id"
+                                               widget="selection"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                        <field name="transport_reason_id"
+                                               widget="selection"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                        <field name="date_transport_ddt"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                    </group>
+                                    <group>
+                                        <field name="transport_condition_id"
+                                               widget="selection"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                        <field name="transport_method_id"
+                                               widget="selection"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                        <field name="time_transport_ddt"
+                                               widget="float_time"
+                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                    </group>
+                                </group>
+                                <group string="Internal notes"
+                                       attrs="{'invisible': [('delivery_note_id', '=', False)]}">
+                                    <field name="ddt_notes" nolabel="1" />
                                 </group>
                             </div>
                         </div>
                     </page>
                 </xpath>
             </data>
-        </field>
-    </record>
-
-    <record id="stock_picking_delivery_view_inherit" model="ir.ui.view">
-        <field name="name">stock.picking.inherit.form</field>
-        <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form" />
-        <field name="arch" type="xml">
-            <field name="shipping_weight" position="after">
-                <field name="gross_weight" />
-                <field name="parcels" />
-                <field name="volume" />
-            </field>
         </field>
     </record>
 
