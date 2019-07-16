@@ -13,7 +13,8 @@
         min-height: 34px;
         padding-left: 16px;
 
-        & > div > .btn
+        & > div > .btn,
+        & > div > div > .btn
         {
             margin: 4px 3px 4px 0px;
             min-height: 25px;

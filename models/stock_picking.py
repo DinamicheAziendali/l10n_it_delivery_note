@@ -4,7 +4,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from datetime import datetime
+
 from odoo import _, api, fields, models
+
+from .stock_delivery_note import DOMAIN_DELIVERY_NOTE_STATES
 
 DONE_PICKING_STATE = 'done'
 INCOMING_PICKING_TYPE = 'incoming'
@@ -69,12 +72,25 @@ class StockPicking(models.Model):
     #     # show_price = fields.Boolean()
 
     use_delivery_note = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_exists = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_validated = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_readonly = fields.Boolean(compute='_compute_boolean_flags')
 
     @api.multi
     def _compute_boolean_flags(self):
         for picking in self:
             picking.use_delivery_note = picking.state == DONE_PICKING_STATE and \
                                         picking.picking_type_id.code != INCOMING_PICKING_TYPE
+
+            if picking.use_delivery_note and picking.delivery_note_id:
+                picking.delivery_note_exists = True
+
+                if picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[1]:
+                    picking.delivery_note_validated = True
+                    picking.delivery_note_readonly = True
+
+            else:
+                picking.delivery_note_readonly = True
 
     @api.onchange('partner_id', 'ddt_type_id')
     def on_change_partner(self):

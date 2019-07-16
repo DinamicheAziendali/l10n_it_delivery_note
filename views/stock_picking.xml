@@ -20,18 +20,12 @@
                           string="Delivery note"
                           attrs="{'invisible': [('use_delivery_note', '=', False)]}">
                         <field name="use_delivery_note" invisible="True" />
+                        <field name="delivery_note_exists" invisible="True" />
+                        <field name="delivery_note_validated" invisible="True" />
+                        <field name="delivery_note_readonly" invisible="True" />
                         <div class="no-margin-page-content">
                             <div class="header">
-                                <div attrs="{'invisible': [('delivery_note_id', '=', False)]}">
-                                    <button name="action_delivery_note_validate"
-                                            type="object"
-                                            class="oe_highlight"
-                                            string="Validate" />
-                                    <button name="action_delivery_note_print"
-                                            type="object"
-                                            string="Print" />
-                                </div>
-                                <div attrs="{'invisible': [('delivery_note_id', '!=', False)]}">
+                                <div attrs="{'invisible': [('delivery_note_exists', '=', True)]}">
                                     <button name="action_delivery_note_create"
                                             type="object"
                                             class="oe_highlight"
@@ -40,48 +34,72 @@
                                             type="object"
                                             string="Select existing" />
                                 </div>
+                                <div attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
+                                    <div attrs="{'invisible': [('delivery_note_validated', '=', True)]}">
+                                        <button name="action_delivery_note_validate"
+                                                type="object"
+                                                class="oe_highlight"
+                                                string="Validate" />
+                                        <button name="action_delivery_note_print"
+                                                type="object"
+                                                string="Print" />
+                                    </div>
+                                    <div attrs="{'invisible': [('delivery_note_validated', '=', False)]}">
+                                        <button name="action_delivery_note_print"
+                                                type="object"
+                                                class="oe_highlight"
+                                                string="Print" />
+                                    </div>
+                                </div>
                             </div>
                             <div class="content">
                                 <group>
                                     <group>
                                         <field name="delivery_note_id"
-                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         <field name="delivery_note_type_id"
                                                widget="selection"
-                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                     </group>
                                     <group>
                                         <field name="delivery_note_date"
-                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         <field name="transport_datetime"
-                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                     </group>
                                 </group>
-                                <group>
+                                <group attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
                                     <group>
-                                        <field name="parcels" />
+                                        <field name="parcels"
+                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         <label for="volume" />
                                         <div class="o_row">
-                                            <field name="delivery_note_volume" />
+                                            <field name="delivery_note_volume"
+                                                   attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                             <field name="delivery_note_volume_uom_id"
                                                    groups="uom.group_uom"
-                                                   widget="selection" />
+                                                   widget="selection"
+                                                   attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         </div>
                                     </group>
                                     <group>
                                         <label for="gross_weight" />
                                         <div class="o_row">
-                                            <field name="gross_weight" />
+                                            <field name="gross_weight"
+                                                   attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                             <field name="gross_weight_uom_id"
                                                    groups="uom.group_uom"
-                                                   widget="selection" />
+                                                   widget="selection"
+                                                   attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         </div>
                                         <label for="net_weight" />
                                         <div class="o_row">
-                                            <field name="net_weight" />
+                                            <field name="net_weight"
+                                                   attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                             <field name="net_weight_uom_id"
                                                    groups="uom.group_uom"
-                                                   widget="selection" />
+                                                   widget="selection"
+                                                   attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         </div>
                                     </group>
                                 </group>
@@ -89,23 +107,24 @@
                                     <group>
                                         <field name="goods_appearance_id"
                                                widget="selection"
-                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         <field name="transport_reason_id"
                                                widget="selection"
-                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                     </group>
                                     <group>
                                         <field name="transport_condition_id"
                                                widget="selection"
-                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         <field name="transport_method_id"
                                                widget="selection"
-                                               attrs="{'readonly': [('delivery_note_id', '=', False)]}" />
+                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                     </group>
                                 </group>
                                 <group string="Internal notes"
-                                       attrs="{'invisible': [('delivery_note_id', '=', False)]}">
-                                    <field name="delivery_note_note" nolabel="1" />
+                                       attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
+                                    <field name="delivery_note_note" nolabel="1"
+                                           attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                 </group>
                             </div>
                         </div>
