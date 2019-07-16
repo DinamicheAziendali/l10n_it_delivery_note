@@ -1,6 +1,9 @@
 import logging
 
 from odoo import api, SUPERUSER_ID
+
+import pdb; pdb.set_trace()
+
 from openupgradelib import openupgrade
 
 _logger = logging.getLogger(__name__)
@@ -30,12 +33,7 @@ FIELDS_TO_RENAME = [
     ('res.partner', 'res_partner', 'carriage_condition_id', 'transport_condition_id'),
     ('res.partner', 'res_partner', 'goods_description_id', 'goods_appearance_id'),
     ('res.partner', 'res_partner', 'transportation_reason_id', 'transport_reason_id'),
-    ('res.partner', 'res_partner', 'transportation_method_id', 'transport_method_id'),
-
-    ('stock.picking', 'stock_picking', 'carriage_condition_id', 'transport_condition_id'),
-    ('stock.picking', 'stock_picking', 'goods_description_id', 'goods_appearance_id'),
-    ('stock.picking', 'stock_picking', 'transportation_reason_id', 'transport_reason_id'),
-    ('stock.picking', 'stock_picking', 'transportation_method_id', 'transport_method_id')
+    ('res.partner', 'res_partner', 'transportation_method_id', 'transport_method_id')
 ]
 
 XMLIDS_TO_RENAME = (

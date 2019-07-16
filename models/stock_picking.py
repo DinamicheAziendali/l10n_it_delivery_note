@@ -6,47 +6,75 @@
 from datetime import datetime
 from odoo import _, api, fields, models
 
+DONE_PICKING_STATE = 'done'
+INCOMING_PICKING_TYPE = 'incoming'
+
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    def _default_ddt_type(self):
-        return self.env['stock.delivery.note.type'].search([], limit=1)
-
     delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"))
+    delivery_note_type_id = fields.Many2one('stock.delivery.note.type', related='delivery_note_id.type_id')
+    delivery_note_date = fields.Date(related='delivery_note_id.date')
+    delivery_note_note = fields.Html(related='delivery_note_id.note')
 
-    ddt_type_id = fields.Many2one(
-        'stock.delivery.note.type', string='DdT Type', default=_default_ddt_type)
-    ddt_number = fields.Char(string='DdT Number', copy=False)
-    ddt_date = fields.Date(string='DDT Date')
-    transport_condition_id = fields.Many2one(
-        'stock.picking.transport.condition', string=_("Condition of transport"))
-    goods_appearance_id = fields.Many2one(
-        'stock.picking.goods.appearance', string=_("Appearance of goods"))
-    transport_reason_id = fields.Many2one(
-        'stock.picking.transport.reason', string=_("Reason of transport"))
-    transport_method_id = fields.Many2one(
-        'stock.picking.transport.method', string=_("Method of transport"))
-    date_transport_ddt = fields.Date(string='Delivery note Date')
-    time_transport_ddt = fields.Float(string='Delivery Note Start Time')
-    ddt_notes = fields.Html(string='Delivery Note Notes')
-    picking_type_code = fields.Selection(related="picking_type_id.code")
-    gross_weight = fields.Float(string="Gross Weight")
+    transport_condition_id = fields.Many2one('stock.picking.transport.condition',
+                                             related='delivery_note_id.transport_condition_id')
+    goods_appearance_id = fields.Many2one('stock.picking.goods.appearance',
+                                          related='delivery_note_id.goods_appearance_id')
+    transport_reason_id = fields.Many2one('stock.picking.transport.reason',
+                                          related='delivery_note_id.transport_reason_id')
+    transport_method_id = fields.Many2one('stock.picking.transport.method',
+                                          related='delivery_note_id.transport_method_id')
 
-    partner_shipping_id = fields.Many2one(
-        'res.partner', string="Shipping Address")
-    parcels = fields.Integer('Parcels')
-    invoice_id = fields.Many2one(
-        'account.invoice', string='Invoice', readonly=True, copy=False)
-    to_be_invoiced = fields.Boolean(
-        string='To be Invoiced',
-        help="This depends on 'To be Invoiced' field of the Reason for "
-             "Transportation of this TD")
-    show_price = fields.Boolean(string='Show prices on report')
-    weight_manual = fields.Float(
-        string="Force Net Weight",
-        help="Fill this field with the value you want to be used as weight. "
-             "Leave empty to let the system to compute it")
+    transport_datetime = fields.Datetime(related='delivery_note_id.transport_datetime')
+
+    parcels = fields.Integer(related='delivery_note_id.parcels')
+    delivery_note_volume = fields.Float(related='delivery_note_id.volume')
+    delivery_note_volume_uom_id = fields.Many2one('uom.uom', related='delivery_note_id.volume_uom_id')
+    gross_weight = fields.Float(related='delivery_note_id.gross_weight')
+    gross_weight_uom_id = fields.Many2one('uom.uom', related='delivery_note_id.gross_weight_uom_id')
+    net_weight = fields.Float(related='delivery_note_id.net_weight')
+    net_weight_uom_id = fields.Many2one('uom.uom', related='delivery_note_id.net_weight_uom_id')
+
+    #
+    # DDT fields:
+    #
+    #     ddt_number = fields.Char()
+    #     ddt_type_id = fields.Many2one('stock.delivery.note.type')
+    #     ddt_date = fields.Date()
+    #     ddt_notes = fields.Html()
+    #
+    #     carriage_condition_id = fields.Many2one('stock.picking.transport.condition')
+    #     goods_description_id = fields.Many2one('stock.picking.goods.appearance')
+    #     transportation_reason_id = fields.Many2one('stock.picking.transport.reason')
+    #     transportation_method_id = fields.Many2one('stock.picking.transport.method')
+    #
+    #     date_transport_ddt = fields.Date()
+    #     time_transport_ddt = fields.Float()
+    #
+    #     parcels = fields.Integer()
+    #     gross_weight = fields.Float()
+    #
+    #
+    # picking_type_code = fields.Selection(related="picking_type_id.code")
+    #
+    #     #
+    #     # NEVER USED!
+    #     #
+    #     # partner_shipping_id = fields.Many2one('res.partner')
+    #     # weight_manual = fields.Float()
+    #     # invoice_id = fields.Many2one('account.invoice')
+    #     # to_be_invoiced = fields.Boolean()
+    #     # show_price = fields.Boolean()
+
+    use_delivery_note = fields.Boolean(compute='_compute_boolean_flags')
+
+    @api.multi
+    def _compute_boolean_flags(self):
+        for picking in self:
+            picking.use_delivery_note = picking.state == DONE_PICKING_STATE and \
+                                        picking.picking_type_id.code != INCOMING_PICKING_TYPE
 
     @api.onchange('partner_id', 'ddt_type_id')
     def on_change_partner(self):
@@ -75,26 +103,29 @@ class StockPicking(models.Model):
             return self.env.ref('easy_ddt.action_report_easy_ddt').report_action(self)
         return True
 
-    @api.multi
-    def ddt_get_location(self, location_id):
-        model_warehouse = self.env['stock.warehouse']
-        warehouse = model_warehouse.search(
-            [('lot_stock_id', '=', location_id)]
-        )
-        data = [warehouse.partner_id.id, warehouse.partner_id.name]
-        if warehouse.partner_id:
-            data = [
-                warehouse.partner_id.name,
-                warehouse.partner_id.street,
-                (
-                    warehouse.partner_id.zip + ' ' +
-                    warehouse.partner_id.city + ' ' +
-                    '(' + warehouse.partner_id.state_id.name + ')'
-                    if warehouse.partner_id.state_id else ''
-                )
-            ]
-
-        return data
+    #
+    # NEVER USED!
+    #
+    # @api.multi
+    # def ddt_get_location(self, location_id):
+    #     model_warehouse = self.env['stock.warehouse']
+    #     warehouse = model_warehouse.search(
+    #         [('lot_stock_id', '=', location_id)]
+    #     )
+    #     data = [warehouse.partner_id.id, warehouse.partner_id.name]
+    #     if warehouse.partner_id:
+    #         data = [
+    #             warehouse.partner_id.name,
+    #             warehouse.partner_id.street,
+    #             (
+    #                 warehouse.partner_id.zip + ' ' +
+    #                 warehouse.partner_id.city + ' ' +
+    #                 '(' + warehouse.partner_id.state_id.name + ')'
+    #                 if warehouse.partner_id.state_id else ''
+    #             )
+    #         ]
+    #
+    #     return data
 
     @api.multi
     def ddt_time_report(self, time_ddt):
