@@ -1,9 +1,6 @@
 import logging
 
 from odoo import api, SUPERUSER_ID
-
-import pdb; pdb.set_trace()
-
 from openupgradelib import openupgrade
 
 _logger = logging.getLogger(__name__)
