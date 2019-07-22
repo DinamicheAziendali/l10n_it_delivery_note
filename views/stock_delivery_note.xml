@@ -47,7 +47,7 @@
                         <div attrs="{'invisible': [('name', 'in', [False, ''])]}">
                             <label for="name" string="Delivery note" />
                             <h1>
-                                <field name="name" class="oe_inline" readonly="True" />
+                                <field name="name" class="oe_inline" />
                             </h1>
                         </div>
                     </div>

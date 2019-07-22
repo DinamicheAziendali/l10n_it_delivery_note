@@ -39,7 +39,7 @@ class StockDeliveryNote(models.Model):
         return [('category_id', '=', uom_category_id.id)]
 
     active = fields.Boolean(string=_("Active"), default=True)
-    name = fields.Char(string=_("Name"), track_visibility='onchange')
+    name = fields.Char(string=_("Name"), readonly=True, track_visibility='onchange')
     state = fields.Selection(DELIVERY_NOTE_STATES,
                              string=_("State"),
                              default=DOMAIN_DELIVERY_NOTE_STATES[0],
@@ -48,46 +48,75 @@ class StockDeliveryNote(models.Model):
 
     partner_id = fields.Many2one('res.partner',
                                  string=_("Recipient"),
+                                 states={'draft': [('readonly', False)]},
+                                 readonly=True,
                                  required=True,
                                  track_visibility='onchange')
     partner_shipping_id = fields.Many2one('res.partner',
                                           string=_("Shipping address"),
+                                          states={'draft': [('readonly', False)]},
+                                          readonly=True,
                                           required=True,
                                           track_visibility='onchange')
 
-    date = fields.Date(string=_("Date"))
+    date = fields.Date(string=_("Date"), states={'draft': [('readonly', False)]}, readonly=True)
     type_id = fields.Many2one('stock.delivery.note.type',
                               string=_("Type"),
-                              required=True,
-                              default=_default_type)
+                              default=_default_type,
+                              states={'draft': [('readonly', False)]},
+                              readonly=True,
+                              required=True)
 
-    parcels = fields.Integer(string=_("Parcels"))
-    volume = fields.Float(string=_("Volume"))
+    parcels = fields.Integer(string=_("Parcels"), states={'draft': [('readonly', False)]}, readonly=True)
+    volume = fields.Float(string=_("Volume"), states={'draft': [('readonly', False)]}, readonly=True)
     volume_uom_id = fields.Many2one('uom.uom',
                                     string=_("Volume UoM"),
                                     default=_default_volume_uom,
-                                    domain=_domain_volume_uom)
-    gross_weight = fields.Float(string=_("Gross weight"))
+                                    domain=_domain_volume_uom,
+                                    states={'draft': [('readonly', False)]},
+                                    readonly=True)
+    gross_weight = fields.Float(string=_("Gross weight"), states={'draft': [('readonly', False)]}, readonly=True)
     gross_weight_uom_id = fields.Many2one('uom.uom',
                                           string=_("Gross weight UoM"),
                                           default=_default_weight_uom,
-                                          domain=_domain_weight_uom)
-    net_weight = fields.Float(string=_("Net weight"))
+                                          domain=_domain_weight_uom,
+                                          states={'draft': [('readonly', False)]},
+                                          readonly=True)
+    net_weight = fields.Float(string=_("Net weight"), states={'draft': [('readonly', False)]}, readonly=True)
     net_weight_uom_id = fields.Many2one('uom.uom',
                                         string=_("Net weight UoM"),
                                         default=_default_weight_uom,
-                                        domain=_domain_weight_uom)
+                                        domain=_domain_weight_uom,
+                                        states={'draft': [('readonly', False)]},
+                                        readonly=True)
 
-    transport_condition_id = fields.Many2one('stock.picking.transport.condition', string=_("Condition of transport"))
-    goods_appearance_id = fields.Many2one('stock.picking.goods.appearance', string=_("Appearance of goods"))
-    transport_reason_id = fields.Many2one('stock.picking.transport.reason', string=_("Reason of transport"))
-    transport_method_id = fields.Many2one('stock.picking.transport.method', string=_("Method of transport"))
+    transport_condition_id = fields.Many2one('stock.picking.transport.condition',
+                                             string=_("Condition of transport"),
+                                             states={'draft': [('readonly', False)]},
+                                             readonly=True)
+    goods_appearance_id = fields.Many2one('stock.picking.goods.appearance',
+                                          string=_("Appearance of goods"),
+                                          states={'draft': [('readonly', False)]},
+                                          readonly=True)
+    transport_reason_id = fields.Many2one('stock.picking.transport.reason',
+                                          string=_("Reason of transport"),
+                                          states={'draft': [('readonly', False)]},
+                                          readonly=True)
+    transport_method_id = fields.Many2one('stock.picking.transport.method',
+                                          string=_("Method of transport"),
+                                          states={'draft': [('readonly', False)]},
+                                          readonly=True)
 
-    transport_datetime = fields.Datetime(string=_("Transport date"))
+    transport_datetime = fields.Datetime(string=_("Transport date"),
+                                         states={'draft': [('readonly', False)]},
+                                         readonly=True)
 
-    picking_ids = fields.One2many('stock.picking', 'delivery_note_id', string=_("Pickings"))
+    picking_ids = fields.One2many('stock.picking', 'delivery_note_id',
+                                  string=_("Pickings"),
+                                  states={'draft': [('readonly', False)]},
+                                  readonly=True)
 
-    note = fields.Html(string=_("Internal note"))
+    note = fields.Html(string=_("Internal note"), states={'done': [('readonly', True)]})
 
     @api.onchange('partner_id')
     def _onchange_partner(self):

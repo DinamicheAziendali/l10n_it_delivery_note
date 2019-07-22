@@ -92,21 +92,56 @@ class StockPicking(models.Model):
             else:
                 picking.delivery_note_readonly = True
 
-    @api.onchange('partner_id', 'ddt_type_id')
-    def on_change_partner(self):
-        if self.ddt_type_id:
-            self.transport_condition_id = \
-                self.partner_id.transport_condition_id.id \
-                if self.partner_id.transport_condition_id else False
-            self.goods_appearance_id = \
-                self.partner_id.goods_appearance_id.id \
-                if self.partner_id.goods_appearance_id else False
-            self.transport_reason_id = \
-                self.partner_id.transport_reason_id.id \
-                if self.partner_id.transport_reason_id else False
-            self.transport_method_id = \
-                self.partner_id.transport_method_id.id \
-                if self.partner_id.transport_method_id else False
+    @api.multi
+    def action_delivery_note_create(self):
+        self.ensure_one()
+
+        StockDeliveryNoteCreateWizard = self.env['stock.delivery.note.create.wizard']
+
+        wizard = StockDeliveryNoteCreateWizard.create({
+            'partner_id': self.partner_id.id,
+            'partner_shipping_id': self.partner_id.id,
+            'picking_ids': [(4, self.id)]
+        })
+
+        return {
+            'name': _("Create a delivery note"),
+            'type': 'ir.actions.act_window',
+            'res_model': 'stock.delivery.note.create.wizard',
+            'res_id': wizard.id,
+            'view_type': 'form',
+            'view_mode': 'form',
+            'target': 'new'
+        }
+
+    @api.multi
+    def action_delivery_note_select(self):
+        self.ensure_one()
+
+        return {
+            'name': _("Select a delivery note"),
+            'type': 'ir.actions.act_window',
+            'res_model': 'stock.delivery.note',
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'target': 'new'
+        }
+
+    # @api.onchange('partner_id', 'ddt_type_id')
+    # def on_change_partner(self):
+    #     if self.ddt_type_id:
+    #         self.transport_condition_id = \
+    #             self.partner_id.transport_condition_id.id \
+    #             if self.partner_id.transport_condition_id else False
+    #         self.goods_appearance_id = \
+    #             self.partner_id.goods_appearance_id.id \
+    #             if self.partner_id.goods_appearance_id else False
+    #         self.transport_reason_id = \
+    #             self.partner_id.transport_reason_id.id \
+    #             if self.partner_id.transport_reason_id else False
+    #         self.transport_method_id = \
+    #             self.partner_id.transport_method_id.id \
+    #             if self.partner_id.transport_method_id else False
 
     @api.multi
     def get_ddt_number(self):

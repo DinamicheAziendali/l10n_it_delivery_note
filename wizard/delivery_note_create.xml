@@ -2,25 +2,38 @@
 
 <odoo>
 
-    <record id="stock_picking_delivery_note_create_form_view" model="ir.ui.view">
-        <field name="name">stock.picking.delivery.note.create.form</field>
-        <field name="model">stock.picking.delivery.note.create.wizard</field>
+    <record id="stock_delivery_note_create_form_view" model="ir.ui.view">
+        <field name="name">stock.delivery.note.create.form</field>
+        <field name="model">stock.delivery.note.create.wizard</field>
         <field name="arch" type="xml">
             <form>
-                <group />
+                <group>
+                    <group>
+                        <field name="partner_id" />
+                        <field name="partner_shipping_id" />
+                    </group>
+                    <group>
+                        <field name="type_id" />
+                        <field name="date" />
+                    </group>
+                </group>
                 <notebook>
                     <page name="pickings" string="Pickings">
                         <field name="picking_ids" />
                     </page>
                 </notebook>
+                <footer>
+                    <button name="confirm" type="object" class="btn-primary" string="Confirm" />
+                    <button special="cancel" class="btn-secondary" string="Cancel" />
+                </footer>
             </form>
         </field>
     </record>
 
-    <act_window id="stock_picking_delivery_note_create_action"
+    <act_window id="stock_delivery_note_create_action"
                 key2="client_action_multi"
                 name="Create a delivery note"
-                res_model="stock.picking.delivery.note.create.wizard"
+                res_model="stock.delivery.note.create.wizard"
                 src_model="stock.picking"
                 view_mode="form"
                 view_type="form"
