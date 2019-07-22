@@ -37,6 +37,7 @@
         'views/stock_delivery_note.xml',
         'views/stock_picking.xml',
 
-        'wizard/delivery_note_create.xml'
+        'wizard/delivery_note_create.xml',
+        'wizard/delivery_note_select.xml'
     ]
 }

@@ -94,24 +94,14 @@ class StockPicking(models.Model):
 
     @api.multi
     def action_delivery_note_create(self):
-        self.ensure_one()
-
-        StockDeliveryNoteCreateWizard = self.env['stock.delivery.note.create.wizard']
-
-        wizard = StockDeliveryNoteCreateWizard.create({
-            'partner_id': self.partner_id.id,
-            'partner_shipping_id': self.partner_id.id,
-            'picking_ids': [(4, self.id)]
-        })
-
         return {
             'name': _("Create a delivery note"),
             'type': 'ir.actions.act_window',
             'res_model': 'stock.delivery.note.create.wizard',
-            'res_id': wizard.id,
             'view_type': 'form',
             'view_mode': 'form',
-            'target': 'new'
+            'target': 'new',
+            'context': {'active_ids': self.ids}
         }
 
     @api.multi
@@ -121,10 +111,11 @@ class StockPicking(models.Model):
         return {
             'name': _("Select a delivery note"),
             'type': 'ir.actions.act_window',
-            'res_model': 'stock.delivery.note',
+            'res_model': 'stock.delivery.note.select.wizard',
             'view_type': 'form',
-            'view_mode': 'tree,form',
-            'target': 'new'
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'active_ids': self.ids}
         }
 
     # @api.onchange('partner_id', 'ddt_type_id')

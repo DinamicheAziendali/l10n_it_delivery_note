@@ -7,7 +7,12 @@
         <field name="model">stock.delivery.note.create.wizard</field>
         <field name="arch" type="xml">
             <form>
-                <group>
+                <div attrs="{'invisible': [('partner_id', '!=', False)]}">
+                    <div class="o_horizontal_separator">Warning!</div>
+                    <separator />
+                    <p>You cannot create a new delivery note using pickings with different partners!</p>
+                </div>
+                <group attrs="{'invisible': [('partner_id', '=', False)]}">
                     <group>
                         <field name="partner_id" />
                         <field name="partner_shipping_id" />
@@ -17,14 +22,26 @@
                         <field name="date" />
                     </group>
                 </group>
-                <notebook>
+                <notebook attrs="{'invisible': [('partner_id', '=', False)]}">
                     <page name="pickings" string="Pickings">
                         <field name="picking_ids" />
                     </page>
                 </notebook>
                 <footer>
-                    <button name="confirm" type="object" class="btn-primary" string="Confirm" />
-                    <button special="cancel" class="btn-secondary" string="Cancel" />
+                    <button name="confirm"
+                            type="object"
+                            class="btn-primary"
+                            string="Confirm"
+                            attrs="{'invisible': [('partner_id', '=', False)]}" />
+                    <button special="cancel"
+                            class="btn-primary"
+                            string="Cancel"
+                            attrs="{'invisible': [('partner_id', '!=', False)]}"
+                            style="float: right;" />
+                    <button special="cancel"
+                            class="btn-secondary"
+                            string="Cancel"
+                            attrs="{'invisible': [('partner_id', '=', False)]}" />
                 </footer>
             </form>
         </field>

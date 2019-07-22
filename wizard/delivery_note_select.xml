@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="stock_delivery_note_select_form_view" model="ir.ui.view">
+        <field name="name">stock.delivery.note.select.form</field>
+        <field name="model">stock.delivery.note.select.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <div class="oe_title">
+                    <h1>
+                        <field name="selected_picking_id" />
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="partner_id" />
+                        <field name="partner_shipping_id" />
+                    </group>
+                    <group>
+                        <field name="type_id" />
+                        <field name="date" />
+                    </group>
+                </group>
+                <notebook>
+                    <page name="pickings" string="Pickings">
+                        <field name="picking_ids" />
+                    </page>
+                </notebook>
+                <footer>
+                    <button name="confirm" type="object" class="btn-primary" string="Confirm" />
+                    <button special="cancel" class="btn-secondary" string="Cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>
