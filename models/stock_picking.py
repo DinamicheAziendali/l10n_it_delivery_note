@@ -100,6 +100,8 @@ class StockPicking(models.Model):
 
     @api.multi
     def action_delivery_note_create(self):
+        self.ensure_one()
+
         return {
             'name': _("Create a new delivery note"),
             'type': 'ir.actions.act_window',
@@ -112,6 +114,8 @@ class StockPicking(models.Model):
 
     @api.multi
     def action_delivery_note_select(self):
+        self.ensure_one()
+
         return {
             'name': _("Select an existing delivery note"),
             'type': 'ir.actions.act_window',
@@ -124,11 +128,13 @@ class StockPicking(models.Model):
 
     @api.multi
     def action_delivery_note_validate(self):
-        raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
+        self.ensure_one()
+        self.delivery_note_id.action_confirm()
 
     @api.multi
     def action_delivery_note_print(self):
-        raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
+        self.ensure_one()
+        self.delivery_note_id.action_print()
 
     @api.multi
     def button_validate(self):

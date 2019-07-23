@@ -163,7 +163,8 @@ class StockDeliveryNote(models.Model):
             if not note.date:
                 note.date = datetime.date.today()
 
-            note.name = sequence.next_by_id()
+            if not note.name:
+                note.name = sequence.next_by_id()
 
     @api.multi
     def action_done(self):
@@ -172,6 +173,10 @@ class StockDeliveryNote(models.Model):
     @api.multi
     def action_cancel(self):
         self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[3]})
+
+    @api.multi
+    def action_print(self):
+        raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
 
 
 class StockDeliveryNoteType(models.Model):
