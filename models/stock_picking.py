@@ -95,7 +95,7 @@ class StockPicking(models.Model):
     @api.multi
     def action_delivery_note_create(self):
         return {
-            'name': _("Create a delivery note"),
+            'name': _("Create a new delivery note"),
             'type': 'ir.actions.act_window',
             'res_model': 'stock.delivery.note.create.wizard',
             'view_type': 'form',
@@ -106,10 +106,8 @@ class StockPicking(models.Model):
 
     @api.multi
     def action_delivery_note_select(self):
-        self.ensure_one()
-
         return {
-            'name': _("Select a delivery note"),
+            'name': _("Select an existing delivery note"),
             'type': 'ir.actions.act_window',
             'res_model': 'stock.delivery.note.select.wizard',
             'view_type': 'form',

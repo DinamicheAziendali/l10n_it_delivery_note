@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <odoo>
-    <data>
 
-        <template id="assets_backend" name="assets" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <link rel="stylesheet" type="text/css" href="/easy_ddt/static/src/scss/stock_delivery_note.scss" />
-            </xpath>
-        </template>
+    <template id="assets_backend" name="assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/css" href="/easy_ddt/static/src/scss/stock_delivery_note.scss" />
+        </xpath>
+    </template>
 
-    </data>
 </odoo>

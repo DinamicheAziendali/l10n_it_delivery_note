@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="res_config_settings_form_view" model="ir.ui.view">
+        <field name="name">res.config.settings.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@data-key='stock']/div[1]" position="after">
+                <h2>Delivery notes</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <!-- widget="upgrade_boolean" -->
+                            <field name="group_use_advanced_delivery_notes" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="group_use_advanced_delivery_notes" />
+                            <div class="text-muted">
+                                <p>
+                                    Extends the standard behaviour of the delivery notes'
+                                    management by introducing additional functions.
+                                </p>
+                                <i>(e.g. link multiple pickings with a single delivery note)</i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

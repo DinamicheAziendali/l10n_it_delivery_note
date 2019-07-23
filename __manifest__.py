@@ -30,9 +30,11 @@
 
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
+        'security/res_groups.xml',
 
         'views/account_invoice.xml',
         'views/assets.xml',
+        'views/res_config_settings.xml',
         'views/res_partner.xml',
         'views/stock_delivery_note.xml',
         'views/stock_picking.xml',

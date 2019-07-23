@@ -24,13 +24,21 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
 
     picking_ids = fields.Many2many('stock.picking',
                                    string=_("Pickings"),
-                                   readonly=True)
+                                   compute='_compute_picking_ids')
+
+    @api.depends('selected_picking_id', 'delivery_note_id')
+    def _compute_picking_ids(self):
+        self.picking_ids = None
+
+        if self.delivery_note_id:
+            self.picking_ids += self.delivery_note_id.picking_ids
+
+        if self.selected_picking_id:
+            self.picking_ids += self.selected_picking_id
 
     @api.onchange('selected_picking_id')
     def _onchange_selected_picking_id(self):
         if self.selected_picking_id:
-            import pdb; pdb.set_trace()
-
             return {
                 'domain': {
                     'delivery_note_id': [('partner_id', '=', self.selected_picking_id.partner_id.id)]

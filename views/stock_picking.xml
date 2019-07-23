@@ -32,6 +32,7 @@
                                             string="Create new" />
                                     <button name="action_delivery_note_select"
                                             type="object"
+                                            groups="easy_ddt.use_advanced_delivery_notes"
                                             string="Select existing" />
                                 </div>
                                 <div attrs="{'invisible': [('delivery_note_exists', '=', False)]}">

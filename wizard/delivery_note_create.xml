@@ -15,10 +15,10 @@
                 <group attrs="{'invisible': [('partner_id', '=', False)]}">
                     <group>
                         <field name="partner_id" />
-                        <field name="partner_shipping_id" />
+                        <field name="partner_shipping_id" options="{'no_open': True, 'no_create': True}" />
                     </group>
                     <group>
-                        <field name="type_id" />
+                        <field name="type_id" options="{'no_open': True, 'no_create': True}" />
                         <field name="date" />
                     </group>
                 </group>
