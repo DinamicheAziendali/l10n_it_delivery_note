@@ -43,18 +43,6 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
             except ValueError:
                 pass
 
-    @api.onchange('partner_id')
-    def _onchange_partner_id(self):
-        if self.partner_id:
-            return {
-                'domain': {
-                    'partner_shipping_id': [
-                        '|', ('id', '=', self.partner_id.id),
-                             ('parent_id', '=', self.partner_id.id)
-                    ]
-                }
-            }
-
     def check_compliance(self):
         #
         # TODO #1: Stesso partner.

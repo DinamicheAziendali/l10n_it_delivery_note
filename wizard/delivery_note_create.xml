@@ -12,10 +12,12 @@
                     <separator />
                     <p>You cannot create a new delivery note using pickings with different partners!</p>
                 </div>
-                <group attrs="{'invisible': [('partner_id', '=', False)]}">
+                <group attrs="{'invisible': [('partner_id', '=', False)]}" string="Summary">
                     <group>
                         <field name="partner_id" />
-                        <field name="partner_shipping_id" options="{'no_open': True, 'no_create': True}" />
+                        <field name="partner_shipping_id"
+                               domain="['|', ('id', '=', partner_id), ('parent_id', '=', partner_id)]"
+                               options="{'no_open': True, 'no_create': True}" />
                     </group>
                     <group>
                         <field name="type_id" options="{'no_open': True, 'no_create': True}" />
@@ -24,7 +26,14 @@
                 </group>
                 <notebook attrs="{'invisible': [('partner_id', '=', False)]}">
                     <page name="pickings" string="Pickings">
-                        <field name="picking_ids" />
+                        <field name="picking_ids">
+                            <tree decoration-success="True">
+                                <field name="name" />
+                                <field name="scheduled_date" />
+                                <field name="origin" />
+                                <field name="state" />
+                            </tree>
+                        </field>
                     </page>
                 </notebook>
                 <footer>

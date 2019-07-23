@@ -8,15 +8,17 @@
         <field name="arch" type="xml">
             <form>
                 <field name="selected_picking_id" invisible="True" />
+                <field name="selected_partner_id" invisible="True" />
                 <div class="oe_title">
                     <label for="delivery_note_id" />
                     <h1>
                         <field name="delivery_note_id"
+                               domain="[('partner_id', '=', selected_partner_id), ('state', '=', 'draft')]"
                                options="{'no_open': True, 'no_create': True}"
                                style="width: 100%;" />
                     </h1>
                 </div>
-                <group>
+                <group string="Summary">
                     <group>
                         <field name="partner_id" />
                         <field name="partner_shipping_id" />
@@ -28,7 +30,14 @@
                 </group>
                 <notebook>
                     <page name="pickings" string="Pickings">
-                        <field name="picking_ids" />
+                        <field name="picking_ids">
+                            <tree decoration-success="id == parent.selected_picking_id">
+                                <field name="name" />
+                                <field name="scheduled_date" />
+                                <field name="origin" />
+                                <field name="state" />
+                            </tree>
+                        </field>
                     </page>
                 </notebook>
                 <footer>

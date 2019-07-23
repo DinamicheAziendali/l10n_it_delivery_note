@@ -17,6 +17,7 @@ class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
     delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"))
+    delivery_note_partner_shipping_id = fields.Many2one('res.partner', related='delivery_note_id.partner_shipping_id')
     delivery_note_type_id = fields.Many2one('stock.delivery.note.type', related='delivery_note_id.type_id')
     delivery_note_date = fields.Date(related='delivery_note_id.date')
     delivery_note_note = fields.Html(related='delivery_note_id.note')
@@ -75,12 +76,16 @@ class StockPicking(models.Model):
     delivery_note_exists = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_validated = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_readonly = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_visible = fields.Boolean(compute='_compute_boolean_flags')
 
     @api.multi
     def _compute_boolean_flags(self):
+        use_advanced_behaviour = self.env.user.user_has_groups('easy_ddt.use_advanced_delivery_notes')
+
         for picking in self:
             picking.use_delivery_note = picking.state == DONE_PICKING_STATE and \
                                         picking.picking_type_id.code != INCOMING_PICKING_TYPE
+            picking.delivery_note_visible = use_advanced_behaviour
 
             if picking.use_delivery_note and picking.delivery_note_id:
                 picking.delivery_note_exists = True
@@ -88,6 +93,7 @@ class StockPicking(models.Model):
                 if picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[1]:
                     picking.delivery_note_validated = True
                     picking.delivery_note_readonly = True
+                    picking.delivery_note_visible = True
 
             else:
                 picking.delivery_note_readonly = True
@@ -115,6 +121,16 @@ class StockPicking(models.Model):
             'target': 'new',
             'context': {'active_ids': self.ids}
         }
+
+    @api.multi
+    def button_validate(self):
+        super().button_validate()
+
+        if not self.env.user.user_has_groups('easy_ddt.use_advanced_delivery_notes'):
+            self.delivery_note_id = self.env['stock.delivery.note'].create({
+                'partner_id': self.partner_id.id,
+                'partner_shipping_id': self.partner_id.id
+            })
 
     # @api.onchange('partner_id', 'ddt_type_id')
     # def on_change_partner(self):

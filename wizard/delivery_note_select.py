@@ -1,5 +1,7 @@
 from odoo import _, api, fields, models
 
+from ..models.stock_delivery_note import DOMAIN_DELIVERY_NOTE_STATES
+
 
 class StockDeliveryNoteSelectWizard(models.TransientModel):
     _name = 'stock.delivery.note.select.wizard'
@@ -11,8 +13,9 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
         return self.env['stock.picking'].browse(active_ids)
 
     selected_picking_id = fields.Many2one('stock.picking', default=_default_stock_picking)
+    selected_partner_id = fields.Many2one('res.partner', related='selected_picking_id.partner_id')
 
-    delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"))
+    delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), required=True)
 
     partner_id = fields.Many2one('res.partner', string=_("Recipient"), related='delivery_note_id.partner_id')
     partner_shipping_id = fields.Many2one('res.partner',
@@ -35,15 +38,6 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
 
         if self.selected_picking_id:
             self.picking_ids += self.selected_picking_id
-
-    @api.onchange('selected_picking_id')
-    def _onchange_selected_picking_id(self):
-        if self.selected_picking_id:
-            return {
-                'domain': {
-                    'delivery_note_id': [('partner_id', '=', self.selected_picking_id.partner_id.id)]
-                }
-            }
 
     def check_compliance(self):
         #
