@@ -123,6 +123,14 @@ class StockPicking(models.Model):
         }
 
     @api.multi
+    def action_delivery_note_validate(self):
+        raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
+
+    @api.multi
+    def action_delivery_note_print(self):
+        raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
+
+    @api.multi
     def button_validate(self):
         super().button_validate()
 

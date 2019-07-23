@@ -5,6 +5,7 @@ from odoo import _, api, fields, models
 
 class StockDeliveryNoteCreateWizard(models.TransientModel):
     _name = 'stock.delivery.note.create.wizard'
+    _inherit = 'stock.delivery.note.base.wizard'
     _description = "Delivery note creator"
 
     def _default_date(self):
@@ -18,16 +19,13 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
     def _default_type(self):
         return self.env['stock.delivery.note.type'].search([], limit=1)
 
-    partner_id = fields.Many2one('res.partner', string=_("Recipient"), compute='_compute_partner_id')
-    partner_shipping_id = fields.Many2one('res.partner', string=_("Shipping address"), required=True)
+    partner_id = fields.Many2one('res.partner', compute='_compute_partner_id')
+    partner_shipping_id = fields.Many2one('res.partner', required=True)
 
-    date = fields.Date(string=_("Date"), default=_default_date)
-    type_id = fields.Many2one('stock.delivery.note.type', string=_("Type"), default=_default_type, required=True)
+    date = fields.Date(default=_default_date)
+    type_id = fields.Many2one('stock.delivery.note.type', default=_default_type, required=True)
 
-    picking_ids = fields.Many2many('stock.picking',
-                                   default=_default_stock_pickings,
-                                   string=_("Pickings"),
-                                   readonly=True)
+    picking_ids = fields.Many2many('stock.picking', default=_default_stock_pickings)
 
     @api.depends('picking_ids')
     @api.onchange('picking_ids')
@@ -42,23 +40,3 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
 
             except ValueError:
                 pass
-
-    def check_compliance(self):
-        #
-        # TODO #1: Stesso partner.
-        # TODO #2: Stesso magazzino di partenza.
-        # TODO #3: Stesso periodo di fatturazione (?).
-        # [...]
-        # TODO #N: Altro?
-        #
-
-        pass
-
-    @api.multi
-    def confirm(self):
-        self.check_compliance()
-        #
-        # TODO: Something, something...
-        #
-
-        pass

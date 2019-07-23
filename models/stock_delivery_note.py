@@ -39,7 +39,8 @@ class StockDeliveryNote(models.Model):
         return [('category_id', '=', uom_category_id.id)]
 
     active = fields.Boolean(string=_("Active"), default=True)
-    name = fields.Char(string=_("Name"), readonly=True, track_visibility='onchange')
+    name = fields.Char(string=_("Name"), readonly=True, index=True, track_visibility='onchange')
+    display_name = fields.Char(compute='_compute_display_name', store=True, index=True)
     state = fields.Selection(DELIVERY_NOTE_STATES,
                              string=_("State"),
                              default=DOMAIN_DELIVERY_NOTE_STATES[0],
@@ -51,6 +52,7 @@ class StockDeliveryNote(models.Model):
                                  states={'draft': [('readonly', False)]},
                                  readonly=True,
                                  required=True,
+                                 index=True,
                                  track_visibility='onchange')
     partner_shipping_id = fields.Many2one('res.partner',
                                           string=_("Shipping address"),
@@ -65,7 +67,8 @@ class StockDeliveryNote(models.Model):
                               default=_default_type,
                               states={'draft': [('readonly', False)]},
                               readonly=True,
-                              required=True)
+                              required=True,
+                              index=True)
 
     parcels = fields.Integer(string=_("Parcels"), states={'draft': [('readonly', False)]}, readonly=True)
     volume = fields.Float(string=_("Volume"), states={'draft': [('readonly', False)]}, readonly=True)
