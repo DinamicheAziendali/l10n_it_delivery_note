@@ -1,11 +1,11 @@
-import datetime
-
 from odoo import _, api, fields, models
 
 
 class StockDeliveryNoteCreateWizard(models.AbstractModel):
     _name = 'stock.delivery.note.base.wizard'
     _description = "Delivery note base"
+
+    error_message = fields.Html(readonly=True, store=False)
 
     partner_id = fields.Many2one('res.partner', string=_("Recipient"))
     partner_shipping_id = fields.Many2one('res.partner', string=_("Shipping address"))

@@ -24,8 +24,18 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
 
     picking_ids = fields.Many2many('stock.picking', compute='_compute_picking_ids')
 
+    error_message = fields.Html(compute='_compute_error_message')
+
+    @api.depends('selected_picking_ids')
+    def _compute_error_message(self):
+        self.error_message = self.env['ir.ui.view'].render_template(
+            'easy_ddt.stock_delivery_note_wizard_error_message_template',
+            {'title': _("Warning!"), 'invalid_partners': True}
+        )
+
     @api.depends('selected_picking_ids')
     def _compute_selected_partner_id(self):
+
         if self.selected_picking_ids:
             partner = self.selected_picking_ids.mapped('partner_id')
 

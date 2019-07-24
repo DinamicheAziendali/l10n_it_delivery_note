@@ -7,12 +7,10 @@
         <field name="model">stock.delivery.note.create.wizard</field>
         <field name="arch" type="xml">
             <form>
-                <div attrs="{'invisible': [('partner_id', '!=', False)]}">
-                    <div class="o_horizontal_separator">Warning!</div>
-                    <separator />
-                    <p>You cannot create a new delivery note using pickings with different partners!</p>
+                <div attrs="{'invisible': [('error_message', '!=', '')]}">
+                    <field name="error_message" />
                 </div>
-                <group attrs="{'invisible': [('partner_id', '=', False)]}" string="Summary">
+                <group attrs="{'invisible': [('error_message', '=', '')]}" string="Summary">
                     <group>
                         <field name="partner_id" />
                         <field name="partner_shipping_id"
@@ -24,7 +22,7 @@
                         <field name="date" />
                     </group>
                 </group>
-                <notebook attrs="{'invisible': [('partner_id', '=', False)]}">
+                <notebook attrs="{'invisible': [('error_message', '=', '')]}">
                     <page name="pickings" string="Pickings">
                         <field name="picking_ids">
                             <tree decoration-success="True">
@@ -41,16 +39,16 @@
                             type="object"
                             class="btn-primary"
                             string="Confirm"
-                            attrs="{'invisible': [('partner_id', '=', False)]}" />
+                            attrs="{'invisible': [('error_message', '=', '')]}" />
                     <button special="cancel"
                             class="btn-primary"
                             string="Cancel"
-                            attrs="{'invisible': [('partner_id', '!=', False)]}"
+                            attrs="{'invisible': [('error_message', '!=', '')]}"
                             style="float: right;" />
                     <button special="cancel"
                             class="btn-secondary"
                             string="Cancel"
-                            attrs="{'invisible': [('partner_id', '=', False)]}" />
+                            attrs="{'invisible': [('error_message', '=', '')]}" />
                 </footer>
             </form>
         </field>

@@ -107,8 +107,31 @@
                         </group>
                     </group>
                     <notebook>
+                        <page name="details" string="Details">
+                            <field name="line_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="product_id" />
+                                    <field name="name" />
+                                    <field name="product_qty" />
+                                    <field name="product_uom" options="{'no_create': True, 'no_open': True}" />
+                                    <field name="price_unit" />
+                                    <field name="discount" />
+                                    <field name="tax_ids" />
+                                </tree>
+                            </field>
+                        </page>
                         <page name="pickings" string="Pickings">
-                            <field name="picking_ids" />
+                            <field name="picking_ids">
+                                <tree>
+                                    <field name="name" />
+                                    <field name="location_dest_id" />
+                                    <field name="scheduled_date" />
+                                    <field name="origin" />
+                                    <field name="backorder_id" />
+                                    <field name="state" />
+                                </tree>
+                            </field>
                         </page>
                         <page name="internal_notes" string="Internal notes">
                             <field name="note" />

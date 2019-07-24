@@ -1,6 +1,7 @@
 import datetime
 
 from odoo import _, api, fields, models
+from odoo.addons import decimal_precision as dp
 
 DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S'
 
@@ -114,10 +115,8 @@ class StockDeliveryNote(models.Model):
                                          states={'draft': [('readonly', False)]},
                                          readonly=True)
 
-    picking_ids = fields.One2many('stock.picking', 'delivery_note_id',
-                                  string=_("Pickings"),
-                                  states={'draft': [('readonly', False)]},
-                                  readonly=True)
+    line_ids = fields.One2many('stock.delivery.note.line', 'delivery_note_id', string=_("Lines"))
+    picking_ids = fields.One2many('stock.picking', 'delivery_note_id', string=_("Pickings"), readonly=True)
 
     note = fields.Html(string=_("Internal note"), states={'done': [('readonly', True)]})
 
@@ -177,6 +176,38 @@ class StockDeliveryNote(models.Model):
     @api.multi
     def action_print(self):
         raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
+
+
+class StockDeliveryNoteLine(models.Model):
+    _name = 'stock.delivery.note.line'
+    _description = "Delivery note line"
+
+    def _default_unit_uom(self):
+        return self.env.ref('uom.product_uom_unit', raise_if_not_found=False)
+
+    def _domain_unit_uom(self):
+        uom_category_id = self.env.ref('uom.product_uom_categ_unit', raise_if_not_found=False)
+
+        return [('category_id', '=', uom_category_id.id)]
+
+    delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), required=True)
+
+    sequence = fields.Integer(string=_("Sequence"), required=True, default=10, index=True)
+    name = fields.Char(string=_("Description"), required=True)
+    product_id = fields.Many2one('product.product', string=_("Product"))
+    product_qty = fields.Integer(string=_("Quantity"))
+    product_uom = fields.Many2one('uom.uom', string=_("UoM"), default=_default_unit_uom, domain=_domain_unit_uom)
+    price_unit = fields.Float(string=_("Unit price"), digits=dp.get_precision('Product Price'))
+    discount = fields.Float(string=_("Discount"), digits=dp.get_precision('Discount'))
+    tax_ids = fields.Many2many('account.tax', string=_("Taxes"))
+
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        if self.product_id:
+            pass
+
+        else:
+            pass
 
 
 class StockDeliveryNoteType(models.Model):

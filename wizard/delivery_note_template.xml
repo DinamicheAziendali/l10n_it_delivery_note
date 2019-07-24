@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <template id="stock_delivery_note_wizard_error_message_template">
+        <div t-esc="title" class="o_horizontal_separator" />
+        <div class="o_horizontal_separator" />
+        <p>There are one or more problems with pickings you selected:</p>
+        <ul>
+            <li t-if="invalid_partners">All selected pickings must have the same partner.</li>
+        </ul>
+        <div class="o_horizontal_separator" />
+        <p>Please, check these problems and then try again.</p>
+    </template>
+
+</odoo>

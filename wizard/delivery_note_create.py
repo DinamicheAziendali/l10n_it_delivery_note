@@ -21,21 +21,36 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
 
     picking_ids = fields.Many2many('stock.picking', default=_default_stock_pickings)
 
-    partner_id = fields.Many2one('res.partner', compute='_compute_partner_id')
+    partner_id = fields.Many2one('res.partner', compute='_compute_fields')
     partner_shipping_id = fields.Many2one('res.partner', required=True)
 
     date = fields.Date(default=_default_date)
     type_id = fields.Many2one('stock.delivery.note.type', default=_default_type, required=True)
 
+    error_message = fields.Html(compute='_compute_fields')
+
+    def _init_partner_id(self):
+        partner = self.picking_ids.mapped('partner_id')
+        partner.ensure_one()
+
+        self.partner_id = partner
+
     @api.depends('picking_ids')
-    def _compute_partner_id(self):
+    def _compute_fields(self):
+        errors = {}
+
         if self.picking_ids:
-            partner = self.picking_ids.mapped('partner_id')
-
             try:
-                partner.ensure_one()
-
-                self.partner_id = partner
+               self._init_partner_id()
 
             except ValueError:
-                pass
+                errors['invalid_partners'] = True
+
+        else:
+            errors['no_pickings'] = True
+
+        if errors:
+            errors['title'] = _("Warning!")
+
+            self.error_message = self.env['ir.ui.view'] \
+                .render_template('easy_ddt.stock_delivery_note_wizard_error_message_template', errors)

@@ -7,6 +7,8 @@
         <field name="model">stock.delivery.note.select.wizard</field>
         <field name="arch" type="xml">
             <form>
+                <div><field name="error_message" /></div>
+                <hr />
                 <field name="selected_picking_ids" invisible="True" />
                 <field name="selected_partner_id" invisible="True" />
                 <div class="oe_title">
