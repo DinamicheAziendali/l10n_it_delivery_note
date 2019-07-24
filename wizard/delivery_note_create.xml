@@ -57,8 +57,9 @@
     </record>
 
     <act_window id="stock_delivery_note_create_action"
+                groups="easy_ddt.use_advanced_delivery_notes"
                 key2="client_action_multi"
-                name="Create a delivery note"
+                name="Create a new delivery note"
                 res_model="stock.delivery.note.create.wizard"
                 src_model="stock.picking"
                 view_mode="form"

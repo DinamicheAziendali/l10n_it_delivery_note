@@ -11,8 +11,8 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
 
         return self.env['stock.picking'].browse(active_ids)
 
-    selected_picking_id = fields.Many2one('stock.picking', default=_default_stock_picking)
-    selected_partner_id = fields.Many2one('res.partner', related='selected_picking_id.partner_id')
+    selected_picking_ids = fields.Many2many('stock.picking', default=_default_stock_picking)
+    selected_partner_id = fields.Many2one('res.partner', compute='_compute_selected_partner_id')
 
     delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), required=True)
 
@@ -24,12 +24,25 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
 
     picking_ids = fields.Many2many('stock.picking', compute='_compute_picking_ids')
 
-    @api.depends('selected_picking_id', 'delivery_note_id')
+    @api.depends('selected_picking_ids')
+    def _compute_selected_partner_id(self):
+        if self.selected_picking_ids:
+            partner = self.selected_picking_ids.mapped('partner_id')
+
+            try:
+                partner.ensure_one()
+
+                self.selected_partner_id = partner
+
+            except ValueError:
+                pass
+
+    @api.depends('selected_picking_ids', 'delivery_note_id')
     def _compute_picking_ids(self):
         self.picking_ids = None
 
         if self.delivery_note_id:
             self.picking_ids += self.delivery_note_id.picking_ids
 
-        if self.selected_picking_id:
-            self.picking_ids += self.selected_picking_id
+        if self.selected_picking_ids:
+            self.picking_ids += self.selected_picking_ids
