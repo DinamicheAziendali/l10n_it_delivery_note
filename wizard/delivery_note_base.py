@@ -101,9 +101,4 @@ class StockDeliveryNoteCreateWizard(models.AbstractModel):
         self._check_delivery_notes()
 
     def confirm(self):
-        self.check_compliance()
-        #
-        # TODO: Something, something...
-        #
-
-        raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
+        raise NotImplementedError(_("This functionality isn't ready yet. Please, come back later."))

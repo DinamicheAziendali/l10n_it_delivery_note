@@ -18,3 +18,15 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
 
     date = fields.Date(default=_default_date)
     type_id = fields.Many2one('stock.delivery.note.type', default=_default_type, required=True)
+
+    def confirm(self):
+        self.check_compliance()
+
+        delivery_note = self.env['stock.delivery.note'].create({
+            'partner_id': self.partner_id.id,
+            'partner_shipping_id': self.partner_shipping_id.id,
+            'type_id': self.type_id.id,
+            'date': self.date
+        })
+
+        self.selected_picking_ids.write({'delivery_note_id': delivery_note.id})
