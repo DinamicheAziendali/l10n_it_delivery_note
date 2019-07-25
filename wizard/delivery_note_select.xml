@@ -7,20 +7,20 @@
         <field name="model">stock.delivery.note.select.wizard</field>
         <field name="arch" type="xml">
             <form>
-                <div><field name="error_message" /></div>
-                <hr />
+                <div attrs="{'invisible': [('error_message', '=', False)]}">
+                    <field name="error_message" />
+                </div>
                 <field name="selected_picking_ids" invisible="True" />
-                <field name="selected_partner_id" invisible="True" />
-                <div class="oe_title">
+                <div class="oe_title" attrs="{'invisible': [('error_message', '!=', False)]}">
                     <label for="delivery_note_id" />
                     <h1>
                         <field name="delivery_note_id"
-                               domain="[('partner_id', '=', selected_partner_id), ('state', '=', 'draft')]"
+                               domain="[('partner_id', '=', partner_id), ('state', '=', 'draft')]"
                                options="{'no_open': True, 'no_create': True}"
                                style="width: 100%;" />
                     </h1>
                 </div>
-                <group string="Summary">
+                <group string="Summary" attrs="{'invisible': [('error_message', '!=', False)]}">
                     <group>
                         <field name="partner_id" />
                         <field name="partner_shipping_id" />
@@ -30,7 +30,7 @@
                         <field name="date" />
                     </group>
                 </group>
-                <notebook>
+                <notebook attrs="{'invisible': [('error_message', '!=', False)]}">
                     <page name="pickings" string="Pickings">
                         <field name="picking_ids">
                             <tree decoration-success="id in parent.selected_picking_ids">
@@ -43,8 +43,20 @@
                     </page>
                 </notebook>
                 <footer>
-                    <button name="confirm" type="object" class="btn-primary" string="Confirm" />
-                    <button special="cancel" class="btn-secondary" string="Cancel" />
+                    <button name="confirm"
+                            type="object"
+                            class="btn-primary"
+                            string="Confirm"
+                            attrs="{'invisible': [('error_message', '!=', False)]}" />
+                    <button special="cancel"
+                            class="btn-primary"
+                            string="Cancel"
+                            attrs="{'invisible': [('error_message', '=', False)]}"
+                            style="float: right;" />
+                    <button special="cancel"
+                            class="btn-secondary"
+                            string="Cancel"
+                            attrs="{'invisible': [('error_message', '!=', False)]}" />
                 </footer>
             </form>
         </field>

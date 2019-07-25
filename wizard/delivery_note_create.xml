@@ -7,10 +7,10 @@
         <field name="model">stock.delivery.note.create.wizard</field>
         <field name="arch" type="xml">
             <form>
-                <div attrs="{'invisible': [('error_message', '!=', '')]}">
+                <div attrs="{'invisible': [('error_message', '=', False)]}">
                     <field name="error_message" />
                 </div>
-                <group attrs="{'invisible': [('error_message', '=', '')]}" string="Summary">
+                <group attrs="{'invisible': [('error_message', '!=', False)]}" string="Summary">
                     <group>
                         <field name="partner_id" />
                         <field name="partner_shipping_id"
@@ -22,9 +22,9 @@
                         <field name="date" />
                     </group>
                 </group>
-                <notebook attrs="{'invisible': [('error_message', '=', '')]}">
+                <notebook attrs="{'invisible': [('error_message', '!=', False)]}">
                     <page name="pickings" string="Pickings">
-                        <field name="picking_ids">
+                        <field name="selected_picking_ids">
                             <tree decoration-success="True">
                                 <field name="name" />
                                 <field name="scheduled_date" />
@@ -39,16 +39,16 @@
                             type="object"
                             class="btn-primary"
                             string="Confirm"
-                            attrs="{'invisible': [('error_message', '=', '')]}" />
+                            attrs="{'invisible': [('error_message', '!=', False)]}" />
                     <button special="cancel"
                             class="btn-primary"
                             string="Cancel"
-                            attrs="{'invisible': [('error_message', '!=', '')]}"
+                            attrs="{'invisible': [('error_message', '=', False)]}"
                             style="float: right;" />
                     <button special="cancel"
                             class="btn-secondary"
                             string="Cancel"
-                            attrs="{'invisible': [('error_message', '=', '')]}" />
+                            attrs="{'invisible': [('error_message', '!=', False)]}" />
                 </footer>
             </form>
         </field>

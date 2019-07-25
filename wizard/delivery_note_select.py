@@ -6,50 +6,18 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
     _inherit = 'stock.delivery.note.base.wizard'
     _description = "Delivery note selector"
 
-    def _default_stock_picking(self):
-        active_ids = self.env.context['active_ids']
-
-        return self.env['stock.picking'].browse(active_ids)
-
-    selected_picking_ids = fields.Many2many('stock.picking', default=_default_stock_picking)
-    selected_partner_id = fields.Many2one('res.partner', compute='_compute_selected_partner_id')
-
     delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), required=True)
 
-    partner_id = fields.Many2one('res.partner', related='delivery_note_id.partner_id')
     partner_shipping_id = fields.Many2one('res.partner', related='delivery_note_id.partner_shipping_id')
 
     date = fields.Date(related='delivery_note_id.date')
     type_id = fields.Many2one('stock.delivery.note.type', related='delivery_note_id.type_id')
 
-    picking_ids = fields.Many2many('stock.picking', compute='_compute_picking_ids')
-
-    error_message = fields.Html(compute='_compute_error_message')
-
-    @api.depends('selected_picking_ids')
-    def _compute_error_message(self):
-        self.error_message = self.env['ir.ui.view'].render_template(
-            'easy_ddt.stock_delivery_note_wizard_error_message_template',
-            {'title': _("Warning!"), 'invalid_partners': True}
-        )
-
-    @api.depends('selected_picking_ids')
-    def _compute_selected_partner_id(self):
-
-        if self.selected_picking_ids:
-            partner = self.selected_picking_ids.mapped('partner_id')
-
-            try:
-                partner.ensure_one()
-
-                self.selected_partner_id = partner
-
-            except ValueError:
-                pass
+    picking_ids = fields.Many2many('stock.picking', compute='_compute_fields')
 
     @api.depends('selected_picking_ids', 'delivery_note_id')
-    def _compute_picking_ids(self):
-        self.picking_ids = None
+    def _compute_fields(self):
+        super()._compute_fields()
 
         if self.delivery_note_id:
             self.picking_ids += self.delivery_note_id.picking_ids
