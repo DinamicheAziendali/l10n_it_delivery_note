@@ -7,23 +7,15 @@
             <t t-esc="title" />
         </div>
         <div class="o_horizontal_separator" />
-        <p>
-            There are one or more problems with the pickings you've selected:
-        </p>
+        <p>There are one or more problems with the pickings you've selected:</p>
         <ul>
             <t t-foreach="errors" t-as="error">
-                <li>
-                    <t t-esc="error" />
-                </li>
+                <li><t t-esc="error" /></li>
             </t>
         </ul>
         <div class="o_horizontal_separator" />
-        <p>
-            Please, check and solve these problems before try again.
-        </p>
-        <p>
-            If these problems persist, please don't hesitate to contact the helpdesk.
-        </p>
+        <p>Please, check and solve these problems before try again.</p>
+        <p>If these problems persist, please don't hesitate to contact the helpdesk.</p>
     </template>
 
 </odoo>

@@ -125,7 +125,7 @@
                             <field name="picking_ids">
                                 <tree>
                                     <field name="name" />
-                                    <field name="location_dest_id" />
+                                    <field name="location_dest_id" groups="stock.group_stock_multi_locations" />
                                     <field name="scheduled_date" />
                                     <field name="origin" />
                                     <field name="backorder_id" />

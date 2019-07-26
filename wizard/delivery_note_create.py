@@ -20,7 +20,7 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
     type_id = fields.Many2one('stock.delivery.note.type', default=_default_type, required=True)
 
     def confirm(self):
-        self.check_compliance()
+        self.check_compliance(self.selected_picking_ids)
 
         delivery_note = self.env['stock.delivery.note'].create({
             'partner_id': self.partner_id.id,

@@ -25,6 +25,14 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
         if self.selected_picking_ids:
             self.picking_ids += self.selected_picking_ids
 
+    def check_compliance(self, pickings):
+        self._check_pickings(pickings)
+        self._check_pickings_state(pickings)
+        self._check_partners(pickings)
+        self._check_pickings_location(pickings)
+
+        self._check_delivery_notes(self.selected_picking_ids)
+
     def confirm(self):
-        self.check_compliance()
+        self.check_compliance(self.picking_ids)
         self.selected_picking_ids.write({'delivery_note_id': self.delivery_note_id.id})
