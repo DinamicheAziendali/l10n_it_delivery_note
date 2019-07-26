@@ -92,6 +92,7 @@ class StockPicking(models.Model):
     delivery_note_validated = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_readonly = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_visible = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_done = fields.Boolean(compute='_compute_boolean_flags')
 
     @api.multi
     def _compute_boolean_flags(self):
@@ -109,6 +110,9 @@ class StockPicking(models.Model):
                     picking.delivery_note_validated = True
                     picking.delivery_note_readonly = True
                     picking.delivery_note_visible = True
+
+                elif picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[2]:
+                    picking.delivery_note_done = True
 
             else:
                 picking.delivery_note_readonly = True

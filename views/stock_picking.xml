@@ -24,6 +24,7 @@
                         <field name="delivery_note_validated" invisible="True" />
                         <field name="delivery_note_readonly" invisible="True" />
                         <field name="delivery_note_visible" invisible="True" />
+                        <field name="delivery_note_done" invisible="True" />
                         <div class="no-margin-page-content">
                             <div class="header">
                                 <div attrs="{'invisible': [('delivery_note_exists', '=', True)]}">
@@ -75,9 +76,9 @@
                                                attrs="{'required': [('delivery_note_exists', '=', True)],
                                                        'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         <field name="delivery_note_date"
-                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
+                                               attrs="{'readonly': [('delivery_note_done', '=', True)]}" />
                                         <field name="transport_datetime"
-                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
+                                               attrs="{'readonly': [('delivery_note_done', '=', True)]}" />
                                     </group>
                                 </group>
                                 <group attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
@@ -136,7 +137,7 @@
                                 <group string="Internal notes"
                                        attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
                                     <field name="delivery_note_note" nolabel="1"
-                                           attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
+                                           attrs="{'readonly': [('delivery_note_done', '=', True)]}" />
                                 </group>
                             </div>
                         </div>

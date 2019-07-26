@@ -68,7 +68,7 @@ class StockDeliveryNote(models.Model):
                                           required=True,
                                           track_visibility='onchange')
 
-    date = fields.Date(string=_("Date"), states={'draft': [('readonly', False)]}, readonly=True)
+    date = fields.Date(string=_("Date"), states={'done': [('readonly', True)]})
     type_id = fields.Many2one('stock.delivery.note.type',
                               string=_("Type"),
                               default=_default_type,
@@ -117,9 +117,7 @@ class StockDeliveryNote(models.Model):
                                           states={'draft': [('readonly', False)]},
                                           readonly=True)
 
-    transport_datetime = fields.Datetime(string=_("Transport date"),
-                                         states={'draft': [('readonly', False)]},
-                                         readonly=True)
+    transport_datetime = fields.Datetime(string=_("Transport date"), states={'done': [('readonly', True)]})
 
     line_ids = fields.One2many('stock.delivery.note.line', 'delivery_note_id', string=_("Lines"))
     picking_ids = fields.One2many('stock.picking', 'delivery_note_id', string=_("Pickings"), readonly=True)
@@ -183,6 +181,23 @@ class StockDeliveryNote(models.Model):
     def action_print(self):
         raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
 
+    @api.multi
+    def update_detail_lines(self):
+        for note in self:
+            #
+            # TODO: Something, something...
+            #
+            pass
+
+    @api.multi
+    def write(self, vals):
+        res = super().write(vals)
+
+        if 'picking_ids' in vals:
+            self.update_detail_lines()
+
+        return res
+
 
 class StockDeliveryNoteLine(models.Model):
     _name = 'stock.delivery.note.line'
@@ -195,7 +210,7 @@ class StockDeliveryNoteLine(models.Model):
 
     sequence = fields.Integer(string=_("Sequence"), required=True, default=10, index=True)
     name = fields.Text(string=_("Description"), required=True)
-    display_type = fields.Selection(LINE_DISPLAY_TYPES, default=False)
+    display_type = fields.Selection(LINE_DISPLAY_TYPES, string=_("Line type"), default=False)
     product_id = fields.Many2one('product.product', string=_("Product"))
     product_description = fields.Text(related='product_id.description_sale')
     product_qty = fields.Float(string=_("Quantity"), digits=dp.get_precision('Unit of Measure'), default=1.0)
@@ -203,6 +218,8 @@ class StockDeliveryNoteLine(models.Model):
     price_unit = fields.Float(string=_("Unit price"), digits=dp.get_precision('Product Price'))
     discount = fields.Float(string=_("Discount"), digits=dp.get_precision('Discount'))
     tax_ids = fields.Many2many('account.tax', string=_("Taxes"))
+
+    picking_id = fields.Many2one('stock.picking', string=_("Picking"), readonly=True)
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
