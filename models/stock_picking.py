@@ -41,6 +41,21 @@ class StockPicking(models.Model):
     net_weight = fields.Float(related='delivery_note_id.net_weight')
     net_weight_uom_id = fields.Many2one('uom.uom', related='delivery_note_id.net_weight_uom_id')
 
+    @property
+    def _delivery_note_fields(self):
+        from collections import OrderedDict
+
+        cls = type(self)
+        fields = OrderedDict({
+            key: field
+            for key, field in self._fields.items()
+            if field.related and field.related[0] == 'delivery_note_id'
+        })
+
+        setattr(cls, '_delivery_note_fields', fields)
+
+        return fields
+
     #
     # DDT fields:
     #
@@ -208,6 +223,20 @@ class StockPicking(models.Model):
         data = str(hh) + ":" + mms
 
         return data
+
+    def update_related_fields(self, vals):
+        fields = self._delivery_note_fields
+
+        if any([key in fields for key in vals.keys()]):
+            delivery_note_vals = {fields[key].related[1]: value for key, value in vals.items() if key in fields}
+
+            self.delivery_note_id.write(delivery_note_vals)
+
+    @api.multi
+    def write(self, vals):
+        self.update_related_fields(vals)
+
+        return super().write(vals)
 
 
 class StockPickingTransportCondition(models.Model):
