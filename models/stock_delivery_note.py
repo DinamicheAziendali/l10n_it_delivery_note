@@ -2,6 +2,7 @@ import datetime
 
 from odoo import _, api, fields, models
 from odoo.addons import decimal_precision as dp
+from odoo.exceptions import UserError
 
 DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S'
 
@@ -12,6 +13,11 @@ DELIVERY_NOTE_STATES = [
     ('cancel', "Cancelled")
 ]
 DOMAIN_DELIVERY_NOTE_STATES = [s[0] for s in DELIVERY_NOTE_STATES]
+
+LINE_DISPLAY_TYPES = [
+    ('line_section', "Section"),
+    ('line_note', "Note")
+]
 
 
 class StockDeliveryNote(models.Model):
@@ -135,7 +141,7 @@ class StockDeliveryNote(models.Model):
         }
 
     @api.multi
-    @api.depends('partner_id', 'partner_id.display_name')
+    @api.depends('name', 'partner_id', 'partner_id.display_name')
     def _compute_display_name(self):
         for note in self:
             if not note.name:
@@ -185,18 +191,15 @@ class StockDeliveryNoteLine(models.Model):
     def _default_unit_uom(self):
         return self.env.ref('uom.product_uom_unit', raise_if_not_found=False)
 
-    def _domain_unit_uom(self):
-        uom_category_id = self.env.ref('uom.product_uom_categ_unit', raise_if_not_found=False)
-
-        return [('category_id', '=', uom_category_id.id)]
-
     delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), required=True)
 
     sequence = fields.Integer(string=_("Sequence"), required=True, default=10, index=True)
-    name = fields.Char(string=_("Description"), required=True)
+    name = fields.Text(string=_("Description"), required=True)
+    display_type = fields.Selection(LINE_DISPLAY_TYPES, default=False)
     product_id = fields.Many2one('product.product', string=_("Product"))
-    product_qty = fields.Integer(string=_("Quantity"))
-    product_uom = fields.Many2one('uom.uom', string=_("UoM"), default=_default_unit_uom, domain=_domain_unit_uom)
+    product_description = fields.Text(related='product_id.description_sale')
+    product_qty = fields.Float(string=_("Quantity"), digits=dp.get_precision('Unit of Measure'), default=1.0)
+    product_uom = fields.Many2one('uom.uom', string=_("UoM"), default=_default_unit_uom)
     price_unit = fields.Float(string=_("Unit price"), digits=dp.get_precision('Product Price'))
     discount = fields.Float(string=_("Discount"), digits=dp.get_precision('Discount'))
     tax_ids = fields.Many2many('account.tax', string=_("Taxes"))
@@ -204,10 +207,37 @@ class StockDeliveryNoteLine(models.Model):
     @api.onchange('product_id')
     def _onchange_product_id(self):
         if self.product_id:
-            pass
+            domain = [('category_id', '=', self.product_id.uom_id.category_id.id)]
+
+            self.name = self.product_id.get_product_multiline_description_sale()
 
         else:
-            pass
+            domain = []
+
+        return {'domain': {'product_uom': domain}}
+
+    @api.model
+    def create(self, vals):
+        if vals.get('display_type'):
+            vals.update({
+                'product_id': False,
+                'product_qty': 0,
+                'product_uom': False,
+                'price_unit': 0,
+                'discount': 0,
+                'tax_ids': [(5, False, False)]
+            })
+
+        return super().create(vals)
+
+    @api.multi
+    def write(self, vals):
+        if 'display_type' in vals and self.filtered(lambda l: l.display_type != vals['display_type']):
+            raise UserError(_("You cannot change the type of a delivery note line. "
+                              "Instead you should delete the current line"
+                              " and create a new line of the proper type."))
+
+        return super().write(vals)
 
 
 class StockDeliveryNoteType(models.Model):

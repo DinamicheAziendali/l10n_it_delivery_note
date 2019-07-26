@@ -108,17 +108,57 @@
                     </group>
                     <notebook>
                         <page name="details" string="Details">
-                            <field name="line_ids">
+                            <field name="line_ids" widget="section_and_note_one2many">
                                 <tree editable="bottom">
+                                    <field name="display_type" invisible="True" />
+                                    <control>
+                                        <create string="Add a line" />
+                                        <create string="Add a section"
+                                                context="{'default_display_type': 'line_section'}" />
+                                        <create string="Add a note"
+                                                context="{'default_display_type': 'line_note'}" />
+                                    </control>
                                     <field name="sequence" widget="handle" />
                                     <field name="product_id" />
-                                    <field name="name" />
+                                    <field name="name" widget="section_and_note_text" />
                                     <field name="product_qty" />
                                     <field name="product_uom" options="{'no_create': True, 'no_open': True}" />
                                     <field name="price_unit" />
                                     <field name="discount" />
-                                    <field name="tax_ids" />
+                                    <field name="tax_ids" widget="many2many_tags" />
                                 </tree>
+                                <form>
+                                    <field name="display_type" invisible="True" />
+                                    <div attrs="{'invisible': [('product_id', '=', False)]}">
+                                        <label for="product_id" style="margin-bottom: 5px;" />
+                                        <div>
+                                            <field name="product_id" style="margin-bottom: 0px;" />
+                                        </div>
+                                        <div>
+                                            <field name="product_description" />
+                                        </div>
+                                    </div>
+                                    <div attrs="{'invisible': [('product_id', '!=', False)]}">
+                                        <label for="name" style="margin-bottom: 5px;" />
+                                        <div>
+                                            <field name="name" />
+                                        </div>
+                                    </div>
+                                    <group attrs="{'invisible': [('display_type', '!=', False)]}">
+                                        <group>
+                                            <field name="price_unit" />
+                                            <label for="product_qty" />
+                                            <div class="o_row">
+                                                <field name="product_qty" />
+                                                <field name="product_uom" groups="uom.group_uom" widget="selection" />
+                                            </div>
+                                        </group>
+                                        <group>
+                                            <field name="discount" />
+                                            <field name="tax_ids" widget="many2many_tags" />
+                                        </group>
+                                    </group>
+                                </form>
                             </field>
                         </page>
                         <page name="pickings" string="Pickings">
