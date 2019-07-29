@@ -163,7 +163,7 @@
                         </page>
                         <page name="pickings" string="Pickings">
                             <field name="picking_ids">
-                                <tree>
+                                <tree create="false">
                                     <field name="name" />
                                     <field name="location_dest_id" groups="stock.group_stock_multi_locations" />
                                     <field name="scheduled_date" />
