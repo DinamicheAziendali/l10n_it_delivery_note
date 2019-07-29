@@ -4,7 +4,7 @@ from odoo.exceptions import ValidationError
 from ..models.stock_picking import DONE_PICKING_STATE
 
 
-class StockDeliveryNoteCreateWizard(models.AbstractModel):
+class StockDeliveryNoteBaseWizard(models.AbstractModel):
     _name = 'stock.delivery.note.base.wizard'
     _description = "Delivery note base"
 

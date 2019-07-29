@@ -1,35 +1,83 @@
-.o_form_view .o_notebook > .tab-content > .tab-pane > .no-margin-page-content
+.o_form_view .o_notebook > .tab-content > .tab-pane
 {
-    margin-bottom: -46px;
-    margin-left: -16px;
-    margin-right: -16px;
-    margin-top: -16px;
-
-    min-height: 83px;
-
-    & > .header
+    & > .no-margin-page-content
     {
-        border-bottom: 1px solid #ced4da;
-        min-height: 34px;
-        padding-left: 16px;
+        margin-bottom: -46px;
+        margin-left: -16px;
+        margin-right: -16px;
+        margin-top: -16px;
 
-        & > div > .btn,
-        & > div > div > .btn
+        min-height: 83px;
+
+        & > .header
         {
-            margin: 4px 3px 4px 0px;
-            min-height: 25px;
-            padding-bottom: 2px;
-            padding-top: 2px;
+            border-bottom: 1px solid #ced4da;
+            min-height: 34px;
+            padding-left: 16px;
+
+            & > div > .btn,
+            & > div > div > .btn
+            {
+                margin: 4px 3px 4px 0px;
+                min-height: 25px;
+                padding-bottom: 2px;
+                padding-top: 2px;
+            }
+        }
+        & > .content
+        {
+            box-shadow: inset 0px 5px 10px -4px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+
+            & > :first-child
+            {
+                margin-top: 0;
+
+                &.o_field_x2many.o_field_x2many_list tr > :first-child,
+                &.o_field_x2many.o_field_x2many_list tr > :first-child .o_input
+                {
+                    padding-left: 16px;
+                }
+            }
         }
     }
-    & > .content
-    {
-        box-shadow: inset 0px 5px 10px -4px rgba(0, 0, 0, 0.1);
-        padding: 16px;
 
-        & > :first-child
+    .fake_x2many_line
+    {
+        /*
+         * I can't determine if the background should be
+         *  white or gray (following the odd & even rules).
+         * If we consider that x2many fields show at
+         *  least 4 lines, most of the time it is gray.
+         */
+        background-color: rgba(0, 0, 0, 0.01);
+
+        margin-bottom: 15px;
+        margin-left: -16px;
+        margin-right: -16px;
+        margin-top: -15px;
+        padding: 0.3rem 16px;
+
+        @media (min-width: 992px) and (max-width: 1533px)
         {
-            margin-top: 0;
+            margin-left: -32px;
+            margin-right: -32px;
+        }
+
+        &:hover
+        {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        & > .btn.btn-link
+        {
+            font-weight: initial;
+            padding: 0px;
+
+            &:hover
+            {
+                color: #003a39;
+            }
         }
     }
 }

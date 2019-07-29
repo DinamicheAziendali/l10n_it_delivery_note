@@ -188,6 +188,20 @@ class StockDeliveryNote(models.Model):
         raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
 
     @api.multi
+    def action_stock_pickings_select(self):
+        self.ensure_one()
+
+        return {
+            'name': _("Add existing pickings"),
+            'type': 'ir.actions.act_window',
+            'res_model': 'stock.picking.select.wizard',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'active_ids': self.ids}
+        }
+
+    @api.multi
     def update_detail_lines(self):
         for note in self:
             #
