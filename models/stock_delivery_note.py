@@ -217,6 +217,30 @@ class StockDeliveryNote(models.Model):
     def action_print(self):
         raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
 
+    @api.model
+    def _compose_detail_lines_vals(self, vals):
+        picking_ids = []
+        if 'picking_ids' not in vals:
+            return vals
+
+        for tuple in vals['picking_ids']:
+            if tuple[0] == 4:
+                picking_ids.append(tuple[1])
+
+            elif tuple[0] == 6:
+                picking_ids.extend(tuple[2])
+
+        detail_lines = self.env['stock.delivery.note.line']._prepare_detail_lines(picking_ids)
+        if detail_lines:
+            pass
+
+    @api.model
+    @api.returns('self')
+    def create(self, vals):
+        composed_vals = self._compose_detail_lines_vals(vals)
+
+        return super().create(composed_vals)
+
     @api.multi
     def update_detail_lines(self):
         for note in self:
@@ -268,6 +292,30 @@ class StockDeliveryNoteLine(models.Model):
             domain = []
 
         return {'domain': {'product_uom': domain}}
+
+    def _prepare_detail_lines(self, picking_ids):
+        lines = []
+        if not picking_ids:
+            return lines
+
+        pickings = self.env['stock.picking'].browse(picking_ids)
+        for move in pickings.mapped('move_lines').filtered(lambda m: m.state != CANCEL_MOVE_STATE):
+            if self.search_count([('move_id', '=', move.id)]):
+                raise UserError(_("The stock movement named \"{}\" seems to be"
+                                  " already related to another delivery note.\n"
+                                  "You can't add this stock movement to this delivery note."))
+            lines.append({
+                'name': move.name,
+                'product_id': move.product_id.id,
+                'product_qty': move.product_uom_qty,
+                'product_uom': move.product_uom.id,
+                'price_unit': 0.0,
+                'discount': 0.0,
+                'tax_ids': [(5, False, False)],
+                'move_id': move.id
+            })
+
+        return lines
 
     @api.model
     @api.returns('self')
