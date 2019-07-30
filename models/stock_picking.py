@@ -6,9 +6,11 @@
 from datetime import datetime
 
 from odoo import _, api, fields, models
-from odoo.addons.easy_ddt import DONE_PICKING_STATE, INCOMING_PICKING_TYPE
 
 from .stock_delivery_note import DOMAIN_DELIVERY_NOTE_STATES
+from ..mixins.picking_checker import DONE_PICKING_STATE, INCOMING_PICKING_TYPE
+
+CANCEL_MOVE_STATE = 'cancel'
 
 
 class StockPicking(models.Model):
@@ -39,6 +41,7 @@ class StockPicking(models.Model):
     net_weight = fields.Float(related='delivery_note_id.net_weight')
     net_weight_uom_id = fields.Many2one('uom.uom', related='delivery_note_id.net_weight_uom_id')
 
+    valid_move_ids = fields.One2many('stock.move', 'picking_id', domain=[('state', '!=', CANCEL_MOVE_STATE)])
     picking_type_code = fields.Selection(related='picking_type_id.code')
 
     @property
@@ -95,11 +98,14 @@ class StockPicking(models.Model):
 
     @api.multi
     def _compute_boolean_flags(self):
+        from_delivery_note = self.env.context.get('from_delivery_note')
         use_advanced_behaviour = self.env.user.user_has_groups('easy_ddt.use_advanced_delivery_notes')
 
         for picking in self:
-            picking.use_delivery_note = picking.state == DONE_PICKING_STATE and \
+            picking.use_delivery_note = not from_delivery_note and \
+                                        picking.state == DONE_PICKING_STATE and \
                                         picking.picking_type_code != INCOMING_PICKING_TYPE
+
             picking.delivery_note_visible = use_advanced_behaviour
 
             if picking.use_delivery_note and picking.delivery_note_id:

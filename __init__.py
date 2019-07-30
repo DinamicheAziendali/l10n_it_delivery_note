@@ -3,10 +3,6 @@
 # @author: Gianmarco Conte <gconte@dinamicheaziendali.it>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-CANCEL_MOVE_STATE = 'cancel'
-DONE_PICKING_STATE = 'done'
-INCOMING_PICKING_TYPE = 'incoming'
-
 from . import mixins
 from . import models
 from . import wizard

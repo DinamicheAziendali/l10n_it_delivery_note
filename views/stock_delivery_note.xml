@@ -164,6 +164,7 @@
                         </page>
                         <page name="pickings" string="Pickings">
                             <field name="pickings_picker"
+                                   context="{'from_delivery_note': True}"
                                    domain="[('delivery_note_id', '=', False),
                                             ('state', '=', 'done'),
                                             ('picking_type_code', '!=', 'incoming'),

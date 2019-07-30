@@ -1,6 +1,8 @@
 from odoo import _, api, models
-from odoo.addons.easy_ddt import DONE_PICKING_STATE
 from odoo.exceptions import ValidationError
+
+DONE_PICKING_STATE = 'done'
+INCOMING_PICKING_TYPE = 'incoming'
 
 
 class StockPickingCheckerMixin(models.AbstractModel):
@@ -14,8 +16,13 @@ class StockPickingCheckerMixin(models.AbstractModel):
 
     @api.model
     def _check_pickings_state(self, pickings):
-        if pickings.filtered(lambda p: not p.state == DONE_PICKING_STATE):
+        if pickings.filtered(lambda p: p.state != DONE_PICKING_STATE):
             raise ValidationError(_("At least one picking you've selected doesn't appear to be completed."))
+
+    @api.model
+    def _check_pickings_type(self, pickings):
+        if pickings.filtered(lambda p: p.picking_type_code == INCOMING_PICKING_TYPE):
+            raise ValidationError(_("At least one picking you've selected appear to be incoming."))
 
     @api.model
     def _check_partners(self, pickings):
@@ -47,5 +54,6 @@ class StockPickingCheckerMixin(models.AbstractModel):
     def check_compliance(self, pickings):
         self._check_pickings(pickings)
         self._check_pickings_state(pickings)
+        self._check_pickings_type(pickings)
         self._check_partners(pickings)
         self._check_pickings_location(pickings)

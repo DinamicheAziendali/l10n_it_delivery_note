@@ -2,8 +2,9 @@ import datetime
 
 from odoo import _, api, fields, models
 from odoo.addons import decimal_precision as dp
-from odoo.addons.easy_ddt import DONE_PICKING_STATE, INCOMING_PICKING_TYPE
 from odoo.exceptions import UserError
+
+from ..mixins.picking_checker import DONE_PICKING_STATE, INCOMING_PICKING_TYPE
 
 DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S'
 
@@ -217,37 +218,45 @@ class StockDeliveryNote(models.Model):
     def action_print(self):
         raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
 
-    @api.model
-    def _compose_detail_lines_vals(self, vals):
-        picking_ids = []
-        if 'picking_ids' not in vals:
-            return vals
+    def _create_detail_lines(self, move_ids):
+        if not move_ids:
+            return
 
-        for tuple in vals['picking_ids']:
-            if tuple[0] == 4:
-                picking_ids.append(tuple[1])
+        moves = self.env['stock.move'].browse(move_ids)
+        lines_vals = self.env['stock.delivery.note.line']._prepare_detail_lines(moves)
 
-            elif tuple[0] == 6:
-                picking_ids.extend(tuple[2])
+        self.write({'line_ids': [(0, False, vals) for vals in lines_vals]})
 
-        detail_lines = self.env['stock.delivery.note.line']._prepare_detail_lines(picking_ids)
-        if detail_lines:
-            pass
+    def _delete_detail_lines(self, move_ids):
+        if not move_ids:
+            return
 
-    @api.model
-    @api.returns('self')
-    def create(self, vals):
-        composed_vals = self._compose_detail_lines_vals(vals)
+        lines = self.env['stock.delivery.note.line'].search([('move_id', 'in', move_ids)])
 
-        return super().create(composed_vals)
+        self.write({'line_ids': [(2, line.id, False) for line in lines]})
 
     @api.multi
     def update_detail_lines(self):
         for note in self:
-            #
-            # TODO: Something, something...
-            #
-            pass
+            lines_move_ids = note.mapped('line_ids.move_id').ids
+            pickings_move_ids = note.mapped('picking_ids.valid_move_ids').ids
+
+            move_ids_to_create = [l for l in pickings_move_ids if l not in lines_move_ids]
+            move_ids_to_delete = [l for l in lines_move_ids if l not in pickings_move_ids]
+
+            note._create_detail_lines(move_ids_to_create)
+            note._delete_detail_lines(move_ids_to_delete)
+
+
+    @api.model
+    @api.returns('self')
+    def create(self, vals):
+        res = super().create(vals)
+
+        if 'picking_ids' in vals:
+            res.update_detail_lines()
+
+        return res
 
     @api.multi
     def write(self, vals):
@@ -279,7 +288,13 @@ class StockDeliveryNoteLine(models.Model):
     discount = fields.Float(string=_("Discount"), digits=dp.get_precision('Discount'))
     tax_ids = fields.Many2many('account.tax', string=_("Taxes"))
 
-    move_id = fields.Many2one('stock.move', string=_("Stock movement"), readonly=True)
+    move_id = fields.Many2one('stock.move', string=_("Warehouse movement"), readonly=True)
+
+    _sql_constraints = [(
+        'move_uniq',
+        'unique(move_id)',
+        "You cannot assign the same warehouse movement to different delivery notes!"
+    )]
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
@@ -293,17 +308,10 @@ class StockDeliveryNoteLine(models.Model):
 
         return {'domain': {'product_uom': domain}}
 
-    def _prepare_detail_lines(self, picking_ids):
+    @api.model
+    def _prepare_detail_lines(self, moves):
         lines = []
-        if not picking_ids:
-            return lines
-
-        pickings = self.env['stock.picking'].browse(picking_ids)
-        for move in pickings.mapped('move_lines').filtered(lambda m: m.state != CANCEL_MOVE_STATE):
-            if self.search_count([('move_id', '=', move.id)]):
-                raise UserError(_("The stock movement named \"{}\" seems to be"
-                                  " already related to another delivery note.\n"
-                                  "You can't add this stock movement to this delivery note."))
+        for move in moves:
             lines.append({
                 'name': move.name,
                 'product_id': move.product_id.id,
