@@ -8,6 +8,7 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form>
+                <field name="picking_ids" invisible="True" />
                 <header>
                     <button name="action_draft"
                             type="object"
@@ -162,19 +163,13 @@
                             </field>
                         </page>
                         <page name="pickings" string="Pickings">
-                            <field name="picking_ids">
-                                <tree create="false">
-                                    <!-- <control> -->
-                                    <!--
-                                        Maybe, someday, it will be more effortless to launch a custom wizard...
-                                        In that case, you should:
-                                         - delete the 'fake_x2many_line' on the bottom
-                                         - remove the 'create="false"' attribute
-                                         - add the correct 'widget' attribute to the 'picking_ids' field
-                                         - use this section '<control>' instead
-                                      -->
-                                    <!--     <create string="Add a picking" context="{'open_something_something': True}" /> -->
-                                    <!-- </control> -->
+                            <field name="pickings_picker"
+                                   domain="[('delivery_note_id', '=', False),
+                                            ('state', '=', 'done'),
+                                            ('picking_type_code', '!=', 'incoming'),
+                                            ('partner_id', '=', partner_id)]"
+                                   options="{'no_create': True}">
+                                <tree decoration-success="id not in parent.picking_ids">
                                     <field name="name" />
                                     <field name="location_dest_id" groups="stock.group_stock_multi_locations" />
                                     <field name="scheduled_date" />
@@ -183,12 +178,6 @@
                                     <field name="state" />
                                 </tree>
                             </field>
-                            <div class="fake_x2many_line" attrs="{'invisible': [('state', '!=', 'draft')]}">
-                                <button name="action_stock_pickings_select"
-                                        type="object"
-                                        class="oe_link"
-                                        string="Add pickings" />
-                            </div>
                         </page>
                         <page name="internal_notes" string="Internal notes">
                             <field name="note" />

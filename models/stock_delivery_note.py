@@ -2,6 +2,7 @@ import datetime
 
 from odoo import _, api, fields, models
 from odoo.addons import decimal_precision as dp
+from odoo.addons.easy_ddt import DONE_PICKING_STATE, INCOMING_PICKING_TYPE
 from odoo.exceptions import UserError
 
 DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S'
@@ -23,12 +24,10 @@ DOMAIN_LINE_DISPLAY_TYPES = [t[0] for t in LINE_DISPLAY_TYPES]
 DRAFT_EDITABLE_STATE = {'draft': [('readonly', False)]}
 DONE_READONLY_STATE = {'done': [('readonly', True)]}
 
-CANCEL_MOVE_STATE = 'cancel'
-
 
 class StockDeliveryNote(models.Model):
     _name = 'stock.delivery.note'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'stock.picking.checker.mixin']
     _description = "Delivery note"
     _rec_name = 'display_name'
 
@@ -126,22 +125,35 @@ class StockDeliveryNote(models.Model):
     transport_datetime = fields.Datetime(string=_("Transport date"), states=DONE_READONLY_STATE)
 
     line_ids = fields.One2many('stock.delivery.note.line', 'delivery_note_id', string=_("Lines"))
+
     picking_ids = fields.One2many('stock.picking', 'delivery_note_id', string=_("Pickings"))
+    pickings_picker = fields.Many2many('stock.picking', compute='_get_pickings', inverse='_set_pickings')
 
     note = fields.Html(string=_("Internal note"), states=DONE_READONLY_STATE)
 
     @api.onchange('partner_id')
     def _onchange_partner(self):
-        domain = []
-
         if self.partner_id:
-            domain = [
+            pickings_picker_domain = [
+                ('delivery_note_id', '=', False),
+                ('state', '=', DONE_PICKING_STATE),
+                ('picking_type_code', '!=', INCOMING_PICKING_TYPE),
+                ('partner_id', '=', self.partner_id.id)
+            ]
+            shipping_partner_domain = [
                 '|', ('id', '=', self.partner_id.id),
                      ('parent_id', '=', self.partner_id.id)
             ]
 
+        else:
+            pickings_picker_domain = [('id', '=', False)]
+            shipping_partner_domain = [('id', '=', False)]
+
         return {
-            'domain': {'partner_shipping_id': domain}
+            'domain': {
+                'pickings_picker': pickings_picker_domain,
+                'partner_shipping_id': shipping_partner_domain
+            }
         }
 
     @api.multi
@@ -158,6 +170,24 @@ class StockDeliveryNote(models.Model):
                 name = note.name
 
             note.display_name = name
+
+    @api.multi
+    def _get_pickings(self):
+        for note in self:
+            note.pickings_picker = note.picking_ids
+
+    @api.multi
+    def _set_pickings(self):
+        for note in self:
+            if note.pickings_picker:
+                self.check_compliance(note.pickings_picker)
+
+            note.picking_ids = note.pickings_picker
+
+    def check_compliance(self, pickings):
+        super().check_compliance(pickings)
+
+        self._check_delivery_notes(self.pickings_picker - self.picking_ids)
 
     @api.multi
     def action_draft(self):
@@ -186,20 +216,6 @@ class StockDeliveryNote(models.Model):
     @api.multi
     def action_print(self):
         raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
-
-    @api.multi
-    def action_stock_pickings_select(self):
-        self.ensure_one()
-
-        return {
-            'name': _("Add existing pickings"),
-            'type': 'ir.actions.act_window',
-            'res_model': 'stock.picking.select.wizard',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {'active_ids': self.ids}
-        }
 
     @api.multi
     def update_detail_lines(self):

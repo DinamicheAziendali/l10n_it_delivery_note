@@ -41,7 +41,6 @@
 
         'wizard/delivery_note_create.xml',
         'wizard/delivery_note_select.xml',
-        'wizard/delivery_note_template.xml',
-        'wizard/stock_picking_select.xml'
+        'wizard/delivery_note_template.xml'
     ]
 }

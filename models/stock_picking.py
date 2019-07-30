@@ -6,11 +6,9 @@
 from datetime import datetime
 
 from odoo import _, api, fields, models
+from odoo.addons.easy_ddt import DONE_PICKING_STATE, INCOMING_PICKING_TYPE
 
 from .stock_delivery_note import DOMAIN_DELIVERY_NOTE_STATES
-
-DONE_PICKING_STATE = 'done'
-INCOMING_PICKING_TYPE = 'incoming'
 
 
 class StockPicking(models.Model):
@@ -40,6 +38,8 @@ class StockPicking(models.Model):
     gross_weight_uom_id = fields.Many2one('uom.uom', related='delivery_note_id.gross_weight_uom_id')
     net_weight = fields.Float(related='delivery_note_id.net_weight')
     net_weight_uom_id = fields.Many2one('uom.uom', related='delivery_note_id.net_weight_uom_id')
+
+    picking_type_code = fields.Selection(related='picking_type_id.code')
 
     @property
     def _delivery_note_fields(self):
@@ -76,7 +76,6 @@ class StockPicking(models.Model):
     #     gross_weight = fields.Float()
     #
     #
-    # picking_type_code = fields.Selection(related="picking_type_id.code")
     #
     #     #
     #     # NEVER USED!
@@ -100,7 +99,7 @@ class StockPicking(models.Model):
 
         for picking in self:
             picking.use_delivery_note = picking.state == DONE_PICKING_STATE and \
-                                        picking.picking_type_id.code != INCOMING_PICKING_TYPE
+                                        picking.picking_type_code != INCOMING_PICKING_TYPE
             picking.delivery_note_visible = use_advanced_behaviour
 
             if picking.use_delivery_note and picking.delivery_note_id:

@@ -1,11 +1,10 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
-from ..models.stock_picking import DONE_PICKING_STATE
-
 
 class StockDeliveryNoteBaseWizard(models.AbstractModel):
     _name = 'stock.delivery.note.base.wizard'
+    _inherit = 'stock.picking.checker.mixin'
     _description = "Delivery note base"
 
     def _default_stock_pickings(self):
@@ -22,37 +21,6 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
     type_id = fields.Many2one('stock.delivery.note.type', string=_("Type"))
 
     error_message = fields.Html(compute='_compute_fields')
-
-    def _check_pickings(self, pickings):
-        if not pickings:
-            raise ValidationError(_("You shouldn't be able to launch this wizard without selecting any pickings."))
-
-    def _check_pickings_state(self, pickings):
-        if pickings.filtered(lambda p: not p.state == DONE_PICKING_STATE):
-            raise ValidationError(_("At least one picking you've selected doesn't appear to be completed."))
-
-    def _check_delivery_notes(self, pickings):
-        if pickings.filtered(lambda p: p.delivery_note_id):
-            raise ValidationError(_("At least one picking you've selected appears to"
-                                    " be already related to another delivery note."))
-
-    def _check_partners(self, pickings):
-        partners = pickings.mapped('partner_id')
-
-        if not partners:
-            raise ValidationError(_("The pickings you've selected don't seem to have any partner."))
-
-        if len(partners) > 1:
-            raise ValidationError(_("You need to select pickings with all the same partner."))
-
-    def _check_pickings_location(self, pickings):
-        locations = pickings.mapped('location_dest_id')
-
-        if not locations:
-            raise ValidationError(_("The pickings you've selected don't seem to have any location of destination."))
-
-        if len(locations) > 1:
-            raise ValidationError(_("You need to select pickings with all the same location of destination."))
 
     def _get_validation_errors(self, pickings):
         validators = [
@@ -92,13 +60,6 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
 
         else:
             self.partner_id = self.selected_picking_ids.mapped('partner_id')
-
-    def check_compliance(self, pickings):
-        self._check_pickings(pickings)
-        self._check_pickings_state(pickings)
-        self._check_partners(pickings)
-        self._check_pickings_location(pickings)
-        self._check_delivery_notes(pickings)
 
     def confirm(self):
         raise NotImplementedError(_("This functionality isn't ready yet. Please, come back later."))

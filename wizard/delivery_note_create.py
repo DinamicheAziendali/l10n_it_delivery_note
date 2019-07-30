@@ -1,6 +1,6 @@
 import datetime
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class StockDeliveryNoteCreateWizard(models.TransientModel):
@@ -18,6 +18,12 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
 
     date = fields.Date(default=_default_date)
     type_id = fields.Many2one('stock.delivery.note.type', default=_default_type, required=True)
+
+    @api.model
+    def check_compliance(self, pickings):
+        super().check_compliance(pickings)
+
+        self._check_delivery_notes(pickings)
 
     def confirm(self):
         self.check_compliance(self.selected_picking_ids)
