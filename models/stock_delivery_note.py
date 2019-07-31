@@ -256,6 +256,19 @@ class StockDeliveryNote(models.Model):
     def action_print(self):
         return self.env.ref('easy_ddt.delivery_note_report_action').report_action(self)
 
+    @api.multi
+    def action_invoice(self):
+        #
+        # TODO: Gestire la fatturazione direttamente da DDT.
+        #
+        # self.mapped('picking_ids.sale_id') -> 'sale.order'
+        # self.mapped('line_ids.move_id.sale_line_id') -> 'sale.order.line'
+        #
+        # sale_order_ids.action_invoice_create(final=[...])
+        #
+
+        raise NotImplementedError(_("This functionality isn't ready yet. Please, come back later."))
+
     def _create_detail_lines(self, move_ids):
         if not move_ids:
             return

@@ -63,7 +63,7 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
                 .render_template('easy_ddt.stock_delivery_note_wizard_error_message_template', values)
 
         else:
-            self.partner_id = self.selected_picking_ids.mapped('partner_id')
+            self.partner_id = self.mapped('selected_picking_ids.partner_id')
 
     def confirm(self):
         raise NotImplementedError(_("This functionality isn't ready yet. Please, come back later."))

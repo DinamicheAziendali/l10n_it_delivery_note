@@ -161,6 +161,12 @@ class StockPicking(models.Model):
         return self.delivery_note_id.action_print()
 
     @api.multi
+    def action_delivery_note_invoice(self):
+        self.ensure_one()
+
+        return self.delivery_note_id.action_invoice()
+
+    @api.multi
     def action_done(self):
         res = super().action_done()
 
