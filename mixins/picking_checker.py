@@ -32,7 +32,7 @@ class StockPickingCheckerMixin(models.AbstractModel):
             raise ValidationError(_("The pickings you've selected don't seem to have any partner."))
 
         if len(partners) > 1:
-            raise ValidationError(_("You need to select pickings with all the same partner."))
+            raise ValidationError(_("You need to select pickings with all the same recipient."))
 
     @api.model
     def _check_pickings_location(self, pickings):

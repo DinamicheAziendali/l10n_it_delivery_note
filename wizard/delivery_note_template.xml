@@ -15,7 +15,7 @@
         </ul>
         <div class="o_horizontal_separator" />
         <p>Please, check and solve these problems before try again.</p>
-        <p>If these problems persist, please don't hesitate to contact the helpdesk.</p>
+        <p>If these problems persist, don't hesitate to contact the helpdesk.</p>
     </template>
 
 </odoo>

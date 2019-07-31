@@ -18,13 +18,13 @@
 
     <!-- Conditions of transport -->
     <record id="transport_condition_PF" model="stock.picking.transport.condition">
-        <field name="name">Carriage Paid</field>
+        <field name="name">Carriage paid</field>
     </record>
     <record id="transport_condition_PA" model="stock.picking.transport.condition">
-        <field name="name">Carriage Forward</field>
+        <field name="name">Carriage forward</field>
     </record>
     <record id="transport_condition_PAF" model="stock.picking.transport.condition">
-        <field name="name">Charged in Invoice</field>
+        <field name="name">Charged in invoice</field>
     </record>
 
     <!-- Goods appearance -->
@@ -38,7 +38,7 @@
         <field name="name">Bulk</field>
     </record>
     <record id="goods_appearance_CBA" model="stock.picking.goods.appearance">
-        <field name="name">Box-Pallet</field>
+        <field name="name">Box / Pallet</field>
     </record>
 
     <!-- Reasons of transport -->

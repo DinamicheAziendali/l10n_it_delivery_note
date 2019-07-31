@@ -186,7 +186,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" name="method_trasport">
-                            <h6>Method of transport / carrier</h6>
+                            <h6>Method of transport / Carrier</h6>
                             <div>
                                 <span t-field="o.transport_method_id" ame="transport_method_id" />
                                 <span t-if="o.carrier_tracking_ref">

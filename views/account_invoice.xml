@@ -8,7 +8,7 @@
         <field name="inherit_id" ref="account.invoice_form" />
         <field name="arch" type="xml">
             <xpath expr="//page[@name='other_info']" position="after">
-                <page name="shipping_information" string="Shipping Information">
+                <page name="shipping_information" string="Shipping information">
                     <group>
                         <group>
                             <field name="packages_number" />
