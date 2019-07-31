@@ -153,16 +153,18 @@ class StockPicking(models.Model):
     @api.multi
     def action_delivery_note_validate(self):
         self.ensure_one()
-        self.delivery_note_id.action_confirm()
+
+        return self.delivery_note_id.action_confirm()
 
     @api.multi
     def action_delivery_note_print(self):
         self.ensure_one()
-        self.delivery_note_id.action_print()
+
+        return self.delivery_note_id.action_print()
 
     @api.multi
-    def button_validate(self):
-        super().button_validate()
+    def action_done(self):
+        res = super().action_done()
 
         if self.picking_type_code != INCOMING_PICKING_TYPE and \
            not self.env.user.user_has_groups('easy_ddt.use_advanced_delivery_notes'):
@@ -170,6 +172,8 @@ class StockPicking(models.Model):
                 'partner_id': self.partner_id.id,
                 'partner_shipping_id': self.partner_id.id
             })
+
+        return res
 
     #
     # NEVER USED!
@@ -207,19 +211,25 @@ class StockPicking(models.Model):
 
         return data
 
-    def update_related_fields(self, vals):
+    def update_delivery_note_fields(self, vals):
         fields = self._delivery_note_fields
 
         if any([key in fields for key in vals.keys()]):
             delivery_note_vals = {fields[key].related[1]: value for key, value in vals.items() if key in fields}
 
-            self.delivery_note_id.write(delivery_note_vals)
+            self.mapped('delivery_note_id').write(delivery_note_vals)
 
     @api.multi
     def write(self, vals):
-        self.update_related_fields(vals)
+        res = super().write(vals)
 
-        return super().write(vals)
+        if self.mapped('delivery_note_id'):
+            self.update_delivery_note_fields(vals)
+
+            if 'delivery_note_id' in vals:
+                self.mapped('delivery_note_id').update_detail_lines()
+
+        return res
 
 
 class StockPickingTransportCondition(models.Model):
