@@ -134,7 +134,42 @@ class StockDeliveryNote(models.Model):
 
     @api.onchange('partner_id')
     def _onchange_partner(self):
+        result = {}
+
         if self.partner_id:
+            skipped = False
+
+            if not self.transport_condition_id:
+                self.transport_condition_id = self.partner_id.transport_condition_id
+            elif self.partner_id.transport_condition_id:
+                skipped = True
+
+            if not self.goods_appearance_id:
+                self.goods_appearance_id = self.partner_id.goods_appearance_id
+            elif self.partner_id.goods_appearance_id:
+                skipped = True
+
+            if not self.transport_reason_id:
+                self.transport_reason_id = self.partner_id.transport_reason_id
+            elif self.partner_id.transport_reason_id:
+                skipped = True
+
+            if not self.transport_method_id:
+                self.transport_method_id = self.partner_id.transport_method_id
+            elif self.partner_id.transport_method_id:
+                skipped = True
+
+            if skipped:
+                result['warning'] = {
+                    'title': _("Warning!"),
+                    'message': "Some of the shipping configuration have not"
+                               " been overwritten with the default ones of"
+                               " the partner due of fields already valorized. "
+                               "Check this shipping information.\n"
+                               "If you wish to be sure to overwrite all shipping information"
+                               " be sure you make the fields blank before changing the partner."
+                }
+
             pickings_picker_domain = [
                 ('delivery_note_id', '=', False),
                 ('state', '=', DONE_PICKING_STATE),
@@ -150,28 +185,12 @@ class StockDeliveryNote(models.Model):
             pickings_picker_domain = [('id', '=', False)]
             shipping_partner_domain = [('id', '=', False)]
 
-        return {
-            'domain': {
-                'pickings_picker': pickings_picker_domain,
-                'partner_shipping_id': shipping_partner_domain
-            }
+        result['domain'] = {
+            'pickings_picker': pickings_picker_domain,
+            'partner_shipping_id': shipping_partner_domain
         }
 
-    # @api.onchange('partner_id', 'ddt_type_id')
-    # def on_change_partner(self):
-    #     if self.ddt_type_id:
-    #         self.transport_condition_id = \
-    #             self.partner_id.transport_condition_id.id \
-    #             if self.partner_id.transport_condition_id else False
-    #         self.goods_appearance_id = \
-    #             self.partner_id.goods_appearance_id.id \
-    #             if self.partner_id.goods_appearance_id else False
-    #         self.transport_reason_id = \
-    #             self.partner_id.transport_reason_id.id \
-    #             if self.partner_id.transport_reason_id else False
-    #         self.transport_method_id = \
-    #             self.partner_id.transport_method_id.id \
-    #             if self.partner_id.transport_method_id else False
+        return result
 
     @api.multi
     @api.depends('name', 'partner_id', 'partner_id.display_name')

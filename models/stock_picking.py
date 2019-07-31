@@ -3,8 +3,6 @@
 # @author: Gianmarco Conte <gconte@dinamicheaziendali.it>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from datetime import datetime
-
 from odoo import _, api, fields, models
 
 from .stock_delivery_note import DOMAIN_DELIVERY_NOTE_STATES
@@ -44,23 +42,15 @@ class StockPicking(models.Model):
     valid_move_ids = fields.One2many('stock.move', 'picking_id', domain=[('state', '!=', CANCEL_MOVE_STATE)])
     picking_type_code = fields.Selection(related='picking_type_id.code')
 
-    @property
-    def _delivery_note_fields(self):
-        from collections import OrderedDict
-
-        cls = type(self)
-        fields = OrderedDict({
-            key: field
-            for key, field in self._fields.items()
-            if field.related and field.related[0] == 'delivery_note_id'
-        })
-
-        setattr(cls, '_delivery_note_fields', fields)
-
-        return fields
+    use_delivery_note = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_exists = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_validated = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_readonly = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_visible = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_done = fields.Boolean(compute='_compute_boolean_flags')
 
     #
-    # DDT fields:
+    # Old DDT fields:
     #
     #     ddt_number = fields.Char()
     #     ddt_type_id = fields.Many2one('stock.delivery.note.type')
@@ -78,8 +68,6 @@ class StockPicking(models.Model):
     #     parcels = fields.Integer()
     #     gross_weight = fields.Float()
     #
-    #
-    #
     #     #
     #     # NEVER USED!
     #     #
@@ -89,12 +77,20 @@ class StockPicking(models.Model):
     #     # to_be_invoiced = fields.Boolean()
     #     # show_price = fields.Boolean()
 
-    use_delivery_note = fields.Boolean(compute='_compute_boolean_flags')
-    delivery_note_exists = fields.Boolean(compute='_compute_boolean_flags')
-    delivery_note_validated = fields.Boolean(compute='_compute_boolean_flags')
-    delivery_note_readonly = fields.Boolean(compute='_compute_boolean_flags')
-    delivery_note_visible = fields.Boolean(compute='_compute_boolean_flags')
-    delivery_note_done = fields.Boolean(compute='_compute_boolean_flags')
+    @property
+    def _delivery_note_fields(self):
+        from collections import OrderedDict
+
+        cls = type(self)
+        fields = OrderedDict({
+            key: field
+            for key, field in self._fields.items()
+            if field.related and field.related[0] == 'delivery_note_id'
+        })
+
+        setattr(cls, '_delivery_note_fields', fields)
+
+        return fields
 
     @api.multi
     def _compute_boolean_flags(self):
@@ -175,42 +171,6 @@ class StockPicking(models.Model):
 
         return res
 
-    #
-    # NEVER USED!
-    #
-    # @api.multi
-    # def ddt_get_location(self, location_id):
-    #     model_warehouse = self.env['stock.warehouse']
-    #     warehouse = model_warehouse.search(
-    #         [('lot_stock_id', '=', location_id)]
-    #     )
-    #     data = [warehouse.partner_id.id, warehouse.partner_id.name]
-    #     if warehouse.partner_id:
-    #         data = [
-    #             warehouse.partner_id.name,
-    #             warehouse.partner_id.street,
-    #             (
-    #                 warehouse.partner_id.zip + ' ' +
-    #                 warehouse.partner_id.city + ' ' +
-    #                 '(' + warehouse.partner_id.state_id.name + ')'
-    #                 if warehouse.partner_id.state_id else ''
-    #             )
-    #         ]
-    #
-    #     return data
-
-    @api.multi
-    def ddt_time_report(self, time_ddt):
-        hh = int(time_ddt)
-        mm = time_ddt - hh
-        mms = str(int(round(mm * 60)))
-        if len(mms) == 1:
-            mms = '0' + mms
-
-        data = str(hh) + ":" + mms
-
-        return data
-
     def update_delivery_note_fields(self, vals):
         fields = self._delivery_note_fields
 
@@ -230,6 +190,45 @@ class StockPicking(models.Model):
                 self.mapped('delivery_note_id').update_detail_lines()
 
         return res
+
+    #
+    # Old DDT methods:
+    #
+    # @api.multi
+    # def ddt_time_report(self, time_ddt):
+    #     hh = int(time_ddt)
+    #     mm = time_ddt - hh
+    #     mms = str(int(round(mm * 60)))
+    #     if len(mms) == 1:
+    #         mms = '0' + mms
+    #
+    #     data = str(hh) + ":" + mms
+    #
+    #     return data
+    #
+    #     #
+    #     # NEVER USED!
+    #     #
+    #     # @api.multi
+    #     # def ddt_get_location(self, location_id):
+    #     #     model_warehouse = self.env['stock.warehouse']
+    #     #     warehouse = model_warehouse.search(
+    #     #         [('lot_stock_id', '=', location_id)]
+    #     #     )
+    #     #     data = [warehouse.partner_id.id, warehouse.partner_id.name]
+    #     #     if warehouse.partner_id:
+    #     #         data = [
+    #     #             warehouse.partner_id.name,
+    #     #             warehouse.partner_id.street,
+    #     #             (
+    #     #                 warehouse.partner_id.zip + ' ' +
+    #     #                 warehouse.partner_id.city + ' ' +
+    #     #                 '(' + warehouse.partner_id.state_id.name + ')'
+    #     #                 if warehouse.partner_id.state_id else ''
+    #     #             )
+    #     #         ]
+    #     #
+    #     #     return data
 
 
 class StockPickingTransportCondition(models.Model):
