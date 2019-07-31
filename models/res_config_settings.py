@@ -1,6 +1,5 @@
-#
-# Copyright (c) 2019, Link IT srl, Italy. All rights reserved.
-#
+# Copyright (c) 2019, Link IT Europe Srl (http://www.linkgroup.it/)
+# @author: Matteo Bilotta <mbilotta@linkgroup.it>
 
 from odoo import _, fields, models
 

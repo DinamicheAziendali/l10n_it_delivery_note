@@ -1,3 +1,6 @@
+# Copyright (c) 2019, Link IT Europe Srl (http://www.linkgroup.it/)
+# @author: Matteo Bilotta <mbilotta@linkgroup.it>
+
 import logging
 
 from odoo import api, SUPERUSER_ID

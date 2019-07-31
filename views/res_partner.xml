@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+    Copyright (c) 2019, Link IT Europe Srl (http://www.linkgroup.it/)
+    @author: Matteo Bilotta <mbilotta@linkgroup.it>
+  -->
+
 <odoo>
 
     <record id="res_partner_form_view" model="ir.ui.view">
