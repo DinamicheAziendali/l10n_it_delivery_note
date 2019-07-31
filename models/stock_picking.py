@@ -164,38 +164,12 @@ class StockPicking(models.Model):
     def button_validate(self):
         super().button_validate()
 
-        if not self.env.user.user_has_groups('easy_ddt.use_advanced_delivery_notes'):
+        if self.picking_type_code != INCOMING_PICKING_TYPE and \
+           not self.env.user.user_has_groups('easy_ddt.use_advanced_delivery_notes'):
             self.delivery_note_id = self.env['stock.delivery.note'].create({
                 'partner_id': self.partner_id.id,
                 'partner_shipping_id': self.partner_id.id
             })
-
-    # @api.onchange('partner_id', 'ddt_type_id')
-    # def on_change_partner(self):
-    #     if self.ddt_type_id:
-    #         self.transport_condition_id = \
-    #             self.partner_id.transport_condition_id.id \
-    #             if self.partner_id.transport_condition_id else False
-    #         self.goods_appearance_id = \
-    #             self.partner_id.goods_appearance_id.id \
-    #             if self.partner_id.goods_appearance_id else False
-    #         self.transport_reason_id = \
-    #             self.partner_id.transport_reason_id.id \
-    #             if self.partner_id.transport_reason_id else False
-    #         self.transport_method_id = \
-    #             self.partner_id.transport_method_id.id \
-    #             if self.partner_id.transport_method_id else False
-
-    @api.multi
-    def get_ddt_number(self):
-        for ddt in self:
-            if not ddt.ddt_number and ddt.ddt_type_id:
-                sequence = ddt.ddt_type_id.sequence_id
-                ddt.ddt_number = sequence.next_by_id()
-                if not ddt.ddt_date:
-                    ddt.ddt_date = datetime.now().date()
-            return self.env.ref('easy_ddt.action_report_easy_ddt').report_action(self)
-        return True
 
     #
     # NEVER USED!

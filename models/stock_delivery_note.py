@@ -157,6 +157,22 @@ class StockDeliveryNote(models.Model):
             }
         }
 
+    # @api.onchange('partner_id', 'ddt_type_id')
+    # def on_change_partner(self):
+    #     if self.ddt_type_id:
+    #         self.transport_condition_id = \
+    #             self.partner_id.transport_condition_id.id \
+    #             if self.partner_id.transport_condition_id else False
+    #         self.goods_appearance_id = \
+    #             self.partner_id.goods_appearance_id.id \
+    #             if self.partner_id.goods_appearance_id else False
+    #         self.transport_reason_id = \
+    #             self.partner_id.transport_reason_id.id \
+    #             if self.partner_id.transport_reason_id else False
+    #         self.transport_method_id = \
+    #             self.partner_id.transport_method_id.id \
+    #             if self.partner_id.transport_method_id else False
+
     @api.multi
     @api.depends('name', 'partner_id', 'partner_id.display_name')
     def _compute_display_name(self):
@@ -216,7 +232,7 @@ class StockDeliveryNote(models.Model):
 
     @api.multi
     def action_print(self):
-        raise NotImplementedError(_("This functionality isn't yet ready. Please, come back later."))
+        return self.env.ref('easy_ddt.delivery_note_report_action').report_action(self)
 
     def _create_detail_lines(self, move_ids):
         if not move_ids:

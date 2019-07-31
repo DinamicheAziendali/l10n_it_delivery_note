@@ -26,7 +26,7 @@
 
     'data': [
         'data/delivery_note_data.xml',
-        'report/report_easy_ddt.xml',
+        'report/report_delivery_note.xml',
 
         'security/ir.model.access.csv',
         'security/ir_rule.xml',

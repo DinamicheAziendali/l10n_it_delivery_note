@@ -2,13 +2,13 @@
 
 <odoo>
 
-    <record id="view_partner_form_ddt" model="ir.ui.view">
-        <field name="name">res.partner.form.ddt</field>
+    <record id="res_partner_form_view" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='sales_purchases']/group[1]">
-                <group string="Shipping Informations">
+            <xpath expr="//page[@name='sales_purchases']/group" position="inside">
+                <group string="Shipping Information">
                     <field name="goods_appearance_id" widget="selection" />
                     <field name="transport_condition_id" widget="selection" />
                     <field name="transport_reason_id" widget="selection" />

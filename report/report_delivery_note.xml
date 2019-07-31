@@ -2,118 +2,7 @@
 
 <odoo>
 
-    <template id="easy_ddt.delivery_data">
-        <style type="text/css">
-            table.delivery_data td h6
-            {
-                margin: 0;
-            }
-            .signature
-            {
-                min-height: 2em;
-            }
-        </style>
-        <table class="table table-condensed table-bordered delivery_data">
-            <tr>
-                <td>
-                    <h6 name="transport">
-                        Reason of transport
-                        <div t-field="ddt.transport_reason_id" />
-                    </h6>
-                </td>
-                <td>
-                    <h6 name="carriage">
-                        Condition of transport
-                        <div t-field="ddt.transport_condition_id" />
-                    </h6>
-                </td>
-                <td>
-                    <h6 name="good_description">
-                        Appearance of goods
-                        <div t-field="ddt.goods_appearance_id" />
-                    </h6>
-                </td>
-                <td>
-                    <h6 name="gross_weight">
-                        Gross Weight
-                        <div class="text-right" t-field="ddt.gross_weight" />
-                    </h6>
-                </td>
-                <td>
-                    <h6 name="net_weight">
-                        Net Weight
-                        <div class="text-right" t-field="ddt.weight" />
-                    </h6>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5" class="notes">
-                    <h6>Notes</h6>
-                    <div class="signature" t-field="ddt.ddt_notes" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" name="method_trasport">
-                    <h6>Method of transport / carrier</h6>
-                    <div>
-                        <span t-field="ddt.transport_method_id" ame="transport_method_id" />
-                        <span t-if="ddt.carrier_tracking_ref">
-                            <br/>
-                            <h6>traking reference:
-                                <span t-field="ddt.carrier_tracking_ref" name="carrier_tracking_ref" />
-                            </h6>
-                        </span>
-                    </div>
-                </td>
-                <td>
-                    <h6>Withdrawal Date
-                        <div>
-                            <span t-field="ddt.date_transport_ddt" name="date_trasport" />
-                        </div>
-                    </h6>
-                </td>
-                <td>
-                    <h6>Time:
-                        <br/>
-                        <t t-esc="ddt.ddt_time_report(ddt.time_transport_ddt)" name="time_trasport" />
-                    </h6>
-                </td>
-                <td>
-                    <h6>Parcels
-                        <div t-field="ddt.parcels" name="parcel" />
-                    </h6>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <table class="table table-condensed delivery_data">
-                        <tr>
-                            <td>
-                                <h6 name="carrier_signature">
-                                    Carrier's Signature
-                                </h6>
-                                <div class="signature" />
-                            </td>
-                            <td>
-                                <h6 name="driver_signature">
-                                    Driver's Signature
-                                </h6>
-                                <div class="signature" />
-                            </td>
-                            <td>
-                                <h6 name="recipint_signature">
-                                    Recipient's Signature
-                                </h6>
-                                <div class="signature" />
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </template>
-
-    <template id="report_easy_ddt">
+    <template id="delivery_note_report_template">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
                 <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
@@ -246,28 +135,131 @@
                         </t>
                     </p>
                 </div>
-
-                <t t-call="easy_ddt.delivery_data">
-                    <t t-set="ddt" t-value="o" />
-                </t>
+                <style type="text/css">
+                    table.delivery_data td h6
+                    {
+                        margin: 0;
+                    }
+                    .signature
+                    {
+                        min-height: 2em;
+                    }
+                </style>
+                <table class="table table-condensed table-bordered delivery_data">
+                    <tr>
+                        <td>
+                            <h6 name="transport">
+                                Reason of transport
+                                <div t-field="o.transport_reason_id" />
+                            </h6>
+                        </td>
+                        <td>
+                            <h6 name="carriage">
+                                Condition of transport
+                                <div t-field="o.transport_condition_id" />
+                            </h6>
+                        </td>
+                        <td>
+                            <h6 name="good_description">
+                                Appearance of goods
+                                <div t-field="o.goods_appearance_id" />
+                            </h6>
+                        </td>
+                        <td>
+                            <h6 name="gross_weight">
+                                Gross Weight
+                                <div class="text-right" t-field="o.gross_weight" />
+                            </h6>
+                        </td>
+                        <td>
+                            <h6 name="net_weight">
+                                Net Weight
+                                <div class="text-right" t-field="o.weight" />
+                            </h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="notes">
+                            <h6>Notes</h6>
+                            <div class="signature" t-field="o.ddt_notes" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" name="method_trasport">
+                            <h6>Method of transport / carrier</h6>
+                            <div>
+                                <span t-field="o.transport_method_id" ame="transport_method_id" />
+                                <span t-if="o.carrier_tracking_ref">
+                                    <br/>
+                                    <h6>traking reference:
+                                        <span t-field="o.carrier_tracking_ref" name="carrier_tracking_ref" />
+                                    </h6>
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <h6>Withdrawal Date
+                                <div>
+                                    <span t-field="o.date_transport_ddt" name="date_trasport" />
+                                </div>
+                            </h6>
+                        </td>
+                        <td>
+                            <h6>Time:
+                                <br/>
+                                <t t-esc="o.ddt_time_report(o.time_transport_ddt)" name="time_trasport" />
+                            </h6>
+                        </td>
+                        <td>
+                            <h6>Parcels
+                                <div t-field="o.parcels" name="parcel" />
+                            </h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <table class="table table-condensed delivery_data">
+                                <tr>
+                                    <td>
+                                        <h6 name="carrier_signature">
+                                            Carrier's Signature
+                                        </h6>
+                                        <div class="signature" />
+                                    </td>
+                                    <td>
+                                        <h6 name="driver_signature">
+                                            Driver's Signature
+                                        </h6>
+                                        <div class="signature" />
+                                    </td>
+                                    <td>
+                                        <h6 name="recipint_signature">
+                                            Recipient's Signature
+                                        </h6>
+                                        <div class="signature" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
             </t>
         </t>
     </template>
 
-    <template id="report_easy_ddt_main">
+    <template id="delivery_note_report_main_template">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="easy_ddt.report_easy_ddt" t-lang="o.partner_id.lang" />
+                <t t-call="easy_ddt.delivery_note_report_template" t-lang="o.partner_id.lang" />
             </t>
         </t>
     </template>
 
-    <report string="DDT"
-            id="action_report_easy_ddt"
-            model="stock.picking"
+    <report id="delivery_note_report_action"
+            model="stock.delivery.note"
+            name="easy_ddt.delivery_note_report_main_template"
+            file="easy_ddt.delivery_note_report_main_template"
             report_type="qweb-pdf"
-            name="easy_ddt.report_easy_ddt_main"
-            file="easy_ddt.report_easy_ddt_main"
-            menu="False" />
+            string="Delivery note" />
 
 </odoo>
