@@ -263,9 +263,37 @@ class StockDeliveryNote(models.Model):
         # TODO: Gestire la fatturazione direttamente da DDT.
         #
         # self.mapped('picking_ids.sale_id') -> 'sale.order'
-        # self.mapped('line_ids.move_id.sale_line_id') -> 'sale.order.line'
+        # self.mapped('line_ids.sale_line_id') -> 'sale.order.line'
+        #
+        # extra_lines = self.mapped('picking_ids.sale_id.order_line') - self.mapped('line_ids.move_id.sale_line_id')
+        #
+        # self.mapped('picking_ids.sale_id.order_line.delivery_note_line_id.delivery_note_id') -> 'stock.delivery.note'
         #
         # sale_order_ids.action_invoice_create(final=[...])
+        #
+        #     #
+        #     # orders = self.mapped('picking_ids.sale_id')
+        #     # first_order = orders[0]
+        #     # all_lines = orders.mapped('order_line').filtered(lambda l: l.qty_to_invoice > 0)
+        #     # lines_to_invoice = self.mapped('line_ids.sale_line_id').filtered(lambda l: l.order_id == first_order)
+        #     # lines_to_remove = all_lines - lines_to_invoice
+        #     #
+        #     # cache = {}
+        #     # for line in lines_to_remove:
+        #     #     cache[line] = {
+        #     #         'qty_to_invoice': line.qty_to_invoice,
+        #     #         'qty_invoiced': line.qty_invoiced
+        #     #     }
+        #     #     line.write({
+        #     #         'qty_to_invoice': 0,
+        #     #         'qty_invoiced': 0
+        #     #     })
+        #     #
+        #     # orders.action_invoice_create()
+        #     #
+        #     # for line, vals in cache.items():
+        #     #     line.write(vals)
+        #     #
         #
 
         raise NotImplementedError(_("This functionality isn't ready yet. Please, come back later."))
@@ -298,7 +326,6 @@ class StockDeliveryNote(models.Model):
 
             note._create_detail_lines(move_ids_to_create)
             note._delete_detail_lines(move_ids_to_delete)
-
 
     @api.model
     @api.returns('self')
@@ -341,6 +368,7 @@ class StockDeliveryNoteLine(models.Model):
     tax_ids = fields.Many2many('account.tax', string=_("Taxes"))
 
     move_id = fields.Many2one('stock.move', string=_("Warehouse movement"), readonly=True)
+    sale_line_id = fields.Many2one('sale.order.line', related='move_id.sale_line_id', store=True)
 
     _sql_constraints = [(
         'move_uniq',

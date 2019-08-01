@@ -19,34 +19,28 @@
                             type="object"
                             states="cancel"
                             class="oe_highlight"
-                            groups="base.group_user"
                             string="Reset to draft" />
                     <button name="action_confirm"
                             type="object"
                             states="draft"
                             class="oe_highlight"
-                            groups="base.group_user"
                             string="Validate" />
-                    <button name="action_print"
+                    <button name="action_invoice"
                             type="object"
-                            states="draft"
-                            groups="base.group_user"
-                            string="Print" />
-                    <button name="action_print"
-                            type="object"
-                            states="confirm,done"
+                            states="confirm"
                             class="oe_highlight"
-                            groups="base.group_user"
+                            string="Create invoice" />
+                    <button name="action_print"
+                            type="object"
+                            states="draft,confirm,done"
                             string="Print" />
                     <button name="action_done"
                             type="object"
                             states="confirm"
-                            groups="base.group_user"
                             string="Set done" />
                     <button name="action_cancel"
                             type="object"
                             states="confirm,done"
-                            groups="base.group_user"
                             string="Cancel" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirm" />
                 </header>
@@ -203,7 +197,7 @@
         <field name="name">stock.delivery.note.tree</field>
         <field name="model">stock.delivery.note</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-muted="state == 'cancel'">
                 <field name="display_name" string="Name" />
                 <field name="partner_id" />
                 <field name="state" />

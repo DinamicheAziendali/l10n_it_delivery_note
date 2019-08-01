@@ -47,3 +47,28 @@
         }
     }
 }
+
+.btn,
+.o_icon_button
+{
+    &.fa
+    {
+        font-family: FontAwesome, Roboto, sans-serif;
+    }
+
+    & > .fa:before
+    {
+        margin-right: 0.5em;
+    }
+}
+
+table.o_list_view tr.o_data_row > td.o_list_button
+{
+    padding-left: 16px !important;
+    width: 1px;
+
+    & > button.o_icon_button > .fa:before
+    {
+        margin: 0px;
+    }
+}

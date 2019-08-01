@@ -10,7 +10,7 @@
     'name': "Easy DDT",
     'summary': "Documento di Trasporto",
 
-    'author': "Marco Calcagni, Gianmarco Conte, Link IT Srl",
+    'author': "Marco Calcagni, Gianmarco Conte, Link IT Europe Srl",
     'website': "http://www.dinamicheaziendali.it/",
 
     'version': '12.0.2.0.0',
