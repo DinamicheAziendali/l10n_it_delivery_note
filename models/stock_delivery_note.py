@@ -256,8 +256,9 @@ class StockDeliveryNote(models.Model):
     def action_print(self):
         return self.env.ref('easy_ddt.delivery_note_report_action').report_action(self)
 
-    @api.multi
     def action_invoice(self):
+        self.ensure_one()
+
         #
         # TODO: Gestire la fatturazione direttamente da DDT.
         #

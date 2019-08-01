@@ -45,6 +45,7 @@ class StockPicking(models.Model):
     picking_type_code = fields.Selection(related='picking_type_id.code')
 
     use_delivery_note = fields.Boolean(compute='_compute_boolean_flags')
+    use_advanced_behaviour = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_exists = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_validated = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_readonly = fields.Boolean(compute='_compute_boolean_flags')
@@ -104,6 +105,7 @@ class StockPicking(models.Model):
                                         picking.state == DONE_PICKING_STATE and \
                                         picking.picking_type_code != INCOMING_PICKING_TYPE
 
+            picking.use_advanced_behaviour = use_advanced_behaviour
             picking.delivery_note_visible = use_advanced_behaviour
 
             if picking.use_delivery_note and picking.delivery_note_id:
@@ -120,7 +122,6 @@ class StockPicking(models.Model):
             else:
                 picking.delivery_note_readonly = True
 
-    @api.multi
     def action_delivery_note_create(self):
         self.ensure_one()
 
@@ -134,7 +135,6 @@ class StockPicking(models.Model):
             'context': {'active_ids': self.ids}
         }
 
-    @api.multi
     def action_delivery_note_select(self):
         self.ensure_one()
 
@@ -148,19 +148,16 @@ class StockPicking(models.Model):
             'context': {'active_ids': self.ids}
         }
 
-    @api.multi
     def action_delivery_note_validate(self):
         self.ensure_one()
 
         return self.delivery_note_id.action_confirm()
 
-    @api.multi
     def action_delivery_note_print(self):
         self.ensure_one()
 
         return self.delivery_note_id.action_print()
 
-    @api.multi
     def action_delivery_note_invoice(self):
         self.ensure_one()
 
@@ -178,6 +175,20 @@ class StockPicking(models.Model):
             })
 
         return res
+
+    def goto_delivery_note(self, **kwargs):
+        self.ensure_one()
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'stock.delivery.note',
+            'res_id': self.delivery_note_id.id,
+            'views': [(False, 'form')],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'target': 'current',
+            **kwargs
+        }
 
     def update_delivery_note_fields(self, vals):
         fields = self._delivery_note_fields

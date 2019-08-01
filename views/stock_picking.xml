@@ -25,6 +25,7 @@
                           string="Delivery note"
                           attrs="{'invisible': [('use_delivery_note', '=', False)]}">
                         <field name="use_delivery_note" invisible="True" />
+                        <field name="use_advanced_behaviour" invisible="True" />
                         <field name="delivery_note_exists" invisible="True" />
                         <field name="delivery_note_validated" invisible="True" />
                         <field name="delivery_note_readonly" invisible="True" />
@@ -43,32 +44,42 @@
                                             string="Select existing" />
                                 </div>
                                 <div attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
-                                    <div attrs="{'invisible': [('delivery_note_validated', '=', True)]}">
-                                        <button name="action_delivery_note_validate"
-                                                type="object"
-                                                class="oe_highlight"
-                                                string="Validate" />
-                                        <button name="action_delivery_note_print"
-                                                type="object"
-                                                string="Print" />
-                                    </div>
-                                    <div attrs="{'invisible': [('delivery_note_validated', '=', False)]}">
-                                        <button name="action_delivery_note_print"
-                                                type="object"
-                                                class="oe_highlight"
-                                                string="Print" />
-                                    </div>
+                                    <button name="action_delivery_note_validate"
+                                            type="object"
+                                            attrs="{'invisible': [('delivery_note_validated', '=', True)]}"
+                                            class="oe_highlight"
+                                            string="Validate" />
+                                    <button name="action_delivery_note_invoice"
+                                            type="object"
+                                            attrs="{'invisible': [('delivery_note_validated', '=', False)]}"
+                                            class="oe_highlight"
+                                            string="Create invoice" />
+                                    <button name="action_delivery_note_print"
+                                            type="object"
+                                            string="Print" />
                                 </div>
                             </div>
                             <div class="content">
                                 <group>
                                     <group>
-                                        <field name="delivery_note_id"
-                                               domain="[('state', '=', 'draft'), ('partner_id', '=', partner_id)]"
-                                               attrs="{'invisible': [('delivery_note_visible', '=', False)],
-                                                       'required': [('delivery_note_exists', '=', True)],
-                                                       'readonly': [('delivery_note_readonly', '=', True)]}"
-                                               options="{'no_create': True, 'no_open': True}" />
+                                        <label for="delivery_note_id"
+                                               attrs="{'invisible': [('delivery_note_visible', '=', False)]}" />
+                                        <div class="o_row"
+                                             attrs="{'invisible': [('delivery_note_visible', '=', False)]}">
+                                            <field name="delivery_note_id"
+                                                   domain="[('state', '=', 'draft'),
+                                                            ('partner_id', '=', partner_id)]"
+                                                   attrs="{'required': [('delivery_note_exists', '=', True)],
+                                                           'readonly': [('delivery_note_readonly', '=', True)]}"
+                                                   options="{'no_create': True, 'no_open': True}" />
+                                            <button type="object"
+                                                    name="goto_delivery_note"
+                                                    class="btn-secondary"
+                                                    attrs="{'invisible': [('use_advanced_behaviour', '=', False)]}"
+                                                    icon="fa-external-link"
+                                                    aria-label="Go to delivery note"
+                                                    title="Go to delivery note" />
+                                        </div>
                                         <field name="delivery_note_partner_shipping_id"
                                                domain="['|', ('id', '=', partner_id), ('parent_id', '=', partner_id)]"
                                                attrs="{'required': [('delivery_note_exists', '=', True)],
@@ -152,12 +163,19 @@
         </field>
     </record>
 
-    <record id="stock_picking_tree_view_inherit" model="ir.ui.view">
-        <field name="name">stock.picking.inherit.tree</field>
+    <record id="stock_picking_tree_view" model="ir.ui.view">
+        <field name="name">stock.picking.tree</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.vpicktree" />
         <field name="arch" type="xml">
             <field name="state" position="after">
+                <button type="object"
+                        name="goto_delivery_note"
+                        class="oe_button"
+                        attrs="{'invisible': [('delivery_note_id', '=', False)]}"
+                        icon="fa-external-link"
+                        aria-label="Go to delivery note"
+                        title="Go to delivery note" />
                 <field name="delivery_note_id" groups="easy_ddt.use_advanced_delivery_notes" />
             </field>
         </field>
