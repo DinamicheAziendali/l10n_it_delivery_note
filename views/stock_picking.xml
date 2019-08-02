@@ -173,6 +173,7 @@
                         name="goto_delivery_note"
                         class="oe_button"
                         attrs="{'invisible': [('delivery_note_id', '=', False)]}"
+                        groups="easy_ddt.use_advanced_delivery_notes"
                         icon="fa-external-link"
                         aria-label="Go to delivery note"
                         title="Go to delivery note" />

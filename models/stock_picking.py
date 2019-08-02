@@ -122,6 +122,11 @@ class StockPicking(models.Model):
             else:
                 picking.delivery_note_readonly = True
 
+    def _add_delivery_cost_to_so(self):
+        self.ensure_one()
+
+        super(StockPicking, self.with_context(default_picking_id=self.id))._add_delivery_cost_to_so()
+
     def action_delivery_note_create(self):
         self.ensure_one()
 
