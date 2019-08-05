@@ -263,16 +263,31 @@ class StockDeliveryNote(models.Model):
     def action_print(self):
         return self.env.ref('easy_ddt.delivery_note_report_action').report_action(self)
 
+    def _fix_quantities_to_invoice(self, lines):
+        cache = {}
+
+        picking_lines = lines.retrieve_pickings_lines(self.picking_ids)
+        other_lines = lines - picking_lines
+
+        for line in other_lines:
+            cache[line] = line.fix_qty_to_invoice()
+
+        valid_move_ids = self.mapped('picking_ids.move_lines')
+
+        for line in picking_lines.filtered(lambda l: len(l.move_ids) > 1):
+            qty_to_invoice = sum(line.move_ids.filtered(lambda m: m in valid_move_ids).mapped('quantity_done'))
+
+            cache[line] = line.fix_qty_to_invoice(qty_to_invoice)
+
+        return cache
+
     def action_invoice(self):
         self.ensure_one()
 
-        cache = {}
-        orders_lines = self.mapped('sale_ids.order_line')
-        invoiceable_lines = orders_lines.retrieve_invoiceable_lines()
-        lines_to_exclude = invoiceable_lines.retrieve_unrelated_lines(self)
-
-        for line in lines_to_exclude:
-            cache[line] = line.make_not_invoiceable()
+        orders_lines = self.mapped('sale_ids.order_line').filtered(lambda l: l.product_id)
+        downpayment_lines = orders_lines.filtered(lambda l: l.is_downpayment)
+        invoiceable_lines = orders_lines.filtered(lambda l: l.is_invoiceable)
+        cache = self._fix_quantities_to_invoice(invoiceable_lines - downpayment_lines)
 
         self.sale_ids.action_invoice_create()
 

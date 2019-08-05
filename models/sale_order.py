@@ -21,9 +21,17 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     delivery_note_line_id = fields.One2many('stock.delivery.note.line', 'sale_line_id', readonly=True)
-    picking_id = fields.Many2one('stock.picking', readonly=True)
+    delivery_picking_id = fields.Many2one('stock.picking', readonly=True)
 
-    def make_not_invoiceable(self):
+    @property
+    def has_picking(self):
+        return self.move_ids or (self.is_delivery and self.delivery_picking_id)
+
+    @property
+    def is_invoiceable(self):
+        return self.invoice_status == LINE_TO_INVOICE_STATUS and self.qty_to_invoice != 0
+
+    def fix_qty_to_invoice(self, new_qty_to_invoice=0):
         self.ensure_one()
 
         cache = {
@@ -32,17 +40,19 @@ class SaleOrderLine(models.Model):
         }
 
         self.write({
-            'invoice_status': 'no',
-            'qty_to_invoice': 0
+            'invoice_status': 'to invoice' if new_qty_to_invoice else 'no',
+            'qty_to_invoice': new_qty_to_invoice
         })
 
         return cache
 
-    @api.multi
-    def retrieve_invoiceable_lines(self):
-        return self.filtered(lambda l: l.invoice_status == LINE_TO_INVOICE_STATUS and l.qty_to_invoice != 0)
+    def is_pickings_related(self, picking_ids):
+        if self.is_delivery:
+            return self.delivery_picking_id in picking_ids
+
+        return any(move in picking_ids.mapped('move_lines') for move in self.move_ids)
 
     @api.multi
-    def retrieve_unrelated_lines(self, delivery_note):
-        return self.filtered(lambda l: l.delivery_note_line_id and
-                                       l.delivery_note_line_id.delivery_note_id != delivery_note)
+    def retrieve_pickings_lines(self, picking_ids):
+        return self.filtered(lambda l: l.has_picking) \
+                   .filtered(lambda l: l.is_pickings_related(picking_ids))

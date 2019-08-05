@@ -125,7 +125,7 @@ class StockPicking(models.Model):
     def _add_delivery_cost_to_so(self):
         self.ensure_one()
 
-        super(StockPicking, self.with_context(default_picking_id=self.id))._add_delivery_cost_to_so()
+        super(StockPicking, self.with_context(default_delivery_picking_id=self.id))._add_delivery_cost_to_so()
 
     def action_delivery_note_create(self):
         self.ensure_one()
@@ -198,7 +198,7 @@ class StockPicking(models.Model):
     def update_delivery_note_fields(self, vals):
         fields = self._delivery_note_fields
 
-        if any([key in fields for key in vals.keys()]):
+        if any(key in fields for key in vals.keys()):
             delivery_note_vals = {fields[key].related[1]: value for key, value in vals.items() if key in fields}
 
             self.mapped('delivery_note_id').write(delivery_note_vals)
