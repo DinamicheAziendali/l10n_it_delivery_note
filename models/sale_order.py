@@ -4,6 +4,7 @@
 from odoo import _, api, fields, models
 
 LINE_TO_INVOICE_STATUS = 'to invoice'
+LINE_INVOICED_STATUS = 'invoiced'
 
 
 # class SaleOrder(models.Model):
@@ -31,6 +32,12 @@ class SaleOrderLine(models.Model):
     def is_invoiceable(self):
         return self.invoice_status == LINE_TO_INVOICE_STATUS and self.qty_to_invoice != 0
 
+    @property
+    def already_invoiced(self):
+        return self.invoice_status == LINE_INVOICED_STATUS and \
+               self.product_uom_qty == self.qty_invoiced and \
+               self.qty_to_invoice == 0
+
     def fix_qty_to_invoice(self, new_qty_to_invoice=0):
         self.ensure_one()
 
@@ -50,7 +57,7 @@ class SaleOrderLine(models.Model):
         if self.is_delivery:
             return self.delivery_picking_id in picking_ids
 
-        return any(move in picking_ids.mapped('move_lines') for move in self.move_ids)
+        return bool(self.move_ids & picking_ids.mapped('move_lines'))
 
     @api.multi
     def retrieve_pickings_lines(self, picking_ids):
