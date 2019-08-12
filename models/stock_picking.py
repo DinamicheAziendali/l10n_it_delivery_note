@@ -84,14 +84,13 @@ class StockPicking(models.Model):
     def _delivery_note_fields(self):
         from collections import OrderedDict
 
-        cls = type(self)
         fields = OrderedDict({
             key: field
             for key, field in self._fields.items()
             if field.related and field.related[0] == 'delivery_note_id'
         })
 
-        setattr(cls, '_delivery_note_fields', fields)
+        setattr(type(self), '_delivery_note_fields', fields)
 
         return fields
 
