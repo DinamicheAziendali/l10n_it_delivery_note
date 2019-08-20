@@ -11,6 +11,12 @@ from odoo import _, fields, models
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
+    delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), readonly=True)
+
+    #
+    # Non ho la più pallida idea di quale sia la funzione dei seguenti campi.
+    # TODO: Implementare logiche aggiuntive o rimuovere questi campi.
+    #
     transport_condition_id = fields.Many2one('stock.picking.transport.condition', string=_("Condition of transport"))
     goods_appearance_id = fields.Many2one('stock.picking.goods.appearance', string=_("Appearance of goods"))
     transport_reason_id = fields.Many2one('stock.picking.transport.reason', string=_("Reason of transport"))

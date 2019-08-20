@@ -8,6 +8,7 @@ from odoo.addons import decimal_precision as dp
 from odoo.exceptions import UserError
 
 from ..mixins.picking_checker import DONE_PICKING_STATE, INCOMING_PICKING_TYPE
+from .sale_order import TO_INVOICE_STATUS
 
 DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S'
 
@@ -77,6 +78,16 @@ class StockDeliveryNote(models.Model):
                                           required=True,
                                           track_visibility='onchange')
 
+    #
+    # TODO: Deve, forse, essere un 'delivery.carrier' anziché un 'res.partner'?
+    #
+    # carrier_id = fields.Many2one('res.partner',
+    #                              string=_("Carrier"),
+    #                              states=DRAFT_EDITABLE_STATE,
+    #                              readonly=True,
+    #                              required=True,
+    #                              track_visibility='onchange')
+
     date = fields.Date(string=_("Date"), states=DONE_READONLY_STATE)
     type_id = fields.Many2one('stock.delivery.note.type',
                               string=_("Type"),
@@ -134,6 +145,7 @@ class StockDeliveryNote(models.Model):
     pickings_picker = fields.Many2many('stock.picking', compute='_get_pickings', inverse='_set_pickings')
 
     sale_ids = fields.Many2many('sale.order', compute='_compute_sale_ids')
+    invoice_ids = fields.One2many('account.invoice', 'delivery_note_id', readonly=True)
 
     note = fields.Html(string=_("Internal note"), states=DONE_READONLY_STATE)
 
@@ -228,12 +240,20 @@ class StockDeliveryNote(models.Model):
     @api.multi
     def _compute_sale_ids(self):
         for note in self:
-            note.sale_ids = self.mapped('picking_ids.sale_id')
+            note.sale_ids = self.mapped('picking_ids.sale_id') \
+                                .filtered(lambda o: o.invoice_status == TO_INVOICE_STATUS)
 
     def check_compliance(self, pickings):
         super().check_compliance(pickings)
 
         self._check_delivery_notes(self.pickings_picker - self.picking_ids)
+
+    @api.multi
+    def ensure_annulability(self):
+        if self.mapped('invoice_ids'):
+            raise UserError(_("You cannot cancel this delivery note. "
+                              "There is at least one invoice"
+                              " related to this delivery note."))
 
     @api.multi
     def action_draft(self):
@@ -257,6 +277,7 @@ class StockDeliveryNote(models.Model):
 
     @api.multi
     def action_cancel(self):
+        self.ensure_annulability()
         self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[3]})
 
     @api.multi
@@ -297,7 +318,8 @@ class StockDeliveryNote(models.Model):
             if order_lines.filtered(lambda l: not l.is_invoiceable and not l.already_invoiced):
                 cache[downpayment] = downpayment.fix_qty_to_invoice()
 
-        self.sale_ids.action_invoice_create(final=True)
+        self.sale_ids.with_context(default_delivery_note_id=self.id) \
+                     .action_invoice_create(final=True)
 
         for line, vals in cache.items():
             line.write(vals)
@@ -350,6 +372,12 @@ class StockDeliveryNote(models.Model):
 
         return res
 
+    @api.multi
+    def unlink(self):
+        self.ensure_annulability()
+
+        return super().unlink()
+
 
 class StockDeliveryNoteLine(models.Model):
     _name = 'stock.delivery.note.line'
@@ -358,7 +386,10 @@ class StockDeliveryNoteLine(models.Model):
     def _default_unit_uom(self):
         return self.env.ref('uom.product_uom_unit', raise_if_not_found=False)
 
-    delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), required=True)
+    delivery_note_id = fields.Many2one('stock.delivery.note',
+                                       string=_("Delivery note"),
+                                       required=True,
+                                       ondelete='cascade')
 
     sequence = fields.Integer(string=_("Sequence"), required=True, default=10, index=True)
     name = fields.Text(string=_("Description"), required=True)

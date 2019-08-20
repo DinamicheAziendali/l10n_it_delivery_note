@@ -1033,7 +1033,7 @@ msgstr "Indirizzo di spedizione"
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__state
 #, python-format
 msgid "State"
-msgstr "Provincia"
+msgstr "Stato"
 
 #. module: easy_ddt
 #: model:ir.model.fields,help:easy_ddt.field_stock_delivery_note__activity_state

@@ -31,6 +31,7 @@
                         <field name="delivery_note_readonly" invisible="True" />
                         <field name="delivery_note_visible" invisible="True" />
                         <field name="delivery_note_done" invisible="True" />
+                        <field name="can_be_invoiced" invisible="True" />
                         <div class="no-margin-page-content">
                             <div class="header">
                                 <div attrs="{'invisible': [('delivery_note_exists', '=', True)]}">
@@ -51,7 +52,7 @@
                                             string="Validate" />
                                     <button name="action_delivery_note_invoice"
                                             type="object"
-                                            attrs="{'invisible': [('delivery_note_validated', '=', False)]}"
+                                            attrs="{'invisible': [('can_be_invoiced', '=', False)]}"
                                             class="oe_highlight"
                                             string="Create invoice" />
                                     <button name="action_delivery_note_print"
@@ -75,7 +76,8 @@
                                             <button type="object"
                                                     name="goto_delivery_note"
                                                     class="btn-secondary"
-                                                    attrs="{'invisible': [('use_advanced_behaviour', '=', False)]}"
+                                                    attrs="{'invisible': ['|', ('use_advanced_behaviour', '=', False),
+                                                                               ('delivery_note_exists', '=', False)]}"
                                                     icon="fa-external-link"
                                                     aria-label="Go to delivery note"
                                                     title="Go to delivery note" />

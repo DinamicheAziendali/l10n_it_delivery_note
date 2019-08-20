@@ -14,6 +14,7 @@
         <field name="arch" type="xml">
             <form>
                 <field name="picking_ids" invisible="True" />
+                <field name="sale_ids" invisible="True" />
                 <header>
                     <button name="action_draft"
                             type="object"
@@ -27,9 +28,9 @@
                             string="Validate" />
                     <button name="action_invoice"
                             type="object"
-                            states="confirm"
                             class="oe_highlight"
-                            string="Create invoice" />
+                            string="Create invoice"
+                            attrs="{'invisible': ['|', ('state', '!=', 'confirm'), ('sale_ids', '=', [])]}" />
                     <button name="action_print"
                             type="object"
                             states="draft,confirm,done"
@@ -67,6 +68,9 @@
                             <field name="partner_shipping_id"
                                    domain="['|', ('id', '=', partner_id), ('parent_id', '=', partner_id)]"
                                    options="{'no_create': True, 'no_open': True}" />
+                            <!--<field name="carrier_id"-->
+                                   <!--domain="[('supplier', '=', True)]"-->
+                                   <!--context="{'default_supplier': True}" />-->
                         </group>
                         <group>
                             <field name="type_id" />

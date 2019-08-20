@@ -3,8 +3,8 @@
 
 from odoo import _, api, fields, models
 
-LINE_TO_INVOICE_STATUS = 'to invoice'
-LINE_INVOICED_STATUS = 'invoiced'
+TO_INVOICE_STATUS = 'to invoice'
+INVOICED_STATUS = 'invoiced'
 
 
 # class SaleOrder(models.Model):
@@ -30,11 +30,11 @@ class SaleOrderLine(models.Model):
 
     @property
     def is_invoiceable(self):
-        return self.invoice_status == LINE_TO_INVOICE_STATUS and self.qty_to_invoice != 0
+        return self.invoice_status == TO_INVOICE_STATUS and self.qty_to_invoice != 0
 
     @property
     def already_invoiced(self):
-        return self.invoice_status == LINE_INVOICED_STATUS and \
+        return self.invoice_status == INVOICED_STATUS and \
                self.product_uom_qty == self.qty_invoiced and \
                self.qty_to_invoice == 0
 

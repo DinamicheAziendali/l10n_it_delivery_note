@@ -51,6 +51,7 @@ class StockPicking(models.Model):
     delivery_note_readonly = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_visible = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_done = fields.Boolean(compute='_compute_boolean_flags')
+    can_be_invoiced = fields.Boolean(compute='_compute_boolean_flags')
 
     #
     # Old DDT fields:
@@ -114,6 +115,7 @@ class StockPicking(models.Model):
                     picking.delivery_note_validated = True
                     picking.delivery_note_readonly = True
                     picking.delivery_note_visible = True
+                    picking.can_be_invoiced = bool(picking.delivery_note_id.sale_ids)
 
                 elif picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[2]:
                     picking.delivery_note_done = True
