@@ -9,3 +9,5 @@ class ResConfigSettings(models.TransientModel):
 
     group_use_advanced_delivery_notes = fields.Boolean(string=_("Use the advanced delivery notes behaviour"),
                                                        implied_group='easy_ddt.use_advanced_delivery_notes')
+    group_show_product_related_fields = fields.Boolean(string=_("Show product information in the delivery note lines"),
+                                                       implied_group='easy_ddt.show_product_related_fields')

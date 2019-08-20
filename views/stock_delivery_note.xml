@@ -127,9 +127,11 @@
                                     <field name="name" widget="section_and_note_text" />
                                     <field name="product_qty" />
                                     <field name="product_uom" options="{'no_create': True, 'no_open': True}" />
-                                    <field name="price_unit" />
-                                    <field name="discount" />
-                                    <field name="tax_ids" widget="many2many_tags" />
+                                    <field name="price_unit" groups="easy_ddt.show_product_related_fields" />
+                                    <field name="discount" groups="easy_ddt.show_product_related_fields" />
+                                    <field name="tax_ids"
+                                           groups="easy_ddt.show_product_related_fields"
+                                           widget="many2many_tags" />
                                 </tree>
                                 <form>
                                     <field name="display_type" invisible="True" />
@@ -150,7 +152,7 @@
                                     </div>
                                     <group attrs="{'invisible': [('display_type', '!=', False)]}">
                                         <group>
-                                            <field name="price_unit" />
+                                            <field name="price_unit" groups="easy_ddt.show_product_related_fields" />
                                             <label for="product_qty" />
                                             <div class="o_row">
                                                 <field name="product_qty" />
@@ -158,8 +160,10 @@
                                             </div>
                                         </group>
                                         <group>
-                                            <field name="discount" />
-                                            <field name="tax_ids" widget="many2many_tags" />
+                                            <field name="discount" groups="easy_ddt.show_product_related_fields" />
+                                            <field name="tax_ids"
+                                                   groups="easy_ddt.show_product_related_fields"
+                                                   widget="many2many_tags" />
                                         </group>
                                     </group>
                                 </form>
