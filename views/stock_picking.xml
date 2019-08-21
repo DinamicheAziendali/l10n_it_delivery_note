@@ -76,10 +76,8 @@
                                                     title="Go to delivery note" />
                                         </div>
                                         <field name="delivery_note_partner_shipping_id"
-                                               domain="['|', ('id', '=', partner_id), ('parent_id', '=', partner_id)]"
                                                attrs="{'required': [('delivery_note_exists', '=', True)],
-                                                       'readonly': [('delivery_note_readonly', '=', True)]}"
-                                               options="{'no_create': True, 'no_open': True}" />
+                                                       'readonly': [('delivery_note_readonly', '=', True)]}" />
                                     </group>
                                     <group>
                                         <field name="delivery_note_type_id"

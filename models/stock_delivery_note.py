@@ -193,19 +193,11 @@ class StockDeliveryNote(models.Model):
                 ('picking_type_code', '!=', INCOMING_PICKING_TYPE),
                 ('partner_id', '=', self.partner_id.id)
             ]
-            shipping_partner_domain = [
-                '|', ('id', '=', self.partner_id.id),
-                     ('parent_id', '=', self.partner_id.id)
-            ]
 
         else:
             pickings_picker_domain = [('id', '=', False)]
-            shipping_partner_domain = [('id', '=', False)]
 
-        result['domain'] = {
-            'pickings_picker': pickings_picker_domain,
-            'partner_shipping_id': shipping_partner_domain
-        }
+        result['domain'] = {'pickings_picker': pickings_picker_domain}
 
         return result
 

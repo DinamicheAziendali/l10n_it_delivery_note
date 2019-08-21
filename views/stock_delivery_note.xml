@@ -70,9 +70,7 @@
                     <group>
                         <group>
                             <field name="partner_id" />
-                            <field name="partner_shipping_id"
-                                   domain="['|', ('id', '=', partner_id), ('parent_id', '=', partner_id)]"
-                                   options="{'no_create': True, 'no_open': True}" />
+                            <field name="partner_shipping_id" />
                             <!--<field name="carrier_id"-->
                                    <!--domain="[('supplier', '=', True)]"-->
                                    <!--context="{'default_supplier': True}" />-->
