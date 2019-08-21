@@ -12,6 +12,13 @@ from ..mixins.picking_checker import DONE_PICKING_STATE, INCOMING_PICKING_TYPE
 
 CANCEL_MOVE_STATE = 'cancel'
 
+PRICES_TO_SHOW = [
+    ('unit', "Unit price"),
+    ('total', "Total price"),
+    ('none', "None")
+]
+DOMAIN_PRICES_TO_SHOW = [p[0] for p in PRICES_TO_SHOW]
+
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -264,6 +271,10 @@ class StockPickingTransportCondition(models.Model):
     active = fields.Boolean(string=_("Active"), default=True)
     sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
     name = fields.Char(string=_("Condition name"), index=True, required=True, translate=True)
+    price_to_show = fields.Selection(PRICES_TO_SHOW,
+                                     string=_("Price to show"),
+                                     required=True,
+                                     default=DOMAIN_PRICES_TO_SHOW[0])
     note = fields.Html(string=_("Internal note"))
 
     _sql_constraints = [(

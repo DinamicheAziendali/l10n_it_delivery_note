@@ -193,7 +193,11 @@
                             <field name="name" default_focus="true" />
                         </h1>
                     </div>
-                    <group />
+                    <group>
+                        <group>
+                            <field name="price_to_show" />
+                        </group>
+                    </group>
                     <notebook>
                         <page name="internal_notes" string="Internal notes">
                             <field name="note" />
@@ -212,6 +216,7 @@
             <tree>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
+                <field name="price_to_show" />
             </tree>
         </field>
     </record>

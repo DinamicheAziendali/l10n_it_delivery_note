@@ -133,7 +133,8 @@
                                     <field name="product_uom" options="{'no_create': True, 'no_open': True}" />
                                     <field name="price_unit"
                                            attrs="{'readonly': [('sale_line_id', '!=', False)]}"
-                                           groups="easy_ddt.show_product_related_fields" />
+                                           groups="easy_ddt.show_product_related_fields"
+                                           sum="Total" />
                                     <field name="discount"
                                            attrs="{'readonly': [('sale_line_id', '!=', False)]}"
                                            groups="easy_ddt.show_product_related_fields" />
