@@ -427,16 +427,22 @@ class StockDeliveryNoteLine(models.Model):
     def _prepare_detail_lines(self, moves):
         lines = []
         for move in moves:
-            lines.append({
+            line = {
+                'move_id': move.id,
                 'name': move.name,
                 'product_id': move.product_id.id,
                 'product_qty': move.product_uom_qty,
-                'product_uom': move.product_uom.id,
-                'price_unit': 0.0,
-                'discount': 0.0,
-                'tax_ids': [(5, False, False)],
-                'move_id': move.id
-            })
+                'product_uom': move.product_uom.id
+            }
+
+            if move.sale_line_id:
+                order_line = move.sale_line_id
+
+                line['price_unit'] = order_line.price_unit
+                line['discount'] = order_line.discount
+                line['tax_ids'] = [(6, False, order_line.tax_id.ids)]
+
+            lines.append(line)
 
         return lines
 

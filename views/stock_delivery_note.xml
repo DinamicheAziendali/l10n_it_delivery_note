@@ -31,14 +31,19 @@
                             class="oe_highlight"
                             string="Create invoice"
                             attrs="{'invisible': ['|', ('state', '!=', 'confirm'), ('sale_ids', '=', [])]}" />
+                    <button name="action_done"
+                            type="object"
+                            string="Set done"
+                            attrs="{'invisible': ['|', ('state', '!=', 'confirm'), ('sale_ids', '=', [])]}" />
+                    <button name="action_done"
+                            type="object"
+                            class="oe_highlight"
+                            string="Set done"
+                            attrs="{'invisible': ['|', ('state', '!=', 'confirm'), ('sale_ids', '!=', [])]}" />
                     <button name="action_print"
                             type="object"
                             states="draft,confirm,done"
                             string="Print" />
-                    <button name="action_done"
-                            type="object"
-                            states="confirm"
-                            string="Set done" />
                     <button name="action_cancel"
                             type="object"
                             states="confirm,done"
@@ -115,6 +120,7 @@
                             <field name="line_ids" widget="section_and_note_one2many">
                                 <tree editable="bottom">
                                     <field name="display_type" invisible="True" />
+                                    <field name="sale_line_id" invisible="True" />
                                     <control>
                                         <create string="Add a line" />
                                         <create string="Add a section"
@@ -127,9 +133,14 @@
                                     <field name="name" widget="section_and_note_text" />
                                     <field name="product_qty" />
                                     <field name="product_uom" options="{'no_create': True, 'no_open': True}" />
-                                    <field name="price_unit" groups="easy_ddt.show_product_related_fields" />
-                                    <field name="discount" groups="easy_ddt.show_product_related_fields" />
+                                    <field name="price_unit"
+                                           attrs="{'readonly': [('sale_line_id', '!=', False)]}"
+                                           groups="easy_ddt.show_product_related_fields" />
+                                    <field name="discount"
+                                           attrs="{'readonly': [('sale_line_id', '!=', False)]}"
+                                           groups="easy_ddt.show_product_related_fields" />
                                     <field name="tax_ids"
+                                           attrs="{'readonly': [('sale_line_id', '!=', False)]}"
                                            groups="easy_ddt.show_product_related_fields"
                                            widget="many2many_tags" />
                                 </tree>
@@ -184,6 +195,28 @@
                                     <field name="origin" />
                                     <field name="backorder_id" />
                                     <field name="state" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="invoices"
+                              string="Invoices"
+                              groups="stock.group_stock_manager"
+                              attrs="{'invisible': [('invoice_ids', '=', [])]}">
+                            <field name="invoice_ids" options="{'no_open': True}">
+                                <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancel'">
+                                    <field name="company_id" groups="base.group_multi_company" />
+                                    <field name="number" />
+                                    <field name="partner_id" />
+                                    <field name="date_invoice" />
+                                    <field name="origin" />
+                                    <field name="amount_untaxed" string="Tax excluded" sum="Total" />
+                                    <field name="amount_tax" sum="Total" />
+                                    <field name="amount_total_signed" string="Total" sum="Total" />
+                                    <field name="residual_signed" string="To pay" sum="To pay" />
+                                    <field name="currency_id" invisible="True" />
+                                    <field name="company_currency_id" invisible="True" />
+                                    <field name="state" />
+                                    <field name="date_due" />
                                 </tree>
                             </field>
                         </page>
