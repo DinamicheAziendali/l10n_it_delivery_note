@@ -1,7 +1,7 @@
-from odoo import _, api, models
 # Copyright (c) 2019, Link IT Europe Srl (http://www.linkgroup.it/)
 # @author: Matteo Bilotta <mbilotta@linkgroup.it>
 
+from odoo import _, api, models
 from odoo.exceptions import ValidationError
 
 DONE_PICKING_STATE = 'done'

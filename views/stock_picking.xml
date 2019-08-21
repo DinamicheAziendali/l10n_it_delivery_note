@@ -13,13 +13,6 @@
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
             <data>
-                <!--<xpath expr="//header/button[@name='do_unreserve']" position="after">
-                    <button name="get_ddt_number"
-                            string="Print Delivery Note"
-                            groups="stock.group_stock_user"
-                            type="object"
-                            attrs="{'invisible': [('state', '!=', 'done')]}" />
-                </xpath>-->
                 <xpath expr="//page[3]" position="after">
                     <page name="delivery_note"
                           string="Delivery note"

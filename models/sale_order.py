@@ -7,17 +7,6 @@ TO_INVOICE_STATUS = 'to invoice'
 INVOICED_STATUS = 'invoiced'
 
 
-# class SaleOrder(models.Model):
-#     _inherit = 'sale.order'
-#
-#     delivery_note_ids = fields.Many2many('stock.delivery.note', compute='_compute_delivery_note_id')
-#
-#     @api.multi
-#     def _compute_delivery_note_id(self):
-#         for note in self:
-#             note.delivery_note_ids = note.mapped('line_ids.delivery_note_line_id.delivery_note_id')
-
-
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
