@@ -184,7 +184,7 @@
                                    context="{'from_delivery_note': True}"
                                    domain="[('delivery_note_id', '=', False),
                                             ('state', '=', 'done'),
-                                            ('picking_type_code', '!=', 'incoming'),
+                                            ('picking_type_code', 'not in', ['internal', 'incoming']),
                                             ('partner_id', '=', partner_id)]"
                                    options="{'no_create': True}">
                                 <tree decoration-success="id not in parent.picking_ids">

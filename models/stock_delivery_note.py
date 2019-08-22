@@ -7,7 +7,7 @@ from odoo import _, api, fields, models
 from odoo.addons import decimal_precision as dp
 from odoo.exceptions import UserError
 
-from ..mixins.picking_checker import DONE_PICKING_STATE, INCOMING_PICKING_TYPE
+from ..mixins.picking_checker import DONE_PICKING_STATE, INCOMING_PICKING_TYPE, INTERNAL_PICKING_TYPE
 from .sale_order import TO_INVOICE_STATUS
 
 DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S'
@@ -28,6 +28,8 @@ DOMAIN_LINE_DISPLAY_TYPES = [t[0] for t in LINE_DISPLAY_TYPES]
 
 DRAFT_EDITABLE_STATE = {'draft': [('readonly', False)]}
 DONE_READONLY_STATE = {'done': [('readonly', True)]}
+
+INVALID_PICKING_TYPES = [INCOMING_PICKING_TYPE, INTERNAL_PICKING_TYPE]
 
 
 class StockDeliveryNote(models.Model):
@@ -190,7 +192,7 @@ class StockDeliveryNote(models.Model):
             pickings_picker_domain = [
                 ('delivery_note_id', '=', False),
                 ('state', '=', DONE_PICKING_STATE),
-                ('picking_type_code', '!=', INCOMING_PICKING_TYPE),
+                ('picking_type_code', 'not in', INVALID_PICKING_TYPES),
                 ('partner_id', '=', self.partner_id.id)
             ]
 

@@ -5,7 +5,9 @@ from odoo import _, api, models
 from odoo.exceptions import ValidationError
 
 DONE_PICKING_STATE = 'done'
+
 INCOMING_PICKING_TYPE = 'incoming'
+INTERNAL_PICKING_TYPE = 'internal'
 
 
 class StockPickingCheckerMixin(models.AbstractModel):
