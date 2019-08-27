@@ -124,7 +124,7 @@ class StockPicking(models.Model):
                     picking.delivery_note_visible = True
                     picking.can_be_invoiced = bool(picking.delivery_note_id.sale_ids)
 
-                elif picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[2]:
+                elif picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[3]:
                     picking.delivery_note_done = True
 
             else:

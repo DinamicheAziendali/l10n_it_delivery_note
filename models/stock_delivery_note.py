@@ -15,6 +15,7 @@ DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S'
 DELIVERY_NOTE_STATES = [
     ('draft', "Draft"),
     ('confirm', "Validated"),
+    ('invoiced', "Invoiced"),
     ('done', "Done"),
     ('cancel', "Cancelled")
 ]
@@ -265,19 +266,6 @@ class StockDeliveryNote(models.Model):
             if not note.name:
                 note.name = sequence.next_by_id()
 
-    @api.multi
-    def action_done(self):
-        self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[2]})
-
-    @api.multi
-    def action_cancel(self):
-        self.ensure_annulability()
-        self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[3]})
-
-    @api.multi
-    def action_print(self):
-        return self.env.ref('easy_ddt.delivery_note_report_action').report_action(self)
-
     def _fix_quantities_to_invoice(self, lines):
         cache = {}
 
@@ -317,6 +305,24 @@ class StockDeliveryNote(models.Model):
 
         for line, vals in cache.items():
             line.write(vals)
+
+        orders_lines._get_to_invoice_qty()
+
+        self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[2]})
+
+    @api.multi
+    def action_done(self):
+        self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[3]})
+
+    @api.multi
+    def action_cancel(self):
+        self.ensure_annulability()
+
+        self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[4]})
+
+    @api.multi
+    def action_print(self):
+        return self.env.ref('easy_ddt.delivery_note_report_action').report_action(self)
 
     def _create_detail_lines(self, move_ids):
         if not move_ids:
