@@ -155,7 +155,14 @@
                                         </div>
                                     </div>
                                     <div attrs="{'invisible': [('product_id', '!=', False)]}">
-                                        <label for="name" style="margin-bottom: 5px;" />
+                                        <label for="name"
+                                               string="Section name (e.g. Products, Services)"
+                                               attrs="{'invisible': [('display_type', '!=', 'line_section')]}"
+                                               style="margin-bottom: 5px;" />
+                                        <label for="name"
+                                               string="Note"
+                                               attrs="{'invisible': [('display_type', '!=', 'line_note')]}"
+                                               style="margin-bottom: 5px;" />
                                         <div>
                                             <field name="name" />
                                         </div>
