@@ -40,13 +40,15 @@
                                 <div attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
                                     <button name="action_delivery_note_validate"
                                             type="object"
-                                            attrs="{'invisible': [('delivery_note_validated', '=', True)]}"
                                             class="oe_highlight"
+                                            attrs="{'invisible': [('delivery_note_validated', '=', True)]}"
+                                            groups="stock.group_stock_manager"
                                             string="Validate" />
                                     <button name="action_delivery_note_invoice"
                                             type="object"
-                                            attrs="{'invisible': [('can_be_invoiced', '=', False)]}"
                                             class="oe_highlight"
+                                            attrs="{'invisible': [('can_be_invoiced', '=', False)]}"
+                                            groups="account.group_account_invoice"
                                             string="Create invoice" />
                                     <button name="action_delivery_note_print"
                                             type="object"

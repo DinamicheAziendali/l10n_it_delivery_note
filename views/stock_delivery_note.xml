@@ -25,21 +25,23 @@
                             type="object"
                             states="draft"
                             class="oe_highlight"
+                            groups="stock.group_stock_manager"
                             string="Validate" />
                     <button name="action_invoice"
                             type="object"
                             class="oe_highlight"
-                            string="Create invoice"
-                            attrs="{'invisible': ['|', ('state', '!=', 'confirm'), ('sale_ids', '=', [])]}" />
+                            attrs="{'invisible': ['|', ('state', '!=', 'confirm'), ('sale_ids', '=', [])]}"
+                            groups="account.group_account_invoice"
+                            string="Create invoice" />
                     <button name="action_done"
                             type="object"
-                            string="Set done"
-                            attrs="{'invisible': ['|', ('state', '!=', 'confirm'), ('sale_ids', '=', [])]}" />
+                            attrs="{'invisible': ['|', ('state', '!=', 'confirm'), ('sale_ids', '=', [])]}"
+                            string="Set done" />
                     <button name="action_done"
                             type="object"
                             class="oe_highlight"
-                            string="Set done"
-                            attrs="{'invisible': ['|', ('state', '!=', 'confirm'), ('sale_ids', '!=', [])]}" />
+                            attrs="{'invisible': ['|', ('state', '!=', 'confirm'), ('sale_ids', '!=', [])]}"
+                            string="Set done" />
                     <button name="action_print"
                             type="object"
                             states="draft,confirm,done"
