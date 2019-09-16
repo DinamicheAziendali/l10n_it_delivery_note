@@ -22,10 +22,8 @@ class SaleOrderLine(models.Model):
         return self.invoice_status == TO_INVOICE_STATUS and self.qty_to_invoice != 0
 
     @property
-    def already_invoiced(self):
-        return self.invoice_status == INVOICED_STATUS and \
-               self.product_uom_qty == self.qty_invoiced and \
-               self.qty_to_invoice == 0
+    def need_to_be_invoiced(self):
+        return self.product_uom_qty != (self.qty_to_invoice + self.qty_invoiced)
 
     def fix_qty_to_invoice(self, new_qty_to_invoice=0):
         self.ensure_one()

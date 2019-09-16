@@ -304,11 +304,8 @@ class StockDeliveryNote(models.Model):
             order = downpayment.order_id
             order_lines = order.order_line.filtered(lambda l: l.product_id and not l.is_downpayment)
 
-            if order_lines.filtered(lambda l: not l.is_invoiceable and not l.already_invoiced):
+            if order_lines.filtered(lambda l: l.need_to_be_invoiced):
                 cache[downpayment] = downpayment.fix_qty_to_invoice()
-
-            else:
-                import pdb; pdb.set_trace()
 
         self.sale_ids.with_context(default_delivery_note_id=self.id) \
                      .action_invoice_create(final=True)
