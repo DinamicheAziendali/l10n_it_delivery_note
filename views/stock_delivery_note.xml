@@ -54,6 +54,13 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button type="object"
+                                class="oe_stat_button"
+                                name="action_view_invoices"
+                                icon="fa-pencil-square-o"
+                                attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                            <field name="invoice_count" widget="statinfo" string="Invoices" />
+                        </button>
                         <button type="object" class="oe_stat_button" name="toggle_active" icon="fa-archive">
                             <field name="active" widget="boolean_button" options="{'terminology': 'archive'}" />
                         </button>
@@ -206,28 +213,6 @@
                                 </tree>
                             </field>
                         </page>
-                        <page name="invoices"
-                              string="Invoices"
-                              groups="stock.group_stock_manager"
-                              attrs="{'invisible': [('invoice_ids', '=', [])]}">
-                            <field name="invoice_ids" options="{'no_open': True}">
-                                <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancel'">
-                                    <field name="company_id" groups="base.group_multi_company" />
-                                    <field name="number" />
-                                    <field name="partner_id" />
-                                    <field name="date_invoice" />
-                                    <field name="origin" />
-                                    <field name="amount_untaxed" string="Tax excluded" sum="Total" />
-                                    <field name="amount_tax" sum="Total" />
-                                    <field name="amount_total_signed" string="Total" sum="Total" />
-                                    <field name="residual_signed" string="To pay" sum="To pay" />
-                                    <field name="currency_id" invisible="True" />
-                                    <field name="company_currency_id" invisible="True" />
-                                    <field name="state" />
-                                    <field name="date_due" />
-                                </tree>
-                            </field>
-                        </page>
                         <page name="internal_notes" string="Internal notes">
                             <field name="note" />
                         </page>
@@ -249,6 +234,7 @@
             <tree decoration-muted="state == 'cancel'">
                 <field name="display_name" string="Name" />
                 <field name="partner_id" />
+                <field name="date" />
                 <field name="state" />
             </tree>
         </field>

@@ -37,6 +37,7 @@ class StockDeliveryNote(models.Model):
     _name = 'stock.delivery.note'
     _inherit = ['mail.thread', 'mail.activity.mixin', 'stock.picking.checker.mixin']
     _description = "Delivery note"
+    _order = 'date DESC, id DESC'
     _rec_name = 'display_name'
 
     def _default_type(self):
@@ -149,6 +150,7 @@ class StockDeliveryNote(models.Model):
 
     sale_ids = fields.Many2many('sale.order', compute='_compute_sale_ids')
     invoice_ids = fields.One2many('account.invoice', 'delivery_note_id', readonly=True)
+    invoice_count = fields.Integer(string=_("Invoice count"), compute='_compute_invoice_count')
 
     note = fields.Html(string=_("Internal note"), states=DONE_READONLY_STATE)
 
@@ -238,6 +240,11 @@ class StockDeliveryNote(models.Model):
             note.sale_ids = self.mapped('picking_ids.sale_id') \
                                 .filtered(lambda o: o.invoice_status == TO_INVOICE_STATUS)
 
+    @api.multi
+    def _compute_invoice_count(self):
+        for note in self:
+            note.invoice_count = len(note.invoice_ids)
+
     def check_compliance(self, pickings):
         super().check_compliance(pickings)
 
@@ -297,7 +304,7 @@ class StockDeliveryNote(models.Model):
             order = downpayment.order_id
             order_lines = order.order_line.filtered(lambda l: l.product_id and not l.is_downpayment)
 
-            if order_lines.filtered(lambda l: not l.is_invoiceable and not l.already_invoiced):
+            if order_lines.filtered(lambda l: l.need_to_be_invoiced):
                 cache[downpayment] = downpayment.fix_qty_to_invoice()
 
         self.sale_ids.with_context(default_delivery_note_id=self.id) \
@@ -309,6 +316,23 @@ class StockDeliveryNote(models.Model):
         orders_lines._get_to_invoice_qty()
 
         self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[2]})
+
+    @api.multi
+    def action_view_invoices(self):
+        invoices = self.mapped('invoice_ids')
+        action = self.env.ref('account.action_invoice_tree1').read()[0]
+
+        if len(invoices) > 1:
+            action['domain'] = [('id', 'in', invoices.ids)]
+
+        elif len(invoices) == 1:
+            action['views'] = [(self.env.ref('account.invoice_form').id, 'form')]
+            action['res_id'] = invoices.ids[0]
+
+        else:
+            action = {'type': 'ir.actions.act_window_close'}
+
+        return action
 
     @api.multi
     def action_done(self):
