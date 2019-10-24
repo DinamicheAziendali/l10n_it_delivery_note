@@ -1,7 +1,12 @@
-from odoo.addons.link_it_foundation.tests.sale_order import SaleOrderTest
+from odoo.tests.common import TransactionCase
+
+DOWNPAYMENT_METHODS = ['fixed', 'percentage']
 
 
-class StockDeliveryNoteInvoicingTest(SaleOrderTest):
+class StockDeliveryNoteInvoicingTest(TransactionCase):
+    at_install = False
+    post_install = True
+
     customer = None
 
     desk_combination_line = None
@@ -10,6 +15,45 @@ class StockDeliveryNoteInvoicingTest(SaleOrderTest):
     large_cabinet_line = None
     storage_box_line = None
     large_desk_line = None
+
+    def create_partner(self, name, **kwargs):
+        return self.env['res.partner'].create({'name': name, **kwargs})
+
+    def create_sales_order(self, lines, **kwargs):
+        vals = {'partner_id': self.customer.id}
+
+        if lines:
+            vals['order_line'] = lines
+
+        vals.update(kwargs)
+
+        return self.env['sale.order'].create(vals)
+
+    def prepare_sales_order_line(self, product, quantity=1.0, price=None, **kwargs):
+        vals = {
+            'product_id': product.id,
+            'product_uom_qty': quantity
+        }
+
+        if price:
+            vals['price_unit'] = price
+
+        vals.update(kwargs)
+
+        return 0, False, vals
+
+    def add_downpayment_line(self, sales_order, method, amount, **kwargs):
+        if method not in DOWNPAYMENT_METHODS:
+            raise ValueError("Downpayment method must be 'fixed' or 'percentage'.")
+
+        return self.env['sale.advance.payment.inv'] \
+                   .with_context(active_ids=sales_order.ids) \
+                   .create({
+                       'advance_payment_method': method,
+                       'amount': amount,
+                       **kwargs
+                   }) \
+                   .create_invoices()
 
     def create_delivery_note(self, **kwargs):
         vals = {
@@ -21,11 +65,10 @@ class StockDeliveryNoteInvoicingTest(SaleOrderTest):
 
         return self.env['stock.delivery.note'].create(vals)
 
-    def create_sales_order(self, lines, **kwargs):
-        return super().create_sales_order(self.customer, lines, **kwargs)
-
     def setUp(self):
         super().setUp()
+
+        self.env.user.write({'groups_id': [(4, self.env.ref('easy_ddt.use_advanced_delivery_notes').id)]})
 
         self.customer = self.create_partner("Mario Rossi")
 
@@ -199,7 +242,6 @@ class StockDeliveryNoteInvoicingTest(SaleOrderTest):
         invoice_line = final_invoice.invoice_line_ids[4]
         self.assertEqual(invoice_line.sale_line_ids, order_line)
         self.assertEqual(invoice_line.quantity, -1)
-
 
     # ⇒ "Ordine singolo: fatturazione parziale"
     def test_partial_invoicing_single_so(self):
