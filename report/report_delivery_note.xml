@@ -8,8 +8,116 @@
 <odoo>
 
     <template id="delivery_note_report_template">
-        <t t-call="web.html_container">
-            <t t-call="web.external_layout">
+        <t t-call="web.external_layout">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+            <t t-set="address">
+                <div t-field="doc.partner_id"
+                     t-options="{'widget': 'contact', 'fields': ['address', 'name'], 'no_marker': True}" />
+                <p t-if="doc.partner_id.vat">
+                    <t t-esc="doc.company_id.country_id.vat_label or 'Tax ID'" />:
+                    <span t-field="doc.partner_id.vat" />
+                </p>
+            </t>
+            <t t-if="doc.partner_id != doc.partner_shipping_id">
+                <t t-set="information_block">
+                    <strong>Shipping address:</strong>
+                    <div t-field="doc.partner_shipping_id"
+                         t-options="{'widget': 'contact', 'fields': ['address', 'name', 'phone'], 'no_marker': True, 'phone_icons': True}" />
+                </t>
+            </t>
+            <div class="page">
+                <div class="oe_structure" />
+    
+                <h2 class="mt32 mb32">
+                    <span t-if="doc.state in ['draft']">Draft delivery note:</span>
+                    <span t-if="doc.state not in ['draft']">Delivery note:</span>
+                    <small>
+                        "<span t-field="doc.display_name" />"
+                    </small>
+                </h2>
+
+                <div class="row mt16 mb16">
+                    <div name="date" t-if="doc.date" class="col-auto mw-100 mb-2">
+                        <strong>Date:</strong>
+                        <p class="m-0" t-field="doc.date" />
+                    </div>
+                    <div name="transport_datetime" t-if="doc.transport_datetime" class="col-auto mw-100 mb-2">
+                        <strong>Transport date:</strong>
+                        <p class="m-0" t-field="doc.transport_datetime" />
+                    </div>
+                </div>
+
+                <div class="row mt16 mb16">
+                    <div name="parcels" t-if="doc.parcels" class="col-auto mw-100 mb-2">
+                        <strong>Parcels:</strong>
+                        <p class="m-0" t-field="doc.parcels" />
+                    </div>
+                    <div name="volume" t-if="doc.volume" class="col-auto mw-100 mb-2">
+                        <strong>Volume:</strong>
+                        <p class="m-0">
+                            <span t-field="doc.volume" />
+                            <span t-field="doc.volume_uom_id" />
+                        </p>
+                    </div>
+                    <div name="gross_weight" t-if="doc.gross_weight" class="col-auto mw-100 mb-2">
+                        <strong>Gross weight:</strong>
+                        <p class="m-0">
+                            <span t-field="doc.gross_weight" />
+                            <span t-field="doc.gross_weight_uom_id" />
+                        </p>
+                    </div>
+                    <div name="net_weight" t-if="doc.net_weight" class="col-auto mw-100 mb-2">
+                        <strong>Net weight:</strong>
+                        <p class="m-0">
+                            <span t-field="doc.net_weight" />
+                            <span t-field="doc.net_weight_uom_id" />
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row mt16 mb16">
+                    <div name="transport_condition_id" t-if="doc.transport_condition_id" class="col-auto mw-100 mb-2">
+                        <strong>Condition of transport:</strong>
+                        <p class="m-0" t-field="doc.transport_condition_id" />
+                    </div>
+                    <div name="goods_appearance_id" t-if="doc.goods_appearance_id" class="col-auto mw-100 mb-2">
+                        <strong>Appearance of goods:</strong>
+                        <p class="m-0" t-field="doc.goods_appearance_id" />
+                    </div>
+                    <div name="transport_reason_id" t-if="doc.transport_reason_id" class="col-auto mw-100 mb-2">
+                        <strong>Reason of transport:</strong>
+                        <p class="m-0" t-field="doc.transport_reason_id" />
+                    </div>
+                    <div name="transport_method_id" t-if="doc.transport_method_id" class="col-auto mw-100 mb-2">
+                        <strong>Method of transport:</strong>
+                        <p class="m-0" t-field="doc.transport_method_id" />
+                    </div>
+                </div>
+
+                <table class="mt32 mb32 o_main_table table table-sm">
+                    <thead>
+                        <tr>
+                            <t t-set="colspan" t-value="5" />
+                            <th class="text-left">Product</th>
+                            <th class="text-left">Description</th>
+                            <th class="text-right">Quantity</th>
+                            <th class="text-left">UoM</th>
+                            <th class="text-right">Unit price</th>
+                            <th class="text-right">Discount</th>
+                            <th class="text-right">Taxes</th>
+                        </tr>
+                    </thead>
+
+                    <!-- TODO: Paste here the rest... -->
+
+                </table>
+
+                <!-- TODO: Paste here the rest... -->
+
+                <div class="oe_structure" />
+            </div>
+
+            <!--
                 <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
                 <t t-set="partner" t-value="o.partner_id or (o.move_lines and o.move_lines[0].partner_id) or False" />
                 <t t-if="partner" name="partner_header">
@@ -248,14 +356,15 @@
                         </td>
                     </tr>
                 </table>
-            </t>
+            -->
+
         </t>
     </template>
 
     <template id="delivery_note_report_main_template">
         <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="o">
-                <t t-call="easy_ddt.delivery_note_report_template" t-lang="o.partner_id.lang" />
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="easy_ddt.delivery_note_report_template" t-lang="doc.partner_id.lang" />
             </t>
         </t>
     </template>
@@ -265,6 +374,7 @@
             name="easy_ddt.delivery_note_report_main_template"
             file="easy_ddt.delivery_note_report_main_template"
             report_type="qweb-pdf"
-            string="Delivery note" />
+            string="Delivery note"
+            print_report_name="'Delivery Note - %s' % object.display_name" />
 
 </odoo>
