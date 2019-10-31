@@ -406,6 +406,10 @@ class StockDeliveryNote(models.Model):
 class StockDeliveryNoteLine(models.Model):
     _name = 'stock.delivery.note.line'
     _description = "Delivery note line"
+    _order = 'sequence, id'
+
+    def _default_currency(self):
+        return self.env.user.company_id.currency_id
 
     def _default_unit_uom(self):
         return self.env.ref('uom.product_uom_unit', raise_if_not_found=False)
@@ -421,8 +425,11 @@ class StockDeliveryNoteLine(models.Model):
     product_id = fields.Many2one('product.product', string=_("Product"))
     product_description = fields.Text(related='product_id.description_sale')
     product_qty = fields.Float(string=_("Quantity"), digits=dp.get_precision('Unit of Measure'), default=1.0)
-    product_uom = fields.Many2one('uom.uom', string=_("UoM"), default=_default_unit_uom)
-    price_unit = fields.Float(string=_("Unit price"), digits=dp.get_precision('Product Price'))
+    product_uom_id = fields.Many2one('uom.uom', string=_("UoM"), default=_default_unit_uom)
+    price_unit = fields.Monetary(string=_("Unit price"),
+                                 currency_field='currency_id',
+                                 digits=dp.get_precision('Product Price'))
+    currency_id = fields.Many2one('res.currency', string=_("Currency"), required=True, default=_default_currency)
     discount = fields.Float(string=_("Discount"), digits=dp.get_precision('Discount'))
     tax_ids = fields.Many2many('account.tax', string=_("Taxes"))
 
@@ -445,7 +452,7 @@ class StockDeliveryNoteLine(models.Model):
         else:
             domain = []
 
-        return {'domain': {'product_uom': domain}}
+        return {'domain': {'product_uom_id': domain}}
 
     @api.model
     def _prepare_detail_lines(self, moves):
@@ -456,13 +463,15 @@ class StockDeliveryNoteLine(models.Model):
                 'name': move.name,
                 'product_id': move.product_id.id,
                 'product_qty': move.product_uom_qty,
-                'product_uom': move.product_uom.id
+                'product_uom_id': move.product_uom.id
             }
 
             if move.sale_line_id:
                 order_line = move.sale_line_id
+                order = order_line.order_id
 
                 line['price_unit'] = order_line.price_unit
+                line['currency_id'] = order.currency_id.id
                 line['discount'] = order_line.discount
                 line['tax_ids'] = [(6, False, order_line.tax_id.ids)]
 
@@ -477,7 +486,7 @@ class StockDeliveryNoteLine(models.Model):
             vals.update({
                 'product_id': False,
                 'product_qty': 0.0,
-                'product_uom': False,
+                'product_uom_id': False,
                 'price_unit': 0.0,
                 'discount': 0.0,
                 'tax_ids': [(5, False, False)]
