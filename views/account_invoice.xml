@@ -12,21 +12,7 @@
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="account.invoice_form" />
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='other_info']" position="after">
-                <page name="shipping_information" string="Shipping information">
-                    <group>
-                        <group>
-                            <field name="packages_number" />
-                        </group>
-                        <group>
-                            <field name="goods_appearance_id" widget="selection" />
-                            <field name="transport_condition_id" widget="selection" />
-                            <field name="transport_reason_id" widget="selection" />
-                            <field name="transport_method_id" widget="selection" />
-                        </group>
-                    </group>
-                </page>
-            </xpath>
+
         </field>
     </record>
 
