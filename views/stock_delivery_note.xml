@@ -126,10 +126,12 @@
                     <notebook>
                         <page name="details" string="Details">
                             <field name="line_ids" widget="section_and_note_one2many">
-                                <tree editable="bottom">
+                                <tree editable="bottom"
+                                      decoration-info="(not display_type and invoice_status == 'to invoice')">
                                     <field name="currency_id" invisible="True" />
                                     <field name="display_type" invisible="True" />
                                     <field name="sale_line_id" invisible="True" />
+                                    <field name="invoice_status" invisible="True" />
                                     <control>
                                         <create string="Add a line" />
                                         <create string="Add a section"

@@ -32,6 +32,13 @@ DONE_READONLY_STATE = {'done': [('readonly', True)]}
 
 INVALID_PICKING_TYPES = [INCOMING_PICKING_TYPE, INTERNAL_PICKING_TYPE]
 
+INVOICE_STATUSES = [
+    ('upselling', 'Upselling Opportunity'),
+    ('invoiced', 'Fully Invoiced'),
+    ('to invoice', 'To Invoice'),
+    ('no', 'Nothing to Invoice')
+]
+
 
 class StockDeliveryNote(models.Model):
     _name = 'stock.delivery.note'
@@ -431,6 +438,7 @@ class StockDeliveryNoteLine(models.Model):
 
     move_id = fields.Many2one('stock.move', string=_("Warehouse movement"), readonly=True)
     sale_line_id = fields.Many2one('sale.order.line', related='move_id.sale_line_id', store=True)
+    invoice_status = fields.Selection(INVOICE_STATUSES, related='sale_line_id.invoice_status')
 
     _sql_constraints = [(
         'move_uniq',
