@@ -149,7 +149,8 @@ class StockDeliveryNote(models.Model):
     pickings_picker = fields.Many2many('stock.picking', compute='_get_pickings', inverse='_set_pickings')
 
     sale_ids = fields.Many2many('sale.order', compute='_compute_sale_ids')
-    invoice_id = fields.Many2one('account.invoice', string=_("Invoice"), track_visibility='onchange')
+    invoice_ids = fields.Many2many('account.invoice', ...)
+    invoice_count = fields.Integer(string=_("Invoice count"), compute='_compute_invoice_count')
 
     note = fields.Html(string=_("Internal note"), states=DONE_READONLY_STATE)
 
@@ -239,6 +240,11 @@ class StockDeliveryNote(models.Model):
             note.sale_ids = self.mapped('picking_ids.sale_id') \
                                 .filtered(lambda o: o.invoice_status == TO_INVOICE_STATUS)
 
+    @api.multi
+    def _compute_invoice_count(self):
+        for note in self:
+            note.invoice_count = len(note.invoice_ids)
+
     def check_compliance(self, pickings):
         super().check_compliance(pickings)
 
@@ -246,7 +252,7 @@ class StockDeliveryNote(models.Model):
 
     @api.multi
     def ensure_annulability(self):
-        if self.mapped('invoice_id'):
+        if self.mapped('invoice_ids'):
             raise UserError(_("You cannot cancel this delivery note. "
                               "There is at least one invoice"
                               " related to this delivery note."))
@@ -301,21 +307,18 @@ class StockDeliveryNote(models.Model):
             if order_lines.filtered(lambda l: l.need_to_be_invoiced):
                 cache[downpayment] = downpayment.fix_qty_to_invoice()
 
-        invoice_id = self.sale_ids.action_invoice_create(final=True)
+        self.sale_ids.action_invoice_create(final=True)
 
         for line, vals in cache.items():
             line.write(vals)
 
         orders_lines._get_to_invoice_qty()
 
-        self.write({
-            'invoice_id': invoice_id,
-            'state': DOMAIN_DELIVERY_NOTE_STATES[2]
-        })
+        self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[2]})
 
     @api.multi
     def action_view_invoices(self):
-        invoices = self.mapped('invoice_id')
+        invoices = self.mapped('invoice_ids')
         action = self.env.ref('account.action_invoice_tree1').read()[0]
 
         if len(invoices) > 1:

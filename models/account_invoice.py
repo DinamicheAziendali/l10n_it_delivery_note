@@ -11,4 +11,5 @@ from odoo import _, fields, models
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
-    delivery_note_ids = fields.One2many('stock.delivery.note', 'invoice_id', string=_("Delivery notes"))
+    delivery_note_ids = fields.Many2many('stock.delivery.note', ...)
+    delivery_note_count = fields.Integer(...)
