@@ -28,6 +28,10 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
 
         self._check_delivery_notes(pickings)
 
+    @api.onchange('partner_id')
+    def _onchange_partner(self):
+        self.partner_shipping_id = self.partner_id
+
     def confirm(self):
         self.check_compliance(self.selected_picking_ids)
 
