@@ -8,7 +8,6 @@ from odoo.addons import decimal_precision as dp
 from odoo.exceptions import UserError
 
 from ..mixins.picking_checker import DONE_PICKING_STATE, INCOMING_PICKING_TYPE, INTERNAL_PICKING_TYPE
-from .sale_order import TO_INVOICE_STATUS
 
 DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S'
 
@@ -33,11 +32,11 @@ DONE_READONLY_STATE = {'done': [('readonly', True)]}
 INVALID_PICKING_TYPES = [INCOMING_PICKING_TYPE, INTERNAL_PICKING_TYPE]
 
 INVOICE_STATUSES = [
-    ('upselling', 'Upselling Opportunity'),
-    ('invoiced', 'Fully Invoiced'),
-    ('to invoice', 'To Invoice'),
-    ('no', 'Nothing to Invoice')
+    ('no', "Nothing to invoice"),
+    ('to invoice', "To invoice"),
+    ('invoiced', "Fully invoiced")
 ]
+DOMAIN_INVOICE_STATUSES = [s[0] for s in INVOICE_STATUSES]
 
 
 class StockDeliveryNote(models.Model):
@@ -156,9 +155,53 @@ class StockDeliveryNote(models.Model):
     pickings_picker = fields.Many2many('stock.picking', compute='_get_pickings', inverse='_set_pickings')
 
     sale_ids = fields.Many2many('sale.order', compute='_compute_sale_ids')
-    invoice_id = fields.Many2one('account.invoice', string=_("Invoice"), track_visibility='onchange')
+    invoice_ids = fields.Many2many('account.invoice',
+                                   'stock_delivery_note_account_invoice_rel',
+                                   'delivery_note_id',
+                                   'invoice_id',
+                                   string=_("Invoices"))
+    invoice_count = fields.Integer(string=_("Invoices count"), compute='_compute_invoice_count')
 
     note = fields.Html(string=_("Internal note"), states=DONE_READONLY_STATE)
+
+    @api.multi
+    @api.depends('name', 'partner_id', 'partner_id.display_name')
+    def _compute_display_name(self):
+        for note in self:
+            if not note.name:
+                partner_name = note.partner_id.display_name
+                create_date = note.create_date.strftime(DATETIME_FORMAT)
+
+                name = "{} - {}".format(partner_name, create_date)
+
+            else:
+                name = note.name
+
+            note.display_name = name
+
+    @api.multi
+    def _get_pickings(self):
+        for note in self:
+            note.pickings_picker = note.picking_ids
+
+    @api.multi
+    def _set_pickings(self):
+        for note in self:
+            if note.pickings_picker:
+                self.check_compliance(note.pickings_picker)
+
+            note.picking_ids = note.pickings_picker
+
+    @api.multi
+    def _compute_sale_ids(self):
+        for note in self:
+            note.sale_ids = self.mapped('picking_ids.sale_id') \
+                                .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1])
+
+    @api.multi
+    def _compute_invoice_count(self):
+        for note in self:
+            note.invoice_count = len(note.invoice_ids)
 
     @api.onchange('partner_id')
     def _onchange_partner(self):
@@ -212,40 +255,6 @@ class StockDeliveryNote(models.Model):
 
         return result
 
-    @api.multi
-    @api.depends('name', 'partner_id', 'partner_id.display_name')
-    def _compute_display_name(self):
-        for note in self:
-            if not note.name:
-                partner_name = note.partner_id.display_name
-                create_date = note.create_date.strftime(DATETIME_FORMAT)
-
-                name = "{} - {}".format(partner_name, create_date)
-
-            else:
-                name = note.name
-
-            note.display_name = name
-
-    @api.multi
-    def _get_pickings(self):
-        for note in self:
-            note.pickings_picker = note.picking_ids
-
-    @api.multi
-    def _set_pickings(self):
-        for note in self:
-            if note.pickings_picker:
-                self.check_compliance(note.pickings_picker)
-
-            note.picking_ids = note.pickings_picker
-
-    @api.multi
-    def _compute_sale_ids(self):
-        for note in self:
-            note.sale_ids = self.mapped('picking_ids.sale_id') \
-                                .filtered(lambda o: o.invoice_status == TO_INVOICE_STATUS)
-
     def check_compliance(self, pickings):
         super().check_compliance(pickings)
 
@@ -253,7 +262,7 @@ class StockDeliveryNote(models.Model):
 
     @api.multi
     def ensure_annulability(self):
-        if self.mapped('invoice_id'):
+        if self.mapped('invoice_ids'):
             raise UserError(_("You cannot cancel this delivery note. "
                               "There is at least one invoice"
                               " related to this delivery note."))
@@ -308,21 +317,18 @@ class StockDeliveryNote(models.Model):
             if order_lines.filtered(lambda l: l.need_to_be_invoiced):
                 cache[downpayment] = downpayment.fix_qty_to_invoice()
 
-        invoice_id = self.sale_ids.action_invoice_create(final=True)
+        self.sale_ids.action_invoice_create(final=True)
 
         for line, vals in cache.items():
             line.write(vals)
 
         orders_lines._get_to_invoice_qty()
 
-        self.write({
-            'invoice_id': invoice_id,
-            'state': DOMAIN_DELIVERY_NOTE_STATES[2]
-        })
+        self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[2]})
 
     @api.multi
     def action_view_invoices(self):
-        invoices = self.mapped('invoice_id')
+        invoices = self.mapped('invoice_ids')
         action = self.env.ref('account.action_invoice_tree1').read()[0]
 
         if len(invoices) > 1:
@@ -438,13 +444,20 @@ class StockDeliveryNoteLine(models.Model):
 
     move_id = fields.Many2one('stock.move', string=_("Warehouse movement"), readonly=True)
     sale_line_id = fields.Many2one('sale.order.line', related='move_id.sale_line_id', store=True)
-    invoice_status = fields.Selection(INVOICE_STATUSES, related='sale_line_id.invoice_status')
+    invoice_status = fields.Selection(INVOICE_STATUSES,
+                                      string=_("Invoice status"),
+                                      required=True,
+                                      default=DOMAIN_INVOICE_STATUSES[0])
 
     _sql_constraints = [(
         'move_uniq',
         'unique(move_id)',
         "You cannot assign the same warehouse movement to different delivery notes!"
     )]
+
+    @property
+    def is_invoiceable(self):
+        return self.invoice_status == DOMAIN_INVOICE_STATUSES[1]
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
@@ -478,6 +491,7 @@ class StockDeliveryNoteLine(models.Model):
                 line['currency_id'] = order.currency_id.id
                 line['discount'] = order_line.discount
                 line['tax_ids'] = [(6, False, order_line.tax_id.ids)]
+                line['invoice_status'] = DOMAIN_INVOICE_STATUSES[1]
 
             lines.append(line)
 
