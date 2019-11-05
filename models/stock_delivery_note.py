@@ -89,6 +89,15 @@ class StockDeliveryNote(models.Model):
                                           track_visibility='onchange')
 
     #
+    # TODO: Recuperare i partner mittente e partner destinatario.
+    #       Chiamando il metodo 'get_warehouse' sui campi 'location_id'
+    #        e 'location_dest_id' delle 'stock.picking', è possibile
+    #        recperare i warehouse delle locations e, successivamente,
+    #        i partner associati ai warehouse.
+    #       Qualora si trattassero di warehouse "virtuali" (di conseguenza,
+    #        senza partner) sarà necessario utilizzare il partner della
+    #        picking per sostituire il partner mancante.
+    #
     # TODO: Deve, forse, essere un 'delivery.carrier' anziché un 'res.partner'?
     #
     # carrier_id = fields.Many2one('res.partner',

@@ -30,25 +30,6 @@ class SaleOrder(models.Model):
 
         return invoice_ids
 
-#
-# class SaleOrder(models.Model):
-#     _inherit = 'sale.order'
-#
-#     def action_invoice_create(self, grouped=False, final=False):
-#         res = super().action_invoice_create(grouped, final)
-#
-#         #
-#         # TODO: Associare i DdT delle righe fatturate a 'account.invoice(res)'.
-#         #        - Identificare le righe fatturate.
-#         #        - Tra le righe fatturate, verificare quali sono associate a pickings confermate.
-#         #        - Passando tramite le pickings confermate, selezionare tutti i DdT interessati.
-#         #        - Assegnare ai ddT interessati 'stock.delivery.note(...).write({'invoice_id': res})'.
-#         #
-#         # FIXME: Se ci sono più SO associati ad un solo DdT, non posso assegnare più fatture allo stesso DdT.
-#         #        Dato questo caso particolare, temo si dovrà gestire l'associazione tra DdT e Fattura come
-#         #         una Many2many.
-#         #
-#
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
