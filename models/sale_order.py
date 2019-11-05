@@ -3,14 +3,38 @@
 
 from odoo import _, api, fields, models
 
-TO_INVOICE_STATUS = 'to invoice'
-INVOICED_STATUS = 'invoiced'
+from .stock_delivery_note import DOMAIN_INVOICE_STATUSES
+
+
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    @api.multi
+    def _assign_delivery_notes_invoices(self, invoice_ids):
+        order_lines = self.mapped('order_line').filtered(lambda l: l.is_invoiced and l.delivery_note_line_ids)
+        delivery_note_lines = order_lines.mapped('delivery_note_line_ids').filtered(lambda l: l.is_invoiceable)
+        delivery_note_lines.write({'invoice_status': DOMAIN_INVOICE_STATUSES[2]})
+
+        #
+        # TODO: È necessario controllare che il DdT associato alle righe sia stato validato prima di fatturare?
+        #
+
+        delivery_notes = delivery_note_lines.mapped('delivery_note_id')
+        delivery_notes.write({'invoice_ids': [(4, invoice_id) for invoice_id in invoice_ids]})
+
+    @api.multi
+    def action_invoice_create(self, grouped=False, final=False):
+        invoice_ids = super().action_invoice_create(grouped=grouped, final=final)
+
+        self._assign_delivery_notes_invoices(invoice_ids)
+
+        return invoice_ids
 
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    delivery_note_line_id = fields.One2many('stock.delivery.note.line', 'sale_line_id', readonly=True)
+    delivery_note_line_ids = fields.One2many('stock.delivery.note.line', 'sale_line_id', readonly=True)
     delivery_picking_id = fields.Many2one('stock.picking', readonly=True)
 
     @property
@@ -19,7 +43,11 @@ class SaleOrderLine(models.Model):
 
     @property
     def is_invoiceable(self):
-        return self.invoice_status == TO_INVOICE_STATUS and self.qty_to_invoice != 0
+        return self.invoice_status == DOMAIN_INVOICE_STATUSES[1] and self.qty_to_invoice != 0
+
+    @property
+    def is_invoiced(self):
+        return self.invoice_status != DOMAIN_INVOICE_STATUSES[1] and self.qty_invoiced != 0
 
     @property
     def need_to_be_invoiced(self):
