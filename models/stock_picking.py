@@ -25,6 +25,11 @@ class StockPicking(models.Model):
 
     delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"))
     delivery_note_partner_shipping_id = fields.Many2one('res.partner', related='delivery_note_id.partner_shipping_id')
+
+    delivery_note_carrier_id = fields.Many2one('res.partner', related='delivery_note_id.carrier_id')
+    delivery_note_delivery_method_id = fields.Many2one('delivery.carrier',
+                                                       related='delivery_note_id.delivery_method_id')
+
     delivery_note_type_id = fields.Many2one('stock.delivery.note.type', related='delivery_note_id.type_id')
     delivery_note_date = fields.Date(related='delivery_note_id.date')
     delivery_note_note = fields.Html(related='delivery_note_id.note')

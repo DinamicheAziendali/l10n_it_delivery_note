@@ -80,9 +80,10 @@
                         <group>
                             <field name="partner_id" />
                             <field name="partner_shipping_id" />
-                            <!--<field name="carrier_id"-->
-                                   <!--domain="[('supplier', '=', True)]"-->
-                                   <!--context="{'default_supplier': True}" />-->
+                            <field name="carrier_id"
+                                   domain="[('supplier', '=', True)]"
+                                   context="{'default_supplier': True}" />
+                            <field name="delivery_method_id" />
                         </group>
                         <group>
                             <field name="type_id" />
