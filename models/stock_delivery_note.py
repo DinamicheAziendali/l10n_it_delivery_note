@@ -103,13 +103,11 @@ class StockDeliveryNote(models.Model):
                                  string=_("Carrier"),
                                  states=DRAFT_EDITABLE_STATE,
                                  readonly=True,
-                                 required=True,
                                  track_visibility='onchange')
     delivery_method_id = fields.Many2one('delivery.carrier',
                                          string=_("Delivery method"),
                                          states=DRAFT_EDITABLE_STATE,
                                          readonly=True,
-                                         required=True,
                                          track_visibility='onchange')
 
     date = fields.Date(string=_("Date"), states=DONE_READONLY_STATE)
@@ -223,6 +221,11 @@ class StockDeliveryNote(models.Model):
 
         if self.partner_id:
             skipped = False
+
+            if not self.delivery_method_id:
+                self.delivery_method_id = self.partner_id.property_delivery_carrier_id
+            elif self.partner_id.property_delivery_carrier_id:
+                skipped = True
 
             if not self.transport_condition_id:
                 self.transport_condition_id = self.partner_id.transport_condition_id
