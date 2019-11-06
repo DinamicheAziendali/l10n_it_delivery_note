@@ -54,13 +54,15 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="object"
-                                class="oe_stat_button"
-                                name="action_view_invoices"
-                                icon="fa-pencil-square-o"
-                                attrs="{'invisible': [('invoice_count', '=', 0)]}">
-                            <field name="invoice_count" widget="statinfo" string="Invoices" />
-                        </button>
+                        <!--
+                            <button type="object"
+                                    class="oe_stat_button"
+                                    name="goto_invoices"
+                                    icon="fa-pencil-square-o"
+                                    attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                                <field name="invoice_count" widget="statinfo" string="Invoices" />
+                            </button>
+                          -->
                         <button type="object" class="oe_stat_button" name="toggle_active" icon="fa-archive">
                             <field name="active" widget="boolean_button" options="{'terminology': 'archive'}" />
                         </button>
@@ -221,6 +223,20 @@
                                 </tree>
                             </field>
                         </page>
+                        <page name="invoices" string="Invoices" attrs="{'invisible': [('invoice_ids', '=', [])]}">
+                            <field name="invoice_ids">
+                                <tree>
+                                    <field name="currency_id" invisible="True" />
+                                    <field name="number" />
+                                    <field name="origin" />
+                                    <field name="amount_untaxed" string="Tax excluded" sum="Total" />
+                                    <field name="amount_tax" string="Tax" sum="Total" />
+                                    <field name="amount_total_signed" string="Total" sum="Total" />
+                                    <field name="residual_signed" string="To pay" sum="Total" />
+                                    <field name="state" />
+                                </tree>
+                            </field>
+                        </page>
                         <page name="internal_notes" string="Internal notes">
                             <field name="note" />
                         </page>
@@ -235,7 +251,7 @@
         </field>
     </record>
 
-    <record id="res_partner_employment_tree_view" model="ir.ui.view">
+    <record id="stock_delivery_note_tree_view" model="ir.ui.view">
         <field name="name">stock.delivery.note.tree</field>
         <field name="model">stock.delivery.note</field>
         <field name="arch" type="xml">

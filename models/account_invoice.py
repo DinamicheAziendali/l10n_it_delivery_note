@@ -16,9 +16,30 @@ class AccountInvoice(models.Model):
                                          'invoice_id',
                                          'delivery_note_id',
                                          string=_("Delivery notes"))
+
+    #
+    # TODO: Confermare e tenere tutto il codice seguente oppure è possibile rimuoverlo?
+    #
     delivery_note_count = fields.Integer(string=_("Delivery notes count"), compute='_compute_delivery_note_count')
 
     @api.multi
     def _compute_delivery_note_count(self):
         for note in self:
             note.invoice_count = len(note.invoice_ids)
+
+    @api.multi
+    def goto_delivery_notes(self):
+        delivery_notes = self.mapped('delivery_note_ids')
+        action = self.env.ref('easy_ddt.stock_delivery_note_tree_view').read()[0]
+
+        if len(delivery_notes) > 1:
+            action['domain'] = [('id', 'in', delivery_notes.ids)]
+
+        elif len(delivery_notes) == 1:
+            action['views'] = [(self.env.ref('easy_ddt.stock_delivery_note_form_view').id, 'form')]
+            action['res_id'] = delivery_notes.id
+
+        else:
+            action = {'type': 'ir.actions.act_window_close'}
+
+        return action

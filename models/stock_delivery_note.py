@@ -344,7 +344,7 @@ class StockDeliveryNote(models.Model):
         self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[2]})
 
     @api.multi
-    def action_view_invoices(self):
+    def goto_invoices(self):
         invoices = self.mapped('invoice_ids')
         action = self.env.ref('account.action_invoice_tree1').read()[0]
 
@@ -353,7 +353,7 @@ class StockDeliveryNote(models.Model):
 
         elif len(invoices) == 1:
             action['views'] = [(self.env.ref('account.invoice_form').id, 'form')]
-            action['res_id'] = invoices.ids[0]
+            action['res_id'] = invoices.id
 
         else:
             action = {'type': 'ir.actions.act_window_close'}
