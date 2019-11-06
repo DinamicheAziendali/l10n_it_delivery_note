@@ -16,7 +16,14 @@ class SaleOrder(models.Model):
         delivery_note_lines.write({'invoice_status': DOMAIN_INVOICE_STATUSES[2]})
 
         #
-        # TODO: È necessario controllare che il DdT associato alle righe sia stato validato prima di fatturare?
+        # TODO #1: È necessario gestire il caso di fatturazione splittata
+        #           di una stessa riga d'ordine associata ad una sola
+        #           picking (e di conseguenza, ad un solo DdT)?
+        #          Può essere, invece, un caso "borderline"
+        #           da lasciar gestire all'operatore?
+        #
+        # TODO #2: È necessario controllare che il DdT associato alle
+        #           righe sia stato validato prima di fatturare?
         #
 
         delivery_notes = delivery_note_lines.mapped('delivery_note_id')
