@@ -7,6 +7,8 @@
 
 from odoo import _, api, fields, models
 
+from .stock_delivery_note import DATETIME_FORMAT
+
 
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
@@ -15,17 +17,17 @@ class AccountInvoice(models.Model):
                                          'stock_delivery_note_account_invoice_rel',
                                          'invoice_id',
                                          'delivery_note_id',
-                                         string=_("Delivery notes"))
+                                         string=_("Delivery notes"),
+                                         copy=False)
 
-    #
-    # TODO: Confermare e tenere tutto il codice seguente oppure è possibile rimuoverlo?
+    # TODO #1: Confermare e tenere tutto il codice seguente oppure è possibile rimuoverlo?
     #
     delivery_note_count = fields.Integer(string=_("Delivery notes count"), compute='_compute_delivery_note_count')
 
     @api.multi
     def _compute_delivery_note_count(self):
-        for note in self:
-            note.invoice_count = len(note.invoice_ids)
+        for invoice in self:
+            invoice.delivery_note_count = len(invoice.delivery_note_ids)
 
     @api.multi
     def goto_delivery_notes(self):
@@ -43,3 +45,37 @@ class AccountInvoice(models.Model):
             action = {'type': 'ir.actions.act_window_close'}
 
         return action
+    #
+    # TODO #1: Confermare e tenere tutto il codice precedente oppure è possibile rimuoverlo?
+
+    @api.multi
+    def update_delivery_note_lines(self):
+        for invoice in self.filtered(lambda i: i.delivery_note_ids):
+            new_lines = []
+            old_lines = invoice.invoice_line_ids.filtered(lambda l: l.delivery_note_id)
+            old_lines.unlink()
+
+            #
+            # TODO: Come bisogna comportarsi nel caso in
+            #        cui il DdT non sia un DdT "valido"?
+            #       Al momento, potrebbe essere possibile avere
+            #        sia sei DdT senza numero (non ancora confermati)
+            #        così come è possibile avere dei DdT senza, necessariamente,
+            #        data di trasporto (non è un campo obbligatorio).
+            #
+
+            for note in invoice.delivery_note_ids:
+                new_lines.append((0, False, {
+                    'sequence': 99,
+                    'display_type': 'line_note',
+                    'name': _("Document {} of {}").format(note.name, note.transport_datetime.strftime(DATETIME_FORMAT)),
+                    'delivery_note_id': note.id
+                }))
+
+            invoice.write({'invoice_line_ids': new_lines})
+
+
+class AccountInvoiceLine(models.Model):
+    _inherit = 'account.invoice.line'
+
+    delivery_note_id = fields.Many2one('delivery.note', string=_("Delivery note"), readonly=True, copy=False)

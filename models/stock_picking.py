@@ -23,7 +23,7 @@ DOMAIN_PRICES_TO_SHOW = [p[0] for p in PRICES_TO_SHOW]
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"))
+    delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), copy=False)
     delivery_note_partner_shipping_id = fields.Many2one('res.partner', related='delivery_note_id.partner_shipping_id')
 
     delivery_note_carrier_id = fields.Many2one('res.partner', related='delivery_note_id.carrier_id')

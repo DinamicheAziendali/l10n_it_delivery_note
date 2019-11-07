@@ -30,10 +30,16 @@ class SaleOrder(models.Model):
         delivery_notes.write({'invoice_ids': [(4, invoice_id) for invoice_id in invoice_ids]})
 
     @api.multi
+    def _generate_delivery_note_lines(self, invoice_ids):
+        invoices = self.env['account.invoice'].browse(invoice_ids)
+        invoices.generate_delivery_note_lines()
+
+    @api.multi
     def action_invoice_create(self, grouped=False, final=False):
         invoice_ids = super().action_invoice_create(grouped=grouped, final=final)
 
         self._assign_delivery_notes_invoices(invoice_ids)
+        self._generate_delivery_note_lines(invoice_ids)
 
         return invoice_ids
 
@@ -42,7 +48,7 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     delivery_note_line_ids = fields.One2many('stock.delivery.note.line', 'sale_line_id', readonly=True)
-    delivery_picking_id = fields.Many2one('stock.picking', readonly=True)
+    delivery_picking_id = fields.Many2one('stock.picking', readonly=True, copy=False)
 
     @property
     def has_picking(self):

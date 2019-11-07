@@ -66,10 +66,11 @@ class StockDeliveryNote(models.Model):
         return [('category_id', '=', uom_category_id.id)]
 
     active = fields.Boolean(string=_("Active"), default=True)
-    name = fields.Char(string=_("Name"), readonly=True, index=True, track_visibility='onchange')
-    display_name = fields.Char(compute='_compute_display_name', store=True, index=True)
+    name = fields.Char(string=_("Name"), readonly=True, index=True, copy=False, track_visibility='onchange')
+    display_name = fields.Char(compute='_compute_display_name', store=True, index=True, copy=False)
     state = fields.Selection(DELIVERY_NOTE_STATES,
                              string=_("State"),
+                             copy=False,
                              default=DOMAIN_DELIVERY_NOTE_STATES[0],
                              required=True,
                              track_visibility='onchange')
@@ -78,7 +79,7 @@ class StockDeliveryNote(models.Model):
     # TODO: Recuperare i partner mittente e partner destinatario.
     #       Chiamando il metodo 'get_warehouse' sui campi 'location_id'
     #        e 'location_dest_id' delle 'stock.picking', è possibile
-    #        recperare i warehouse delle locations e, successivamente,
+    #        recuperare i warehouse delle locations e, successivamente,
     #        i partner associati ai warehouse.
     #       Qualora si trattassero di warehouse "virtuali" (di conseguenza,
     #        senza partner) sarà necessario utilizzare il partner della
@@ -110,7 +111,7 @@ class StockDeliveryNote(models.Model):
                                          readonly=True,
                                          track_visibility='onchange')
 
-    date = fields.Date(string=_("Date"), states=DONE_READONLY_STATE)
+    date = fields.Date(string=_("Date"), states=DONE_READONLY_STATE, copy=False)
     type_id = fields.Many2one('stock.delivery.note.type',
                               string=_("Type"),
                               default=_default_type,
@@ -159,7 +160,7 @@ class StockDeliveryNote(models.Model):
                                           states=DRAFT_EDITABLE_STATE,
                                           readonly=True)
 
-    transport_datetime = fields.Datetime(string=_("Transport date"), states=DONE_READONLY_STATE)
+    transport_datetime = fields.Datetime(string=_("Transport date"), states=DONE_READONLY_STATE, copy=False)
 
     line_ids = fields.One2many('stock.delivery.note.line', 'delivery_note_id', string=_("Lines"))
 
@@ -171,7 +172,8 @@ class StockDeliveryNote(models.Model):
                                    'stock_delivery_note_account_invoice_rel',
                                    'delivery_note_id',
                                    'invoice_id',
-                                   string=_("Invoices"))
+                                   string=_("Invoices"),
+                                   copy=False)
     invoice_count = fields.Integer(string=_("Invoices count"), compute='_compute_invoice_count')
 
     note = fields.Html(string=_("Internal note"), states=DONE_READONLY_STATE)
@@ -459,12 +461,13 @@ class StockDeliveryNoteLine(models.Model):
     discount = fields.Float(string=_("Discount"), digits=dp.get_precision('Discount'))
     tax_ids = fields.Many2many('account.tax', string=_("Taxes"))
 
-    move_id = fields.Many2one('stock.move', string=_("Warehouse movement"), readonly=True)
-    sale_line_id = fields.Many2one('sale.order.line', related='move_id.sale_line_id', store=True)
+    move_id = fields.Many2one('stock.move', string=_("Warehouse movement"), readonly=True, copy=False)
+    sale_line_id = fields.Many2one('sale.order.line', related='move_id.sale_line_id', store=True, copy=False)
     invoice_status = fields.Selection(INVOICE_STATUSES,
                                       string=_("Invoice status"),
                                       required=True,
-                                      default=DOMAIN_INVOICE_STATUSES[0])
+                                      default=DOMAIN_INVOICE_STATUSES[0],
+                                      copy=False)
 
     _sql_constraints = [(
         'move_uniq',
