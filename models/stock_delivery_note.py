@@ -75,6 +75,19 @@ class StockDeliveryNote(models.Model):
                              required=True,
                              track_visibility='onchange')
 
+    src_location_id = fields.Many2one('stock.location',
+                                      string=_("Source location"),
+                                      compute='_compute_locations',
+                                      store=True,
+                                      readonly=True,
+                                      copy=False)
+    dest_location_id = fields.Many2one('stock.location',
+                                       string=_("Destination location"),
+                                       compute='_compute_locations',
+                                       store=True,
+                                       readonly=True,
+                                       copy=False)
+
     #
     # TODO: Recuperare i partner mittente e partner destinatario.
     #       Chiamando il metodo 'get_warehouse' sui campi 'location_id'
@@ -194,6 +207,15 @@ class StockDeliveryNote(models.Model):
             note.display_name = name
 
     @api.multi
+    @api.depends('picking_ids')
+    def _compute_locations(self):
+        for note in self.filtered(lambda l: l.picking_ids):
+            picking = note.picking_ids[0]
+
+            note.src_location_id = picking.location_id
+            note.dest_location_id = picking.location_dest_id
+
+    @api.multi
     def _get_pickings(self):
         for note in self:
             note.pickings_picker = note.picking_ids
@@ -273,6 +295,29 @@ class StockDeliveryNote(models.Model):
         result['domain'] = {'pickings_picker': pickings_picker_domain}
 
         return result
+
+    @api.multi
+    def _get_partners_from_locations(self):
+        for note in self:
+            src_warehouse_id = note.src_location_id.get_warehouse()
+            dest_warehouse_id = note.dest_location_id.get_warehouse()
+
+            src_partner_id = src_warehouse_id.partner_id
+            dest_partner_id = dest_warehouse_id.partner_id
+
+            if not src_partner_id:
+                src_partner_id = note.partner_id
+
+                if not dest_partner_id:
+                    raise ValueError("Fields 'src_partner_id' and 'dest_partner_id' cannot be both unset.")
+
+            elif not dest_partner_id:
+                dest_partner_id = note.partner_id
+
+            #
+            # TODO... then... ?
+            #
+
 
     def check_compliance(self, pickings):
         super().check_compliance(pickings)
