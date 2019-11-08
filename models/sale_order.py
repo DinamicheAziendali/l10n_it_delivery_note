@@ -32,7 +32,7 @@ class SaleOrder(models.Model):
     @api.multi
     def _generate_delivery_note_lines(self, invoice_ids):
         invoices = self.env['account.invoice'].browse(invoice_ids)
-        invoices.generate_delivery_note_lines()
+        invoices.update_delivery_note_lines()
 
     @api.multi
     def action_invoice_create(self, grouped=False, final=False):
