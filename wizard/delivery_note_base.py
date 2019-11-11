@@ -66,4 +66,4 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
             self.partner_id = self.mapped('selected_picking_ids.partner_id')
 
     def confirm(self):
-        raise NotImplementedError(_("This functionality isn't ready yet. Please, come back later."))
+        raise NotImplementedError("This functionality isn't ready yet. Please, come back later.")

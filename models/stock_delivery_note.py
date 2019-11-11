@@ -88,16 +88,12 @@ class StockDeliveryNote(models.Model):
                                        readonly=True,
                                        copy=False)
 
-    #
-    # TODO: Recuperare i partner mittente e partner destinatario.
-    #       Chiamando il metodo 'get_warehouse' sui campi 'location_id'
-    #        e 'location_dest_id' delle 'stock.picking', è possibile
-    #        recuperare i warehouse delle locations e, successivamente,
-    #        i partner associati ai warehouse.
-    #       Qualora si trattassero di warehouse "virtuali" (di conseguenza,
-    #        senza partner) sarà necessario utilizzare il partner della
-    #        picking per sostituire il partner mancante.
-    #
+    partner_sender_id = fields.Many2one('res.partner',
+                                        string=_("Sender"),
+                                        states=DRAFT_EDITABLE_STATE,
+                                        readonly=True,
+                                        required=True,
+                                        track_visibility='onchange')
 
     partner_id = fields.Many2one('res.partner',
                                  string=_("Recipient"),
@@ -191,6 +187,8 @@ class StockDeliveryNote(models.Model):
 
     note = fields.Html(string=_("Internal note"), states=DONE_READONLY_STATE)
 
+    show_product_information = fields.Boolean(compute='_compute_boolean_flags')
+
     @api.multi
     @api.depends('name', 'partner_id', 'partner_id.display_name')
     def _compute_display_name(self):
@@ -238,6 +236,13 @@ class StockDeliveryNote(models.Model):
     def _compute_invoice_count(self):
         for note in self:
             note.invoice_count = len(note.invoice_ids)
+
+    @api.multi
+    def _compute_boolean_flags(self):
+        show_product_information = self.env.user.user_has_groups('easy_ddt.show_product_related_fields')
+
+        for note in self:
+            note.show_product_information = show_product_information
 
     @api.onchange('partner_id')
     def _onchange_partner(self):
@@ -317,7 +322,6 @@ class StockDeliveryNote(models.Model):
             #
             # TODO... then... ?
             #
-
 
     def check_compliance(self, pickings):
         super().check_compliance(pickings)

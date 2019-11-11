@@ -15,6 +15,7 @@
             <form>
                 <field name="picking_ids" invisible="True" />
                 <field name="sale_ids" invisible="True" />
+                <field name="show_product_information" invisible="True" />
                 <header>
                     <button name="action_draft"
                             type="object"
@@ -80,16 +81,23 @@
                     </div>
                     <group>
                         <group>
+                            <field name="partner_sender_id" />
                             <field name="partner_id" />
                             <field name="partner_shipping_id" />
+                        </group>
+                        <group>
+                            <field name="type_id" />
+                            <field name="date" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
                             <field name="carrier_id"
                                    domain="[('supplier', '=', True)]"
                                    context="{'default_supplier': True}" />
                             <field name="delivery_method_id" />
                         </group>
                         <group>
-                            <field name="type_id" />
-                            <field name="date" />
                             <field name="transport_datetime" />
                         </group>
                     </group>
@@ -149,15 +157,16 @@
                                            groups="uom.group_uom"
                                            options="{'no_create': True, 'no_open': True}" />
                                     <field name="price_unit"
-                                           attrs="{'readonly': [('sale_line_id', '!=', False)]}"
-                                           groups="easy_ddt.show_product_related_fields"
+                                           attrs="{'column_invisible': [('parent.show_product_information', '=', False)],
+                                                   'readonly': [('sale_line_id', '!=', False)]}"
                                            sum="Total" />
                                     <field name="discount"
-                                           attrs="{'readonly': [('sale_line_id', '!=', False)]}"
-                                           groups="easy_ddt.show_product_related_fields,sale.group_discount_per_so_line" />
+                                           attrs="{'column_invisible': [('parent.show_product_information', '=', False)],
+                                                   'readonly': [('sale_line_id', '!=', False)]}"
+                                           groups="sale.group_discount_per_so_line" />
                                     <field name="tax_ids"
-                                           attrs="{'readonly': [('sale_line_id', '!=', False)]}"
-                                           groups="easy_ddt.show_product_related_fields"
+                                           attrs="{'column_invisible': [('parent.show_product_information', '=', False)],
+                                                   'readonly': [('sale_line_id', '!=', False)]}"
                                            widget="many2many_tags" />
                                 </tree>
                                 <form>
@@ -187,19 +196,16 @@
                                     </div>
                                     <group attrs="{'invisible': [('display_type', '!=', False)]}">
                                         <group>
-                                            <field name="price_unit" groups="easy_ddt.show_product_related_fields" />
+                                            <field name="price_unit" attrs="{'invisible' : [('parent.show_product_information', '=', False)]}" />
                                             <label for="product_qty" />
                                             <div class="o_row">
                                                 <field name="product_qty" />
                                                 <field name="product_uom_id" groups="uom.group_uom" widget="selection" />
                                             </div>
                                         </group>
-                                        <group>
-                                            <field name="discount"
-                                                   groups="easy_ddt.show_product_related_fields,sale.group_discount_per_so_line" />
-                                            <field name="tax_ids"
-                                                   groups="easy_ddt.show_product_related_fields"
-                                                   widget="many2many_tags" />
+                                        <group attrs="{'invisible' : [('parent.show_product_information', '=', False)]}">
+                                            <field name="discount" groups="sale.group_discount_per_so_line" />
+                                            <field name="tax_ids" widget="many2many_tags" />
                                         </group>
                                     </group>
                                 </form>
@@ -211,24 +217,26 @@
                                    domain="[('delivery_note_id', '=', False),
                                             ('state', '=', 'done'),
                                             ('picking_type_code', 'not in', ['internal', 'incoming']),
-                                            ('partner_id', '=', partner_id)]"
-                                   options="{'no_create': True}">
-                                <tree decoration-success="id not in parent.picking_ids">
+                                            ('partner_id', '=', partner_id)]">
+                                <tree decoration-success="id not in parent.picking_ids" editable="bottom">
                                     <field name="name" />
                                     <field name="location_dest_id" groups="stock.group_stock_multi_locations" />
-                                    <field name="scheduled_date" />
+                                    <field name="scheduled_date" readonly="True" />
                                     <field name="origin" />
                                     <field name="backorder_id" />
                                     <field name="state" />
                                 </tree>
                             </field>
                         </page>
-                        <page name="invoices" string="Invoices" attrs="{'invisible': [('invoice_ids', '=', [])]}">
+                        <page name="invoices"
+                              string="Invoices"
+                              attrs="{'invisible': [('invoice_ids', '=', [])]}"
+                              groups="account.group_account_invoice">
                             <field name="invoice_ids">
-                                <tree>
+                                <tree editable="bottom">
                                     <field name="currency_id" invisible="True" />
                                     <field name="number" />
-                                    <field name="origin" />
+                                    <field name="origin" readonly="True" />
                                     <field name="amount_untaxed" string="Tax excluded" sum="Total" />
                                     <field name="amount_tax" string="Tax" sum="Total" />
                                     <field name="amount_total_signed" string="Total" sum="Total" />
