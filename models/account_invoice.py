@@ -32,7 +32,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def goto_delivery_notes(self):
         delivery_notes = self.mapped('delivery_note_ids')
-        action = self.env.ref('easy_ddt.stock_delivery_note_tree_view').read()[0]
+        action = self.env.ref('easy_ddt.stock_delivery_note_action').read()[0]
 
         if len(delivery_notes) > 1:
             action['domain'] = [('id', 'in', delivery_notes.ids)]
@@ -47,6 +47,20 @@ class AccountInvoice(models.Model):
         return action
     #
     # TODO #1: Confermare e tenere tutto il codice precedente oppure è possibile rimuoverlo?
+
+    def goto_invoice(self, **kwargs):
+        self.ensure_one()
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.invoice',
+            'res_id': self.id,
+            'views': [(False, 'form')],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'target': 'current',
+            **kwargs
+        }
 
     @api.multi
     def update_delivery_note_lines(self):

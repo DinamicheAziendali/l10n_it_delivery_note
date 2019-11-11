@@ -177,13 +177,14 @@ class StockDeliveryNote(models.Model):
     pickings_picker = fields.Many2many('stock.picking', compute='_get_pickings', inverse='_set_pickings')
 
     sale_ids = fields.Many2many('sale.order', compute='_compute_sale_ids')
+    sale_count = fields.Integer(compute='_compute_sale_ids')
+
     invoice_ids = fields.Many2many('account.invoice',
                                    'stock_delivery_note_account_invoice_rel',
                                    'delivery_note_id',
                                    'invoice_id',
                                    string=_("Invoices"),
                                    copy=False)
-    invoice_count = fields.Integer(string=_("Invoices count"), compute='_compute_invoice_count')
 
     note = fields.Html(string=_("Internal note"), states=DONE_READONLY_STATE)
 
@@ -229,13 +230,11 @@ class StockDeliveryNote(models.Model):
     @api.multi
     def _compute_sale_ids(self):
         for note in self:
-            note.sale_ids = self.mapped('picking_ids.sale_id') \
-                                .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1])
+            sale_ids = self.mapped('picking_ids.sale_id') \
+                           .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1])
 
-    @api.multi
-    def _compute_invoice_count(self):
-        for note in self:
-            note.invoice_count = len(note.invoice_ids)
+            note.sale_ids = sale_ids
+            note.sale_count = len(sale_ids)
 
     @api.multi
     def _compute_boolean_flags(self):
@@ -395,23 +394,6 @@ class StockDeliveryNote(models.Model):
         self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[2]})
 
     @api.multi
-    def goto_invoices(self):
-        invoices = self.mapped('invoice_ids')
-        action = self.env.ref('account.action_invoice_tree1').read()[0]
-
-        if len(invoices) > 1:
-            action['domain'] = [('id', 'in', invoices.ids)]
-
-        elif len(invoices) == 1:
-            action['views'] = [(self.env.ref('account.invoice_form').id, 'form')]
-            action['res_id'] = invoices.id
-
-        else:
-            action = {'type': 'ir.actions.act_window_close'}
-
-        return action
-
-    @api.multi
     def action_done(self):
         self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[3]})
 
@@ -424,6 +406,23 @@ class StockDeliveryNote(models.Model):
     @api.multi
     def action_print(self):
         return self.env.ref('easy_ddt.delivery_note_report_action').report_action(self)
+
+    @api.multi
+    def goto_sales(self):
+        sales = self.mapped('sale_ids')
+        action = self.env.ref('sale.action_orders').read()[0]
+
+        if len(sales) > 1:
+            action['domain'] = [('id', 'in', sales.ids)]
+
+        elif len(sales) == 1:
+            action['views'] = [(self.env.ref('sale.view_order_form').id, 'form')]
+            action['res_id'] = sales.id
+
+        else:
+            action = {'type': 'ir.actions.act_window_close'}
+
+        return action
 
     def _create_detail_lines(self, move_ids):
         if not move_ids:
