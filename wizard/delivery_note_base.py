@@ -29,9 +29,10 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
         validators = [
             (self._check_pickings, True),
             (self._check_pickings_state, False),
-            (self._check_pickings_type, False),
-            (self._check_partners, False),
-            (self._check_pickings_location, False),
+            (self._check_pickings_types, False),
+            (self._check_pickings_partners, False),
+            (self._check_pickings_src_locations, False),
+            (self._check_pickings_dest_locations, False),
             (self._check_delivery_notes, False)
         ]
 

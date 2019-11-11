@@ -25,12 +25,17 @@ class StockPickingCheckerMixin(models.AbstractModel):
             raise ValidationError(_("At least one picking you've selected doesn't appear to be completed."))
 
     @api.model
-    def _check_pickings_type(self, pickings):
-        if pickings.filtered(lambda p: p.picking_type_code == INCOMING_PICKING_TYPE):
-            raise ValidationError(_("At least one picking you've selected appear to be incoming."))
+    def _check_pickings_types(self, pickings):
+        types = pickings.mapped('picking_type_code')
+
+        if not types:
+            raise ValidationError(_("The pickings you've selected don't seem to have any type."))
+
+        if len(types) > 1:
+            raise ValidationError(_("You need to select pickings with all the same type."))
 
     @api.model
-    def _check_partners(self, pickings):
+    def _check_pickings_partners(self, pickings):
         partners = pickings.mapped('partner_id')
 
         if not partners:
@@ -40,13 +45,23 @@ class StockPickingCheckerMixin(models.AbstractModel):
             raise ValidationError(_("You need to select pickings with all the same recipient."))
 
     @api.model
-    def _check_pickings_location(self, pickings):
-        locations = pickings.mapped('location_dest_id')
+    def _check_pickings_src_locations(self, pickings):
+        src_locations = pickings.mapped('location_id')
 
-        if not locations:
+        if not src_locations:
+            raise ValidationError(_("The pickings you've selected don't seem to have any location of departure."))
+
+        if len(src_locations) > 1:
+            raise ValidationError(_("You need to select pickings with all the same location of departure."))
+
+    @api.model
+    def _check_pickings_dest_locations(self, pickings):
+        dest_locations = pickings.mapped('location_dest_id')
+
+        if not dest_locations:
             raise ValidationError(_("The pickings you've selected don't seem to have any location of destination."))
 
-        if len(locations) > 1:
+        if len(dest_locations) > 1:
             raise ValidationError(_("You need to select pickings with all the same location of destination."))
 
     @api.model
@@ -59,6 +74,7 @@ class StockPickingCheckerMixin(models.AbstractModel):
     def check_compliance(self, pickings):
         self._check_pickings(pickings)
         self._check_pickings_state(pickings)
-        self._check_pickings_type(pickings)
-        self._check_partners(pickings)
-        self._check_pickings_location(pickings)
+        self._check_pickings_types(pickings)
+        self._check_pickings_partners(pickings)
+        self._check_pickings_src_locations(pickings)
+        self._check_pickings_dest_locations(pickings)

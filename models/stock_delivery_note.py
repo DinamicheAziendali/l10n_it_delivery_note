@@ -75,19 +75,6 @@ class StockDeliveryNote(models.Model):
                              required=True,
                              track_visibility='onchange')
 
-    src_location_id = fields.Many2one('stock.location',
-                                      string=_("Source location"),
-                                      compute='_compute_locations',
-                                      store=True,
-                                      readonly=True,
-                                      copy=False)
-    dest_location_id = fields.Many2one('stock.location',
-                                       string=_("Destination location"),
-                                       compute='_compute_locations',
-                                       store=True,
-                                       readonly=True,
-                                       copy=False)
-
     partner_sender_id = fields.Many2one('res.partner',
                                         string=_("Sender"),
                                         states=DRAFT_EDITABLE_STATE,
@@ -190,6 +177,14 @@ class StockDeliveryNote(models.Model):
 
     show_product_information = fields.Boolean(compute='_compute_boolean_flags')
 
+    @property
+    def has_locations(self):
+        return bool(self.src_location_id and self.dest_location_id)
+
+    @property
+    def has_partners(self):
+        return bool(self.partner_id and self.partner_sender_id)
+
     @api.multi
     @api.depends('name', 'partner_id', 'partner_id.display_name')
     def _compute_display_name(self):
@@ -204,15 +199,6 @@ class StockDeliveryNote(models.Model):
                 name = note.name
 
             note.display_name = name
-
-    @api.multi
-    @api.depends('picking_ids')
-    def _compute_locations(self):
-        for note in self.filtered(lambda l: l.picking_ids):
-            picking = note.picking_ids[0]
-
-            note.src_location_id = picking.location_id
-            note.dest_location_id = picking.location_dest_id
 
     @api.multi
     def _get_pickings(self):
@@ -299,28 +285,6 @@ class StockDeliveryNote(models.Model):
         result['domain'] = {'pickings_picker': pickings_picker_domain}
 
         return result
-
-    @api.multi
-    def _get_partners_from_locations(self):
-        for note in self:
-            src_warehouse_id = note.src_location_id.get_warehouse()
-            dest_warehouse_id = note.dest_location_id.get_warehouse()
-
-            src_partner_id = src_warehouse_id.partner_id
-            dest_partner_id = dest_warehouse_id.partner_id
-
-            if not src_partner_id:
-                src_partner_id = note.partner_id
-
-                if not dest_partner_id:
-                    raise ValueError("Fields 'src_partner_id' and 'dest_partner_id' cannot be both unset.")
-
-            elif not dest_partner_id:
-                dest_partner_id = note.partner_id
-
-            #
-            # TODO... then... ?
-            #
 
     def check_compliance(self, pickings):
         super().check_compliance(pickings)
@@ -453,6 +417,16 @@ class StockDeliveryNote(models.Model):
             note._create_detail_lines(move_ids_to_create)
             note._delete_detail_lines(move_ids_to_delete)
 
+    @api.multi
+    def update_partners(self):
+        for note in self.filtered(lambda n: n.has_locations and not n.has_partners):
+            partners = note.picking_ids.get_partners()
+
+            note.write({
+                'partner_sender_id': partners[0].id,
+                'partner_id': partners[1].id
+            })
+
     @api.model
     @api.returns('self')
     def create(self, vals):
@@ -460,6 +434,7 @@ class StockDeliveryNote(models.Model):
 
         if 'picking_ids' in vals:
             res.update_detail_lines()
+            res.update_partners()
 
         return res
 
@@ -469,6 +444,7 @@ class StockDeliveryNote(models.Model):
 
         if 'picking_ids' in vals:
             self.update_detail_lines()
+            self.update_partners()
 
         return res
 
