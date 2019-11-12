@@ -92,4 +92,4 @@ class AccountInvoice(models.Model):
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
 
-    delivery_note_id = fields.Many2one('delivery.note', string=_("Delivery note"), readonly=True, copy=False)
+    delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), readonly=True, copy=False)
