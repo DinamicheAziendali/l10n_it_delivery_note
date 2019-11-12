@@ -17,6 +17,7 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
 
     selected_picking_ids = fields.Many2many('stock.picking', default=_default_stock_pickings, readonly=True)
 
+    partner_sender_id = fields.Many2one('res.partner', string=_("Sender"), compute='_compute_fields')
     partner_id = fields.Many2one('res.partner', string=_("Recipient"), compute='_compute_fields')
     partner_shipping_id = fields.Many2one('res.partner', string=_("Shipping address"))
 
@@ -64,7 +65,10 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
                 .render_template('easy_ddt.stock_delivery_note_wizard_error_message_template', values)
 
         else:
-            self.partner_id = self.mapped('selected_picking_ids.partner_id')
+            partners = self.selected_picking_ids.get_partners()
+
+            self.partner_sender_id = partners[0]
+            self.partner_id = partners[1]
 
     def confirm(self):
         raise NotImplementedError("This functionality isn't ready yet. Please, come back later.")

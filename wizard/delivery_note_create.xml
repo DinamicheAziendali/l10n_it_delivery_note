@@ -17,6 +17,7 @@
                 </div>
                 <group attrs="{'invisible': [('error_message', '!=', False)]}" string="Summary">
                     <group>
+                        <field name="partner_sender_id" />
                         <field name="partner_id" />
                         <field name="partner_shipping_id" />
                     </group>

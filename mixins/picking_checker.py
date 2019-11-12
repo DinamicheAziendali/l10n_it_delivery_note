@@ -27,6 +27,7 @@ class StockPickingCheckerMixin(models.AbstractModel):
     @api.model
     def _check_pickings_types(self, pickings):
         types = pickings.mapped('picking_type_code')
+        types = set(types)
 
         if not types:
             raise ValidationError(_("The pickings you've selected don't seem to have any type."))

@@ -35,10 +35,9 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
     def confirm(self):
         self.check_compliance(self.selected_picking_ids)
 
-        partners = self.selected_picking_ids.get_partners()
         delivery_note = self.env['stock.delivery.note'].create({
-            'partner_sender_id': partners[0].id,
-            'partner_id': partners[1].id,
+            'partner_sender_id': self.partner_sender_id.id,
+            'partner_id': self.partner_id.id,
             'partner_shipping_id': self.partner_shipping_id.id,
             'type_id': self.type_id.id,
             'date': self.date,
