@@ -20,8 +20,6 @@ class AccountInvoice(models.Model):
                                          string=_("Delivery notes"),
                                          copy=False)
 
-    # TODO #1: Confermare e tenere tutto il codice seguente oppure è possibile rimuoverlo?
-    #
     delivery_note_count = fields.Integer(string=_("Delivery notes count"), compute='_compute_delivery_note_count')
 
     @api.multi
@@ -45,8 +43,6 @@ class AccountInvoice(models.Model):
             action = {'type': 'ir.actions.act_window_close'}
 
         return action
-    #
-    # TODO #1: Confermare e tenere tutto il codice precedente oppure è possibile rimuoverlo?
 
     def goto_invoice(self, **kwargs):
         self.ensure_one()

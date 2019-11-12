@@ -10,7 +10,7 @@ The DDT is for internal transfers between warehouses, outgoing transfers to cust
 The sequence is done by the DDT type sequence so it's possible to have different
 sequence depending on the typology of DDT.
 
-This module is similar to DDT l10n_it_ddt but i'ts easier (I believe) to use by
+This module is similar to DDT :code:`l10n_it_ddt` but i'ts easier (I believe) to use by
 warehouse worker.
 Unfortunately it's not possible to add on the fly product like the DDT module does.
 It's also possible to do a transfer between different warehouses.
