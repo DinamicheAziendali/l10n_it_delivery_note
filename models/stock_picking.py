@@ -172,6 +172,7 @@ class StockPicking(models.Model):
         return res
 
     @api.multi
+    @api.returns('res.partner')
     def get_partners(self):
         partner_id = self.mapped('partner_id')
 
@@ -206,7 +207,7 @@ class StockPicking(models.Model):
         elif not dest_partner_id:
             dest_partner_id = partner_id
 
-        return src_partner_id, dest_partner_id
+        return src_partner_id | dest_partner_id
 
     def goto_delivery_note(self, **kwargs):
         self.ensure_one()

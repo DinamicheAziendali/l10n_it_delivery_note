@@ -21,6 +21,8 @@ class SaleOrder(models.Model):
         #           picking (e di conseguenza, ad un solo DdT)?
         #          Può essere, invece, un caso "borderline"
         #           da lasciar gestire all'operatore?
+        #          Personalmente, non lo gestirei e delegherei
+        #           all'operatore questa responsabilità...
         #
         # TODO #2: È necessario controllare che il DdT associato alle
         #           righe sia stato validato prima di fatturare?
@@ -88,6 +90,7 @@ class SaleOrderLine(models.Model):
         return bool(self.move_ids & picking_ids.mapped('move_lines'))
 
     @api.multi
+    @api.returns('self')
     def retrieve_pickings_lines(self, picking_ids):
         return self.filtered(lambda l: l.has_picking) \
                    .filtered(lambda l: l.is_pickings_related(picking_ids))

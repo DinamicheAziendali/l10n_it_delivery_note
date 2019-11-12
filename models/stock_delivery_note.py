@@ -321,7 +321,8 @@ class StockDeliveryNote(models.Model):
 
             #
             # TODO: Verificare che il campo "Data di trasporto" sia valorizzato?
-            #       Potrebbe essere necessario rendere obbligatorio tale campo?
+            #       Potrebbe essere necessario rendere obbligatorio
+            #        tale campo per questo passaggio di stato?
             #
 
             note.state = DOMAIN_DELIVERY_NOTE_STATES[1]
