@@ -79,8 +79,8 @@
                     </div>
                     <group>
                         <group>
-                            <field name="partner_sender_id" />
-                            <field name="partner_id" />
+                            <field name="partner_sender_id" attrs="{'readonly': [('pickings_picker', '!=', [])]}" />
+                            <field name="partner_id" attrs="{'readonly': [('pickings_picker', '!=', [])]}" />
                             <field name="partner_shipping_id" />
                         </group>
                         <group>

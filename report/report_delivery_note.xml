@@ -110,13 +110,13 @@
                             <th class="text-right">
                                 Quantity
                             </th>
-                            <th class="text-right" style="white-space: nowrap;">
+                            <th t-if="doc.show_product_information" class="text-right" style="white-space: nowrap;">
                                 Unit price
                             </th>
-                            <th class="text-right" groups="sale.group_discount_per_so_line">
+                            <th t-if="doc.show_product_information" class="text-right" groups="sale.group_discount_per_so_line">
                                 Discount
                             </th>
-                            <th class="text-right">
+                            <th t-if="doc.show_product_information" class="text-right">
                                 Taxes
                             </th>
                         </tr>
@@ -136,13 +136,13 @@
                                         <span t-field="line.product_qty" />
                                         <span t-field="line.product_uom_id" groups="uom.group_uom" />
                                     </td>
-                                    <td class="text-right">
+                                    <td t-if="doc.show_product_information" class="text-right">
                                         <span t-field="line.price_unit" />
                                     </td>
-                                    <td class="text-right" groups="sale.group_discount_per_so_line">
+                                    <td t-if="doc.show_product_information" class="text-right" groups="sale.group_discount_per_so_line">
                                         <span t-field="line.discount" />%
                                     </td>
-                                    <td class="text-right">
+                                    <td t-if="doc.show_product_information" class="text-right">
                                         <span t-esc="', '.join(map(lambda t: (t.description or t.name), line.tax_ids))" />
                                     </td>
                                 </t>

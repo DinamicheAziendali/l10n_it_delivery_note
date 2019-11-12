@@ -180,14 +180,6 @@ class StockDeliveryNote(models.Model):
 
     show_product_information = fields.Boolean(compute='_compute_boolean_flags')
 
-    @property
-    def has_locations(self):
-        return bool(self.src_location_id and self.dest_location_id)
-
-    @property
-    def has_partners(self):
-        return bool(self.partner_id and self.partner_sender_id)
-
     @api.multi
     @api.depends('name', 'partner_id', 'partner_id.display_name')
     def _compute_display_name(self):
@@ -249,6 +241,8 @@ class StockDeliveryNote(models.Model):
     def _onchange_partner(self):
         result = {}
 
+        self.partner_shipping_id = self.partner_id
+
         if self.partner_id:
             skipped = False
 
@@ -296,6 +290,8 @@ class StockDeliveryNote(models.Model):
             ]
 
         else:
+            self.delivery_method_id = False
+
             pickings_picker_domain = [('id', '=', False)]
 
         result['domain'] = {'pickings_picker': pickings_picker_domain}
@@ -322,6 +318,11 @@ class StockDeliveryNote(models.Model):
     def action_confirm(self):
         for note in self:
             sequence = note.type_id.sequence_id
+
+            #
+            # TODO: Verificare che il campo "Data di trasporto" sia valorizzato?
+            #       Potrebbe essere necessario rendere obbligatorio tale campo?
+            #
 
             note.state = DOMAIN_DELIVERY_NOTE_STATES[1]
             if not note.date:
@@ -433,16 +434,6 @@ class StockDeliveryNote(models.Model):
             note._create_detail_lines(move_ids_to_create)
             note._delete_detail_lines(move_ids_to_delete)
 
-    @api.multi
-    def update_partners(self):
-        for note in self.filtered(lambda n: n.has_locations and not n.has_partners):
-            partners = note.picking_ids.get_partners()
-
-            note.write({
-                'partner_sender_id': partners[0].id,
-                'partner_id': partners[1].id
-            })
-
     @api.model
     @api.returns('self')
     def create(self, vals):
@@ -450,7 +441,6 @@ class StockDeliveryNote(models.Model):
 
         if 'picking_ids' in vals:
             res.update_detail_lines()
-            res.update_partners()
 
         return res
 
@@ -460,7 +450,6 @@ class StockDeliveryNote(models.Model):
 
         if 'picking_ids' in vals:
             self.update_detail_lines()
-            self.update_partners()
 
         return res
 
