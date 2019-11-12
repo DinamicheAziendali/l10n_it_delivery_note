@@ -6,8 +6,12 @@ from odoo.exceptions import ValidationError
 
 DONE_PICKING_STATE = 'done'
 
-INCOMING_PICKING_TYPE = 'incoming'
-INTERNAL_PICKING_TYPE = 'internal'
+PICKING_TYPES = [
+    ('incoming', "Vendors"),
+    ('outgoing', "Customers"),
+    ('internal', "Internal")
+]
+DOMAIN_PICKING_TYPES = [t[0] for t in PICKING_TYPES]
 
 
 class StockPickingCheckerMixin(models.AbstractModel):
@@ -26,8 +30,7 @@ class StockPickingCheckerMixin(models.AbstractModel):
 
     @api.model
     def _check_pickings_types(self, pickings):
-        types = pickings.mapped('picking_type_code')
-        types = set(types)
+        types = set(pickings.mapped('picking_type_code'))
 
         if not types:
             raise ValidationError(_("The pickings you've selected don't seem to have any type."))

@@ -7,7 +7,7 @@ from odoo import _, api, fields, models
 from odoo.addons import decimal_precision as dp
 from odoo.exceptions import UserError
 
-from ..mixins.picking_checker import DONE_PICKING_STATE, INCOMING_PICKING_TYPE, INTERNAL_PICKING_TYPE
+from ..mixins.picking_checker import DONE_PICKING_STATE, PICKING_TYPES
 
 DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S'
 
@@ -28,8 +28,6 @@ DOMAIN_LINE_DISPLAY_TYPES = [t[0] for t in LINE_DISPLAY_TYPES]
 
 DRAFT_EDITABLE_STATE = {'draft': [('readonly', False)]}
 DONE_READONLY_STATE = {'done': [('readonly', True)]}
-
-INVALID_PICKING_TYPES = [INCOMING_PICKING_TYPE, INTERNAL_PICKING_TYPE]
 
 INVOICE_STATUSES = [
     ('no', "Nothing to invoice"),
@@ -163,6 +161,11 @@ class StockDeliveryNote(models.Model):
     picking_ids = fields.One2many('stock.picking', 'delivery_note_id', string=_("Pickings"))
     pickings_picker = fields.Many2many('stock.picking', compute='_get_pickings', inverse='_set_pickings')
 
+    picking_type = fields.Selection(PICKING_TYPES,
+                                    string=_("Picking type"),
+                                    compute='_compute_picking_type',
+                                    store=True)
+
     sale_ids = fields.Many2many('sale.order', compute='_compute_sale_ids')
     sale_count = fields.Integer(compute='_compute_sale_ids')
 
@@ -212,6 +215,19 @@ class StockDeliveryNote(models.Model):
                 self.check_compliance(note.pickings_picker)
 
             note.picking_ids = note.pickings_picker
+
+    @api.multi
+    @api.depends('picking_ids')
+    def _compute_picking_type(self):
+        for note in self.filtered(lambda n: n.picking_ids):
+            picking_types = set(self.picking_ids.mapped('picking_type_code'))
+            picking_types = list(picking_types)
+
+            if len(picking_types) != 1:
+                raise ValueError("You have just called this method on an heterogeneous set of pickings.\n"
+                                 "All pickings should have the same 'picking_type_code' field value.")
+
+            note.picking_type = picking_types[0]
 
     @api.multi
     def _compute_sale_ids(self):
@@ -275,7 +291,7 @@ class StockDeliveryNote(models.Model):
             pickings_picker_domain = [
                 ('delivery_note_id', '=', False),
                 ('state', '=', DONE_PICKING_STATE),
-                ('picking_type_code', 'not in', INVALID_PICKING_TYPES),
+                ('picking_type_code', '=', self.picking_type),
                 ('partner_id', '=', self.partner_id.id)
             ]
 

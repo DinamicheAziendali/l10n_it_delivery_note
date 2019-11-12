@@ -8,7 +8,7 @@
 from odoo import _, api, fields, models
 
 from .stock_delivery_note import DOMAIN_DELIVERY_NOTE_STATES
-from ..mixins.picking_checker import DONE_PICKING_STATE, INCOMING_PICKING_TYPE
+from ..mixins.picking_checker import DOMAIN_PICKING_TYPES, DONE_PICKING_STATE
 
 CANCEL_MOVE_STATE = 'cancel'
 
@@ -65,34 +65,6 @@ class StockPicking(models.Model):
     delivery_note_done = fields.Boolean(compute='_compute_boolean_flags')
     can_be_invoiced = fields.Boolean(compute='_compute_boolean_flags')
 
-    #
-    # Old DDT fields:
-    #
-    #     ddt_number = fields.Char()
-    #     ddt_type_id = fields.Many2one('stock.delivery.note.type')
-    #     ddt_date = fields.Date()
-    #     ddt_notes = fields.Html()
-    #
-    #     carriage_condition_id = fields.Many2one('stock.picking.transport.condition')
-    #     goods_description_id = fields.Many2one('stock.picking.goods.appearance')
-    #     transportation_reason_id = fields.Many2one('stock.picking.transport.reason')
-    #     transportation_method_id = fields.Many2one('stock.picking.transport.method')
-    #
-    #     date_transport_ddt = fields.Date()
-    #     time_transport_ddt = fields.Float()
-    #
-    #     parcels = fields.Integer()
-    #     gross_weight = fields.Float()
-    #
-    #     #
-    #     # NEVER USED!
-    #     #
-    #     # partner_shipping_id = fields.Many2one('res.partner')
-    #     # weight_manual = fields.Float()
-    #     # invoice_id = fields.Many2one('account.invoice')
-    #     # to_be_invoiced = fields.Boolean()
-    #     # show_price = fields.Boolean()
-
     @property
     def _delivery_note_fields(self):
         from collections import OrderedDict
@@ -113,9 +85,7 @@ class StockPicking(models.Model):
         use_advanced_behaviour = self.env.user.user_has_groups('easy_ddt.use_advanced_delivery_notes')
 
         for picking in self:
-            picking.use_delivery_note = not from_delivery_note and \
-                                        picking.state == DONE_PICKING_STATE and \
-                                        picking.picking_type_code != INCOMING_PICKING_TYPE
+            picking.use_delivery_note = not from_delivery_note and picking.state == DONE_PICKING_STATE
 
             picking.use_advanced_behaviour = use_advanced_behaviour
             picking.delivery_note_visible = use_advanced_behaviour
@@ -189,11 +159,14 @@ class StockPicking(models.Model):
     def action_done(self):
         res = super().action_done()
 
-        if self.picking_type_code != INCOMING_PICKING_TYPE and \
+        if self.picking_type_code != DOMAIN_PICKING_TYPES[0] and \
            not self.env.user.user_has_groups('easy_ddt.use_advanced_delivery_notes'):
+            partners = self.get_partners()
+
             self.delivery_note_id = self.env['stock.delivery.note'].create({
-                'partner_id': self.partner_id.id,
-                'partner_shipping_id': self.partner_id.id
+                'partner_sender_id': partners[0].id,
+                'partner_id': partners[1].id,
+                'partner_shipping_id': partners[1].id
             })
 
         return res
@@ -201,16 +174,19 @@ class StockPicking(models.Model):
     @api.multi
     def get_partners(self):
         partner_id = self.mapped('partner_id')
+
         if len(partner_id) != 1:
             raise ValueError("You have just called this method on an heterogeneous set of pickings.\n"
                              "All pickings should have the same 'partner_id' field value.")
 
         src_location_id = self.mapped('location_id')
+
         if len(src_location_id) != 1:
             raise ValueError("You have just called this method on an heterogeneous set of pickings.\n"
                              "All pickings should have the same 'location_id' field value.")
 
         dest_location_id = self.mapped('location_dest_id')
+
         if len(dest_location_id) != 1:
             raise ValueError("You have just called this method on an heterogeneous set of pickings.\n"
                              "All pickings should have the same 'location_dest_id' field value.")
@@ -247,10 +223,10 @@ class StockPicking(models.Model):
         }
 
     def update_delivery_note_fields(self, vals):
-        fields = self._delivery_note_fields
+        note_fields = self._delivery_note_fields
 
-        if any(key in fields for key in vals.keys()):
-            delivery_note_vals = {fields[key].related[1]: value for key, value in vals.items() if key in fields}
+        if any(key in note_fields for key in vals.keys()):
+            delivery_note_vals = {note_fields[key].related[1]: value for key, value in vals.items() if key in note_fields}
 
             self.mapped('delivery_note_id').write(delivery_note_vals)
 
@@ -265,45 +241,6 @@ class StockPicking(models.Model):
                 self.mapped('delivery_note_id').update_detail_lines()
 
         return res
-
-    #
-    # Old DDT methods:
-    #
-    # @api.multi
-    # def ddt_time_report(self, time_ddt):
-    #     hh = int(time_ddt)
-    #     mm = time_ddt - hh
-    #     mms = str(int(round(mm * 60)))
-    #     if len(mms) == 1:
-    #         mms = '0' + mms
-    #
-    #     data = str(hh) + ":" + mms
-    #
-    #     return data
-    #
-    #     #
-    #     # NEVER USED!
-    #     #
-    #     # @api.multi
-    #     # def ddt_get_location(self, location_id):
-    #     #     model_warehouse = self.env['stock.warehouse']
-    #     #     warehouse = model_warehouse.search(
-    #     #         [('lot_stock_id', '=', location_id)]
-    #     #     )
-    #     #     data = [warehouse.partner_id.id, warehouse.partner_id.name]
-    #     #     if warehouse.partner_id:
-    #     #         data = [
-    #     #             warehouse.partner_id.name,
-    #     #             warehouse.partner_id.street,
-    #     #             (
-    #     #                 warehouse.partner_id.zip + ' ' +
-    #     #                 warehouse.partner_id.city + ' ' +
-    #     #                 '(' + warehouse.partner_id.state_id.name + ')'
-    #     #                 if warehouse.partner_id.state_id else ''
-    #     #             )
-    #     #         ]
-    #     #
-    #     #     return data
 
 
 class StockPickingTransportCondition(models.Model):
