@@ -256,6 +256,13 @@ class StockPickingTransportCondition(models.Model):
                                      string=_("Price to show"),
                                      required=True,
                                      default=DOMAIN_PRICES_TO_SHOW[0])
+
+    #
+    # TODO: Capire come dev'essere utilizzato questo campo.
+    #       Deve influenzare il comportamento del campo "prezzo"
+    #        solo ed esclusivamente nelle stampe del DdT?
+    #
+
     note = fields.Html(string=_("Internal note"))
 
     _sql_constraints = [(

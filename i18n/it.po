@@ -19,8 +19,8 @@ msgstr ""
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.res_config_settings_form_view
-msgid "<i>(e.g. Unit price, discount, taxes, etc...)</i>"
-msgstr "<i>(es. Prezzo unitario, sconto, tasse, ecc...)</i>"
+msgid "<i>(e.g. unit price, discount, taxes, etc...)</i>"
+msgstr "<i>(es. prezzo unitario, sconto, tasse, ecc...)</i>"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.res_config_settings_form_view
