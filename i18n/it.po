@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e-20190722\n"
+"Project-Id-Version: Odoo Server 12.0+e-20191007\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-31 12:27+0000\n"
-"PO-Revision-Date: 2019-07-31 15:22+0200\n"
+"POT-Creation-Date: 2019-11-13 09:13+0000\n"
+"PO-Revision-Date: 2019-11-13 10:38+0100\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
 "Language: it\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.4\n"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.res_config_settings_form_view
+msgid "<i>(e.g. Unit price, discount, taxes, etc...)</i>"
+msgstr "<i>(es. Prezzo unitario, sconto, tasse, ecc...)</i>"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.res_config_settings_form_view
@@ -24,23 +29,58 @@ msgstr "<i>(es. collegare più prelievi ad un singolo DdT)</i>"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "<strong>Date</strong>"
-msgstr "<strong>Data</strong>"
+msgid "<strong>Appearance of goods:</strong>"
+msgstr "<strong>Aspetto dei beni:</strong>"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "<strong>Order</strong>"
-msgstr "<strong>Ordine</strong>"
+msgid "<strong>Condition of transport:</strong>"
+msgstr "<strong>Condizioni di trasporto:</strong>"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "<strong>Product</strong>"
-msgstr "<strong>Prodotto</strong>"
+msgid "<strong>Date:</strong>"
+msgstr "<strong>Data:</strong>"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "<strong>Quantity</strong>"
-msgstr "<strong>Quantità</strong>"
+msgid "<strong>Gross weight:</strong>"
+msgstr "<strong>Peso lordo:</strong>"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
+msgid "<strong>Method of transport:</strong>"
+msgstr "<strong>Metodo di trasporto:</strong>"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
+msgid "<strong>Net weight:</strong>"
+msgstr "<strong>Peso netto:</strong>"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
+msgid "<strong>Parcels:</strong>"
+msgstr "<strong>Colli:</strong>"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
+msgid "<strong>Reason of transport:</strong>"
+msgstr "<strong>Motivo del trasporto:</strong>"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
+msgid "<strong>Shipping address:</strong>"
+msgstr "<strong>Indirizzo di spedizione:</strong>"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
+msgid "<strong>Transport date:</strong>"
+msgstr "<strong>Data di trasporto:</strong>"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
+msgid "<strong>Volume:</strong>"
+msgstr "<strong>Volume:</strong>"
 
 #. module: easy_ddt
 #: model:ir.model.fields,help:easy_ddt.field_stock_delivery_note_line__product_description
@@ -53,12 +93,12 @@ msgid "Action Needed"
 msgstr "Azione richiesta"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:54
-#: code:addons/easy_ddt/models/stock_delivery_note.py:393
-#: code:addons/easy_ddt/models/stock_picking.py:239
-#: code:addons/easy_ddt/models/stock_picking.py:256
+#: code:addons/easy_ddt/models/stock_delivery_note.py:66
+#: code:addons/easy_ddt/models/stock_delivery_note.py:580
+#: code:addons/easy_ddt/models/stock_picking.py:252
 #: code:addons/easy_ddt/models/stock_picking.py:273
 #: code:addons/easy_ddt/models/stock_picking.py:290
+#: code:addons/easy_ddt/models/stock_picking.py:307
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__active
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_type__active
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_goods_appearance__active
@@ -67,7 +107,7 @@ msgstr "Azione richiesta"
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_transport_reason__active
 #, python-format
 msgid "Active"
-msgstr "Attivo"
+msgstr "Attiva"
 
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__activity_ids
@@ -100,34 +140,22 @@ msgid "Add a section"
 msgstr "Aggiungi una sezione"
 
 #. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid ""
-"All items couldn't be shipped, the remaining ones will be shipped as soon as they become\n"
-"                            available."
-msgstr ""
-"Non tutti gli elementi possono essere spediti, quelli rimanenti verranno spediti non appena\n"
-"                            ritorneranno disponibili."
-
-#. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_picking.py:258
+#: code:addons/easy_ddt/models/stock_picking.py:275
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_goods_appearance__name
 #, python-format
 msgid "Appearance name"
 msgstr "Nome aspetto"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/account_invoice.py:13
-#: code:addons/easy_ddt/models/res_partner.py:8
-#: code:addons/easy_ddt/models/stock_delivery_note.py:114
+#: code:addons/easy_ddt/models/res_partner.py:11
+#: code:addons/easy_ddt/models/stock_delivery_note.py:145
 #: model:ir.model,name:easy_ddt.model_stock_picking_goods_appearance
-#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice__goods_appearance_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner__goods_appearance_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner_employee__goods_appearance_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner_relation_extension__goods_appearance_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_users__goods_appearance_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__goods_appearance_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__goods_appearance_id
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
 #, python-format
 msgid "Appearance of goods"
 msgstr "Aspetto dei beni"
@@ -144,19 +172,13 @@ msgid "Archived"
 msgstr "Archiviati"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/mixins/picking_checker.py:25
-#, python-format
-msgid "At least one picking you've selected appear to be incoming."
-msgstr "Almeno un prelievo tra quelli selezionati è in arrivo."
-
-#. module: easy_ddt
-#: code:addons/easy_ddt/mixins/picking_checker.py:50
+#: code:addons/easy_ddt/mixins/picking_checker.py:74
 #, python-format
 msgid "At least one picking you've selected appears to be already related to another delivery note."
 msgstr "Almeno un prelievo tra quelli selezionati è già legato ad un altro DdT."
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/mixins/picking_checker.py:20
+#: code:addons/easy_ddt/mixins/picking_checker.py:29
 #, python-format
 msgid "At least one picking you've selected doesn't appear to be completed."
 msgstr "Almeno un prelievo tra quelli selezionati non è stato completato."
@@ -182,6 +204,11 @@ msgid "Bulk"
 msgstr "Sfusi"
 
 #. module: easy_ddt
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__can_be_invoiced
+msgid "Can Be Invoiced"
+msgstr "Può essere fatturato"
+
+#. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_create_form_view
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_select_form_view
@@ -204,14 +231,13 @@ msgid "Carriage paid"
 msgstr "Porto franco"
 
 #. module: easy_ddt
+#: code:addons/easy_ddt/models/stock_delivery_note.py:98
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__carrier_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__delivery_note_carrier_id
 #: model:stock.picking.transport.method,name:easy_ddt.transport_method_COR
+#, python-format
 msgid "Carrier"
-msgstr "Corriere"
-
-#. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "Carrier's Signature"
-msgstr "Firma del corriere"
+msgstr "Vettore"
 
 #. module: easy_ddt
 #: model:stock.picking.transport.condition,name:easy_ddt.transport_condition_PAF
@@ -219,32 +245,29 @@ msgid "Charged in invoice"
 msgstr "Con addebito in fattura"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:398
+#: code:addons/easy_ddt/models/stock_delivery_note.py:585
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_type__company_id
 #, python-format
 msgid "Company"
 msgstr "Azienda"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_picking.py:241
+#: code:addons/easy_ddt/models/stock_picking.py:254
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_transport_condition__name
 #, python-format
 msgid "Condition name"
 msgstr "Nome condizione"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/account_invoice.py:12
-#: code:addons/easy_ddt/models/res_partner.py:7
-#: code:addons/easy_ddt/models/stock_delivery_note.py:110
+#: code:addons/easy_ddt/models/res_partner.py:10
+#: code:addons/easy_ddt/models/stock_delivery_note.py:141
 #: model:ir.model,name:easy_ddt.model_stock_picking_transport_condition
-#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice__transport_condition_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner__transport_condition_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner_employee__transport_condition_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner_relation_extension__transport_condition_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_users__transport_condition_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__transport_condition_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__transport_condition_id
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
 #, python-format
 msgid "Condition of transport"
 msgstr "Condizione di trasporto"
@@ -272,11 +295,17 @@ msgid "Contact"
 msgstr "Contatto"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_picking.py:126
+#: code:addons/easy_ddt/models/stock_picking.py:121
 #: model:ir.actions.act_window,name:easy_ddt.stock_delivery_note_create_action
 #, python-format
 msgid "Create a new delivery note"
-msgstr "Crea un DdT"
+msgstr "Crea un nuovo DdT"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
+#: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
+msgid "Create invoice"
+msgstr "Crea fattura"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
@@ -310,18 +339,20 @@ msgid "Created on"
 msgstr "Creato il"
 
 #. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "DDT Draft - of:"
-msgstr "DDT in bozza - del :"
+#: code:addons/easy_ddt/models/stock_delivery_note.py:490
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__currency_id
+#, python-format
+msgid "Currency"
+msgstr "Valuta"
 
 #. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "DDT number:"
-msgstr "Numero DdT:"
+#: selection:stock.delivery.note,picking_type:0
+msgid "Customers"
+msgstr "Clienti"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:77
-#: code:addons/easy_ddt/wizard/delivery_note_base.py:20
+#: code:addons/easy_ddt/models/stock_delivery_note.py:108
+#: code:addons/easy_ddt/wizard/delivery_note_base.py:24
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__date
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_base_wizard__date
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_create_wizard__date
@@ -347,6 +378,11 @@ msgid "Delivery Note Exists"
 msgstr "Esiste DdT"
 
 #. module: easy_ddt
+#: model:ir.model.fields,field_description:easy_ddt.field_sale_order_line__delivery_note_line_ids
+msgid "Delivery Note Line"
+msgstr "Riga DdT"
+
+#. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__delivery_note_readonly
 msgid "Delivery Note Readonly"
 msgstr "DdT in sola-lettura"
@@ -362,16 +398,26 @@ msgid "Delivery Note Visible"
 msgstr "DdT visibile"
 
 #. module: easy_ddt
-#: model:ir.model,name:easy_ddt.model_stock_picking_delivery_note_create_wizard
-msgid "Delivery Note creator"
-msgstr "Creatore di DdT"
+#: model:ir.model.fields,field_description:easy_ddt.field_sale_order_line__delivery_picking_id
+msgid "Delivery Picking"
+msgstr ""
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:313
-#: code:addons/easy_ddt/models/stock_picking.py:17
-#: code:addons/easy_ddt/wizard/delivery_note_select.py:9
+#: code:addons/easy_ddt/models/stock_delivery_note.py:103
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__delivery_method_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__delivery_note_delivery_method_id
+#, python-format
+msgid "Delivery method"
+msgstr "Metodo di consegna"
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/models/account_invoice.py:91
+#: code:addons/easy_ddt/models/stock_delivery_note.py:476
+#: code:addons/easy_ddt/models/stock_picking.py:26
+#: code:addons/easy_ddt/wizard/delivery_note_select.py:12
 #: model:ir.actions.report,name:easy_ddt.delivery_note_report_action
 #: model:ir.model,name:easy_ddt.model_stock_delivery_note
+#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice_line__delivery_note_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__delivery_note_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_select_wizard__delivery_note_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__delivery_note_id
@@ -394,7 +440,7 @@ msgstr "Creatore di DdT"
 #. module: easy_ddt
 #: model:ir.model,name:easy_ddt.model_stock_delivery_note_line
 msgid "Delivery note line"
-msgstr "Linea DdT"
+msgstr "Riga DdT"
 
 #. module: easy_ddt
 #: model:ir.model,name:easy_ddt.model_stock_delivery_note_select_wizard
@@ -413,16 +459,33 @@ msgid "Delivery note types"
 msgstr "Tipi DdT"
 
 #. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
+msgid "Delivery note:"
+msgstr "DdT:"
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/models/account_invoice.py:20
 #: model:ir.actions.act_window,name:easy_ddt.stock_delivery_note_action
+#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice__delivery_note_ids
 #: model:ir.ui.menu,name:easy_ddt.stock_delivery_note_config_menu
 #: model:ir.ui.menu,name:easy_ddt.stock_delivery_note_menu
+#: model_terms:ir.ui.view,arch_db:easy_ddt.account_invoice_form_view
 #: model_terms:ir.ui.view,arch_db:easy_ddt.res_config_settings_form_view
+#, python-format
 msgid "Delivery notes"
 msgstr "DdT"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:316
+#: code:addons/easy_ddt/models/account_invoice.py:23
+#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice__delivery_note_count
+#, python-format
+msgid "Delivery notes count"
+msgstr "Numero DdT"
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/models/stock_delivery_note.py:481
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__name
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
 #, python-format
 msgid "Description"
 msgstr "Descrizione"
@@ -433,8 +496,9 @@ msgid "Details"
 msgstr "Dettagli"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:323
+#: code:addons/easy_ddt/models/stock_delivery_note.py:491
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__discount
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
 #, python-format
 msgid "Discount"
 msgstr "Sconto"
@@ -455,6 +519,12 @@ msgid "Display Name"
 msgstr "Nome visualizzato"
 
 #. module: easy_ddt
+#: code:addons/easy_ddt/models/account_invoice.py:81
+#, python-format
+msgid "Document {} of {}"
+msgstr "Documento {} del {}"
+
+#. module: easy_ddt
 #: selection:stock.delivery.note,state:0
 msgid "Done"
 msgstr "Completato"
@@ -471,8 +541,8 @@ msgstr "DdT in bozza"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "Driver's Signature"
-msgstr "Firma del corriere"
+msgid "Draft delivery note:"
+msgstr "DdT in bozza:"
 
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_base_wizard__error_message
@@ -482,28 +552,35 @@ msgid "Error Message"
 msgstr "Messaggio di errore"
 
 #. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.res_config_settings_form_view
-msgid ""
-"Extends the standard behaviour of the delivery notes'\n"
-"                                    management by introducing additional functions."
-msgstr ""
-"Estende il comportamento standard della gestione dei\n"
-"                                    DdT introducendo funzionalità aggiuntive."
-
-#. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__message_follower_ids
 msgid "Followers"
-msgstr "Followers"
+msgstr "Follower"
 
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__message_channel_ids
 msgid "Followers (Channels)"
-msgstr "Followers (Canali)"
+msgstr "Follower (canali)"
 
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Followers (Contatti)"
+msgstr "Follower (partner)"
+
+#. module: easy_ddt
+#: selection:stock.delivery.note.line,invoice_status:0
+msgid "Fully invoiced"
+msgstr "Interamente fatturato"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_tree_view
+#: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
+msgid "Go to delivery note"
+msgstr "Vai al DdT"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
+msgid "Go to invoice"
+msgstr "Vai alla fattura"
 
 #. module: easy_ddt
 #: model:stock.picking.transport.reason,name:easy_ddt.transport_reason_VIS
@@ -511,12 +588,7 @@ msgid "Goods on approval"
 msgstr "Conto visione"
 
 #. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "Gross Weight"
-msgstr "Peso lordo"
-
-#. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:94
+#: code:addons/easy_ddt/models/stock_delivery_note.py:125
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__gross_weight
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__gross_weight
 #, python-format
@@ -524,7 +596,7 @@ msgid "Gross weight"
 msgstr "Peso lordo"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:96
+#: code:addons/easy_ddt/models/stock_delivery_note.py:127
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__gross_weight_uom_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__gross_weight_uom_id
 #, python-format
@@ -544,7 +616,7 @@ msgstr "UdM del peso lordo"
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_transport_method__id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_transport_reason__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: easy_ddt
 #: model:ir.model.fields,help:easy_ddt.field_stock_delivery_note__message_unread
@@ -567,12 +639,17 @@ msgid "If these problems persist, don't hesitate to contact the helpdesk."
 msgstr "Se questi problemi persistono, non esitate a contattare l'helpdesk."
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:133
-#: code:addons/easy_ddt/models/stock_delivery_note.py:399
-#: code:addons/easy_ddt/models/stock_picking.py:242
+#: selection:stock.delivery.note,picking_type:0
+msgid "Internal"
+msgstr "Interno"
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/models/stock_delivery_note.py:179
+#: code:addons/easy_ddt/models/stock_delivery_note.py:586
 #: code:addons/easy_ddt/models/stock_picking.py:259
 #: code:addons/easy_ddt/models/stock_picking.py:276
 #: code:addons/easy_ddt/models/stock_picking.py:293
+#: code:addons/easy_ddt/models/stock_picking.py:310
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__note
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_type__note
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__delivery_note_note
@@ -582,7 +659,7 @@ msgstr "Se questi problemi persistono, non esitate a contattare l'helpdesk."
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_transport_reason__note
 #, python-format
 msgid "Internal note"
-msgstr "Note interne"
+msgstr "Nota interna"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
@@ -601,9 +678,56 @@ msgid "Invoice"
 msgstr "Fattura"
 
 #. module: easy_ddt
+#: model:ir.model,name:easy_ddt.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Riga fattura"
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/models/stock_delivery_note.py:497
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__invoice_status
+#, python-format
+msgid "Invoice status"
+msgstr "Stato fatturazione"
+
+#. module: easy_ddt
+#: selection:stock.delivery.note,state:0
+msgid "Invoiced"
+msgstr "Fatturato"
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/models/stock_delivery_note.py:176
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__invoice_ids
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
+#, python-format
+msgid "Invoices"
+msgstr "Fatture"
+
+#. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__message_is_follower
 msgid "Is Follower"
-msgstr "È follower"
+msgstr "È un follower"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.res_config_settings_form_view
+msgid ""
+"It defines whether is allowed to show all\n"
+"                                    product related information directly on the\n"
+"                                    delivery note both on the web interface\n"
+"                                    and on printed documents."
+msgstr ""
+"Definisce se è consentito visualizzare le\n"
+"                                    informazioni del prodotto direttamente\n"
+"                                    nel DdT, sia da interfaccia web\n"
+"                                    che nei documenti stampati."
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.res_config_settings_form_view
+msgid ""
+"It extends the standard behaviour of the delivery\n"
+"                                    notes' management by introducing additional functions."
+msgstr ""
+"Estende il comportamento standard della gestione dei\n"
+"                                    DdT introducendo funzionalità aggiuntive."
 
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note____last_update
@@ -647,23 +771,18 @@ msgid "Last Updated on"
 msgstr "Ultimo aggiornamento il"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:317
+#: code:addons/easy_ddt/models/stock_delivery_note.py:482
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__display_type
 #, python-format
 msgid "Line type"
 msgstr "Tipo riga"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:128
+#: code:addons/easy_ddt/models/stock_delivery_note.py:159
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__line_ids
 #, python-format
 msgid "Lines"
 msgstr "Righe"
-
-#. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "Lot/Serial Number"
-msgstr "Lotto/Numero Seriale"
 
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__message_main_attachment_id
@@ -681,18 +800,16 @@ msgid "Messages"
 msgstr "Messaggi"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_picking.py:292
+#: code:addons/easy_ddt/models/stock_picking.py:309
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_transport_method__name
 #, python-format
 msgid "Method name"
 msgstr "Nome metodo"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/account_invoice.py:15
-#: code:addons/easy_ddt/models/res_partner.py:10
-#: code:addons/easy_ddt/models/stock_delivery_note.py:122
+#: code:addons/easy_ddt/models/res_partner.py:13
+#: code:addons/easy_ddt/models/stock_delivery_note.py:153
 #: model:ir.model,name:easy_ddt.model_stock_picking_transport_method
-#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice__transport_method_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner__transport_method_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner_employee__transport_method_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner_relation_extension__transport_method_id
@@ -704,33 +821,23 @@ msgid "Method of transport"
 msgstr "Metodo di trasporto"
 
 #. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "Method of transport / Carrier"
-msgstr "Metodo di trasporto / Corriere"
-
-#. module: easy_ddt
 #: model:ir.actions.act_window,name:easy_ddt.stock_picking_transport_method_action
 #: model:ir.ui.menu,name:easy_ddt.stock_picking_transport_method_menu
 msgid "Methods of transport"
 msgstr "Metodi di trasporto"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:55
-#: code:addons/easy_ddt/models/stock_delivery_note.py:395
+#: code:addons/easy_ddt/models/stock_delivery_note.py:67
+#: code:addons/easy_ddt/models/stock_delivery_note.py:582
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__name
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_type__name
-#: model_terms:ir.ui.view,arch_db:easy_ddt.res_partner_employment_tree_view
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_tree_view
 #, python-format
 msgid "Name"
 msgstr "Nome"
 
 #. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "Net Weight"
-msgstr "Peso netto"
-
-#. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:101
+#: code:addons/easy_ddt/models/stock_delivery_note.py:132
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__net_weight
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__net_weight
 #, python-format
@@ -738,7 +845,7 @@ msgid "Net weight"
 msgstr "Peso netto"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:103
+#: code:addons/easy_ddt/models/stock_delivery_note.py:134
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__net_weight_uom_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__net_weight_uom_id
 #, python-format
@@ -766,14 +873,20 @@ msgid "Next number that will be used. This number can be incremented frequently 
 msgstr "Il numero che verrà usato come successivo. Il valore visualizzato potrebbe essere già obsoleto dato che può essere incrementato in modo frequente"
 
 #. module: easy_ddt
-#: selection:stock.delivery.note.line,display_type:0
-msgid "Note"
-msgstr "Note"
+#: selection:stock.picking.transport.condition,price_to_show:0
+msgid "None"
+msgstr ""
 
 #. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "Notes"
-msgstr "Note"
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
+#: selection:stock.delivery.note.line,display_type:0
+msgid "Note"
+msgstr "Nota"
+
+#. module: easy_ddt
+#: selection:stock.delivery.note.line,invoice_status:0
+msgid "Nothing to invoice"
+msgstr "Niente da fatturare"
 
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__message_needaction_counter
@@ -796,13 +909,6 @@ msgid "Number of messages with delivery error"
 msgstr "Numero di messaggi con errore di consegna"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/account_invoice.py:17
-#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice__packages_number
-#, python-format
-msgid "Number of packages"
-msgstr "Numero di pacchi"
-
-#. module: easy_ddt
 #: model:ir.model.fields,help:easy_ddt.field_stock_delivery_note__message_unread_counter
 msgid "Number of unread messages"
 msgstr "Numero di messaggi non letti"
@@ -818,10 +924,9 @@ msgid "Pallet"
 msgstr "Bancale"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:86
+#: code:addons/easy_ddt/models/stock_delivery_note.py:117
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__parcels
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__parcels
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
 #, python-format
 msgid "Parcels"
 msgstr "Colli"
@@ -837,12 +942,14 @@ msgid "Picking checker mixin"
 msgstr "Mixin controllore dei prelievi"
 
 #. module: easy_ddt
-#: model:ir.model,name:easy_ddt.model_stock_picking_select_wizard
-msgid "Picking selector"
-msgstr "Selettore prelievi"
+#: code:addons/easy_ddt/models/stock_delivery_note.py:165
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__picking_type
+#, python-format
+msgid "Picking type"
+msgstr "Tipo di prelievo"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:130
+#: code:addons/easy_ddt/models/stock_delivery_note.py:161
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__picking_ids
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_create_form_view
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
@@ -867,45 +974,51 @@ msgid "Please, check and solve these problems before try again."
 msgstr "Prego, controllare e risolvere questi problemi prima di riprovare."
 
 #. module: easy_ddt
+#: code:addons/easy_ddt/models/stock_picking.py:256
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_transport_condition__price_to_show
+#, python-format
+msgid "Price to show"
+msgstr "Prezzo da mostrare"
+
+#. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
 #: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
 msgid "Print"
 msgstr "Stampa"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:318
+#: code:addons/easy_ddt/models/stock_delivery_note.py:483
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__product_id
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
 #, python-format
 msgid "Product"
 msgstr "Prodotto"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:320
+#: code:addons/easy_ddt/models/stock_delivery_note.py:485
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__product_qty
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
 #, python-format
 msgid "Quantity"
 msgstr "Quantità"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_picking.py:275
+#: code:addons/easy_ddt/models/stock_picking.py:292
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking_transport_reason__name
 #, python-format
 msgid "Reason name"
 msgstr "Nome motivo"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/account_invoice.py:14
-#: code:addons/easy_ddt/models/res_partner.py:9
-#: code:addons/easy_ddt/models/stock_delivery_note.py:118
+#: code:addons/easy_ddt/models/res_partner.py:12
+#: code:addons/easy_ddt/models/stock_delivery_note.py:149
 #: model:ir.model,name:easy_ddt.model_stock_picking_transport_reason
-#: model:ir.model.fields,field_description:easy_ddt.field_account_invoice__transport_reason_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner__transport_reason_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner_employee__transport_reason_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_partner_relation_extension__transport_reason_id
 #: model:ir.model.fields,field_description:easy_ddt.field_res_users__transport_reason_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__transport_reason_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__transport_reason_id
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
 #, python-format
 msgid "Reason of transport"
 msgstr "Motivo di trasporto"
@@ -917,8 +1030,8 @@ msgid "Reasons of transport"
 msgstr "Motivi di trasporto"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:64
-#: code:addons/easy_ddt/wizard/delivery_note_base.py:17
+#: code:addons/easy_ddt/models/stock_delivery_note.py:84
+#: code:addons/easy_ddt/wizard/delivery_note_base.py:21
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__partner_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_base_wizard__partner_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_create_wizard__partner_id
@@ -927,11 +1040,6 @@ msgstr "Motivi di trasporto"
 #, python-format
 msgid "Recipient"
 msgstr "Destinatario"
-
-#. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "Recipient's Signature"
-msgstr "Firma del destinatario"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
@@ -949,14 +1057,40 @@ msgid "Returned"
 msgstr "Reso"
 
 #. module: easy_ddt
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__sale_ids
 #: model:stock.picking.transport.reason,name:easy_ddt.transport_reason_VEN
 msgid "Sale"
 msgstr "Vendita"
 
 #. module: easy_ddt
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__sale_count
+msgid "Sale Count"
+msgstr "Numero vendite"
+
+#. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__product_description
 msgid "Sale Description"
-msgstr "Descrizione per vendita"
+msgstr "Descrizione vendita"
+
+#. module: easy_ddt
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__sale_line_id
+msgid "Sale Line"
+msgstr "Riga di vendita"
+
+#. module: easy_ddt
+#: model:ir.model,name:easy_ddt.model_sale_order
+msgid "Sale Order"
+msgstr "Ordine di vendita"
+
+#. module: easy_ddt
+#: model:ir.model,name:easy_ddt.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Riga ordine di vendita"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
+msgid "Sales orders"
+msgstr "Ordini di vendita"
 
 #. module: easy_ddt
 #: selection:stock.delivery.note.line,display_type:0
@@ -964,7 +1098,12 @@ msgid "Section"
 msgstr "Sezione"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_picking.py:140
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
+msgid "Section name (e.g. Products, Services)"
+msgstr "Nome sezione (es. Prodotti, Servizi)"
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/models/stock_picking.py:134
 #: model:ir.actions.act_window,name:easy_ddt.stock_delivery_note_select_action
 #, python-format
 msgid "Select an existing delivery note"
@@ -983,17 +1122,24 @@ msgid "Selected Picking"
 msgstr "Prelievi selezionati"
 
 #. module: easy_ddt
+#: code:addons/easy_ddt/models/stock_delivery_note.py:77
+#: code:addons/easy_ddt/wizard/delivery_note_base.py:20
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__partner_sender_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_base_wizard__partner_sender_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_create_wizard__partner_sender_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_select_wizard__partner_sender_id
 #: model:stock.picking.transport.method,name:easy_ddt.transport_method_MIT
+#, python-format
 msgid "Sender"
 msgstr "Mittente"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:315
-#: code:addons/easy_ddt/models/stock_delivery_note.py:394
-#: code:addons/easy_ddt/models/stock_picking.py:240
-#: code:addons/easy_ddt/models/stock_picking.py:257
+#: code:addons/easy_ddt/models/stock_delivery_note.py:480
+#: code:addons/easy_ddt/models/stock_delivery_note.py:581
+#: code:addons/easy_ddt/models/stock_picking.py:253
 #: code:addons/easy_ddt/models/stock_picking.py:274
 #: code:addons/easy_ddt/models/stock_picking.py:291
+#: code:addons/easy_ddt/models/stock_picking.py:308
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__sequence
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_type__sequence
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_type__sequence_id
@@ -1011,14 +1157,8 @@ msgid "Set done"
 msgstr "Segna come completato"
 
 #. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.invoice_form_view_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.res_partner_form_view
-msgid "Shipping information"
-msgstr "Informazioni spedizione"
-
-#. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:71
-#: code:addons/easy_ddt/wizard/delivery_note_base.py:18
+#: code:addons/easy_ddt/models/stock_delivery_note.py:91
+#: code:addons/easy_ddt/wizard/delivery_note_base.py:22
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__partner_shipping_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_base_wizard__partner_shipping_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_create_wizard__partner_shipping_id
@@ -1029,7 +1169,25 @@ msgid "Shipping address"
 msgstr "Indirizzo di spedizione"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:58
+#: model_terms:ir.ui.view,arch_db:easy_ddt.res_partner_form_view
+msgid "Shipping information"
+msgstr "Informazioni spedizione"
+
+#. module: easy_ddt
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__show_product_information
+msgid "Show Product Information"
+msgstr "Mostra le informazioni di prodotto"
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/models/res_config_settings.py:12
+#: model:ir.model.fields,field_description:easy_ddt.field_res_config_settings__group_show_product_related_fields
+#: model:res.groups,name:easy_ddt.show_product_related_fields
+#, python-format
+msgid "Show product information in the delivery note lines"
+msgstr "Mostra le informazioni di prodotto nelle righe del DdT"
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/models/stock_delivery_note.py:70
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__state
 #, python-format
 msgid "State"
@@ -1055,23 +1213,46 @@ msgid "Summary"
 msgstr "Sommario"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:324
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
+msgid "Tax"
+msgstr "Imposta"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
+msgid "Tax excluded"
+msgstr "Imponibile"
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/models/stock_delivery_note.py:492
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__tax_ids
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
 #, python-format
 msgid "Taxes"
 msgstr "Imposte"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/mixins/picking_checker.py:42
+#: code:addons/easy_ddt/mixins/picking_checker.py:56
 #, python-format
-msgid "The pickings you've selected don't seem to have any location of destination."
-msgstr "I prelievi che hai selezionato non sembrano avere lo stesso luogo di destinazione."
+msgid "The pickings you've selected don't seem to have any location of departure."
+msgstr "I prelievi che hai selezionato non sembrano avere nessun luogo di partenza."
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/mixins/picking_checker.py:32
+#: code:addons/easy_ddt/mixins/picking_checker.py:66
+#, python-format
+msgid "The pickings you've selected don't seem to have any location of destination."
+msgstr "I prelievi che hai selezionato non sembrano avere nessun luogo di destinazione."
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/mixins/picking_checker.py:46
 #, python-format
 msgid "The pickings you've selected don't seem to have any partner."
 msgstr "I prelievi che hai selezionato non sembrano avere nessun partner."
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/mixins/picking_checker.py:36
+#, python-format
+msgid "The pickings you've selected don't seem to have any type."
+msgstr "I prelievi che hai selezionato non sembrano avere nessun tipo."
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_wizard_error_message_template
@@ -1094,12 +1275,6 @@ msgid "This delivery note type already exists!"
 msgstr "Questo tipo di DdT esiste già!"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/wizard/delivery_note_base.py:66
-#, python-format
-msgid "This functionality isn't ready yet. Please, come back later."
-msgstr "Questa funzionalità non è ancora pronta. Prego, torno più tardi."
-
-#. module: easy_ddt
 #: sql_constraint:stock.picking.transport.method:0
 msgid "This method of transport already exists!"
 msgstr "Questo metodo di trasporto esiste già!"
@@ -1110,13 +1285,14 @@ msgid "This reason of transport already exists!"
 msgstr "Questo motivo di trasporto esiste già!"
 
 #. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid ""
-"Time:\n"
-"                                <br/>"
-msgstr ""
-"Ora:\n"
-"                                <br/>"
+#: selection:stock.delivery.note.line,invoice_status:0
+msgid "To invoice"
+msgstr "Da fatturare"
+
+#. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
+msgid "To pay"
+msgstr "Da pagare"
 
 #. module: easy_ddt
 #: selection:stock.delivery.note,activity_state:0
@@ -1124,12 +1300,22 @@ msgid "Today"
 msgstr "Oggi"
 
 #. module: easy_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
+msgid "Total"
+msgstr "Totale"
+
+#. module: easy_ddt
+#: selection:stock.picking.transport.condition,price_to_show:0
+msgid "Total price"
+msgstr "Prezzo totale"
+
+#. module: easy_ddt
 #: model:ir.model,name:easy_ddt.model_stock_picking
 msgid "Transfer"
 msgstr "Trasferisci"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:126
+#: code:addons/easy_ddt/models/stock_delivery_note.py:157
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__transport_datetime
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__transport_datetime
 #, python-format
@@ -1137,8 +1323,8 @@ msgid "Transport date"
 msgstr "Data di trasporto"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:79
-#: code:addons/easy_ddt/wizard/delivery_note_base.py:21
+#: code:addons/easy_ddt/models/stock_delivery_note.py:110
+#: code:addons/easy_ddt/wizard/delivery_note_base.py:25
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__type_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_base_wizard__type_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_create_wizard__type_id
@@ -1154,8 +1340,10 @@ msgid "Type of Operation"
 msgstr "Tipo di operazione"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:322
+#: code:addons/easy_ddt/models/stock_delivery_note.py:487
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__price_unit
+#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
+#: selection:stock.picking.transport.condition,price_to_show:0
 #, python-format
 msgid "Unit price"
 msgstr "Prezzo unitario"
@@ -1168,14 +1356,19 @@ msgstr "Messaggi non letti"
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr "Contatore di messaggi non letti"
+msgstr "Contatore messaggi non letti"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:321
-#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__product_uom
+#: code:addons/easy_ddt/models/stock_delivery_note.py:486
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__product_uom_id
 #, python-format
 msgid "UoM"
 msgstr "UdM"
+
+#. module: easy_ddt
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__use_advanced_behaviour
+msgid "Use Advanced Behaviour"
+msgstr "Usa funzioni avanzate"
 
 #. module: easy_ddt
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__use_delivery_note
@@ -1183,7 +1376,7 @@ msgid "Use Delivery Note"
 msgstr "Usa il DdT"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/res_config_settings.py:11
+#: code:addons/easy_ddt/models/res_config_settings.py:10
 #: model:ir.model.fields,field_description:easy_ddt.field_res_config_settings__group_use_advanced_delivery_notes
 #: model:res.groups,name:easy_ddt.use_advanced_delivery_notes
 #, python-format
@@ -1207,7 +1400,12 @@ msgid "Validated"
 msgstr "Validato"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:87
+#: selection:stock.delivery.note,picking_type:0
+msgid "Vendors"
+msgstr "Fornitori"
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/models/stock_delivery_note.py:118
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__volume
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__delivery_note_volume
 #, python-format
@@ -1215,7 +1413,7 @@ msgid "Volume"
 msgstr "Volume"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:89
+#: code:addons/easy_ddt/models/stock_delivery_note.py:120
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__volume_uom_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__delivery_note_volume_uom_id
 #, python-format
@@ -1223,15 +1421,15 @@ msgid "Volume UoM"
 msgstr "UdM del volume"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:326
+#: code:addons/easy_ddt/models/stock_delivery_note.py:494
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_line__move_id
 #, python-format
 msgid "Warehouse movement"
 msgstr "Movimento di magazzino"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:164
-#: code:addons/easy_ddt/wizard/delivery_note_base.py:55
+#: code:addons/easy_ddt/models/stock_delivery_note.py:276
+#: code:addons/easy_ddt/wizard/delivery_note_base.py:60
 #, python-format
 msgid "Warning!"
 msgstr "Attenzione!"
@@ -1244,12 +1442,7 @@ msgstr "Messaggi sito web"
 #. module: easy_ddt
 #: model:ir.model.fields,help:easy_ddt.field_stock_delivery_note__website_message_ids
 msgid "Website communication history"
-msgstr "Storico comunicazione sito"
-
-#. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "Withdrawal Date"
-msgstr "Data ritiro"
+msgstr "Cronologia comunicazioni sito web"
 
 #. module: easy_ddt
 #: sql_constraint:stock.delivery.note.line:0
@@ -1257,35 +1450,43 @@ msgid "You cannot assign the same warehouse movement to different delivery notes
 msgstr "Non puoi assegnare lo stesso movimento di magazzino a DdT differenti!"
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/models/stock_delivery_note.py:381
+#: code:addons/easy_ddt/models/stock_delivery_note.py:309
+#, python-format
+msgid "You cannot cancel this delivery note. There is at least one invoice related to this delivery note."
+msgstr "Non puoi cancellare questo DdT. È presente, almeno, una fattura legata a questo DdT."
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/models/stock_delivery_note.py:568
 #, python-format
 msgid "You cannot change the type of a delivery note line. Instead you should delete the current line and create a new line of the proper type."
 msgstr "Non puoi cambiare il tipo della riga del DdT. Dovresti, invece, eliminare la riga corrente e creare una riga nuova del tipo corretto."
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/mixins/picking_checker.py:45
+#: code:addons/easy_ddt/mixins/picking_checker.py:59
+#, python-format
+msgid "You need to select pickings with all the same location of departure."
+msgstr "È necessario selezionare prelievi con lo stesso luogo di destinazione."
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/mixins/picking_checker.py:69
 #, python-format
 msgid "You need to select pickings with all the same location of destination."
 msgstr "È necessario selezionare prelievi con lo stesso luogo di destinazione."
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/mixins/picking_checker.py:35
+#: code:addons/easy_ddt/mixins/picking_checker.py:49
 #, python-format
 msgid "You need to select pickings with all the same recipient."
 msgstr "È necessario selezionare prelievi con lo stesso destinatario."
 
 #. module: easy_ddt
-#: code:addons/easy_ddt/mixins/picking_checker.py:15
+#: code:addons/easy_ddt/mixins/picking_checker.py:39
+#, python-format
+msgid "You need to select pickings with all the same type."
+msgstr "È necessario selezionare prelievi con lo stesso tipo."
+
+#. module: easy_ddt
+#: code:addons/easy_ddt/mixins/picking_checker.py:24
 #, python-format
 msgid "You shouldn't be able to launch this wizard without selecting any pickings."
 msgstr "Non dovresti essere in grado di lanciare questo wizard senza selezionare alcun prelievo."
-
-#. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "of:"
-msgstr "di:"
-
-#. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_note_report_template
-msgid "traking reference:"
-msgstr "riferimento tracking:"
