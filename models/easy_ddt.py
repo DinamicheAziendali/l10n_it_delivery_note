@@ -36,11 +36,7 @@ class StockPicking(models.Model):
     #nuovi campi per v12
     partner_shipping_id = fields.Many2one(
         'res.partner', string="Shipping Address")
-    # carrier_id = fields.Many2one(
-    #     'res.partner', string='Carrier')
     parcels = fields.Integer('Parcels')
-    # display_name = fields.Char(
-    #     string='Name', compute='_compute_clean_display_name')
     invoice_id = fields.Many2one(
         'account.invoice', string='Invoice', readonly=True, copy=False)
     to_be_invoiced = fields.Boolean(
@@ -52,11 +48,6 @@ class StockPicking(models.Model):
         string="Force Net Weight",
         help="Fill this field with the value you want to be used as weight. "
              "Leave empty to let the system to compute it")
-    # check_if_picking_done = fields.Boolean(
-    #     compute='_compute_check_if_picking_done',
-    # )
-
-
 
     @api.onchange('partner_id', 'ddt_type_id')
     def on_change_partner(self):
