@@ -87,7 +87,7 @@
                 </td>
                 <td>
                     <h6>Parcels
-                        <div t-field="ddt.parcels"
+                        <div t-field="ddt.number_of_packages"
                              name="parcel"></div>
                     </h6>
                 </td>

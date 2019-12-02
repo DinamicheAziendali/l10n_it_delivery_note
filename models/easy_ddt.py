@@ -36,7 +36,7 @@ class StockPicking(models.Model):
     #nuovi campi per v12
     partner_shipping_id = fields.Many2one(
         'res.partner', string="Shipping Address")
-    parcels = fields.Integer('Parcels')
+    # parcels = fields.Integer('Parcels')
     invoice_id = fields.Many2one(
         'account.invoice', string='Invoice', readonly=True, copy=False)
     to_be_invoiced = fields.Boolean(

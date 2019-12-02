@@ -5,7 +5,6 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
-            <data>
                 <xpath expr="//header/button[@name='do_unreserve']"
                        position="after">
                     <button name="get_ddt_number"
@@ -45,7 +44,6 @@
                         </group>
                     </page>
                 </xpath>
-            </data>
         </field>
     </record>
 
@@ -56,7 +54,7 @@
         <field name="arch" type="xml">
             <field name="shipping_weight" position="after">
                 <field name="gross_weight"/>
-                <field name="parcels"/>
+<!--                <field name="parcels"/>-->
                 <field name="volume"/>
             </field>
         </field>

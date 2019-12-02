@@ -428,12 +428,6 @@ msgid "Pallet"
 msgstr "Bancale"
 
 #. module: easy_ddt
-#: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__parcels
-#: model_terms:ir.ui.view,arch_db:easy_ddt.delivery_data
-msgid "Parcels"
-msgstr "Colli"
-
-#. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
 msgid "Print Delivery Note"
 msgstr "Stampa DDT"
