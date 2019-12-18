@@ -169,6 +169,10 @@ class StockDeliveryNote(models.Model):
     sale_ids = fields.Many2many('sale.order', compute='_compute_sale_ids')
     sale_count = fields.Integer(compute='_compute_sale_ids')
 
+    #
+    # SMELLS #1: Probabilmente, dovrà essere una Many2one...
+    #   TODO #2: Aggiungere nella fattura una One2many qualora si desidesse di cambiare logica.
+    #
     invoice_ids = fields.Many2many('account.invoice',
                                    'stock_delivery_note_account_invoice_rel',
                                    'delivery_note_id',

@@ -13,6 +13,13 @@ from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 
+STATES_MAPPING = {
+    'draft': 'draft',
+    'cancel': 'cancel',
+    'in_pack': 'draft',
+    'done': 'confirm'
+}
+
 
 def environment(funct=None, parser_args_method=None):
     if not funct:
@@ -44,7 +51,7 @@ class Migrate_Ddt_Data(Command):
     __is_debugging = None
 
     _carriage_conditions = None
-    _goods_appearances = None
+    _goods_descriptions = None
     _transportation_reasons = None
     _transportation_methods = None
     _document_types = None
@@ -55,10 +62,18 @@ class Migrate_Ddt_Data(Command):
         self.__is_debugging = False
 
         self._carriage_conditions = {}
-        self._goods_appearances = {}
+        self._goods_descriptions = {}
         self._transportation_reasons = {}
         self._transportation_methods = {}
         self._document_types = {}
+
+    @property
+    def _default_volume_uom(self):
+        return self.env.ref('uom.product_uom_litre', raise_if_not_found=False)
+
+    @property
+    def _default_weight_uom(self):
+        return self.env.ref('uom.product_uom_kgm', raise_if_not_found=False)
 
     # noinspection PyMethodMayBeStatic
     def _map_create(self, map_dict, old_records, Model, vals_getter=None):
@@ -122,6 +137,8 @@ class Migrate_Ddt_Data(Command):
         self.env = env
 
     def migrate_carriage_conditions(self):
+        _logger.info("Migrating carriage conditions data...")
+
         CarriageCondition = self.env['stock.picking.carriage_condition']
         TransportCondition = self.env['stock.picking.transport.condition']
 
@@ -133,20 +150,28 @@ class Migrate_Ddt_Data(Command):
 
         self._map_create(self._carriage_conditions, records, TransportCondition)
 
+        _logger.info("Carriage conditions data successfully migrated.")
+
     def migrate_goods_descriptions(self):
+        _logger.info("Migrating goods descriptions data...")
+
         GoodsDescription = self.env['stock.picking.goods_description']
         GoodsAppearance = self.env['stock.picking.goods.appearance']
 
-        car = self._map_ref(self._goods_appearances, 'goods_description_CAR', 'goods_appearance_CAR')
-        ban = self._map_ref(self._goods_appearances, 'goods_description_BAN', 'goods_appearance_BAN')
-        sfu = self._map_ref(self._goods_appearances, 'goods_description_SFU', 'goods_appearance_SFU')
-        cba = self._map_ref(self._goods_appearances, 'goods_description_CBA', 'goods_appearance_CBA')
+        car = self._map_ref(self._goods_descriptions, 'goods_description_CAR', 'goods_appearance_CAR')
+        ban = self._map_ref(self._goods_descriptions, 'goods_description_BAN', 'goods_appearance_BAN')
+        sfu = self._map_ref(self._goods_descriptions, 'goods_description_SFU', 'goods_appearance_SFU')
+        cba = self._map_ref(self._goods_descriptions, 'goods_description_CBA', 'goods_appearance_CBA')
 
         records = GoodsDescription.search([('id', 'not in', [car.id, ban.id, sfu.id, cba.id])], order='id ASC')
 
-        self._map_create(self._goods_appearances, records, GoodsAppearance)
+        self._map_create(self._goods_descriptions, records, GoodsAppearance)
+
+        _logger.info("Goods descriptions data successfully migrated.")
 
     def migrate_transportation_reasons(self):
+        _logger.info("Migrating transportation reasons data...")
+
         TransportationReason = self.env['stock.picking.transportation_reason']
         TransportReason = self.env['stock.picking.transport.reason']
 
@@ -158,7 +183,11 @@ class Migrate_Ddt_Data(Command):
 
         self._map_create(self._transportation_reasons, records, TransportReason)
 
+        _logger.info("Transportation reasons data successfully migrated.")
+
     def migrate_transportation_methods(self):
+        _logger.info("Migrating transportation methods data...")
+
         TransportationMethod = self.env['stock.picking.transportation_method']
         TransportMethod = self.env['stock.picking.transport.method']
 
@@ -170,13 +199,23 @@ class Migrate_Ddt_Data(Command):
 
         self._map_create(self._transportation_methods, records, TransportMethod)
 
+        _logger.info("Transportation methods data successfully migrated.")
+
     def migrate_document_types(self):
+        _logger.info("Migrating document types data...")
+
         DocumentType = self.env['stock.ddt.type']
         DeliveryNoteType = self.env['stock.delivery.note.type']
 
-        type = self._map_ref(self._document_types, 'ddt_type_ddt', 'delivery_note_type_ddt')
+        l10n_it_ddt_type = self.env.ref('l10n_it_ddt.ddt_type_ddt')
+        easy_ddt_type = self.env.ref('easy_ddt.delivery_note_type_ddt')
+        easy_ddt_type.write({'sequence_id': l10n_it_ddt_type.sequence_id.id})
 
-        records = DocumentType.search([('id', 'not in', [type.id])], order='id ASC')
+        self.env.cr.execute("""DELETE FROM "ir_model_data" WHERE "module" = 'l10n_it_ddt' AND "name" = 'seq_ddt';""")
+
+        self._document_types[l10n_it_ddt_type] = easy_ddt_type
+
+        records = DocumentType.search([('id', 'not in', [l10n_it_ddt_type.id])], order='id ASC')
 
         self._map_create(self._document_types, records, DeliveryNoteType, lambda r: {
 
@@ -194,32 +233,53 @@ class Migrate_Ddt_Data(Command):
             'note': r.note
         })
 
-        DocumentType = self.env['stock.ddt.type']
-        DeliveryNoteType = self.env['stock.delivery.note.type']
-
-        l10n_it_ddt_type = self.env.ref('l10n_it_ddt.ddt_type_ddt')
-        easy_ddt_type = self.env.ref('easy_ddt.delivery_note_type_ddt')
-        self._document_types[l10n_it_ddt_type] = easy_ddt_type
-
-        old_types = DocumentType.search([('id', '!=', l10n_it_ddt_type.id)], order='id ASC')
-        for old_type in old_types:
-            new_type = DeliveryNoteType.create()
-
-            self._document_types[old_type] = new_type
-
+        _logger.info("Document types data successfully migrated.")
 
     def migrate_documents(self):
-        import pdb; pdb.set_trace()
+        def vals_getter(record):
+            return {
+
+                'state': STATES_MAPPING[record.state],
+                'name': record.ddt_number,
+                #
+                # TODO: Decommentare questa riga una volta corretto
+                #        il riferimento all'interno del DdT.
+                #
+                # 'invoice_id': record.invoice_id.id,
+                #
+                'partner_sender_id': record.company_id.id,
+                'partner_id': record.partner_id.id,
+                'partner_shipping_id': record.partner_shipping_id.id,
+                'type_id': self._document_types[record.ddt_type_id].id,
+                'date': record.date,
+                'carrier_id': record.carrier_id.id,
+                'delivery_method_id': record.partner_id.property_delivery_carrier_id.id,
+                'transport_datetime': record.date_done,
+                'parcels': record.parcels,
+                'volume': record.volume,
+                'volume_uom_id': record.volume_uom_id.id or self._default_volume_uom.id,
+                'gross_weight': record.gross_weight or record.weight,
+                'gross_weight_uom_id': record.gross_weight_uom_id.id or self._default_weight_uom.id,
+                'net_weight': record.weight_manual or record.weight,
+                'net_weight_uom_id': record.weight_manual_uom_id.id or self._default_weight_uom.id,
+                'goods_appearance_id': self._goods_descriptions[record.goods_description_id].id,
+                'transport_reason_id': self._transportation_reasons[record.transportation_reason_id].id,
+                'transport_condition_id': self._carriage_conditions[record.carriage_condition_id].id,
+                'transport_method_id': self._transportation_methods[record.transportation_method_id].id,
+                'picking_ids': [(4, p.id) for p in record.picking_ids],
+                'note': record.note
+            }
+
+        _logger.info("Migrating documents data...")
 
         Document = self.env['stock.picking.package.preparation']
+        DeliveryNote = self.env['stock.delivery.note']
 
         documents = Document.search([], order='id ASC')
         for document in documents:
-            vals = {
-                'partner_id': document.partner_id,
-                'partner_shipping_id': document.partner_shipping_id,
+            DeliveryNote.create(vals_getter(document))
 
-            }
+        _logger.info("Documents data successfully migrated.")
 
     @environment(parser_args_method=_parse_args)
     def run(self, args, env):
