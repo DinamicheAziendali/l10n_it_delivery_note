@@ -169,10 +169,6 @@ class StockDeliveryNote(models.Model):
     sale_ids = fields.Many2many('sale.order', compute='_compute_sale_ids')
     sale_count = fields.Integer(compute='_compute_sale_ids')
 
-    #
-    # SMELLS #1: Probabilmente, dovrà essere una Many2one...
-    #   TODO #2: Aggiungere nella fattura una One2many qualora si desidesse di cambiare logica.
-    #
     invoice_ids = fields.Many2many('account.invoice',
                                    'stock_delivery_note_account_invoice_rel',
                                    'delivery_note_id',
@@ -228,6 +224,9 @@ class StockDeliveryNote(models.Model):
     @api.multi
     def _compute_sale_ids(self):
         for note in self:
+            #
+            # SMELLS: Perché solo quelli 'da fatturare'?
+            #
             sale_ids = self.mapped('picking_ids.sale_id') \
                            .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1])
 
@@ -382,12 +381,14 @@ class StockDeliveryNote(models.Model):
     @api.multi
     def action_done(self):
         self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[3]})
+        self.line_ids.sync_invoice_status()
 
     @api.multi
     def action_cancel(self):
         self.ensure_annulability()
 
         self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[4]})
+        self.line_ids.sync_invoice_status()
 
     @api.multi
     def action_print(self):
@@ -574,6 +575,12 @@ class StockDeliveryNoteLine(models.Model):
                               " and create a new line of the proper type."))
 
         return super().write(vals)
+
+    @api.multi
+    def sync_invoice_status(self):
+        for line in self.filtered(lambda l: l.sale_line_id):
+            invoice_status = line.sale_line_id.invoice_status
+            line.invoice_status = DOMAIN_INVOICE_STATUSES[1] if invoice_status == 'upselling' else invoice_status
 
 
 class StockDeliveryNoteType(models.Model):

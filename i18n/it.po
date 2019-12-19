@@ -521,8 +521,8 @@ msgstr "Nome visualizzato"
 #. module: easy_ddt
 #: code:addons/easy_ddt/models/account_invoice.py:81
 #, python-format
-msgid "Document {} of {}"
-msgstr "Documento {} del {}"
+msgid "Delivery note \"{}\" of {}"
+msgstr "DdT \"{}\" del {}"
 
 #. module: easy_ddt
 #: selection:stock.delivery.note,state:0

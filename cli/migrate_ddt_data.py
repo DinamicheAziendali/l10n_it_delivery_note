@@ -241,12 +241,6 @@ class Migrate_Ddt_Data(Command):
 
                 'state': STATES_MAPPING[record.state],
                 'name': record.ddt_number,
-                #
-                # TODO: Decommentare questa riga una volta corretto
-                #        il riferimento all'interno del DdT.
-                #
-                # 'invoice_id': record.invoice_id.id,
-                #
                 'partner_sender_id': record.company_id.id,
                 'partner_id': record.partner_id.id,
                 'partner_shipping_id': record.partner_shipping_id.id,
@@ -267,6 +261,7 @@ class Migrate_Ddt_Data(Command):
                 'transport_condition_id': self._carriage_conditions[record.carriage_condition_id].id,
                 'transport_method_id': self._transportation_methods[record.transportation_method_id].id,
                 'picking_ids': [(4, p.id) for p in record.picking_ids],
+                'invoice_ids': [(4, record.invoice_id.id)],
                 'note': record.note
             }
 

@@ -47,11 +47,17 @@ class AccountInvoice(models.Model):
     def goto_invoice(self, **kwargs):
         self.ensure_one()
 
+        if self.type.startswith('out_'):
+            view_id = self.env.ref('account.invoice_form').id
+
+        else:
+            view_id = False
+
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'account.invoice',
             'res_id': self.id,
-            'views': [(False, 'form')],
+            'views': [(view_id, 'form')],
             'view_type': 'form',
             'view_mode': 'form',
             'target': 'current',
@@ -60,6 +66,8 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def update_delivery_note_lines(self):
+        context = {}
+
         for invoice in self.filtered(lambda i: i.delivery_note_ids):
             new_lines = []
             old_lines = invoice.invoice_line_ids.filtered(lambda l: l.delivery_note_id)
@@ -74,11 +82,18 @@ class AccountInvoice(models.Model):
             #        data di trasporto (non è un campo obbligatorio).
             #
 
+            #
+            # THIS ALLOWS TO CHANGE TRANSLATION LANGUAGE FOR EVERY INVOICE!
+            #
+            #   See: odoo/tools/translate.py -> 'def _get_lang(self, frame):'
+            #
+            context['lang'] = invoice.partner_id.lang
+
             for note in invoice.delivery_note_ids:
                 new_lines.append((0, False, {
                     'sequence': 99,
                     'display_type': 'line_note',
-                    'name': _("Document {} of {}").format(note.name, note.transport_datetime.strftime(DATETIME_FORMAT)),
+                    'name': _("""Delivery note "{}" of {}""").format(note.name, note.transport_datetime.strftime(DATETIME_FORMAT)),
                     'delivery_note_id': note.id
                 }))
 
