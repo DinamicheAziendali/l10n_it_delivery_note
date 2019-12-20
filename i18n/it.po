@@ -150,11 +150,12 @@ msgstr "Nome aspetto"
 #: code:addons/easy_ddt/models/res_partner.py:11
 #: code:addons/easy_ddt/models/stock_delivery_note.py:145
 #: model:ir.model,name:easy_ddt.model_stock_picking_goods_appearance
-#: model:ir.model.fields,field_description:easy_ddt.field_res_partner__goods_appearance_id
-#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_employee__goods_appearance_id
-#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_relation_extension__goods_appearance_id
-#: model:ir.model.fields,field_description:easy_ddt.field_res_users__goods_appearance_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner__default_goods_appearance_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_employee__default_goods_appearance_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_relation_extension__default_goods_appearance_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_users__default_goods_appearance_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__goods_appearance_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_type__default_goods_appearance_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__goods_appearance_id
 #, python-format
 msgid "Appearance of goods"
@@ -262,11 +263,12 @@ msgstr "Nome condizione"
 #: code:addons/easy_ddt/models/res_partner.py:10
 #: code:addons/easy_ddt/models/stock_delivery_note.py:141
 #: model:ir.model,name:easy_ddt.model_stock_picking_transport_condition
-#: model:ir.model.fields,field_description:easy_ddt.field_res_partner__transport_condition_id
-#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_employee__transport_condition_id
-#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_relation_extension__transport_condition_id
-#: model:ir.model.fields,field_description:easy_ddt.field_res_users__transport_condition_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner__default_transport_condition_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_employee__default_transport_condition_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_relation_extension__default_transport_condition_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_users__default_transport_condition_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__transport_condition_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_type__default_transport_condition_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__transport_condition_id
 #, python-format
 msgid "Condition of transport"
@@ -810,11 +812,12 @@ msgstr "Nome metodo"
 #: code:addons/easy_ddt/models/res_partner.py:13
 #: code:addons/easy_ddt/models/stock_delivery_note.py:153
 #: model:ir.model,name:easy_ddt.model_stock_picking_transport_method
-#: model:ir.model.fields,field_description:easy_ddt.field_res_partner__transport_method_id
-#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_employee__transport_method_id
-#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_relation_extension__transport_method_id
-#: model:ir.model.fields,field_description:easy_ddt.field_res_users__transport_method_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner__default_transport_method_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_employee__default_transport_method_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_relation_extension__default_transport_method_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_users__default_transport_method_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__transport_method_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_type__default_transport_method_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__transport_method_id
 #, python-format
 msgid "Method of transport"
@@ -1013,11 +1016,12 @@ msgstr "Nome motivo"
 #: code:addons/easy_ddt/models/res_partner.py:12
 #: code:addons/easy_ddt/models/stock_delivery_note.py:149
 #: model:ir.model,name:easy_ddt.model_stock_picking_transport_reason
-#: model:ir.model.fields,field_description:easy_ddt.field_res_partner__transport_reason_id
-#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_employee__transport_reason_id
-#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_relation_extension__transport_reason_id
-#: model:ir.model.fields,field_description:easy_ddt.field_res_users__transport_reason_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner__default_transport_reason_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_employee__default_transport_reason_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_partner_relation_extension__default_transport_reason_id
+#: model:ir.model.fields,field_description:easy_ddt.field_res_users__default_transport_reason_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note__transport_reason_id
+#: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_type__default_transport_reason_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__transport_reason_id
 #, python-format
 msgid "Reason of transport"
