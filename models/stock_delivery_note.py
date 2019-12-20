@@ -240,6 +240,21 @@ class StockDeliveryNote(models.Model):
         for note in self:
             note.show_product_information = show_product_information
 
+    @api.onchange('type_id')
+    def _onchange_type(self):
+        if self.type_id:
+            if not self.transport_condition_id:
+                self.transport_condition_id = self.type_id.default_transport_condition_id
+
+            if not self.goods_appearance_id:
+                self.goods_appearance_id = self.type_id.default_goods_appearance_id
+
+            if not self.transport_reason_id:
+                self.transport_reason_id = self.type_id.default_transport_reason_id
+
+            if not self.transport_method_id:
+                self.transport_method_id = self.type_id.default_transport_method_id
+
     @api.onchange('partner_id')
     def _onchange_partner(self):
         result = {}
@@ -255,23 +270,23 @@ class StockDeliveryNote(models.Model):
                 skipped = True
 
             if not self.transport_condition_id:
-                self.transport_condition_id = self.partner_id.transport_condition_id
-            elif self.partner_id.transport_condition_id:
+                self.transport_condition_id = self.partner_id.default_transport_condition_id
+            elif self.partner_id.default_transport_condition_id:
                 skipped = True
 
             if not self.goods_appearance_id:
-                self.goods_appearance_id = self.partner_id.goods_appearance_id
-            elif self.partner_id.goods_appearance_id:
+                self.goods_appearance_id = self.partner_id.default_goods_appearance_id
+            elif self.partner_id.default_goods_appearance_id:
                 skipped = True
 
             if not self.transport_reason_id:
-                self.transport_reason_id = self.partner_id.transport_reason_id
-            elif self.partner_id.transport_reason_id:
+                self.transport_reason_id = self.partner_id.default_transport_reason_id
+            elif self.partner_id.default_transport_reason_id:
                 skipped = True
 
             if not self.transport_method_id:
-                self.transport_method_id = self.partner_id.transport_method_id
-            elif self.partner_id.transport_method_id:
+                self.transport_method_id = self.partner_id.default_transport_method_id
+            elif self.partner_id.default_transport_method_id:
                 skipped = True
 
             if skipped:
@@ -395,9 +410,10 @@ class StockDeliveryNote(models.Model):
         return self.env.ref('easy_ddt.delivery_note_report_action').report_action(self)
 
     @api.multi
-    def goto_sales(self):
+    def goto_sales(self, **kwargs):
         sales = self.mapped('sale_ids')
         action = self.env.ref('sale.action_orders').read()[0]
+        action.update(kwargs)
 
         if len(sales) > 1:
             action['domain'] = [('id', 'in', sales.ids)]
@@ -591,6 +607,13 @@ class StockDeliveryNoteType(models.Model):
     active = fields.Boolean(string=_("Active"), default=True)
     sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
     name = fields.Char(string=_("Name"), index=True, required=True, translate=True)
+
+    default_transport_condition_id = fields.Many2one('stock.picking.transport.condition',
+                                                     string=_("Condition of transport"))
+    default_goods_appearance_id = fields.Many2one('stock.picking.goods.appearance', string=_("Appearance of goods"))
+    default_transport_reason_id = fields.Many2one('stock.picking.transport.reason', string=_("Reason of transport"))
+    default_transport_method_id = fields.Many2one('stock.picking.transport.method', string=_("Method of transport"))
+
     sequence_id = fields.Many2one('ir.sequence', required=True)
     next_sequence_number = fields.Integer(related='sequence_id.number_next_actual')
     company_id = fields.Many2one('res.company', string=_("Company"), default=lambda self: self.env.user.company_id)
@@ -601,3 +624,17 @@ class StockDeliveryNoteType(models.Model):
         'unique(name, company_id)',
         "This delivery note type already exists!"
     )]
+
+    def goto_sequence(self, **kwargs):
+        self.ensure_one()
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'ir.sequence',
+            'res_id': self.sequence_id.id,
+            'views': [(False, 'form')],
+            'view_type': 'form',
+            'view_mode': 'form',
+            'target': 'current',
+            **kwargs
+        }

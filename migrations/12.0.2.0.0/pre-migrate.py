@@ -30,10 +30,10 @@ FIELDS_TO_RENAME = [
     ('account.invoice', 'account_invoice', 'transportation_method_id', 'transport_method_id'),
     ('account.invoice', 'account_invoice', 'number_of_packages', 'packages_number'),
 
-    ('res.partner', 'res_partner', 'carriage_condition_id', 'transport_condition_id'),
-    ('res.partner', 'res_partner', 'goods_description_id', 'goods_appearance_id'),
-    ('res.partner', 'res_partner', 'transportation_reason_id', 'transport_reason_id'),
-    ('res.partner', 'res_partner', 'transportation_method_id', 'transport_method_id')
+    ('res.partner', 'res_partner', 'carriage_condition_id', 'default_transport_condition_id'),
+    ('res.partner', 'res_partner', 'goods_description_id', 'default_goods_appearance_id'),
+    ('res.partner', 'res_partner', 'transportation_reason_id', 'default_transport_reason_id'),
+    ('res.partner', 'res_partner', 'transportation_method_id', 'default_transport_method_id')
 ]
 
 XMLIDS_TO_RENAME = (

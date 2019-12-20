@@ -221,15 +221,10 @@ class Migrate_Ddt_Data(Command):
 
             'name': r.name,
             'sequence_id': r.sequence_id.id,
-            #
-            # FIXME: Una volta introdotti i campi con i valori di default,
-            #         integrare questa importazione con tali informazioni.
-            #
-            # 'default_carriage_condition_id': [...],
-            # 'default_goods_description_id': [...],
-            # 'default_transportation_reason_id': [...],
-            # 'default_transportation_method_id': [...],
-            #
+            'default_goods_appearance_id': self._goods_descriptions[r.default_goods_description_id].id,
+            'default_transport_reason_id': self._transportation_reasons[r.default_transportation_reason_id].id,
+            'default_transport_condition_id': self._carriage_conditions[r.default_carriage_condition_id].id,
+            'default_transport_method_id': self._transportation_methods[r.default_transportation_method_id].id,
             'note': r.note
         })
 

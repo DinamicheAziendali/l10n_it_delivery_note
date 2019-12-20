@@ -43,10 +43,14 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
             'date': self.date,
 
             'delivery_method_id': self.partner_id.property_delivery_carrier_id.id,
-            'transport_condition_id': self.partner_id.transport_condition_id.id,
-            'goods_appearance_id': self.partner_id.goods_appearance_id.id,
-            'transport_reason_id': self.partner_id.transport_reason_id.id,
-            'transport_method_id': self.partner_id.transport_method_id.id
+            'transport_condition_id': self.partner_id.default_transport_condition_id.id or
+                                      self.type_id.default_transport_condition_id.id,
+            'goods_appearance_id': self.partner_id.default_goods_appearance_id.id or
+                                      self.type_id.default_goods_appearance_id.id,
+            'transport_reason_id': self.partner_id.default_transport_reason_id.id or
+                                      self.type_id.default_transport_reason_id.id,
+            'transport_method_id': self.partner_id.default_transport_method_id.id or
+                                      self.type_id.default_transport_method_id.id
         })
 
         self.selected_picking_ids.write({'delivery_note_id': delivery_note.id})

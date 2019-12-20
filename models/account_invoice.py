@@ -28,9 +28,10 @@ class AccountInvoice(models.Model):
             invoice.delivery_note_count = len(invoice.delivery_note_ids)
 
     @api.multi
-    def goto_delivery_notes(self):
+    def goto_delivery_notes(self, **kwargs):
         delivery_notes = self.mapped('delivery_note_ids')
         action = self.env.ref('easy_ddt.stock_delivery_note_action').read()[0]
+        action.update(kwargs)
 
         if len(delivery_notes) > 1:
             action['domain'] = [('id', 'in', delivery_notes.ids)]
