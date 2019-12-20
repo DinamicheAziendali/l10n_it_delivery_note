@@ -256,7 +256,7 @@ class Migrate_Ddt_Data(Command):
                 'transport_condition_id': self._carriage_conditions[record.carriage_condition_id].id,
                 'transport_method_id': self._transportation_methods[record.transportation_method_id].id,
                 'picking_ids': [(4, p.id) for p in record.picking_ids],
-                'invoice_ids': [(4, record.invoice_id.id)],
+                'invoice_ids': [(4, record.invoice_id.id)] if record.invoice_id else [],
                 'note': record.note
             }
 
