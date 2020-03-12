@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <menuitem id="ddt_freestock_root" sequence="50" name="DDT Free"/>
+
+        <menuitem id="ddt_freestock_main" name="DDT Free"
+                  parent="ddt_freestock_root" sequence="1"/>
+
+
+        <record id="ddt_stockfree_form" model="ir.ui.view">
+            <field name="name">ddt.stockfree.form</field>
+            <field name="model">ddt.stockfree</field>
+            <field name="arch" type="xml">
+                <form string="DDT stock free">
+                    <header>
+                        <button name="get_ddt_number"
+                                string="Print Delivery Note"
+                                groups="easy_ddt_base.group_ddt_user"
+                                type="object"/>
+                    </header>
+                    <sheet string="Free stock DDT">
+                        <field string="Description"
+                               name="name"
+                               placeholder="DDT memo title..." />
+                        <group>
+                            <group>
+                                <field string="Destination" name="partner_id"/>
+                                <field name="ddt_number" readonly="1"/>
+                                <field name="ddt_type_id" widget="selection"
+                                       attrs="{'readonly': [('ddt_number', '!=', False)]}"/>
+                                <field name="date_ddt"/>
+                                <field name="parcels"/>
+                                <field name="gross_w"/>
+                                <field name="net_w"/>
+                            </group>
+                            <group>
+                                <field name="goods_description_id"
+                                       widget="selection"/>
+                                <field name="carriage_condition_id"
+                                       widget="selection"/>
+                                <field name="transportation_reason_id"
+                                       widget="selection"/>
+                                <field name="transportation_method_id"
+                                       widget="selection"/>
+                                <field name="date_transport_ddt"/>
+                                <field name="time_transport_ddt"
+                                       widget="float_time"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="DDT Lines">
+                                <field name="ddt_line_ids"
+                                       widget="one2many_list" readonly="False">
+                                    <tree string="DDT Lines" editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="quantity"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <field name="ddt_notes"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"
+                               widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="ddt_freestock_tree" model="ir.ui.view">
+            <field name="name">ddt.stockfree.tree</field>
+            <field name="model">ddt.stockfree</field>
+            <field name="view_mode">tree,form</field>
+            <field name="arch" type="xml">
+                <tree string="DDT">
+                    <field name="partner_id" groups="base.group_user"/>
+                    <field name="date_transport_ddt"/>
+                    <field name="ddt_number"/>
+                    <field name="transportation_reason_id"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_ddt_freestock" model="ir.actions.act_window">
+            <field name="name">DDT stockfree</field>
+            <field name="res_model">ddt.stockfree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_action_ddt_freestock_tree" parent="ddt_freestock_main"
+                  action="action_ddt_freestock" sequence="1"/>
+    </data>
+</openerp>

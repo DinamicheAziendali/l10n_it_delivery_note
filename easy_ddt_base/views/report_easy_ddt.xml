@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="delivery_data_base">
+
+            <style type="text/css">
+                table.delivery_data td h6 { margin: 0; }
+                .signature { min-height: 2em; }
+            </style>
+
+            <table class="table table-condensed table-bordered delivery_data_base">
+                <tr>
+                    <td>
+                        <h6 name="transport">Transportation Reason</h6>
+                        <div t-field="ddt.transportation_reason_id"></div>
+                    </td>
+                    <td>
+                        <h6 name="carriage">Carriage Condition</h6>
+                        <div t-field="ddt.carriage_condition_id"></div>
+                    </td>
+                    <td>
+                        <h6 name="good_description">Goods Description</h6>
+                        <div t-field="ddt.goods_description_id"></div>
+                    </td>
+                    <td>
+                        <h6 name="gross_weight">Gross Weight</h6>
+                        <div t-if="ddt.gross_w">
+                            <div class="text-right" t-field="ddt.gross_w"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <h6 name="net_weight">Net Weight</h6>
+                        <div t-if="ddt.net_w">
+                            <div class="text-right"
+                                 t-field="ddt.net_w"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="notes">
+                        <h6>Notes</h6>
+                        <div class="signature" t-field="ddt.ddt_notes"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" name="method_trasport">
+                        <h6>Method of Transportation / Carrier</h6>
+                        <div>
+                            <span t-field="ddt.transportation_method_id"
+                                  name="transportation_method_id"/>
+                        </div>
+                    </td>
+                    <td>
+                        <h6>Withdrawal Date</h6>
+                        <div>
+                            <span t-field="ddt.date_transport_ddt"
+                                  name="date_trasport"/>
+                        </div>
+                    </td>
+                    <td>
+                        <h6>Time :</h6>
+                        <div>
+                            <t t-esc="ddt.ddt_time_report(ddt.time_transport_ddt)"
+                               name="time_trasport"/>
+                        </div>
+                    </td>
+                    <td>
+                        <h6>Parcels</h6>
+                        <div t-if="ddt.parcels">
+                            <div t-field="ddt.parcels"
+                                 name="parcel"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <table class="table table-condensed delivery_data_base">
+                            <tr>
+                                <td>
+                                    <h6 name="carrier_signature">Carrier's
+                                        Signature
+                                    </h6>
+                                    <div class="signature"/>
+                                </td>
+                                <td>
+                                    <h6 name="driver_signature">Driver's
+                                        Signature
+                                    </h6>
+                                    <div class="signature"/>
+                                </td>
+                                <td>
+                                    <h6 name="recipint_signature">Recipient's
+                                        Signature
+                                    </h6>
+                                    <div class="signature"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </template>
+
+        <template id="report_easy_ddt_base">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <div class="row">
+                                <!--if is an outgoing move -->
+                                <div>
+                                    <div class="col-xs-6" name="header_left"/>
+                                    <div class="col-xs-6" name="header_right">
+                                        <div t-if="o.partner_id">
+                                            <span>
+                                                <h4>
+                                                    <strong>Customer :</strong>
+                                                </h4>
+                                            </span>
+                                            <div name="ddt_partner">
+                                                <div t-field="o.partner_id"
+                                                     t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <span t-if="o.ddt_number" name="ddt_row">
+                                <h3>DDT number:
+                                    <span t-field="o.ddt_number"
+                                          name="ddt_number"></span>
+                                    of :
+                                    <span t-field="o.date_ddt"
+                                          t-field-options='{"format": "d/M/y"}'
+                                          name="ddt_date"></span>
+                                </h3>
+                            </span>
+                            <span t-if="o.ddt_number == false" name="ddt_draft">
+                                <h3>DDT Draft - of :
+                                    <span t-field="o.date_transport_ddt"
+                                          t-field-options='{"format": "d/M/y"}'
+                                          name="ddt_draft_date"></span>
+                                </h3>
+                            </span>
+
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <strong>Description</strong>
+                                        </th>
+                                        <th class="text-right">
+                                            <strong>Quantity</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.ddt_line_ids" t-as="move">
+                                        <tr>
+
+                                            <td>
+                                                <span t-field="move.name"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <div t-if="move.quantity">
+                                                    <span t-field="move.quantity"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </t>
+                                </tbody>
+                            </table>
+                            <t t-call="easy_ddt_base.delivery_data_base">
+                                <t t-set="ddt" t-value="o"/>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_easy_ddt_main_base">
+            <t t-call="report.html_container">
+                <t t-foreach="doc_ids" t-as="doc_id">
+                    <t t-if="docs.partner_id">
+                        <t t-call="easy_ddt_base.report_easy_ddt_base" t-lang="docs.partner_id.lang"/>
+                    </t>
+                    <t t-if="not docs.partner_id">
+                        <t t-call="easy_ddt_base.report_easy_ddt_base" t-lang="docs.company_id.partner_id.lang"/>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <report
+                string="DDT"
+                id="action_report_easy_ddt_base"
+                model="ddt.stockfree"
+                report_type="qweb-pdf"
+                name="easy_ddt_base.report_easy_ddt_main_base"
+                file="easy_ddt_base.report_easy_ddt_main_base"
+                menu="False"/>
+    </data>
+</openerp>
