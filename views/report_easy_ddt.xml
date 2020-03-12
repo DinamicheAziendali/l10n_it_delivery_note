@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="easy_ddt.delivery_data">
+
+        <style type="text/css">
+            table.delivery_data td h6 { margin: 0; }
+            .signature { min-height: 2em; }
+        </style>
+
+        <table class="table table-condensed table-bordered delivery_data">
+            <tr>
+                <td>
+                    <h6 name="transport">
+                        Transportation Reason
+                        <div t-field="ddt.transportation_reason_id"></div>
+                    </h6>
+                </td>
+                <td>
+                    <h6 name="carriage">
+                        Carriage Condition
+                        <div t-field="ddt.carriage_condition_id"></div>
+                    </h6>
+                </td>
+                <td>
+                    <h6 name="good_description">
+                        Goods Description
+                        <div t-field="ddt.goods_description_id"></div>
+                    </h6>
+                </td>
+                <td>
+                    <h6 name="gross_weight">
+                        Gross Weight
+                        <div class="text-right" t-field="ddt.weight"></div>
+                    </h6>
+                </td>
+                <td>
+                    <h6 name="net_weight">
+                        Net Weight
+                    </h6>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" class="notes">
+                    <h6>Notes
+                        <div class="signature" t-field="ddt.ddt_notes"/>
+                    </h6>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" name="method_trasport">
+                    <h6>Method of Transportation / Carrier</h6>
+                    <div>
+                        <span t-field="ddt.transportation_method_id"
+                              name="transportation_method_id"/>
+                        <span t-field="ddt.carrier_id.name"
+                              name="carrier_id"/>
+                        <span t-if="ddt.carrier_tracking_ref">
+                            <br/>
+                            <h6>traking reference :
+                                <span t-field="ddt.carrier_tracking_ref"
+                                      name="carrier_tracking_ref"/>
+                            </h6>
+                        </span>
+                    </div>
+                </td>
+                <td>
+                    <h6>Withdrawal Date
+                        <div>
+                            <span t-field="ddt.date_transport_ddt"
+                                  name="date_trasport"/>
+                        </div>
+                    </h6>
+                </td>
+                <td>
+                    <h6>Time :
+                        <br/>
+                        <t t-esc="ddt.ddt_time_report(ddt.time_transport_ddt)"
+                           name="time_trasport"/>
+                    </h6>
+                </td>
+                <td>
+                    <h6>Parcels
+                        <div t-field="ddt.number_of_packages"
+                             name="parcel"></div>
+                    </h6>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <table class="table table-condensed delivery_data">
+                        <tr>
+                            <td>
+                                <h6 name="carrier_signature">Carrier's
+                                    Signature
+                                </h6>
+                                <div class="signature"/>
+                            </td>
+                            <td>
+                                <h6 name="driver_signature">Driver's
+                                    Signature
+                                </h6>
+                                <div class="signature"/>
+                            </td>
+                            <td>
+                                <h6 name="recipint_signature">Recipient's
+                                    Signature
+                                </h6>
+                                <div class="signature"/>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </template>
+
+    <template id="report_easy_ddt">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <div class="row">
+
+
+                            <!--if is an outgoing move -->
+                            <div t-if="o.picking_type_id.code=='outgoing'">
+                                <div class="col-xs-6" name="header_left">
+                                    <div t-if="o.sale_id.partner_invoice_id">
+                                        <span>
+                                            <h4>
+                                                <strong>Customer :</strong>
+                                            </h4>
+                                        </span>
+                                        <div name="invoice_partner"
+                                             t-if="o.picking_type_id.code == 'outgoing' and o.sale_id and o.sale_id.partner_invoice_id">
+                                            <div t-field="o.sale_id.partner_invoice_id"
+                                                 t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                                            <p t-if="o.sale_id.partner_invoice_id.vat">
+                                                VAT:
+                                                <span t-field="o.sale_id.partner_invoice_id.vat"/>
+                                            </p>
+                                        </div>
+                                        <div name="order_partner"
+                                             t-if="o.picking_type_id.code == 'outgoing' and o.sale_id and o.sale_id.partner_invoice_id == false">
+                                            <div t-field="o.sale_id.partner_id"
+                                                 t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                                            <p t-if="o.sale_id.partner_id.vat">
+                                                VAT:
+                                                <span t-field="o.sale_id.partner_id.vat"/>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-5 col-xs-offset-1"
+                                     name="header_right">
+                                    <div name="ddt_client_delivery"
+                                         t-if="o.picking_type_id.code=='outgoing' and o.partner_id">
+                                        <span>
+                                            <h4>
+                                                <strong>Delivery Address:
+                                                </strong>
+                                            </h4>
+                                        </span>
+                                        <div name="ddt_delivery_address"
+                                             t-field="o.partner_id"
+                                             t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                                        <p t-if="o.partner_id.vat">VAT:
+                                            <span t-field="o.partner_id.vat"/>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12"
+                                     name="warehouses_div">
+                                    <strong>Warehouse :</strong>
+                                    <t t-foreach="o.ddt_get_location(o.move_lines[0].location_id.id)"
+                                       t-as="loca">
+                                        <t t-esc="loca"/>,
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!--if is a internal move -->
+                            <div name="ddt_wharehouse_source"
+                                 t-if="o.picking_type_id.code=='internal'">
+                                <div class="col-xs-6"
+                                     name="header_internal_left">
+                                    <span>
+                                        <h4>
+                                            <strong>Warehouse :</strong>
+                                        </h4>
+                                    </span>
+                                    <t t-foreach="o.ddt_get_location(o.move_lines[0].location_id.id)"
+                                       t-as="loca">
+                                        <p>
+                                            <t t-esc="loca"/>
+                                        </p>
+                                    </t>
+                                </div>
+
+                                <div class="col-xs-5 col-xs-offset-1"
+                                     name="header_internal_right">
+                                    <span>
+                                        <h4>
+                                            <strong>Delivery Address:
+                                            </strong>
+                                        </h4>
+                                    </span>
+                                    <div name="ddt_delivery_address"
+                                             t-field="o.partner_id"
+                                             t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <span t-if="o.ddt_number" name="ddt_row">
+                            <h3>DDT number:
+                                <span t-field="o.ddt_number"
+                                      name="ddt_number"></span>
+                                of :
+                                <span t-field="o.ddt_date"
+                                      t-field-options='{"format": "d/M/y"}'
+                                      name="ddt_date"></span>
+                            </h3>
+                        </span>
+                        <span t-if="o.ddt_number == false" name="ddt_draft">
+                            <h3>DDT Draft - of :
+                                <span t-field="o.ddt_date"
+                                      t-field-options='{"format": "d/M/y"}'
+                                      name="ddt_draft_date"></span>
+                            </h3>
+                        </span>
+                        <span t-if="o.origin" name="origin">
+                            <h6>Origin :
+                                <span t-field="o.origin"></span>
+                            </h6>
+                        </span>
+
+                        <table class="table table-condensed">
+                            <t t-set="has_barcode"
+                               t-value="any([pack_operation.product_id and pack_operation.product_id.sudo().barcode or pack_operation.package_id for pack_operation in o.pack_operation_ids])"/>
+                            <t t-set="has_serial_number" t-value="o.pack_operation_ids.filtered('pack_lot_ids')" groups="stock.group_production_lot"/>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <strong>Product</strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong>Quantity</strong>
+                                    </th>
+                                    <th t-if="has_serial_number">
+                                        <strong>Lot/Serial Number</strong>
+                                    </th>
+                                    <t t-if="o.picking_type_id.code != 'outgoing'">
+                                        <th>
+                                            <strong>Destination</strong>
+                                        </th>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="pack_operation_ids" t-value="o.pack_operation_ids"/>
+                                <t groups="base.group_portal" t-set="pack_operation_ids" t-value="o.pack_operation_ids.sudo()"/>
+                                <tr t-foreach="pack_operation_ids" t-as="pack_operation">
+                                    <td>
+                                        <span t-field="pack_operation.product_id"/>
+                                        <br/>
+                                        <span t-field="pack_operation.product_id.description_picking"/>
+                                        <t t-if="not pack_operation.product_id and pack_operation.package_id">
+                                            <span t-field="pack_operation.package_id"/>
+                                        </t>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="pack_operation.product_qty"/>
+                                        <span t-field="pack_operation.product_uom_id" groups="product.group_uom"/>
+                                    </td>
+                                    <td t-if="has_serial_number">
+                                        <table class="table table-condensed" t-if="pack_operation.pack_lot_ids">
+                                            <tr t-foreach="pack_operation.pack_lot_ids" t-as="packlot">
+                                                <td>
+                                                    <span t-field="packlot.lot_id"/>
+                                                    <t t-if="not packlot.lot_id">
+                                                        <span t-field="packlot.lot_name"/>
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <span t-field="packlot.qty"/>
+                                                    <t t-if="o.picking_type_id.use_existing_lots and o.state!='done'">/
+                                                        <span t-field="packlot.qty_todo"/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <t t-if="o.picking_type_id.code != 'outgoing'">
+                                        <td>
+                                            <span t-field="pack_operation.location_dest_id"/>
+                                            <span t-if="pack_operation.result_package_id">:</span>
+                                            <span t-field="pack_operation.result_package_id"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <t t-call="easy_ddt.delivery_data">
+                            <t t-set="ddt" t-value="o"/>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_easy_ddt_main">
+        <t t-call="report.html_container">
+            <t t-foreach="doc_ids" t-as="doc_id">
+                <t t-if="docs.partner_id">
+                    <t t-call="easy_ddt.report_easy_ddt" t-lang="docs.partner_id.lang"/>
+                </t>
+                <t t-if="not docs.partner_id">
+                    <t t-call="easy_ddt.report_easy_ddt" t-lang="docs.company_id.partner_id.lang"/>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+            string="DDT"
+            id="action_report_easy_ddt"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="easy_ddt.report_easy_ddt_main"
+            file="easy_ddt.report_easy_ddt_main"
+            menu="False"/>
+</odoo>
