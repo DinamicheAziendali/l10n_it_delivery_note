@@ -61,7 +61,7 @@ class StockPicking(models.Model):
     delivery_note_exists = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_readonly = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_visible = fields.Boolean(compute='_compute_boolean_flags')
-    delivery_note_state = fields.Char(compute='_compute_boolean_flag')
+    delivery_note_state = fields.Char(compute='_compute_boolean_flags')
     can_be_invoiced = fields.Boolean(compute='_compute_boolean_flags')
 
     @property

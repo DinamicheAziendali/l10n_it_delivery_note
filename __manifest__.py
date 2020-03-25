@@ -38,6 +38,7 @@
         'views/assets.xml',
         'views/res_config_settings.xml',
         'views/res_partner.xml',
+        'views/sale_order.xml',
         'views/stock_delivery_note.xml',
         'views/stock_picking.xml',
 

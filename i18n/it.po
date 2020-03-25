@@ -305,12 +305,12 @@ msgstr "Crea un nuovo DdT"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
-#: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_form_view
 msgid "Create invoice"
 msgstr "Crea fattura"
 
 #. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_form_view
 msgid "Create new"
 msgstr "Crea nuovo"
 
@@ -424,7 +424,7 @@ msgstr "Metodo di consegna"
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_delivery_note_select_wizard__delivery_note_id
 #: model:ir.model.fields,field_description:easy_ddt.field_stock_picking__delivery_note_id
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
-#: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_form_view
 #, python-format
 msgid "Delivery note"
 msgstr "DdT"
@@ -575,7 +575,7 @@ msgstr "Interamente fatturato"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_tree_view
-#: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_form_view
 msgid "Go to delivery note"
 msgstr "Vai al DdT"
 
@@ -670,7 +670,7 @@ msgstr "Nota interna"
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_transport_condition_form_view
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_transport_method_form_view
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_transport_reason_form_view
-#: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_form_view
 msgid "Internal notes"
 msgstr "Note interne"
 
@@ -985,7 +985,7 @@ msgstr "Prezzo da mostrare"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
-#: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_form_view
 msgid "Print"
 msgstr "Stampa"
 
@@ -1114,7 +1114,7 @@ msgid "Select an existing delivery note"
 msgstr "Seleziona un DdT esistente"
 
 #. module: easy_ddt
-#: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_form_view
 msgid "Select existing"
 msgstr "Seleziona esistente"
 
@@ -1394,7 +1394,7 @@ msgstr "Movimenti validi"
 
 #. module: easy_ddt
 #: model_terms:ir.ui.view,arch_db:easy_ddt.stock_delivery_note_form_view
-#: model_terms:ir.ui.view,arch_db:easy_ddt.view_picking_form_ddt
+#: model_terms:ir.ui.view,arch_db:easy_ddt.stock_picking_form_view
 msgid "Validate"
 msgstr "Valida"
 

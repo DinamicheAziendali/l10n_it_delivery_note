@@ -166,8 +166,8 @@ class StockDeliveryNote(models.Model):
                                     compute='_compute_picking_type',
                                     store=True)
 
-    sale_ids = fields.Many2many('sale.order', compute='_compute_sale_ids')
-    sale_count = fields.Integer(compute='_compute_sale_ids')
+    sale_ids = fields.Many2many('sale.order', compute='_compute_sales')
+    sale_count = fields.Integer(compute='_compute_sales')
 
     invoice_ids = fields.Many2many('account.invoice',
                                    'stock_delivery_note_account_invoice_rel',
@@ -222,16 +222,16 @@ class StockDeliveryNote(models.Model):
             note.picking_type = picking_types[0]
 
     @api.multi
-    def _compute_sale_ids(self):
+    def _compute_sales(self):
         for note in self:
             #
             # SMELLS: Perché solo quelli 'da fatturare'?
             #
-            sale_ids = self.mapped('picking_ids.sale_id') \
-                           .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1])
+            sales = self.mapped('picking_ids.sale_id') \
+                        .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1])
 
-            note.sale_ids = sale_ids
-            note.sale_count = len(sale_ids)
+            note.sale_ids = sales
+            note.sale_count = len(sales)
 
     @api.multi
     def _compute_boolean_flags(self):

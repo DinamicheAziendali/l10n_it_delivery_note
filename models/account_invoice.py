@@ -20,7 +20,7 @@ class AccountInvoice(models.Model):
                                          string=_("Delivery notes"),
                                          copy=False)
 
-    delivery_note_count = fields.Integer(string=_("Delivery notes count"), compute='_compute_delivery_note_count')
+    delivery_note_count = fields.Integer(compute='_compute_delivery_note_count')
 
     @api.multi
     def _compute_delivery_note_count(self):
