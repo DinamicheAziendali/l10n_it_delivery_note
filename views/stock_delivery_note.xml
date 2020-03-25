@@ -27,7 +27,7 @@
                             states="draft"
                             class="oe_highlight"
                             groups="stock.group_stock_manager"
-                            string="Confirm" />
+                            string="Validate" />
                     <button name="action_invoice"
                             type="object"
                             class="oe_highlight"

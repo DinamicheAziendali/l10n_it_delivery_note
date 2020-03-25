@@ -47,7 +47,7 @@
                                             class="oe_highlight"
                                             attrs="{'invisible': [('delivery_note_state', '!=', 'draft')]}"
                                             groups="stock.group_stock_manager"
-                                            string="Confirm" />
+                                            string="Validate" />
                                     <button name="action_delivery_note_invoice"
                                             type="object"
                                             class="oe_highlight"
@@ -77,6 +77,36 @@
                                             attrs="{'invisible': ['|', ('delivery_note_state', '=', 'draft'),
                                                                        ('delivery_note_state', '=', 'cancel')]}"
                                             string="Cancel" />
+                                </div>
+                                <div class="statusbar_status">
+                                    <button class="btn arrow_button active"
+                                            attrs="{'invisible': [('delivery_note_state', '!=', 'cancel')]}">
+                                        Cancelled
+                                    </button>
+                                    <button class="btn arrow_button active"
+                                            attrs="{'invisible': [('delivery_note_state', '!=', 'done')]}">
+                                        Done
+                                    </button>
+                                    <button class="btn arrow_button active"
+                                            attrs="{'invisible': [('delivery_note_state', '!=', 'invoiced')]}">
+                                        Invoiced
+                                    </button>
+                                    <button class="btn arrow_button active"
+                                            attrs="{'invisible': [('delivery_note_state', '!=', 'confirm')]}">
+                                        Validated
+                                    </button>
+                                    <button class="btn arrow_button"
+                                            attrs="{'invisible': [('delivery_note_state', '=', 'confirm')]}">
+                                        Validated
+                                    </button>
+                                    <button class="btn arrow_button first_arrow active"
+                                            attrs="{'invisible': [('delivery_note_state', '!=', 'draft')]}">
+                                        Draft
+                                    </button>
+                                    <button class="btn arrow_button first_arrow"
+                                            attrs="{'invisible': [('delivery_note_state', '=', 'draft')]}">
+                                        Draft
+                                    </button>
                                 </div>
                             </div>
                             <div class="content">
