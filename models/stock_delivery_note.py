@@ -76,6 +76,7 @@ class StockDeliveryNote(models.Model):
     partner_sender_id = fields.Many2one('res.partner',
                                         string=_("Sender"),
                                         states=DRAFT_EDITABLE_STATE,
+                                        default=lambda self: self.env.user.company_id,
                                         readonly=True,
                                         required=True,
                                         track_visibility='onchange')
