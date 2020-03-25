@@ -40,36 +40,36 @@
                 </h2>
 
                 <div class="row mt16 mb16">
-                    <div name="date" t-if="doc.date" class="col-auto mw-100 mb-2">
+                    <div name="date" class="col-auto mw-100 mb-2">
                         <strong>Date:</strong>
                         <p class="m-0" t-field="doc.date" />
                     </div>
-                    <div name="transport_datetime" t-if="doc.transport_datetime" class="col-auto mw-100 mb-2">
+                    <div name="transport_datetime" class="col-auto mw-100 mb-2">
                         <strong>Transport date:</strong>
                         <p class="m-0" t-field="doc.transport_datetime" />
                     </div>
                 </div>
 
                 <div class="row mt16 mb16">
-                    <div name="parcels" t-if="doc.parcels" class="col-auto mw-100 mb-2">
+                    <div name="parcels" class="col-auto mw-100 mb-2">
                         <strong>Parcels:</strong>
                         <p class="m-0" t-field="doc.parcels" />
                     </div>
-                    <div name="volume" t-if="doc.volume" class="col-auto mw-100 mb-2">
+                    <div name="volume" class="col-auto mw-100 mb-2">
                         <strong>Volume:</strong>
                         <p class="m-0">
                             <span t-field="doc.volume" />
                             <span t-field="doc.volume_uom_id" groups="uom.group_uom" />
                         </p>
                     </div>
-                    <div name="gross_weight" t-if="doc.gross_weight" class="col-auto mw-100 mb-2">
+                    <div name="gross_weight" class="col-auto mw-100 mb-2">
                         <strong>Gross weight:</strong>
                         <p class="m-0">
                             <span t-field="doc.gross_weight" />
                             <span t-field="doc.gross_weight_uom_id" groups="uom.group_uom" />
                         </p>
                     </div>
-                    <div name="net_weight" t-if="doc.net_weight" class="col-auto mw-100 mb-2">
+                    <div name="net_weight" class="col-auto mw-100 mb-2">
                         <strong>Net weight:</strong>
                         <p class="m-0">
                             <span t-field="doc.net_weight" />
@@ -79,19 +79,19 @@
                 </div>
 
                 <div class="row mt16 mb16">
-                    <div name="transport_condition_id" t-if="doc.transport_condition_id" class="col-auto mw-100 mb-2">
+                    <div name="transport_condition_id" class="col-auto mw-100 mb-2">
                         <strong>Condition of transport:</strong>
                         <p class="m-0" t-field="doc.transport_condition_id" />
                     </div>
-                    <div name="goods_appearance_id" t-if="doc.goods_appearance_id" class="col-auto mw-100 mb-2">
+                    <div name="goods_appearance_id" class="col-auto mw-100 mb-2">
                         <strong>Appearance of goods:</strong>
                         <p class="m-0" t-field="doc.goods_appearance_id" />
                     </div>
-                    <div name="transport_reason_id" t-if="doc.transport_reason_id" class="col-auto mw-100 mb-2">
+                    <div name="transport_reason_id" class="col-auto mw-100 mb-2">
                         <strong>Reason of transport:</strong>
                         <p class="m-0" t-field="doc.transport_reason_id" />
                     </div>
-                    <div name="transport_method_id" t-if="doc.transport_method_id" class="col-auto mw-100 mb-2">
+                    <div name="transport_method_id" class="col-auto mw-100 mb-2">
                         <strong>Method of transport:</strong>
                         <p class="m-0" t-field="doc.transport_method_id" />
                     </div>
