@@ -1,5 +1,5 @@
-# Copyright (c) 2019, Link IT Europe Srl (http://www.linkgroup.it/)
-# @author: Matteo Bilotta <mbilotta@linkgroup.it>
+# Copyright (c) 2019, Link IT Europe Srl
+# @author: Matteo Bilotta <mbilotta@linkeurope.it>
 
 from odoo import _, api, models
 from odoo.exceptions import ValidationError

@@ -36,4 +36,4 @@ Contributors
 
 * Marco Calcagni <mcalcagni@dinamicheaziendali.it>
 * Gianmarco Conte <gconte@dinamicheaziendali.it>
-* Matteo Bilotta <mbilotta@linkgroup.it>
+* Matteo Bilotta <mbilotta@linkeurope.it>

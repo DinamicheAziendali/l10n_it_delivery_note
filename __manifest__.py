@@ -1,8 +1,8 @@
 # Copyright 2014-2019 Dinamiche Aziendali srl (http://www.dinamicheaziendali.it/)
 # @author: Marco Calcagni <mcalcagni@dinamicheaziendali.it>
 # @author: Gianmarco Conte <gconte@dinamicheaziendali.it>
-# Copyright (c) 2019, Link IT Europe Srl (http://www.linkgroup.it/)
-# @author: Matteo Bilotta <mbilotta@linkgroup.it>
+# Copyright (c) 2019, Link IT Europe Srl
+# @author: Matteo Bilotta <mbilotta@linkeurope.it>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 # noinspection PyStatementEffect
