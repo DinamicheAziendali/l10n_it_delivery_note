@@ -208,7 +208,7 @@
                                 <group string="Internal notes"
                                        attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
                                     <field name="delivery_note_note"
-                                           nolabel="True"
+                                           nolabel="1"
                                            attrs="{'readonly': [('delivery_note_state', '=', 'done')]}" />
                                 </group>
                             </div>
