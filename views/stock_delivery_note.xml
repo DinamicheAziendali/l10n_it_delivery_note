@@ -27,17 +27,13 @@
                             states="draft"
                             class="oe_highlight"
                             groups="stock.group_stock_manager"
-                            string="Validate" />
+                            string="Confirm" />
                     <button name="action_invoice"
                             type="object"
                             class="oe_highlight"
                             attrs="{'invisible': ['|', ('state', '!=', 'confirm'), ('sale_ids', '=', [])]}"
                             groups="account.group_account_invoice"
                             string="Create invoice" />
-                    <button name="action_done"
-                            type="object"
-                            attrs="{'invisible': ['|', ('state', '!=', 'confirm'), ('sale_ids', '=', [])]}"
-                            string="Set done" />
                     <button name="action_done"
                             type="object"
                             class="oe_highlight"

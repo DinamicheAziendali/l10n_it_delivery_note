@@ -59,10 +59,9 @@ class StockPicking(models.Model):
     use_delivery_note = fields.Boolean(compute='_compute_boolean_flags')
     use_advanced_behaviour = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_exists = fields.Boolean(compute='_compute_boolean_flags')
-    delivery_note_validated = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_readonly = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_visible = fields.Boolean(compute='_compute_boolean_flags')
-    delivery_note_done = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_state = fields.Char(compute='_compute_boolean_flag')
     can_be_invoiced = fields.Boolean(compute='_compute_boolean_flags')
 
     @property
@@ -87,27 +86,16 @@ class StockPicking(models.Model):
         for picking in self:
             picking.use_delivery_note = not from_delivery_note and picking.state == DONE_PICKING_STATE
 
-            picking.use_advanced_behaviour = use_advanced_behaviour
             picking.delivery_note_visible = use_advanced_behaviour
+            picking.use_advanced_behaviour = use_advanced_behaviour
+
+            picking.delivery_note_readonly = True
 
             if picking.use_delivery_note and picking.delivery_note_id:
                 picking.delivery_note_exists = True
-
-                if picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[1]:
-                    picking.delivery_note_validated = True
-                    picking.delivery_note_readonly = True
-                    picking.delivery_note_visible = True
-                    picking.can_be_invoiced = bool(picking.delivery_note_id.sale_ids)
-
-                elif picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[2]:
-                    picking.delivery_note_validated = True
-                    picking.delivery_note_readonly = True
-
-                elif picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[3]:
-                    picking.delivery_note_done = True
-
-            else:
-                picking.delivery_note_readonly = True
+                picking.delivery_note_readonly = (picking.delivery_note_id.state != DOMAIN_DELIVERY_NOTE_STATES[0])
+                picking.delivery_note_state = picking.delivery_note_id.state
+                picking.can_be_invoiced = bool(picking.delivery_note_id.sale_ids)
 
     def _add_delivery_cost_to_so(self):
         self.ensure_one()
@@ -140,20 +128,36 @@ class StockPicking(models.Model):
             'context': {'active_ids': self.ids}
         }
 
-    def action_delivery_note_validate(self):
+    def action_delivery_note_draft(self):
+        self.ensure_one()
+
+        return self.delivery_note_id.action_draft()
+
+    def action_delivery_note_confirm(self):
         self.ensure_one()
 
         return self.delivery_note_id.action_confirm()
-
-    def action_delivery_note_print(self):
-        self.ensure_one()
-
-        return self.delivery_note_id.action_print()
 
     def action_delivery_note_invoice(self):
         self.ensure_one()
 
         return self.delivery_note_id.action_invoice()
+
+    @api.multi
+    def action_delivery_note_done(self):
+        self.ensure_one()
+
+        return self.delivery_note_id.action_done()
+
+    def action_delivery_note_cancel(self):
+        self.ensure_one()
+
+        return self.delivery_note_id.action_cancel()
+
+    def action_delivery_note_print(self):
+        self.ensure_one()
+
+        return self.delivery_note_id.action_print()
 
     @api.multi
     def action_done(self):

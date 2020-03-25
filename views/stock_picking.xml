@@ -20,10 +20,9 @@
                         <field name="use_delivery_note" invisible="True" />
                         <field name="use_advanced_behaviour" invisible="True" />
                         <field name="delivery_note_exists" invisible="True" />
-                        <field name="delivery_note_validated" invisible="True" />
                         <field name="delivery_note_readonly" invisible="True" />
                         <field name="delivery_note_visible" invisible="True" />
-                        <field name="delivery_note_done" invisible="True" />
+                        <field name="delivery_note_state" invisible="True" />
                         <field name="can_be_invoiced" invisible="True" />
                         <div class="no-margin-page-content">
                             <div class="header">
@@ -38,21 +37,46 @@
                                             string="Select existing" />
                                 </div>
                                 <div attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
-                                    <button name="action_delivery_note_validate"
+                                    <button name="action_delivery_note_draft"
                                             type="object"
                                             class="oe_highlight"
-                                            attrs="{'invisible': [('delivery_note_validated', '=', True)]}"
+                                            attrs="{'invisible': [('delivery_note_state', '!=', 'cancel')]}"
+                                            string="Reset to draft" />
+                                    <button name="action_delivery_note_confirm"
+                                            type="object"
+                                            class="oe_highlight"
+                                            attrs="{'invisible': [('delivery_note_state', '!=', 'draft')]}"
                                             groups="stock.group_stock_manager"
-                                            string="Validate" />
+                                            string="Confirm" />
                                     <button name="action_delivery_note_invoice"
                                             type="object"
                                             class="oe_highlight"
-                                            attrs="{'invisible': [('can_be_invoiced', '=', False)]}"
+                                            attrs="{'invisible': ['|', ('delivery_note_state', '!=', 'confirm'),
+                                                                       ('can_be_invoiced', '=', False)]}"
                                             groups="account.group_account_invoice"
                                             string="Create invoice" />
+                                    <button name="action_delivery_note_done"
+                                            type="object"
+                                            class="oe_highlight"
+                                            attrs="{'invisible': ['&amp;', ('delivery_note_state', '!=', 'invoiced'),
+                                                                  '|', ('delivery_note_state', '!=', 'confirm'),
+                                                                       ('can_be_invoiced', '=', True)]}"
+                                            string="Set done" />
                                     <button name="action_delivery_note_print"
+                                            attrs="{'invisible': ['|', ('delivery_note_state', '=', 'done'),
+                                                                       ('delivery_note_state', '=', 'cancel')]}"
                                             type="object"
                                             string="Print" />
+                                    <button name="action_delivery_note_print"
+                                            class="oe_highlight"
+                                            attrs="{'invisible': [('delivery_note_state', '!=', 'done')]}"
+                                            type="object"
+                                            string="Print" />
+                                    <button name="action_delivery_note_cancel"
+                                            type="object"
+                                            attrs="{'invisible': ['|', ('delivery_note_state', '=', 'draft'),
+                                                                       ('delivery_note_state', '=', 'cancel')]}"
+                                            string="Cancel" />
                                 </div>
                             </div>
                             <div class="content">
@@ -93,9 +117,9 @@
                                                attrs="{'required': [('delivery_note_exists', '=', True)],
                                                        'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         <field name="delivery_note_date"
-                                               attrs="{'readonly': [('delivery_note_done', '=', True)]}" />
+                                               attrs="{'readonly': [('delivery_note_state', '=', 'done')]}" />
                                         <field name="transport_datetime"
-                                               attrs="{'readonly': [('delivery_note_done', '=', True)]}" />
+                                               attrs="{'readonly': [('delivery_note_state', '=', 'done')]}" />
                                     </group>
                                 </group>
                                 <group attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
@@ -153,8 +177,9 @@
                                 </group>
                                 <group string="Internal notes"
                                        attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
-                                    <field name="delivery_note_note" nolabel="1"
-                                           attrs="{'readonly': [('delivery_note_done', '=', True)]}" />
+                                    <field name="delivery_note_note"
+                                           nolabel="True"
+                                           attrs="{'readonly': [('delivery_note_state', '=', 'done')]}" />
                                 </group>
                             </div>
                         </div>
