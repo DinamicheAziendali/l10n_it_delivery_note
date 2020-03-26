@@ -196,14 +196,14 @@
                                     </div>
                                     <group attrs="{'invisible': [('display_type', '!=', False)]}">
                                         <group>
-                                            <field name="price_unit" attrs="{'invisible' : [('parent.show_product_information', '=', False)]}" />
+                                            <field name="price_unit" attrs="{'invisible': [('parent.show_product_information', '=', False)]}" />
                                             <label for="product_qty" />
                                             <div class="o_row">
                                                 <field name="product_qty" />
                                                 <field name="product_uom_id" groups="uom.group_uom" widget="selection" />
                                             </div>
                                         </group>
-                                        <group attrs="{'invisible' : [('parent.show_product_information', '=', False)]}">
+                                        <group attrs="{'invisible': [('parent.show_product_information', '=', False)]}">
                                             <field name="discount" groups="sale.group_discount_per_so_line" />
                                             <field name="tax_ids" widget="many2many_tags" />
                                         </group>
@@ -296,6 +296,12 @@
                 <filter name="done" string="Done" domain="[('state', '=', 'done')]" />
                 <filter name="cancel" string="Cancelled" domain="[('state', '=', 'cancel')]" />
                 <separator />
+                <filter name="nothing_to_invoice"
+                        string="Nothing to invoice"
+                        domain="[('invoice_status', '=', 'no')]" />
+                <filter name="to_invoice" string="To invoice" domain="[('invoice_status', '=', 'to invoice')]" />
+                <filter name="invoiced" string="Invoiced" domain="[('invoice_status', '=', 'invoiced')]" />
+                <separator />
                 <filter name="incoming" string="Incoming" domain="[('picking_type', '=', 'incoming')]" />
                 <filter name="outgoing" string="Outgoing" domain="[('picking_type', '=', 'outgoing')]" />
                 <filter name="internal" string="Internal" domain="[('picking_type', '=', 'internal')]" />
@@ -303,17 +309,20 @@
                 <filter name="inactive" string="Archived" domain="[('active', '=', False)]" />
                 <separator />
                 <group>
-                    <filter name="group_by_partner_id" string="Recipients" context="{'group_by' : 'partner_id'}" />
+                    <filter name="group_by_partner_id" string="Recipients" context="{'group_by': 'partner_id'}" />
                     <filter name="group_by_partner_sender_id"
                             string="Senders"
-                            context="{'group_by' : 'partner_sender_id'}" />
-                    <filter name="group_by_carrier_id" string="Carriers" context="{'group_by' : 'carrier_id'}" />
-                    <filter name="group_by_state" string="States" context="{'group_by' : 'state'}" />
-                    <filter name="group_by_type_id" string="Types" context="{'group_by' : 'type_id'}" />
+                            context="{'group_by': 'partner_sender_id'}" />
+                    <filter name="group_by_carrier_id" string="Carriers" context="{'group_by': 'carrier_id'}" />
+                    <filter name="group_by_state" string="States" context="{'group_by': 'state'}" />
+                    <filter name="group_by_type_id" string="Types" context="{'group_by': 'type_id'}" />
+                    <filter name="group_by_invoice_status"
+                            string="Invoice statuses"
+                            context="{'group_by': 'invoice_status'}" />
                     <filter name="group_by_picking_type"
                             string="Picking types"
-                            context="{'group_by' : 'picking_type'}" />
-                    <filter name="group_by_date" string="Dates" context="{'group_by' : 'date'}" />
+                            context="{'group_by': 'picking_type'}" />
+                    <filter name="group_by_date" string="Dates" context="{'group_by': 'date'}" />
                 </group>
             </search>
         </field>

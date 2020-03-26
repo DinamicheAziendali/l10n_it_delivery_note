@@ -44,6 +44,9 @@ class StockDeliveryNote(models.Model):
     _order = 'date DESC, id DESC'
     _rec_name = 'display_name'
 
+    def _default_company(self):
+        return self.env.user.company_id
+
     def _default_type(self):
         return self.env['stock.delivery.note.type'].search([], limit=1)
 
@@ -76,7 +79,7 @@ class StockDeliveryNote(models.Model):
     partner_sender_id = fields.Many2one('res.partner',
                                         string=_("Sender"),
                                         states=DRAFT_EDITABLE_STATE,
-                                        default=lambda self: self.env.user.company_id,
+                                        default=_default_company,
                                         readonly=True,
                                         required=True,
                                         track_visibility='onchange')
@@ -158,6 +161,13 @@ class StockDeliveryNote(models.Model):
     transport_datetime = fields.Datetime(string=_("Transport date"), states=DONE_READONLY_STATE, copy=False)
 
     line_ids = fields.One2many('stock.delivery.note.line', 'delivery_note_id', string=_("Lines"))
+    invoice_status = fields.Selection(INVOICE_STATUSES,
+                                      string=_("Invoice status"),
+                                      compute='_compute_invoice_status',
+                                      default=DOMAIN_INVOICE_STATUSES[0],
+                                      readonly=True,
+                                      store=True,
+                                      copy=False)
 
     picking_ids = fields.One2many('stock.picking', 'delivery_note_id', string=_("Pickings"))
     pickings_picker = fields.Many2many('stock.picking', compute='_get_pickings', inverse='_set_pickings')
@@ -195,6 +205,21 @@ class StockDeliveryNote(models.Model):
                 name = note.name
 
             note.display_name = name
+
+    @api.multi
+    @api.depends('state', 'line_ids', 'line_ids.invoice_status')
+    def _compute_invoice_status(self):
+        for note in self:
+            lines = note.line_ids.filtered(lambda l: l.sale_line_id)
+
+            if all(line.invoice_status == DOMAIN_INVOICE_STATUSES[2] for line in lines):
+                note.invoice_status = DOMAIN_INVOICE_STATUSES[2]
+
+            elif any(line.invoice_status == DOMAIN_INVOICE_STATUSES[1] for line in lines):
+                note.invoice_status = DOMAIN_INVOICE_STATUSES[1]
+
+            else:
+                note.invoice_status = DOMAIN_INVOICE_STATUSES[0]
 
     @api.multi
     def _get_pickings(self):
@@ -332,6 +357,7 @@ class StockDeliveryNote(models.Model):
     @api.multi
     def action_draft(self):
         self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[0]})
+        self.line_ids.sync_invoice_status()
 
     @api.multi
     def action_confirm(self):
@@ -397,14 +423,12 @@ class StockDeliveryNote(models.Model):
     @api.multi
     def action_done(self):
         self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[3]})
-        self.line_ids.sync_invoice_status()
 
     @api.multi
     def action_cancel(self):
         self.ensure_annulability()
 
         self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[4]})
-        self.line_ids.sync_invoice_status()
 
     @api.multi
     def action_print(self):
