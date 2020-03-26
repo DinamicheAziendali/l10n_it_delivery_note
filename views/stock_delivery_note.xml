@@ -271,6 +271,7 @@
         <field name="arch" type="xml">
             <tree decoration-muted="state == 'cancel'">
                 <field name="display_name" string="Name" />
+                <field name="partner_sender_id" />
                 <field name="partner_id" />
                 <field name="date" />
                 <field name="state" />
@@ -285,8 +286,35 @@
             <search>
                 <field name="name" />
                 <field name="partner_id" />
+                <field name="partner_sender_id" />
+                <field name="carrier_id" />
+                <field name="type_id" />
+                <separator />
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]" />
+                <filter name="confirm" string="Validated" domain="[('state', '=', 'confirm')]" />
+                <filter name="invoiced" string="Invoiced" domain="[('state', '=', 'invoiced')]" />
+                <filter name="done" string="Done" domain="[('state', '=', 'done')]" />
+                <filter name="cancel" string="Cancelled" domain="[('state', '=', 'cancel')]" />
+                <separator />
+                <filter name="incoming" string="Incoming" domain="[('picking_type', '=', 'incoming')]" />
+                <filter name="outgoing" string="Outgoing" domain="[('picking_type', '=', 'outgoing')]" />
+                <filter name="internal" string="Internal" domain="[('picking_type', '=', 'internal')]" />
                 <separator />
                 <filter name="inactive" string="Archived" domain="[('active', '=', False)]" />
+                <separator />
+                <group>
+                    <filter name="group_by_partner_id" string="Recipients" context="{'group_by' : 'partner_id'}" />
+                    <filter name="group_by_partner_sender_id"
+                            string="Senders"
+                            context="{'group_by' : 'partner_sender_id'}" />
+                    <filter name="group_by_carrier_id" string="Carriers" context="{'group_by' : 'carrier_id'}" />
+                    <filter name="group_by_state" string="States" context="{'group_by' : 'state'}" />
+                    <filter name="group_by_type_id" string="Types" context="{'group_by' : 'type_id'}" />
+                    <filter name="group_by_picking_type"
+                            string="Picking types"
+                            context="{'group_by' : 'picking_type'}" />
+                    <filter name="group_by_date" string="Dates" context="{'group_by' : 'date'}" />
+                </group>
             </search>
         </field>
     </record>
