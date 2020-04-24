@@ -4,7 +4,6 @@
 import logging
 
 from odoo import api, SUPERUSER_ID
-from openupgradelib import openupgrade
 
 _logger = logging.getLogger(__name__)
 
@@ -37,29 +36,36 @@ FIELDS_TO_RENAME = [
 ]
 
 XMLIDS_TO_RENAME = (
-    ('easy_ddt.stock_ddt_type_comp_rule', 'easy_ddt.stock_delivery_note_type_company_rule'),
-
-    ('easy_ddt.seq_ddt', 'easy_ddt.delivery_note_sequence_ddt'),
-    ('easy_ddt.ddt_type_ddt', 'easy_ddt.delivery_note_type_ddt'),
-    ('easy_ddt.carriage_condition_PF', 'easy_ddt.transport_condition_PF'),
-    ('easy_ddt.carriage_condition_PA', 'easy_ddt.transport_condition_PA'),
-    ('easy_ddt.carriage_condition_PAF', 'easy_ddt.transport_condition_PAF'),
-    ('easy_ddt.goods_description_CAR', 'easy_ddt.goods_appearance_CAR'),
-    ('easy_ddt.goods_description_BAN', 'easy_ddt.goods_appearance_BAN'),
-    ('easy_ddt.goods_description_SFU', 'easy_ddt.goods_appearance_SFU'),
-    ('easy_ddt.goods_description_CBA', 'easy_ddt.goods_appearance_CBA'),
-    ('easy_ddt.transportation_reason_VEN', 'easy_ddt.transport_reason_VEN'),
-    ('easy_ddt.transportation_reason_VIS', 'easy_ddt.transport_reason_VIS'),
-    ('easy_ddt.transportation_reason_RES', 'easy_ddt.transport_reason_RES'),
-    ('easy_ddt.transportation_method_MIT', 'easy_ddt.transport_method_MIT'),
-    ('easy_ddt.transportation_method_DES', 'easy_ddt.transport_method_DES'),
-    ('easy_ddt.transportation_method_COR', 'easy_ddt.transport_method_COR')
+    ('easy_ddt.stock_ddt_type_comp_rule', 'l10n_it_delivery_note.stock_delivery_note_type_company_rule'),
+    ('easy_ddt.seq_ddt', 'l10n_it_delivery_note.delivery_note_sequence_ddt'),
+    ('easy_ddt.ddt_type_ddt', 'l10n_it_delivery_note.delivery_note_type_ddt'),
+    ('easy_ddt.carriage_condition_PF', 'l10n_it_delivery_note.transport_condition_PF'),
+    ('easy_ddt.carriage_condition_PA', 'l10n_it_delivery_note.transport_condition_PA'),
+    ('easy_ddt.carriage_condition_PAF', 'l10n_it_delivery_note.transport_condition_PAF'),
+    ('easy_ddt.goods_description_CAR', 'l10n_it_delivery_note.goods_appearance_CAR'),
+    ('easy_ddt.goods_description_BAN', 'l10n_it_delivery_note.goods_appearance_BAN'),
+    ('easy_ddt.goods_description_SFU', 'l10n_it_delivery_note.goods_appearance_SFU'),
+    ('easy_ddt.goods_description_CBA', 'l10n_it_delivery_note.goods_appearance_CBA'),
+    ('easy_ddt.transportation_reason_VEN', 'l10n_it_delivery_note.transport_reason_VEN'),
+    ('easy_ddt.transportation_reason_VIS', 'l10n_it_delivery_note.transport_reason_VIS'),
+    ('easy_ddt.transportation_reason_RES', 'l10n_it_delivery_note.transport_reason_RES'),
+    ('easy_ddt.transportation_method_MIT', 'l10n_it_delivery_note.transport_method_MIT'),
+    ('easy_ddt.transportation_method_DES', 'l10n_it_delivery_note.transport_method_DES'),
+    ('easy_ddt.transportation_method_COR', 'l10n_it_delivery_note.transport_method_COR')
 )
 
 
 def _adjust_database_structure(env):
+    try:
+        from openupgradelib import openupgrade
+
+    except ModuleNotFoundError as exc:
+        raise ImportError("You need to install 'openupgradelib' in"
+                          " your Python environment to proceed.") from exc
+
     _logger.info("Rinomino le tabelle dei vecchi modelli...")
     openupgrade.rename_tables(env.cr, TABLES_TO_RENAME)
+
     _logger.info("Aggiorno i modelli dei vecchi dati...")
     openupgrade.rename_models(env.cr, MODELS_TO_RENAME)
 

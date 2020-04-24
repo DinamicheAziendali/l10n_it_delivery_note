@@ -7,39 +7,29 @@
 
 <odoo>
 
-    <record id="stock_delivery_note_select_form_view" model="ir.ui.view">
-        <field name="name">stock.delivery.note.select.form</field>
-        <field name="model">stock.delivery.note.select.wizard</field>
+    <record id="stock_delivery_note_create_form_view" model="ir.ui.view">
+        <field name="name">stock.delivery.note.create.form</field>
+        <field name="model">stock.delivery.note.create.wizard</field>
         <field name="arch" type="xml">
             <form>
                 <div attrs="{'invisible': [('error_message', '=', False)]}">
                     <field name="error_message" />
                 </div>
-                <field name="selected_picking_ids" invisible="True" />
-                <div class="oe_title" attrs="{'invisible': [('error_message', '!=', False)]}">
-                    <label for="delivery_note_id" />
-                    <h1>
-                        <field name="delivery_note_id"
-                               domain="[('partner_id', '=', partner_id), ('state', '=', 'draft')]"
-                               options="{'no_open': True, 'no_create': True}"
-                               style="width: 100%;" />
-                    </h1>
-                </div>
-                <group string="Summary" attrs="{'invisible': [('error_message', '!=', False)]}">
+                <group attrs="{'invisible': [('error_message', '!=', False)]}" string="Summary">
                     <group>
                         <field name="partner_sender_id" />
                         <field name="partner_id" />
                         <field name="partner_shipping_id" />
                     </group>
                     <group>
-                        <field name="type_id" />
+                        <field name="type_id" options="{'no_open': True, 'no_create': True}" />
                         <field name="date" />
                     </group>
                 </group>
                 <notebook attrs="{'invisible': [('error_message', '!=', False)]}">
                     <page name="pickings" string="Pickings">
-                        <field name="picking_ids">
-                            <tree decoration-success="id in parent.selected_picking_ids">
+                        <field name="selected_picking_ids">
+                            <tree decoration-success="True">
                                 <field name="name" />
                                 <field name="location_dest_id" groups="stock.group_stock_multi_locations" />
                                 <field name="scheduled_date" />
@@ -70,11 +60,11 @@
         </field>
     </record>
 
-    <act_window id="stock_delivery_note_select_action"
-                groups="easy_ddt.use_advanced_delivery_notes"
+    <act_window id="stock_delivery_note_create_action"
+                groups="l10n_it_delivery_note.use_advanced_delivery_notes"
                 key2="client_action_multi"
-                name="Select an existing delivery note"
-                res_model="stock.delivery.note.select.wizard"
+                name="Create a new delivery note"
+                res_model="stock.delivery.note.create.wizard"
                 src_model="stock.picking"
                 view_mode="form"
                 view_type="form"

@@ -166,15 +166,15 @@
     <template id="delivery_note_report_main_template">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
-                <t t-call="easy_ddt.delivery_note_report_template" t-lang="doc.partner_id.lang" />
+                <t t-call="l10n_it_delivery_note.delivery_note_report_template" t-lang="doc.partner_id.lang" />
             </t>
         </t>
     </template>
 
     <report id="delivery_note_report_action"
             model="stock.delivery.note"
-            name="easy_ddt.delivery_note_report_main_template"
-            file="easy_ddt.delivery_note_report_main_template"
+            name="l10n_it_delivery_note.delivery_note_report_main_template"
+            file="l10n_it_delivery_note.delivery_note_report_main_template"
             report_type="qweb-pdf"
             string="Delivery note"
             print_report_name="'Delivery Note - %s' % object.display_name" />

@@ -159,7 +159,7 @@ def migrate(cr, version):
     env = api.Environment(cr, SUPERUSER_ID, {})
 
     StockPicking = env['stock.picking']
-    StockDeliveryNote = env['stock.delivery.note'].with_context(from_migration=True)
+    StockDeliveryNote = env['stock.delivery.note']
 
     _logger.info("Inizializzo i dati di default per la migration...")
     init(env)

@@ -18,7 +18,7 @@
                         name="goto_delivery_notes"
                         icon="fa-pencil-square-o"
                         attrs="{'invisible': [('delivery_note_count', '=', 0)]}"
-                        groups="easy_ddt.use_advanced_delivery_notes">
+                        groups="l10n_it_delivery_note.use_advanced_delivery_notes">
                     <field name="delivery_note_count" widget="statinfo" string="Delivery notes" />
                 </button>
             </xpath>

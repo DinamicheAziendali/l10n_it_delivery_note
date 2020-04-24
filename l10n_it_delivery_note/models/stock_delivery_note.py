@@ -261,7 +261,7 @@ class StockDeliveryNote(models.Model):
 
     @api.multi
     def _compute_boolean_flags(self):
-        show_product_information = self.env.user.user_has_groups('easy_ddt.show_product_related_fields')
+        show_product_information = self.env.user.user_has_groups('l10n_it_delivery_note.show_product_related_fields')
 
         for note in self:
             note.show_product_information = show_product_information
@@ -432,7 +432,7 @@ class StockDeliveryNote(models.Model):
 
     @api.multi
     def action_print(self):
-        return self.env.ref('easy_ddt.delivery_note_report_action').report_action(self)
+        return self.env.ref('l10n_it_delivery_note.delivery_note_report_action').report_action(self)
 
     @api.multi
     def goto_sales(self, **kwargs):

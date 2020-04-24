@@ -62,7 +62,7 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
             }
 
             self.error_message = self.env['ir.ui.view'] \
-                .render_template('easy_ddt.stock_delivery_note_wizard_error_message_template', values)
+                .render_template('l10n_it_delivery_note.stock_delivery_note_wizard_error_message_template', values)
 
         else:
             partners = self.selected_picking_ids.get_partners()

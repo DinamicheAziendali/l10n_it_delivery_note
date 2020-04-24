@@ -30,14 +30,14 @@ class AccountInvoice(models.Model):
     @api.multi
     def goto_delivery_notes(self, **kwargs):
         delivery_notes = self.mapped('delivery_note_ids')
-        action = self.env.ref('easy_ddt.stock_delivery_note_action').read()[0]
+        action = self.env.ref('l10n_it_delivery_note.stock_delivery_note_action').read()[0]
         action.update(kwargs)
 
         if len(delivery_notes) > 1:
             action['domain'] = [('id', 'in', delivery_notes.ids)]
 
         elif len(delivery_notes) == 1:
-            action['views'] = [(self.env.ref('easy_ddt.stock_delivery_note_form_view').id, 'form')]
+            action['views'] = [(self.env.ref('l10n_it_delivery_note.stock_delivery_note_form_view').id, 'form')]
             action['res_id'] = delivery_notes.id
 
         else:

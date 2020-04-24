@@ -71,7 +71,7 @@ class StockDeliveryNoteInvoicingTest(TransactionCase):
     def setUp(self):
         super().setUp()
 
-        self.env.user.write({'groups_id': [(4, self.env.ref('easy_ddt.use_advanced_delivery_notes').id)]})
+        self.env.user.write({'groups_id': [(4, self.env.ref('l10n_it_delivery_note.use_advanced_delivery_notes').id)]})
 
         self.sender = self.env.ref('base.main_partner')
         self.recipient = self.create_partner("Mario Rossi")

@@ -346,7 +346,7 @@
     <menuitem id="stock_delivery_note_menu"
               parent="stock.menu_stock_warehouse_mgmt"
               action="stock_delivery_note_action"
-              groups="easy_ddt.use_advanced_delivery_notes"
+              groups="l10n_it_delivery_note.use_advanced_delivery_notes"
               name="Delivery notes"
               sequence="10" />
 

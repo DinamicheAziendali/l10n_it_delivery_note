@@ -7,13 +7,13 @@
 
 # noinspection PyStatementEffect
 {
-    'name': "Easy DDT",
-    'summary': "Documento di Trasporto",
+    'name': "ITA - Documento di Trasporto",
+    'summary': "Crea, gestisci e fattura i DdT partendo dalle Consegne",
 
     'author': "Marco Calcagni, Gianmarco Conte, Link IT Europe Srl",
     'website': "http://www.dinamicheaziendali.it/",
 
-    'version': '12.0.2.0.0',
+    'version': '12.0.0.9.99',
     'category': "Localization",
 
     'depends': [
@@ -22,9 +22,6 @@
         'sale_stock',
         'stock_account'
     ],
-    'external_dependencies': {
-        'python': ['openupgradelib']
-    },
 
     'data': [
         'data/delivery_note_data.xml',

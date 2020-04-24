@@ -9,7 +9,9 @@
 
     <template id="assets_backend" name="assets" inherit_id="web.assets_backend">
         <xpath expr="link[last()]" position="after">
-            <link rel="stylesheet" type="text/css" href="/easy_ddt/static/src/scss/stock_delivery_note.scss" />
+            <link rel="stylesheet"
+                  type="text/css"
+                  href="/l10n_it_delivery_note/static/src/scss/stock_delivery_note.scss" />
         </xpath>
     </template>
 

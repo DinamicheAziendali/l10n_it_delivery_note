@@ -2,14 +2,11 @@
 # @author: Matteo Bilotta <mbilotta@linkeurope.it>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-import argparse
-import functools
 import logging
-import odoo
 
-from odoo import SUPERUSER_ID
-from odoo.cli import Command
 from odoo.exceptions import UserError, ValidationError
+
+from .core import EasyCommand
 
 _logger = logging.getLogger(__name__)
 
@@ -21,45 +18,16 @@ STATES_MAPPING = {
 }
 
 
-def environment(funct=None, parser_args_method=None):
-    if not funct:
-        return functools.partial(environment, parser_args_method=parser_args_method)
-
-    @functools.wraps(funct)
-    def env_enabler(self, args):
-        command_args = unknown_args = args
-
-        if parser_args_method:
-            command_args, unknown_args = parser_args_method(self, args)
-
-        odoo.tools.config._parse_config(unknown_args)
-        odoo.netsvc.init_logger()
-
-        config = odoo.tools.config
-
-        with odoo.api.Environment.manage():
-            cr = odoo.registry(config['db_name']).cursor()
-            env = odoo.api.Environment(cr, SUPERUSER_ID, {})
-
-            funct(self, command_args, env)
-
-    return env_enabler
-
-
 # noinspection PyPep8Naming
-class Migrate_Ddt_Data(Command):
-    __is_debugging = None
-
+class Migrate_L10n_It_Ddt(EasyCommand):
     _carriage_conditions = None
     _goods_descriptions = None
     _transportation_reasons = None
     _transportation_methods = None
     _document_types = None
 
-    env = None
-
     def __init__(self):
-        self.__is_debugging = False
+        super().__init__()
 
         self._carriage_conditions = {}
         self._goods_descriptions = {}
@@ -96,45 +64,33 @@ class Migrate_Ddt_Data(Command):
             map_dict[old_record] = new_record
 
     def _map_ref(self, map_dict, old_ext_id, new_ext_id):
-        l10n_it_ddt_record = self.env.ref('l10n_it_ddt.{}'.format(old_ext_id))
-        easy_ddt_record = self.env.ref('easy_ddt.{}'.format(new_ext_id))
+        old_record = self.env.ref('l10n_it_ddt.{}'.format(old_ext_id))
+        new_record = self.env.ref('l10n_it_delivery_note.{}'.format(new_ext_id))
 
-        map_dict[l10n_it_ddt_record] = easy_ddt_record
+        map_dict[old_record] = new_record
 
-        return l10n_it_ddt_record
-
-    # noinspection PyMethodMayBeStatic
-    def _parse_args(self, args):
-        args_parser = argparse.ArgumentParser()
-        args_parser.add_argument('--debug', action='store_true', default=False)
-
-        return args_parser.parse_known_args(args)
+        return old_record
 
     def check_database_integrity(self):
         _logger.info("Checking database integrity before run data migration...")
 
         self.env.cr.execute("""SELECT "id", "state" FROM "ir_module_module" WHERE "name" = 'l10n_it_ddt';""")
-        l10n_it_ddt = self.env.cr.fetchone()
-        if not l10n_it_ddt or l10n_it_ddt[1] != 'installed':
+        old_module = self.env.cr.fetchone()
+        if not old_module or old_module[1] != 'installed':
             raise UserError("Module `l10n_it_ddt` isn't installed on this database. "
                             "You don't need to run this command.")
 
-        l10n_it_ddt_sequence = self.env.ref('l10n_it_ddt.seq_ddt')
-        if l10n_it_ddt_sequence.number_next_actual == 1:
+        old_sequence = self.env.ref('l10n_it_ddt.seq_ddt')
+        if old_sequence.number_next_actual == 1:
             raise UserError("It seems that there are no documents to migrate. "
                             "You don't need to run this command.")
 
-        easy_ddt_sequence = self.env.ref('easy_ddt.delivery_note_sequence_ddt')
-        if easy_ddt_sequence.number_next_actual > 1:
+        new_sequence = self.env.ref('l10n_it_delivery_note.delivery_note_sequence_ddt')
+        if new_sequence.number_next_actual > 1:
             raise ValidationError("It seems that at least one delivery note has been already created. "
                                   "You can't migrate any data on an already used database.")
 
         _logger.info("Database integrity check successfully passed.")
-
-    def initialize(self, args, env):
-        self.__is_debugging = args.debug
-
-        self.env = env
 
     def migrate_carriage_conditions(self):
         _logger.info("Migrating carriage conditions data...")
@@ -207,18 +163,17 @@ class Migrate_Ddt_Data(Command):
         DocumentType = self.env['stock.ddt.type']
         DeliveryNoteType = self.env['stock.delivery.note.type']
 
-        l10n_it_ddt_type = self.env.ref('l10n_it_ddt.ddt_type_ddt')
-        easy_ddt_type = self.env.ref('easy_ddt.delivery_note_type_ddt')
-        easy_ddt_type.write({'sequence_id': l10n_it_ddt_type.sequence_id.id})
+        old_type = self.env.ref('l10n_it_ddt.ddt_type_ddt')
+        new_type = self.env.ref('l10n_it_delivery_note.delivery_note_type_ddt')
+        new_type.write({'sequence_id': old_type.sequence_id.id})
 
         self.env.cr.execute("""DELETE FROM "ir_model_data" WHERE "module" = 'l10n_it_ddt' AND "name" = 'seq_ddt';""")
 
-        self._document_types[l10n_it_ddt_type] = easy_ddt_type
+        self._document_types[old_type] = new_type
 
-        records = DocumentType.search([('id', 'not in', [l10n_it_ddt_type.id])], order='id ASC')
+        records = DocumentType.search([('id', 'not in', [old_type.id])], order='id ASC')
 
         self._map_create(self._document_types, records, DeliveryNoteType, lambda r: {
-
             'name': r.name,
             'sequence_id': r.sequence_id.id,
             'default_goods_appearance_id': self._goods_descriptions[r.default_goods_description_id].id,
@@ -233,7 +188,6 @@ class Migrate_Ddt_Data(Command):
     def migrate_documents(self):
         def vals_getter(record):
             return {
-
                 'state': STATES_MAPPING[record.state],
                 'name': record.ddt_number,
                 'partner_sender_id': record.company_id.id,
@@ -271,26 +225,11 @@ class Migrate_Ddt_Data(Command):
 
         _logger.info("Documents data successfully migrated.")
 
-    @environment(parser_args_method=_parse_args)
-    def run(self, args, env):
-        try:
-            self.initialize(args, env)
-            self.check_database_integrity()
-            self.migrate_carriage_conditions()
-            self.migrate_goods_descriptions()
-            self.migrate_transportation_reasons()
-            self.migrate_transportation_methods()
-            self.migrate_document_types()
-            self.migrate_documents()
-
-            _logger.info("Execution completed successfully! Committing...")
-
-            env.cr.commit()
-
-        except:
-            _logger.exception("Something went wrong during command execution. Rolling back...")
-
-            env.cr.rollback()
-
-        finally:
-            env.cr.close()
+    def execute(self):
+        self.check_database_integrity()
+        self.migrate_carriage_conditions()
+        self.migrate_goods_descriptions()
+        self.migrate_transportation_reasons()
+        self.migrate_transportation_methods()
+        self.migrate_document_types()
+        self.migrate_documents()
