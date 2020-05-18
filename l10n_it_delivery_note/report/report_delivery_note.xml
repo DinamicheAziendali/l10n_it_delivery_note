@@ -9,6 +9,33 @@
 
     <template id="delivery_note_report_template">
         <t t-call="web.external_layout">
+            <style type="text/css">
+                .delivery_note.customer_address
+                {
+                    display: flex;
+                    flex-direction: row;
+                }
+                .delivery_note.customer_address > div
+                {
+                    display: table;
+                    width: 100%;
+                }
+                .delivery_note.customer_address > div > .well
+                {
+                    display: table-cell;
+                    padding: 10px;
+                    vertical-align:top;
+                }
+
+                .delivery_note.page table.delivery_data td
+                {
+                    margin: 0px;
+                }
+                .delivery_note.page .signature
+                {
+                    min-height: 2em;
+                }
+            </style>
             <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
 
             <t t-set="address">
@@ -26,9 +53,92 @@
                     <div t-field="doc.partner_shipping_id"
                          t-options="{'widget': 'contact', 'fields': ['address', 'name', 'phone'], 'no_marker': True, 'phone_icons': True}" />
                 </t>
+
+                <!--<div style="display: table-cell; width: 58%; text-align: top; padding: 10px;">-->
+                    <!--<p>-->
+                        <!--<strong><span t-field="company.partner_id.name"/></strong>-->
+                        <!--<br/>-->
+                        <!--<span t-field="company.partner_id.street"/>-->
+                        <!--<span t-field="company.partner_id.street2"/>-->
+                        <!--<br/>-->
+                        <!--<span t-field="company.partner_id.zip"/>-->
+                        <!--<span t-field="company.partner_id.city"/>-->
+                        <!--(<span t-field="company.partner_id.state_id.code"/>)-->
+                        <!--<span t-field="company.partner_id.country_id"/>-->
+                        <!--<br/>-->
+                        <!--P.I. <span t-field="company.partner_id.vat"/>-->
+                        <!--REA <span t-field="company.partner_id.rea_code"/>-->
+                        <!--<br/>-->
+                        <!--Tel <span t-field="company.partner_id.phone"/>-->
+                        <!--<br/>-->
+                        <!--Email <span t-field="company.partner_id.email"/>-->
+                    <!--</p>-->
+                <!--</div>-->
+                <!--<div style="display: table-cell; width: 35%; text-align: right; vertical-align: top; padding: 10px;">-->
+                    <!--<strong>Documento di Trasporto</strong><br/>-->
+                    <!--<span>Ai sensi del DPR 472-96 del 14.08.1996</span><br/>-->
+                    <!--<span>Number </span><strong><span t-field="o.ddt_number"/></strong><br/>-->
+                    <!--<span>Date </span><strong><span t-field="o.date" widget="date" t-field-options="{'format': 'dd/MM/yyyy'}"/></strong>-->
+                <!--</div>-->
+
             </t>
 
-            <div class="delivery_note_report page">
+            <div class="delivery_note customer_address mt32" name="customer_address">
+                <div>
+                    <div class="well">
+                        <p>
+                            <strong>Customer:</strong>
+                        </p>
+                        <strong>
+                            <span t-field="doc.partner_id.display_name" />
+                        </strong>
+                        <br/>
+                        <span t-field="doc.partner_id.street" />
+                        <span t-field="doc.partner_id.street2" />
+                        <br/>
+                        <span t-field="doc.partner_id.zip" />
+                        <span t-field="doc.partner_id.city" />
+                        (<span t-field="doc.partner_id.state_id.code" />)
+                        <span t-field="doc.partner_id.country_id" />
+                        <br/>
+                        <t t-if="doc.partner_id.phone">
+                            <span>Phone:</span>
+                            <span t-field="doc.partner_id.phone" />
+                        </t><br/>
+                        <t t-if="doc.partner_id.vat">
+                            <span>VAT:</span>
+                            <span t-field="doc.partner_shipping_id.vat" />
+                        </t>
+                    </div>
+                    <div class="well">
+                        <p>
+                            <strong>Delivery address:</strong>
+                        </p>
+                        <strong>
+                            <span t-field="doc.partner_shipping_id.name" />
+                        </strong>
+                        <br/>
+                        <span t-field="doc.partner_shipping_id.street" />
+                        <span t-field="doc.partner_shipping_id.street2" />
+                        <br/>
+                        <span t-field="doc.partner_shipping_id.zip" />
+                        <span t-field="doc.partner_shipping_id.city" />
+                        (<span t-field="doc.partner_shipping_id.state_id.code" />)
+                        <span t-field="doc.partner_shipping_id.country_id" />
+                        <br/>
+                        <t t-if="doc.partner_shipping_id.phone">
+                            <span>Phone:</span>
+                            <span t-field="doc.partner_shipping_id.phone" />
+                        </t><br/>
+                        <t t-if="doc.partner_shipping_id.vat">
+                            <span>VAT:</span>
+                            <span t-field="doc.partner_shipping_id.vat" />
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+            <div class="delivery_note page">
                 <div class="oe_structure" />
 
                 <h2 class="mt32 mb32">

@@ -145,15 +145,3 @@ table.o_list_view tr.o_data_row > td.o_list_button
         margin: 0px;
     }
 }
-
-.delivery_note_report
-{
-    & table.delivery_data td
-    {
-        margin: 0;
-    }
-    & .signature
-    {
-        min-height: 2em;
-    }
-}
