@@ -13,7 +13,7 @@
     'author': "Marco Calcagni, Gianmarco Conte, Link IT Europe Srl",
     'website': "http://www.dinamicheaziendali.it/",
 
-    'version': '12.0.0.9.99',
+    'version': '12.0.1.0.0',
     'category': "Localization",
 
     'depends': [
