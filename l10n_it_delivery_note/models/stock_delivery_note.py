@@ -39,7 +39,12 @@ DOMAIN_INVOICE_STATUSES = [s[0] for s in INVOICE_STATUSES]
 
 class StockDeliveryNote(models.Model):
     _name = 'stock.delivery.note'
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'stock.picking.checker.mixin']
+    _inherit = [
+        'mail.thread',
+        'mail.activity.mixin',
+        'stock.picking.checker.mixin',
+        'shipping.information.updater.mixin'
+    ]
     _description = "Delivery note"
     _order = 'date DESC, id DESC'
     _rec_name = 'display_name'
@@ -261,7 +266,7 @@ class StockDeliveryNote(models.Model):
 
     @api.multi
     def _compute_boolean_flags(self):
-        show_product_information = self.env.user.user_has_groups('l10n_it_delivery_note.show_product_related_fields')
+        show_product_information = self.user_has_groups('l10n_it_delivery_note.show_product_related_fields')
 
         for note in self:
             note.show_product_information = show_product_information
@@ -269,63 +274,23 @@ class StockDeliveryNote(models.Model):
     @api.onchange('type_id')
     def _onchange_type(self):
         if self.type_id:
-            if not self.transport_condition_id:
-                self.transport_condition_id = self.type_id.default_transport_condition_id
+            changed = self._update_generic_shipping_information(self.type_id)
 
-            if not self.goods_appearance_id:
-                self.goods_appearance_id = self.type_id.default_goods_appearance_id
-
-            if not self.transport_reason_id:
-                self.transport_reason_id = self.type_id.default_transport_reason_id
-
-            if not self.transport_method_id:
-                self.transport_method_id = self.type_id.default_transport_method_id
+            if changed:
+                return {
+                    'warning': {
+                        'title': _("Warning!"),
+                        'message': "Some of the shipping configuration have been overwritten with"
+                                   " the default ones of the selected delivery note type.\n"
+                                   "Please, make sure to check this information before continuing."
+                    }
+                }
 
     @api.onchange('partner_id')
     def _onchange_partner(self):
-        result = {}
-
         self.partner_shipping_id = self.partner_id
 
         if self.partner_id:
-            skipped = False
-
-            if not self.delivery_method_id:
-                self.delivery_method_id = self.partner_id.property_delivery_carrier_id
-            elif self.partner_id.property_delivery_carrier_id:
-                skipped = True
-
-            if not self.transport_condition_id:
-                self.transport_condition_id = self.partner_id.default_transport_condition_id
-            elif self.partner_id.default_transport_condition_id:
-                skipped = True
-
-            if not self.goods_appearance_id:
-                self.goods_appearance_id = self.partner_id.default_goods_appearance_id
-            elif self.partner_id.default_goods_appearance_id:
-                skipped = True
-
-            if not self.transport_reason_id:
-                self.transport_reason_id = self.partner_id.default_transport_reason_id
-            elif self.partner_id.default_transport_reason_id:
-                skipped = True
-
-            if not self.transport_method_id:
-                self.transport_method_id = self.partner_id.default_transport_method_id
-            elif self.partner_id.default_transport_method_id:
-                skipped = True
-
-            if skipped:
-                result['warning'] = {
-                    'title': _("Warning!"),
-                    'message': "Some of the shipping configuration have not"
-                               " been overwritten with the default ones of"
-                               " the partner due of fields already valorized. "
-                               "Check this shipping information.\n"
-                               "If you wish to be sure to overwrite all shipping information"
-                               " be sure you make the fields blank before changing the partner."
-                }
-
             pickings_picker_domain = [
                 ('delivery_note_id', '=', False),
                 ('state', '=', DONE_PICKING_STATE),
@@ -334,13 +299,27 @@ class StockDeliveryNote(models.Model):
             ]
 
         else:
-            self.delivery_method_id = False
-
             pickings_picker_domain = [('id', '=', False)]
 
-        result['domain'] = {'pickings_picker': pickings_picker_domain}
+        return {'domain': {'pickings_picker': pickings_picker_domain}}
 
-        return result
+    @api.onchange('partner_shipping_id')
+    def _onchange_partner_shipping(self):
+        if self.partner_shipping_id:
+            changed = self._update_partner_shipping_information(self.partner_shipping_id)
+
+            if changed:
+                return {
+                    'warning': {
+                        'title': _("Warning!"),
+                        'message': "Some of the shipping configuration have been overwritten with"
+                                   " the default ones of the selected shipping partner address.\n"
+                                   "Please, make sure to check this information before continuing."
+                    }
+                }
+
+        else:
+            self.delivery_method_id = False
 
     def check_compliance(self, pickings):
         super().check_compliance(pickings)

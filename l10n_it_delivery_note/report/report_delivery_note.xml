@@ -28,74 +28,16 @@
                 </t>
             </t>
 
-            <div class="page">
+            <div class="delivery_note_report page">
                 <div class="oe_structure" />
-    
+
                 <h2 class="mt32 mb32">
-                    <span t-if="doc.state in ['draft']">Draft delivery note:</span>
-                    <span t-if="doc.state not in ['draft']">Delivery note:</span>
+                    <span t-if="doc.state in ['draft']">Draft document:</span>
+                    <span t-if="doc.state not in ['draft']">Document:</span>
                     <small>
-                        "<span t-field="doc.display_name" />"
+                        <span t-field="doc.display_name" />
                     </small>
                 </h2>
-
-                <div class="row mt16 mb16">
-                    <div name="date" class="col-auto mw-100 mb-2">
-                        <strong>Date:</strong>
-                        <p class="m-0" t-field="doc.date" />
-                    </div>
-                    <div name="transport_datetime" class="col-auto mw-100 mb-2">
-                        <strong>Transport date:</strong>
-                        <p class="m-0" t-field="doc.transport_datetime" />
-                    </div>
-                </div>
-
-                <div class="row mt16 mb16">
-                    <div name="parcels" class="col-auto mw-100 mb-2">
-                        <strong>Parcels:</strong>
-                        <p class="m-0" t-field="doc.parcels" />
-                    </div>
-                    <div name="volume" class="col-auto mw-100 mb-2">
-                        <strong>Volume:</strong>
-                        <p class="m-0">
-                            <span t-field="doc.volume" />
-                            <span t-field="doc.volume_uom_id" groups="uom.group_uom" />
-                        </p>
-                    </div>
-                    <div name="gross_weight" class="col-auto mw-100 mb-2">
-                        <strong>Gross weight:</strong>
-                        <p class="m-0">
-                            <span t-field="doc.gross_weight" />
-                            <span t-field="doc.gross_weight_uom_id" groups="uom.group_uom" />
-                        </p>
-                    </div>
-                    <div name="net_weight" class="col-auto mw-100 mb-2">
-                        <strong>Net weight:</strong>
-                        <p class="m-0">
-                            <span t-field="doc.net_weight" />
-                            <span t-field="doc.net_weight_uom_id" groups="uom.group_uom" />
-                        </p>
-                    </div>
-                </div>
-
-                <div class="row mt16 mb16">
-                    <div name="transport_condition_id" class="col-auto mw-100 mb-2">
-                        <strong>Condition of transport:</strong>
-                        <p class="m-0" t-field="doc.transport_condition_id" />
-                    </div>
-                    <div name="goods_appearance_id" class="col-auto mw-100 mb-2">
-                        <strong>Appearance of goods:</strong>
-                        <p class="m-0" t-field="doc.goods_appearance_id" />
-                    </div>
-                    <div name="transport_reason_id" class="col-auto mw-100 mb-2">
-                        <strong>Reason of transport:</strong>
-                        <p class="m-0" t-field="doc.transport_reason_id" />
-                    </div>
-                    <div name="transport_method_id" class="col-auto mw-100 mb-2">
-                        <strong>Method of transport:</strong>
-                        <p class="m-0" t-field="doc.transport_method_id" />
-                    </div>
-                </div>
 
                 <table class="mt32 mb32 o_main_table table table-sm">
                     <thead>
@@ -113,7 +55,9 @@
                             <th t-if="doc.show_product_information" class="text-right" style="white-space: nowrap;">
                                 Unit price
                             </th>
-                            <th t-if="doc.show_product_information" class="text-right" groups="sale.group_discount_per_so_line">
+                            <th t-if="doc.show_product_information"
+                                class="text-right"
+                                groups="sale.group_discount_per_so_line">
                                 Discount
                             </th>
                             <th t-if="doc.show_product_information" class="text-right">
@@ -139,7 +83,9 @@
                                     <td t-if="doc.show_product_information" class="text-right">
                                         <span t-field="line.price_unit" />
                                     </td>
-                                    <td t-if="doc.show_product_information" class="text-right" groups="sale.group_discount_per_so_line">
+                                    <td t-if="doc.show_product_information"
+                                        class="text-right"
+                                        groups="sale.group_discount_per_so_line">
                                         <span t-field="line.discount" />%
                                     </td>
                                     <td t-if="doc.show_product_information" class="text-right">
@@ -156,7 +102,80 @@
                     </tbody>
                 </table>
 
-                <p t-field="doc.note" />
+                <table class="table table-condensed table-bordered delivery_data">
+                    <tr>
+                        <td>
+                            <div name="transport" style="font-size:8px;">Transportation Reason</div>
+                            <div style="font-size:10px;" t-field="doc.transport_reason_id" />
+                        </td>
+                        <td>
+                            <div name="carriage" style="font-size:8px;">Carriage Condition</div>
+                            <div style="font-size:10px;" t-field="doc.transport_condition_id" />
+                        </td>
+                        <td>
+                            <div name="good_description" style="font-size:8px;">Goods Description</div>
+                            <div style="font-size:10px;" t-field="doc.goods_appearance_id" />
+                        </td>
+                        <td>
+                            <div name="gross_weight" style="font-size:8px;">Gross Weight</div>
+                            <div style="font-size:10px;" class="text-right" t-field="doc.gross_weight" />
+                        </td>
+                        <td>
+                            <div name="net_weight" style="font-size:8px;">Net Weight</div>
+                            <div style="font-size:10px;" class="text-right" t-field="doc.net_weight" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="notes">
+                            <div name="notes" style="font-size:8px;">Notes</div>
+                            <div style="font-size:10px;" class="signature" t-field="doc.note" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" name="method_trasport">
+                            <div name="method_trasport" style="font-size:8px;">Method of Transportation / Carrier</div>
+                            <div style="font-size:10px;" t-field="doc.transport_method_id" name="transport_method_id" />
+                        </td>
+
+                        <td>
+                            <div name="carrier" style="font-size:8px;">Carrier</div>
+                            <div style="font-size:10px;" t-field="doc.carrier_id" name="carrier_id" />
+                        </td>
+                         <td>
+                            <div name="trasport_date" style="font-size:8px;">Delivery note date</div>
+                            <div style="font-size:10px;"
+                                 class="m-0"
+                                 t-field="doc.transport_datetime"
+                                 name="transport_datetime" />
+                        </td>
+                        <td>
+                            <div name="parcel" style="font-size:8px;">Parcels</div>
+                            <div style="font-size:10px;" class="text-right"  t-field="doc.parcels" name="parcel" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <table class="table table-condensed delivery_data">
+                                <tr>
+                                    <td>
+                                        <div style="font-size:8px;" name="carrier_signature">Carrier's Signature</div>
+                                        <div style="font-size:10px;" class="signature" />
+                                    </td>
+                                    <td>
+                                        <div style="font-size:8px;" name="driver_signature">Driver's Signature</div>
+                                        <div class="signature" />
+                                    </td>
+                                    <td>
+                                        <div style="font-size:8px;" name="recipint_signature">
+                                            Recipient's Signature
+                                        </div>
+                                        <div class="signature" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
 
                 <div class="oe_structure" />
             </div>

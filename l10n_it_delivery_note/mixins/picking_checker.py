@@ -43,7 +43,8 @@ class StockPickingCheckerMixin(models.AbstractModel):
         partners = pickings.mapped('partner_id')
 
         if not partners:
-            raise ValidationError(_("The pickings you've selected don't seem to have any partner."))
+            raise ValidationError(_("The pickings you've selected don't seem to have any partner"
+                                    " or the selected warehouse doesn't have a valid address."))
 
         if len(partners) > 1:
             raise ValidationError(_("You need to select pickings with all the same recipient."))

@@ -13,10 +13,11 @@
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
             <data>
-                <xpath expr="//page[3]" position="after">
+                <xpath expr="//page[1]" position="before">
                     <page name="delivery_note"
                           string="Delivery note"
-                          attrs="{'invisible': [('use_delivery_note', '=', False)]}">
+                          attrs="{'invisible': [('use_delivery_note', '=', False)]}"
+                          autofocus="autofocus">
                         <field name="use_delivery_note" invisible="True" />
                         <field name="use_advanced_behaviour" invisible="True" />
                         <field name="delivery_note_exists" invisible="True" />
@@ -112,10 +113,8 @@
                             <div class="content">
                                 <group>
                                     <group>
-                                        <label for="delivery_note_id"
-                                               attrs="{'invisible': [('delivery_note_visible', '=', False)]}" />
-                                        <div class="o_row"
-                                             attrs="{'invisible': [('delivery_note_visible', '=', False)]}">
+                                        <label for="delivery_note_id" />
+                                        <div class="o_row">
                                             <field name="delivery_note_id"
                                                    domain="[('state', '=', 'draft'),
                                                             ('partner_id', '=', partner_id)]"
@@ -125,6 +124,7 @@
                                             <button type="object"
                                                     name="goto_delivery_note"
                                                     class="btn-secondary"
+                                                    groups="l10n_it_delivery_note.use_advanced_delivery_notes"
                                                     attrs="{'invisible': ['|', ('use_advanced_behaviour', '=', False),
                                                                                ('delivery_note_exists', '=', False)]}"
                                                     icon="fa-external-link"
@@ -138,7 +138,7 @@
                                                attrs="{'readonly': [('delivery_note_readonly', '=', True)]}"
                                                domain="[('supplier', '=', True)]"
                                                context="{'default_supplier': True}" />
-                                        <field name="delivery_note_delivery_method_id"
+                                        <field name="delivery_method_id"
                                                attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                     </group>
                                     <group>
@@ -205,7 +205,7 @@
                                                attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                     </group>
                                 </group>
-                                <group string="Internal notes"
+                                <group string="Delivery notes"
                                        attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
                                     <field name="delivery_note_note"
                                            nolabel="1"
@@ -233,7 +233,7 @@
                         icon="fa-external-link"
                         aria-label="Go to delivery note"
                         title="Go to delivery note" />
-                <field name="delivery_note_id" groups="l10n_it_delivery_note.use_advanced_delivery_notes" />
+                <field name="delivery_note_id" />
             </field>
         </field>
     </record>

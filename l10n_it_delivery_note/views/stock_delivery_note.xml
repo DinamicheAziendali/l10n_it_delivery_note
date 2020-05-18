@@ -70,10 +70,10 @@
                     </div>
                     <div class="oe_title">
                         <div attrs="{'invisible': [('name', 'not in', [False, ''])]}">
-                            <label for="name" string="Draft delivery note" />
+                            <label for="name" string="Draft document" />
                         </div>
                         <div attrs="{'invisible': [('name', 'in', [False, ''])]}">
-                            <label for="name" string="Delivery note" />
+                            <label for="name" string="Document" />
                             <h1>
                                 <field name="name" class="oe_inline" />
                             </h1>
@@ -86,7 +86,7 @@
                             <field name="partner_shipping_id" />
                         </group>
                         <group>
-                            <field name="type_id" />
+                            <field name="type_id" widget="selection" />
                             <field name="date" />
                         </group>
                     </group>
@@ -143,16 +143,15 @@
                                     <field name="sale_line_id" invisible="True" />
                                     <field name="invoice_status" invisible="True" />
                                     <control>
-                                        <create string="Add a line" />
                                         <create string="Add a section"
                                                 context="{'default_display_type': 'line_section'}" />
                                         <create string="Add a note"
                                                 context="{'default_display_type': 'line_note'}" />
                                     </control>
                                     <field name="sequence" widget="handle" />
-                                    <field name="product_id" />
+                                    <field name="product_id" attrs="{'readonly': [('sale_line_id', '!=', False)]}" />
                                     <field name="name" widget="section_and_note_text" />
-                                    <field name="product_qty" />
+                                    <field name="product_qty" attrs="{'readonly': [('sale_line_id', '!=', False)]}" />
                                     <field name="product_uom_id"
                                            groups="uom.group_uom"
                                            options="{'no_create': True, 'no_open': True}" />

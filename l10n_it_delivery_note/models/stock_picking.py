@@ -21,14 +21,14 @@ DOMAIN_PRICES_TO_SHOW = [p[0] for p in PRICES_TO_SHOW]
 
 
 class StockPicking(models.Model):
-    _inherit = 'stock.picking'
+    _name = 'stock.picking'
+    _inherit = ['stock.picking', 'shipping.information.updater.mixin']
 
     delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), copy=False)
     delivery_note_partner_shipping_id = fields.Many2one('res.partner', related='delivery_note_id.partner_shipping_id')
 
     delivery_note_carrier_id = fields.Many2one('res.partner', related='delivery_note_id.carrier_id')
-    delivery_note_delivery_method_id = fields.Many2one('delivery.carrier',
-                                                       related='delivery_note_id.delivery_method_id')
+    delivery_method_id = fields.Many2one('delivery.carrier', related='delivery_note_id.delivery_method_id')
 
     delivery_note_type_id = fields.Many2one('stock.delivery.note.type', related='delivery_note_id.type_id')
     delivery_note_date = fields.Date(related='delivery_note_id.date')
@@ -81,7 +81,7 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_boolean_flags(self):
         from_delivery_note = self.env.context.get('from_delivery_note')
-        use_advanced_behaviour = self.env.user.user_has_groups('l10n_it_delivery_note.use_advanced_delivery_notes')
+        use_advanced_behaviour = self.user_has_groups('l10n_it_delivery_note.use_advanced_delivery_notes')
 
         for picking in self:
             picking.use_delivery_note = not from_delivery_note and picking.state == DONE_PICKING_STATE
@@ -96,6 +96,39 @@ class StockPicking(models.Model):
                 picking.delivery_note_readonly = (picking.delivery_note_id.state != DOMAIN_DELIVERY_NOTE_STATES[0])
                 picking.delivery_note_state = picking.delivery_note_id.state
                 picking.can_be_invoiced = bool(picking.delivery_note_id.sale_ids)
+
+    @api.onchange('delivery_note_type_id')
+    def _onchange_delivery_note_type(self):
+        if self.delivery_note_type_id:
+            changed = self._update_generic_shipping_information(self.delivery_note_type_id)
+
+            if changed:
+                return {
+                    'warning': {
+                        'title': _("Warning!"),
+                        'message': "Some of the shipping configuration have been overwritten with"
+                                   " the default ones of the selected delivery note type.\n"
+                                   "Please, make sure to check this information before continuing."
+                    }
+                }
+
+    @api.onchange('delivery_note_partner_shipping_id')
+    def _onchange_delivery_note_partner_shipping(self):
+        if self.delivery_note_partner_shipping_id:
+            changed = self._update_partner_shipping_information(self.delivery_note_partner_shipping_id)
+
+            if changed:
+                return {
+                    'warning': {
+                        'title': _("Warning!"),
+                        'message': "Some of the shipping configuration have been overwritten with"
+                                   " the default ones of the selected shipping partner address.\n"
+                                   "Please, make sure to check this information before continuing."
+                    }
+                }
+
+        else:
+            self.delivery_method_id = False
 
     def _add_delivery_cost_to_so(self):
         self.ensure_one()
@@ -164,7 +197,7 @@ class StockPicking(models.Model):
         res = super().action_done()
 
         if self.picking_type_code != DOMAIN_PICKING_TYPES[0] and \
-           not self.env.user.user_has_groups('l10n_it_delivery_note.use_advanced_delivery_notes'):
+           not self.user_has_groups('l10n_it_delivery_note.use_advanced_delivery_notes'):
             partners = self.get_partners()
 
             self.delivery_note_id = self.env['stock.delivery.note'].create({
@@ -180,7 +213,7 @@ class StockPicking(models.Model):
     def get_partners(self):
         partner_id = self.mapped('partner_id')
 
-        if len(partner_id) != 1:
+        if len(partner_id) != 1 and self.location_dest_id.usage == 'customer':
             raise ValueError("You have just called this method on an heterogeneous set of pickings.\n"
                              "All pickings should have the same 'partner_id' field value.")
 

@@ -65,7 +65,7 @@ msgstr "<strong>Colli:</strong>"
 #. module: l10n_it_delivery_note
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.delivery_note_report_template
 msgid "<strong>Reason of transport:</strong>"
-msgstr "<strong>Motivo del trasporto:</strong>"
+msgstr "<strong>Causale del trasporto:</strong>"
 
 #. module: l10n_it_delivery_note
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.delivery_note_report_template
@@ -407,7 +407,7 @@ msgstr ""
 #. module: l10n_it_delivery_note
 #: code:addons/l10n_it_delivery_note/models/stock_delivery_note.py:103
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note__delivery_method_id
-#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_note_delivery_method_id
+#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_method_id
 #, python-format
 msgid "Delivery method"
 msgstr "Metodo di consegna"
@@ -423,7 +423,6 @@ msgstr "Metodo di consegna"
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note_line__delivery_note_id
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note_select_wizard__delivery_note_id
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_note_id
-#: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.stock_delivery_note_form_view
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.stock_picking_form_view
 #, python-format
 msgid "Delivery note"
@@ -461,9 +460,14 @@ msgid "Delivery note types"
 msgstr "Tipi DdT"
 
 #. module: l10n_it_delivery_note
+#: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.stock_delivery_note_form_view
+msgid "Document"
+msgstr "Documento"
+
+#. module: l10n_it_delivery_note
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.delivery_note_report_template
-msgid "Delivery note:"
-msgstr "DdT:"
+msgid "Document:"
+msgstr "Documento:"
 
 #. module: l10n_it_delivery_note
 #: code:addons/l10n_it_delivery_note/models/account_invoice.py:20
@@ -538,13 +542,13 @@ msgstr "Bozza"
 
 #. module: l10n_it_delivery_note
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.stock_delivery_note_form_view
-msgid "Draft delivery note"
-msgstr "DdT in bozza"
+msgid "Draft document"
+msgstr "Documento in bozza"
 
 #. module: l10n_it_delivery_note
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.delivery_note_report_template
-msgid "Draft delivery note:"
-msgstr "DdT in bozza:"
+msgid "Draft document:"
+msgstr "Documento in bozza:"
 
 #. module: l10n_it_delivery_note
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note_base_wizard__error_message
@@ -670,9 +674,13 @@ msgstr "Nota interna"
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.stock_picking_transport_condition_form_view
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.stock_picking_transport_method_form_view
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.stock_picking_transport_reason_form_view
-#: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.stock_picking_form_view
 msgid "Internal notes"
 msgstr "Note interne"
+
+#. module: l10n_it_delivery_note
+#: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.stock_picking_form_view
+msgid "Delivery notes"
+msgstr "Note DdT"
 
 #. module: l10n_it_delivery_note
 #: model:ir.model,name:l10n_it_delivery_note.model_account_invoice
@@ -1025,7 +1033,7 @@ msgstr "Nome motivo"
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__transport_reason_id
 #, python-format
 msgid "Reason of transport"
-msgstr "Motivo di trasporto"
+msgstr "Causale di trasporto"
 
 #. module: l10n_it_delivery_note
 #: model:ir.actions.act_window,name:l10n_it_delivery_note.stock_picking_transport_reason_action
@@ -1249,8 +1257,8 @@ msgstr "I prelievi che hai selezionato non sembrano avere nessun luogo di destin
 #. module: l10n_it_delivery_note
 #: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:46
 #, python-format
-msgid "The pickings you've selected don't seem to have any partner."
-msgstr "I prelievi che hai selezionato non sembrano avere nessun partner."
+msgid "The pickings you've selected don't seem to have any partner or the selected warehouse doesn't have a valid address."
+msgstr "I prelievi che hai selezionato non sembrano avere nessun partner oppure il magazzino selezionato non ha un indirizzo valido."
 
 #. module: l10n_it_delivery_note
 #: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:36
@@ -1286,7 +1294,7 @@ msgstr "Questo metodo di trasporto esiste già!"
 #. module: l10n_it_delivery_note
 #: sql_constraint:stock.picking.transport.reason:0
 msgid "This reason of transport already exists!"
-msgstr "Questo motivo di trasporto esiste già!"
+msgstr "Questa causale di trasporto esiste già!"
 
 #. module: l10n_it_delivery_note
 #: selection:stock.delivery.note.line,invoice_status:0
