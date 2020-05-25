@@ -243,7 +243,7 @@ class StockDeliveryNote(models.Model):
     @api.depends('picking_ids')
     def _compute_picking_type(self):
         for note in self.filtered(lambda n: n.picking_ids):
-            picking_types = set(self.picking_ids.mapped('picking_type_code'))
+            picking_types = set(note.picking_ids.mapped('picking_type_code'))
             picking_types = list(picking_types)
 
             if len(picking_types) != 1:
