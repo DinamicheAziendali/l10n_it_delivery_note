@@ -15,7 +15,8 @@ _logger = logging.getLogger(__name__)
 
 def environment(funct=None, parser_args_method=None):
     if not funct:
-        return functools.partial(environment, parser_args_method=parser_args_method)
+        return functools.partial(environment,
+                                 parser_args_method=parser_args_method)
 
     @functools.wraps(funct)
     def env_enabler(self, args):
@@ -89,7 +90,8 @@ class EasyCommand(Command):
             self._commit()
 
         except:
-            _logger.exception("Something went wrong during command execution. Rolling back...")
+            _logger.exception("Something went wrong during command execution. "
+                              "Rolling back...")
 
             self._rollback()
 
