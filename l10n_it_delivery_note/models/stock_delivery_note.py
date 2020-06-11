@@ -205,6 +205,7 @@ class StockDeliveryNote(models.Model):
 
     sale_ids = fields.Many2many('sale.order', compute='_compute_sales')
     sale_count = fields.Integer(compute='_compute_sales')
+    sales_transport_check = fields.Boolean(compute='_compute_sales', default=True)
 
     invoice_ids = fields.Many2many('account.invoice',
                                    'stock_delivery_note_account_invoice_rel',
@@ -288,6 +289,12 @@ class StockDeliveryNote(models.Model):
 
             note.sale_ids = sales
             note.sale_count = len(sales)
+
+            tc = sales.mapped('default_transport_condition_id')
+            ga = sales.mapped('default_goods_appearance_id')
+            tr = sales.mapped('default_transport_reason_id')
+            tm = sales.mapped('default_transport_method_id')
+            note.sales_transport_check = all([len(x) < 2 for x in [tc, ga, tr, tm]])
 
     @api.multi
     def _compute_boolean_flags(self):
