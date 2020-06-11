@@ -485,6 +485,25 @@ class StockDeliveryNote(models.Model):
 
         return super().unlink()
 
+    @api.multi
+    def ddt_get_location(self, location_id):
+        model_warehouse = self.env['stock.warehouse']
+        model_location = self.env['stock.location']
+        location = model_location.search([('id', '=', location_id)])
+        warehouse = model_warehouse.search([('lot_stock_id', '=', location_id)])
+        data = [warehouse.partner_id.id, warehouse.partner_id.name]
+        if warehouse.partner_id:
+            data = [
+                location.display_name + ' - ' +
+                warehouse.partner_id.name + ', ' +
+                warehouse.partner_id.street + ' - ' +
+                (warehouse.partner_id.zip + ' ' +
+                 warehouse.partner_id.city + ' ' +
+                 '(' + warehouse.partner_id.state_id.name + ')'
+                 if warehouse.partner_id.state_id else '')
+            ]
+        return data
+
 
 class StockDeliveryNoteLine(models.Model):
     _name = 'stock.delivery.note.line'
@@ -601,44 +620,3 @@ class StockDeliveryNoteLine(models.Model):
         for line in self.filtered(lambda l: l.sale_line_id):
             invoice_status = line.sale_line_id.invoice_status
             line.invoice_status = DOMAIN_INVOICE_STATUSES[1] if invoice_status == 'upselling' else invoice_status
-
-
-class StockDeliveryNoteType(models.Model):
-    _name = 'stock.delivery.note.type'
-    _description = "Delivery note type"
-    _order = 'sequence, name, id'
-
-    active = fields.Boolean(string=_("Active"), default=True)
-    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
-    name = fields.Char(string=_("Name"), index=True, required=True, translate=True)
-
-    default_transport_condition_id = fields.Many2one('stock.picking.transport.condition',
-                                                     string=_("Condition of transport"))
-    default_goods_appearance_id = fields.Many2one('stock.picking.goods.appearance', string=_("Appearance of goods"))
-    default_transport_reason_id = fields.Many2one('stock.picking.transport.reason', string=_("Reason of transport"))
-    default_transport_method_id = fields.Many2one('stock.picking.transport.method', string=_("Method of transport"))
-
-    sequence_id = fields.Many2one('ir.sequence', required=True)
-    next_sequence_number = fields.Integer(related='sequence_id.number_next_actual')
-    company_id = fields.Many2one('res.company', string=_("Company"), default=lambda self: self.env.user.company_id)
-    note = fields.Html(string=_("Internal note"))
-
-    _sql_constraints = [(
-        'name_uniq',
-        'unique(name, company_id)',
-        "This delivery note type already exists!"
-    )]
-
-    def goto_sequence(self, **kwargs):
-        self.ensure_one()
-
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'ir.sequence',
-            'res_id': self.sequence_id.id,
-            'views': [(False, 'form')],
-            'view_type': 'form',
-            'view_mode': 'form',
-            'target': 'current',
-            **kwargs
-        }

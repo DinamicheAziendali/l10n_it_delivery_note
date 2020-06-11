@@ -12,13 +12,6 @@ from ..mixins.picking_checker import DOMAIN_PICKING_TYPES, DONE_PICKING_STATE
 
 CANCEL_MOVE_STATE = 'cancel'
 
-PRICES_TO_SHOW = [
-    ('unit', "Unit price"),
-    ('total', "Total price"),
-    ('none', "None")
-]
-DOMAIN_PRICES_TO_SHOW = [p[0] for p in PRICES_TO_SHOW]
-
 
 class StockPicking(models.Model):
     _name = 'stock.picking'
@@ -279,82 +272,3 @@ class StockPicking(models.Model):
                 self.mapped('delivery_note_id').update_detail_lines()
 
         return res
-
-
-class StockPickingTransportCondition(models.Model):
-    _name = 'stock.picking.transport.condition'
-    _description = "Condition of transport"
-    _order = 'sequence, name, id'
-
-    active = fields.Boolean(string=_("Active"), default=True)
-    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
-    name = fields.Char(string=_("Condition name"), index=True, required=True, translate=True)
-    price_to_show = fields.Selection(PRICES_TO_SHOW,
-                                     string=_("Price to show"),
-                                     required=True,
-                                     default=DOMAIN_PRICES_TO_SHOW[0])
-
-    #
-    # TODO: Capire come dev'essere utilizzato questo campo.
-    #       Deve influenzare il comportamento del campo "prezzo"
-    #        solo ed esclusivamente nelle stampe del DdT?
-    #
-
-    note = fields.Html(string=_("Internal note"))
-
-    _sql_constraints = [(
-        'name_uniq',
-        'unique(name)',
-        "This condition of transport already exists!"
-    )]
-
-
-class StockPickingGoodsAppearance(models.Model):
-    _name = 'stock.picking.goods.appearance'
-    _description = "Appearance of goods"
-    _order = 'sequence, name, id'
-
-    active = fields.Boolean(string=_("Active"), default=True)
-    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
-    name = fields.Char(string=_("Appearance name"), index=True, required=True, translate=True)
-    note = fields.Html(string=_("Internal note"))
-
-    _sql_constraints = [(
-        'name_uniq',
-        'unique(name)',
-        "This appearance of goods already exists!"
-    )]
-
-
-class StockPickingTransportReason(models.Model):
-    _name = 'stock.picking.transport.reason'
-    _description = "Reason of transport"
-    _order = 'sequence, name, id'
-
-    active = fields.Boolean(string=_("Active"), default=True)
-    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
-    name = fields.Char(string=_("Reason name"), index=True, required=True, translate=True)
-    note = fields.Html(string=_("Internal note"))
-
-    _sql_constraints = [(
-        'name_uniq',
-        'unique(name)',
-        "This reason of transport already exists!"
-    )]
-
-
-class StockPickingTransportMethod(models.Model):
-    _name = 'stock.picking.transport.method'
-    _description = "Method of transport"
-    _order = 'sequence, name, id'
-
-    active = fields.Boolean(string=_("Active"), default=True)
-    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
-    name = fields.Char(string=_("Method name"), index=True, required=True, translate=True)
-    note = fields.Html(string=_("Internal note"))
-
-    _sql_constraints = [(
-        'name_uniq',
-        'unique(name)',
-        "This method of transport already exists!"
-    )]

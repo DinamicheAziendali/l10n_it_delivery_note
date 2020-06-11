@@ -20,11 +20,12 @@
         'delivery',
         'mail',
         'sale_stock',
-        'stock_account'
+        'stock_account',
+        'l10n_it_delivery_note_base'
     ],
 
     'data': [
-        'data/delivery_note_data.xml',
+        # 'data/delivery_note_data.xml',
         'report/report_delivery_note.xml',
 
         'security/ir.model.access.csv',
