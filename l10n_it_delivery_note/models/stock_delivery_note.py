@@ -193,7 +193,7 @@ class StockDeliveryNote(models.Model):
                                    copy=False)
 
     note = fields.Html(string=_("Internal note"), states=DONE_READONLY_STATE)
-
+    show_price = fields.Boolean(string=_("Show prices on report"), related="type_id.show_price", store="True")
     show_product_information = fields.Boolean(compute='_compute_boolean_flags')
 
     @api.multi
@@ -617,6 +617,7 @@ class StockDeliveryNoteType(models.Model):
     default_goods_appearance_id = fields.Many2one('stock.picking.goods.appearance', string=_("Appearance of goods"))
     default_transport_reason_id = fields.Many2one('stock.picking.transport.reason', string=_("Reason of transport"))
     default_transport_method_id = fields.Many2one('stock.picking.transport.method', string=_("Method of transport"))
+    show_price = fields.Boolean(string=_("Show prices on report"), default="False")
 
     sequence_id = fields.Many2one('ir.sequence', required=True)
     next_sequence_number = fields.Integer(related='sequence_id.number_next_actual')
