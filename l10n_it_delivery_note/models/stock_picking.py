@@ -25,13 +25,14 @@ class StockPicking(models.Model):
     _inherit = ['stock.picking', 'shipping.information.updater.mixin']
 
     delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), copy=False)
+    delivery_note_state = fields.Selection(related='delivery_note_id.state', string="Delivery Note State")
     delivery_note_partner_shipping_id = fields.Many2one('res.partner', related='delivery_note_id.partner_shipping_id')
 
     delivery_note_carrier_id = fields.Many2one('res.partner', related='delivery_note_id.carrier_id')
     delivery_method_id = fields.Many2one('delivery.carrier', related='delivery_note_id.delivery_method_id')
 
     delivery_note_type_id = fields.Many2one('stock.delivery.note.type', related='delivery_note_id.type_id')
-    delivery_note_date = fields.Date(related='delivery_note_id.date')
+    delivery_note_date = fields.Date(related='delivery_note_id.date', string="Delivery Note Date")
     delivery_note_note = fields.Html(related='delivery_note_id.note')
 
     transport_condition_id = fields.Many2one('stock.picking.transport.condition',
@@ -61,7 +62,6 @@ class StockPicking(models.Model):
     delivery_note_exists = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_readonly = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_visible = fields.Boolean(compute='_compute_boolean_flags')
-    delivery_note_state = fields.Char(compute='_compute_boolean_flags')
     can_be_invoiced = fields.Boolean(compute='_compute_boolean_flags')
 
     @property
@@ -94,7 +94,6 @@ class StockPicking(models.Model):
             if picking.use_delivery_note and picking.delivery_note_id:
                 picking.delivery_note_exists = True
                 picking.delivery_note_readonly = (picking.delivery_note_id.state != DOMAIN_DELIVERY_NOTE_STATES[0])
-                picking.delivery_note_state = picking.delivery_note_id.state
                 picking.can_be_invoiced = bool(picking.delivery_note_id.sale_ids)
 
     @api.onchange('delivery_note_type_id')
