@@ -12,6 +12,31 @@ class SaleOrder(models.Model):
     delivery_note_ids = fields.Many2many('stock.delivery.note', compute='_compute_delivery_notes')
     delivery_note_count = fields.Integer(compute='_compute_delivery_notes')
 
+    default_transport_condition_id = fields.Many2one('stock.picking.transport.condition', string=_("Condition of transport"), default=False)
+    default_goods_appearance_id = fields.Many2one('stock.picking.goods.appearance', string=_("Appearance of goods"), default=False)
+    default_transport_reason_id = fields.Many2one('stock.picking.transport.reason', string=_("Reason of transport"), default=False)
+    default_transport_method_id = fields.Many2one('stock.picking.transport.method', string=_("Method of transport"), default=False)
+
+    @api.multi
+    @api.onchange('partner_id')
+    def onchange_partner_id_ddt_defaults(self):
+        if not self.partner_id:
+            self.update({
+                'default_transport_condition_id': False,
+                'default_goods_appearance_id': False,
+                'default_transport_reason_id': False,
+                'default_transport_method_id': False,
+            })
+            return
+        for order in self:
+            values = {
+                'default_transport_condition_id': order.partner_id.default_transport_condition_id,
+                'default_goods_appearance_id': order.partner_id.default_goods_appearance_id,
+                'default_transport_reason_id': order.partner_id.default_transport_reason_id,
+                'default_transport_method_id': order.partner_id.default_transport_method_id,
+            }
+            order.update(values)
+
     @api.multi
     def _compute_delivery_notes(self):
         for order in self:
