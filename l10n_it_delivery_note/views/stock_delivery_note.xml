@@ -86,10 +86,10 @@
                                 <field name="name" class="oe_inline" />
                             </h1>
                             <label for="name" string="Partner Document"
-                                   attrs="{'invisible': [('code', '!=', 'incoming')]}"/>
+                                   attrs="{'invisible': [('type_code', '!=', 'incoming')]}"/>
                             <h1>
                                 <field name="partner_ref" class="oe_inline"
-                                       attrs="{'invisible': [('code', '!=', 'incoming')]}"/>
+                                       attrs="{'invisible': [('type_code', '!=', 'incoming')]}"/>
                             </h1>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                         </group>
                         <group>
                             <field name="type_id" widget="selection" />
-                            <field name="code"/>
+                            <field name="type_code"/>
                             <field name="date" />
                         </group>
                     </group>
@@ -299,7 +299,7 @@
                 <field name="partner_id" />
                 <field name="date" />
                 <field name="state" />
-                <field name="code" />
+                <field name="type_code" />
             </tree>
         </field>
     </record>
@@ -314,7 +314,7 @@
                 <field name="partner_sender_id" />
                 <field name="carrier_id" />
                 <field name="type_id" />
-                <field name="code" />
+                <field name="type_code" />
                 <separator />
                 <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]" />
                 <filter name="confirm" string="Validated" domain="[('state', '=', 'confirm')]" />
@@ -341,7 +341,7 @@
                             context="{'group_by': 'partner_sender_id'}" />
                     <filter name="group_by_carrier_id" string="Carriers" context="{'group_by': 'carrier_id'}" />
                     <filter name="group_by_state" string="States" context="{'group_by': 'state'}" />
-                    <filter name="group_by_code" string="Code" context="{'group_by': 'code'}" />
+                    <filter name="group_by_type_code" string="Type codes" context="{'group_by': 'type_code'}" />
                     <filter name="group_by_type_id" string="Types" context="{'group_by': 'type_id'}" />
                     <filter name="group_by_invoice_status"
                             string="Invoice statuses"
