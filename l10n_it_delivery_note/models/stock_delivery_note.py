@@ -74,15 +74,10 @@ class StockDeliveryNote(models.Model):
         return [('category_id', '=', uom_category_id.id)]
 
     active = fields.Boolean(string=_("Active"), default=True)
-    name = fields.Char(string=_("Name"),
-                       readonly=True,
-                       index=True,
-                       copy=False,
-                       track_visibility='onchange')
-    display_name = fields.Char(compute='_compute_display_name',
-                               store=True,
-                               index=True,
-                               copy=False)
+    name = fields.Char(string=_("Name"), readonly=True, index=True, copy=False, track_visibility='onchange')
+    partner_ref = fields.Char(string=_("Partner Reference"), index=True, required=False, translate=True, copy=False)
+    display_name = fields.Char(compute='_compute_display_name', store=True, index=True, copy=False)
+
     state = fields.Selection(DELIVERY_NOTE_STATES,
                              string=_("State"),
                              copy=False,
@@ -133,10 +128,10 @@ class StockDeliveryNote(models.Model):
                               required=True,
                               index=True)
 
-    parcels = fields.Integer(string=_("Parcels"), states=DRAFT_EDITABLE_STATE,
-                             readonly=True)
-    volume = fields.Float(string=_("Volume"), states=DRAFT_EDITABLE_STATE,
-                          readonly=True)
+    code = fields.Selection(string=_("Type of Operation"), related="type_id.code", store=True, required=True)
+    parcels = fields.Integer(string=_("Parcels"), states=DRAFT_EDITABLE_STATE, readonly=True)
+    volume = fields.Float(string=_("Volume"), states=DRAFT_EDITABLE_STATE, readonly=True)
+
     volume_uom_id = fields.Many2one('uom.uom',
                                     string=_("Volume UoM"),
                                     default=_default_volume_uom,
@@ -229,12 +224,12 @@ class StockDeliveryNote(models.Model):
             if not note.name:
                 partner_name = note.partner_id.display_name
                 create_date = note.create_date.strftime(DATETIME_FORMAT)
-
                 name = "{} - {}".format(partner_name, create_date)
-
             else:
-                name = note.name
-
+                if note.code != 'incoming':
+                    name = note.name
+                else:
+                    name = note.partner_ref
             note.display_name = name
 
     @api.multi
@@ -644,7 +639,10 @@ class StockDeliveryNoteType(models.Model):
     sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
     name = fields.Char(string=_("Name"), index=True, required=True, translate=True)
     print_prices = fields.Boolean(string=_("Print prices on report"), default=False)
-
+    code = fields.Selection([('incoming', 'Incoming'), ('outgoing', 'Outgoing'), ('internal', 'Internal')],
+        string='Type of Operation',
+        required=True,
+    )
     default_transport_condition_id = fields.Many2one('stock.picking.transport.condition',
                                                      string=_("Condition of transport"))
     default_goods_appearance_id = fields.Many2one('stock.picking.goods.appearance', string=_("Appearance of goods"))

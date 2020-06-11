@@ -15,7 +15,13 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
         return datetime.date.today()
 
     def _default_type(self):
-        return self.env['stock.delivery.note.type'].search([], limit=1)
+        active_ids = self.env.context['active_ids']
+        picking_ids = self.env['stock.picking'].browse(active_ids)
+        if picking_ids:
+            code = picking_ids[0].picking_type_id.code
+            return self.env['stock.delivery.note.type'].search([('code', '=', code)], limit=1)
+        else:
+            return self.env['stock.delivery.note.type'].search([('code', '=', 'outgoing')], limit=1)
 
     partner_shipping_id = fields.Many2one('res.partner', required=True)
 
