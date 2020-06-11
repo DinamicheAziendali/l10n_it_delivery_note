@@ -211,6 +211,7 @@ class Migrate_L10n_It_Ddt(EasyCommand):
                 'transport_method_id': self._transportation_methods[record.transportation_method_id].id,
                 'picking_ids': [(4, p.id) for p in record.picking_ids],
                 'invoice_ids': [(4, record.invoice_id.id)] if record.invoice_id else [],
+                'print_prices': record.show_price,
                 'note': record.note
             }
 

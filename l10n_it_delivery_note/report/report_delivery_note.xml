@@ -173,13 +173,13 @@
                             <th class="text-right" groups="uom.group_uom">
                                 UoM
                             </th>
-                            <th t-if="doc.show_price" class="text-right" style="white-space: nowrap;">
+                            <th t-if="doc.print_prices" class="text-right" style="white-space: nowrap;">
                                 Unit price
                             </th>
-                            <th t-if="doc.show_price" class="text-right" groups="sale.group_discount_per_so_line">
+                            <th t-if="doc.print_prices" class="text-right" groups="sale.group_discount_per_so_line">
                                 Discount
                             </th>
-                            <th t-if="doc.show_price" class="text-right">
+                            <th t-if="doc.print_prices" class="text-right">
                                 Taxes
                             </th>
                         </tr>

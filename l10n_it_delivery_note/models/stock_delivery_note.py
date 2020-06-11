@@ -192,8 +192,9 @@ class StockDeliveryNote(models.Model):
                                    string=_("Invoices"),
                                    copy=False)
 
+    print_prices = fields.Boolean(string=_("Print prices on report"), related="type_id.print_prices", store=True)
     note = fields.Html(string=_("Internal note"), states=DONE_READONLY_STATE)
-    show_price = fields.Boolean(string=_("Show prices on report"), related="type_id.show_price", store="True")
+
     show_product_information = fields.Boolean(compute='_compute_boolean_flags')
 
     @api.multi
@@ -611,13 +612,13 @@ class StockDeliveryNoteType(models.Model):
     active = fields.Boolean(string=_("Active"), default=True)
     sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
     name = fields.Char(string=_("Name"), index=True, required=True, translate=True)
+    print_prices = fields.Boolean(string=_("Print prices on report"), default=False)
 
     default_transport_condition_id = fields.Many2one('stock.picking.transport.condition',
                                                      string=_("Condition of transport"))
     default_goods_appearance_id = fields.Many2one('stock.picking.goods.appearance', string=_("Appearance of goods"))
     default_transport_reason_id = fields.Many2one('stock.picking.transport.reason', string=_("Reason of transport"))
     default_transport_method_id = fields.Many2one('stock.picking.transport.method', string=_("Method of transport"))
-    show_price = fields.Boolean(string=_("Show prices on report"), default="False")
 
     sequence_id = fields.Many2one('ir.sequence', required=True)
     next_sequence_number = fields.Integer(related='sequence_id.number_next_actual')
