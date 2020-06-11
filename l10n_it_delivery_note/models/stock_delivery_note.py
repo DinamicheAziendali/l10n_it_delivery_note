@@ -59,7 +59,8 @@ class StockDeliveryNote(models.Model):
         return self.env.ref('uom.product_uom_litre', raise_if_not_found=False)
 
     def _domain_volume_uom(self):
-        uom_category_id = self.env.ref('uom.product_uom_categ_vol', raise_if_not_found=False)
+        uom_category_id = self.env.ref('uom.product_uom_categ_vol',
+                                       raise_if_not_found=False)
 
         return [('category_id', '=', uom_category_id.id)]
 
@@ -67,13 +68,21 @@ class StockDeliveryNote(models.Model):
         return self.env.ref('uom.product_uom_kgm', raise_if_not_found=False)
 
     def _domain_weight_uom(self):
-        uom_category_id = self.env.ref('uom.product_uom_categ_kgm', raise_if_not_found=False)
+        uom_category_id = self.env.ref('uom.product_uom_categ_kgm',
+                                       raise_if_not_found=False)
 
         return [('category_id', '=', uom_category_id.id)]
 
     active = fields.Boolean(string=_("Active"), default=True)
-    name = fields.Char(string=_("Name"), readonly=True, index=True, copy=False, track_visibility='onchange')
-    display_name = fields.Char(compute='_compute_display_name', store=True, index=True, copy=False)
+    name = fields.Char(string=_("Name"),
+                       readonly=True,
+                       index=True,
+                       copy=False,
+                       track_visibility='onchange')
+    display_name = fields.Char(compute='_compute_display_name',
+                               store=True,
+                               index=True,
+                               copy=False)
     state = fields.Selection(DELIVERY_NOTE_STATES,
                              string=_("State"),
                              copy=False,
@@ -114,7 +123,8 @@ class StockDeliveryNote(models.Model):
                                          readonly=True,
                                          track_visibility='onchange')
 
-    date = fields.Date(string=_("Date"), states=DONE_READONLY_STATE, copy=False)
+    date = fields.Date(string=_("Date"), states=DONE_READONLY_STATE,
+                       copy=False)
     type_id = fields.Many2one('stock.delivery.note.type',
                               string=_("Type"),
                               default=_default_type,
@@ -123,22 +133,26 @@ class StockDeliveryNote(models.Model):
                               required=True,
                               index=True)
 
-    parcels = fields.Integer(string=_("Parcels"), states=DRAFT_EDITABLE_STATE, readonly=True)
-    volume = fields.Float(string=_("Volume"), states=DRAFT_EDITABLE_STATE, readonly=True)
+    parcels = fields.Integer(string=_("Parcels"), states=DRAFT_EDITABLE_STATE,
+                             readonly=True)
+    volume = fields.Float(string=_("Volume"), states=DRAFT_EDITABLE_STATE,
+                          readonly=True)
     volume_uom_id = fields.Many2one('uom.uom',
                                     string=_("Volume UoM"),
                                     default=_default_volume_uom,
                                     domain=_domain_volume_uom,
                                     states=DRAFT_EDITABLE_STATE,
                                     readonly=True)
-    gross_weight = fields.Float(string=_("Gross weight"), states=DRAFT_EDITABLE_STATE, readonly=True)
+    gross_weight = fields.Float(string=_("Gross weight"),
+                                states=DRAFT_EDITABLE_STATE, readonly=True)
     gross_weight_uom_id = fields.Many2one('uom.uom',
                                           string=_("Gross weight UoM"),
                                           default=_default_weight_uom,
                                           domain=_domain_weight_uom,
                                           states=DRAFT_EDITABLE_STATE,
                                           readonly=True)
-    net_weight = fields.Float(string=_("Net weight"), states=DRAFT_EDITABLE_STATE, readonly=True)
+    net_weight = fields.Float(string=_("Net weight"),
+                              states=DRAFT_EDITABLE_STATE, readonly=True)
     net_weight_uom_id = fields.Many2one('uom.uom',
                                         string=_("Net weight UoM"),
                                         default=_default_weight_uom,
@@ -146,10 +160,11 @@ class StockDeliveryNote(models.Model):
                                         states=DRAFT_EDITABLE_STATE,
                                         readonly=True)
 
-    transport_condition_id = fields.Many2one('stock.picking.transport.condition',
-                                             string=_("Condition of transport"),
-                                             states=DRAFT_EDITABLE_STATE,
-                                             readonly=True)
+    transport_condition_id = \
+        fields.Many2one('stock.picking.transport.condition',
+                        string=_("Condition of transport"),
+                        states=DRAFT_EDITABLE_STATE,
+                        readonly=True)
     goods_appearance_id = fields.Many2one('stock.picking.goods.appearance',
                                           string=_("Appearance of goods"),
                                           states=DRAFT_EDITABLE_STATE,
@@ -163,9 +178,12 @@ class StockDeliveryNote(models.Model):
                                           states=DRAFT_EDITABLE_STATE,
                                           readonly=True)
 
-    transport_datetime = fields.Datetime(string=_("Transport date"), states=DONE_READONLY_STATE, copy=False)
+    transport_datetime = fields.Datetime(string=_("Transport date"),
+                                         states=DONE_READONLY_STATE,
+                                         copy=False)
 
-    line_ids = fields.One2many('stock.delivery.note.line', 'delivery_note_id', string=_("Lines"))
+    line_ids = fields.One2many('stock.delivery.note.line', 'delivery_note_id',
+                               string=_("Lines"))
     invoice_status = fields.Selection(INVOICE_STATUSES,
                                       string=_("Invoice status"),
                                       compute='_compute_invoice_status',
@@ -174,8 +192,11 @@ class StockDeliveryNote(models.Model):
                                       store=True,
                                       copy=False)
 
-    picking_ids = fields.One2many('stock.picking', 'delivery_note_id', string=_("Pickings"))
-    pickings_picker = fields.Many2many('stock.picking', compute='_get_pickings', inverse='_set_pickings')
+    picking_ids = fields.One2many('stock.picking', 'delivery_note_id',
+                                  string=_("Pickings"))
+    pickings_picker = fields.Many2many('stock.picking',
+                                       compute='_get_pickings',
+                                       inverse='_set_pickings')
 
     picking_type = fields.Selection(PICKING_TYPES,
                                     string=_("Picking type"),
@@ -192,8 +213,11 @@ class StockDeliveryNote(models.Model):
                                    string=_("Invoices"),
                                    copy=False)
 
-    print_prices = fields.Boolean(string=_("Print prices on report"), related="type_id.print_prices", store=True)
-    note = fields.Html(string=_("Internal note"), states=DONE_READONLY_STATE)
+    print_prices = fields.Boolean(string=_("Print prices on report"),
+                                  related="type_id.print_prices",
+                                  store=True)
+    note = fields.Html(string=_("Internal note"),
+                       states=DONE_READONLY_STATE)
 
     show_product_information = fields.Boolean(compute='_compute_boolean_flags')
 
