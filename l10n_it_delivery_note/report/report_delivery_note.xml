@@ -184,7 +184,7 @@
                             </th>
                         </tr>
                     </thead>
-
+<!--row delivery note-->
                     <tbody class="sale_tbody">
                         <t t-foreach="doc.line_ids" t-as="line">
                             <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
@@ -218,6 +218,25 @@
                                         <span t-field="line.name" />
                                     </td>
                                 </t>
+                            </tr>
+                            <tr t-if="line.product_id.tracking != 'none'">
+                                <td colspan="99" style="font-size:10px;">
+                                  <t t-foreach="line.move_id.move_line_ids" t-as="lot_line">
+                                      lot / sn :
+                                      <strong>
+                                      <span t-field="lot_line.lot_id" />
+                                      </strong>
+                                      <t t-if="'use_date' in lot_line.fields_get()">
+                                        best before
+                                        <strong>
+                                          <span t-field="lot_line.lot_id.use_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                        </strong>
+                                       </t>
+                                      qty
+                                      <span t-field="lot_line.qty_done"/>
+                                      ;
+                                  </t>
+                                </td>
                             </tr>
                         </t>
                     </tbody>
