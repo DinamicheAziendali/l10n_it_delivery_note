@@ -13,6 +13,12 @@
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
             <data>
+                <xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="attributes">
+                    <attribute name="attrs">{'invisible':[('picking_type_code','=', 'internal')]}</attribute>
+                </xpath>
+                <xpath expr="//button[@name='%(stock.action_report_delivery)d']" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'done'), '&amp;', ('delivery_note_state', '!=', 'draft')]}</attribute>
+                </xpath>
                 <xpath expr="//page[1]" position="before">
                     <page name="delivery_note"
                           string="Delivery note"
@@ -234,7 +240,23 @@
                         aria-label="Go to delivery note"
                         title="Go to delivery note" />
                 <field name="delivery_note_id" />
+                <field name="delivery_note_state"/>
+                <field name="delivery_note_date"/>
             </field>
+        </field>
+    </record>
+
+   <record id="stock_picking_search_view" model="ir.ui.view">
+        <field name="name">stock.picking.search</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[last()]" position="after">
+                <separator/>
+                <filter string="No Delivery Note" name="no_delivery_note" domain="[('delivery_note_id', '=', False)]"/>
+                <filter string="Draft Delivery Note" name="draft_delivery_note" domain="[('delivery_note_state', '=', 'draft')]"/>
+                <filter string="Validated Delivery Note" name="validated_delivery_note" domain="[('delivery_note_state', '=', 'confirm')]"/>
+            </xpath>
         </field>
     </record>
 
