@@ -207,6 +207,9 @@ class StockPicking(models.Model):
 
         return res
 
+    def delivery_note_update_transport_datetime(self):
+        self.delivery_note_id.update_transport_datetime()
+
     @api.multi
     @api.returns('res.partner')
     def get_partners(self):

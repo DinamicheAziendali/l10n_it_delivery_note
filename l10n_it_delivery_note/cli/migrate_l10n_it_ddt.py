@@ -164,8 +164,10 @@ class Migrate_L10n_It_Ddt(EasyCommand):
         DeliveryNoteType = self.env['stock.delivery.note.type']
 
         old_type = self.env.ref('l10n_it_ddt.ddt_type_ddt')
-        new_type = self.env.ref('l10n_it_delivery_note.delivery_note_type_ddt')
-        new_type.write({'sequence_id': old_type.sequence_id.id})
+        new_priced_type = self.env.ref('l10n_it_delivery_note.delivery_note_priced_type_ddt')
+        new_priced_type.write({'sequence_id': old_type.sequence_id.id})
+        new_unpriced_type = self.env.ref('l10n_it_delivery_note.delivery_note_unpriced_type_ddt')
+        new_unpriced_type.write({'sequence_id': old_type.sequence_id.id})
 
         self.env.cr.execute("""DELETE FROM "ir_model_data" WHERE "module" = 'l10n_it_ddt' AND "name" = 'seq_ddt';""")
 
@@ -211,7 +213,6 @@ class Migrate_L10n_It_Ddt(EasyCommand):
                 'transport_method_id': self._transportation_methods[record.transportation_method_id].id,
                 'picking_ids': [(4, p.id) for p in record.picking_ids],
                 'invoice_ids': [(4, record.invoice_id.id)] if record.invoice_id else [],
-                'print_prices': record.show_price,
                 'note': record.note
             }
 

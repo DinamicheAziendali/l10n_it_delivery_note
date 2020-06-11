@@ -13,12 +13,18 @@
         <field name="code">stock.delivery.note.ddt</field>
         <field name="prefix">DDT/</field>
         <field name="implementation">no_gap</field>
+        <field name="padding" eval="5" />
     </record>
 
     <!-- Delivery note types -->
     <record id="delivery_note_type_ddt" model="stock.delivery.note.type">
-        <field name="name">DdT</field>
+        <field name="name">DdT (without prices)</field>
         <field name="sequence_id" ref="delivery_note_sequence_ddt" />
+    </record>
+    <record id="delivery_note_type_priced_ddt" model="stock.delivery.note.type">
+        <field name="name">DdT (with prices)</field>
+        <field name="sequence_id" ref="delivery_note_sequence_ddt" />
+        <field name="print_prices" eval="True" />
     </record>
 
     <!-- Conditions of transport -->

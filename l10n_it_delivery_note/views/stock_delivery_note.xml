@@ -113,7 +113,16 @@
                             <field name="delivery_method_id" />
                         </group>
                         <group>
-                            <field name="transport_datetime" />
+                            <label for="transport_datetime" />
+                            <div class="o_row">
+                                <field name="transport_datetime" />
+                                <button type="object"
+                                        name="update_transport_datetime"
+                                        class="btn-secondary"
+                                        icon="fa-clock-o"
+                                        aria-label="Update to now"
+                                        title="Update to now" />
+                            </div>
                         </group>
                     </group>
                     <group>

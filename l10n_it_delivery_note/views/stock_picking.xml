@@ -156,6 +156,17 @@
                                                attrs="{'readonly': [('delivery_note_state', '=', 'done')]}" />
                                         <field name="transport_datetime"
                                                attrs="{'readonly': [('delivery_note_state', '=', 'done')]}" />
+
+                                        <label for="transport_datetime" />
+                                        <div class="o_row">
+                                            <field name="transport_datetime" />
+                                            <button type="object"
+                                                    name="delivery_note_update_transport_datetime"
+                                                    class="btn-secondary"
+                                                    icon="fa-clock-o"
+                                                    aria-label="Update to now"
+                                                    title="Update to now" />
+                                        </div>
                                     </group>
                                 </group>
                                 <group attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
