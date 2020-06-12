@@ -9,6 +9,7 @@ from odoo import _, api, fields, models
 
 from .stock_delivery_note import DOMAIN_DELIVERY_NOTE_STATES
 from ..mixins.picking_checker import DOMAIN_PICKING_TYPES, DONE_PICKING_STATE
+from odoo.exceptions import UserError
 
 CANCEL_MOVE_STATE = 'cancel'
 
@@ -25,6 +26,7 @@ class StockPicking(models.Model):
     delivery_method_id = fields.Many2one('delivery.carrier', related='delivery_note_id.delivery_method_id')
 
     delivery_note_type_id = fields.Many2one('stock.delivery.note.type', related='delivery_note_id.type_id')
+    delivery_note_sequence_id = fields.Many2one('ir.sequence', related='delivery_note_id.sequence_id')
     delivery_note_date = fields.Date(related='delivery_note_id.date', string="Delivery Note Date")
     delivery_note_note = fields.Html(related='delivery_note_id.note')
     delivery_note_partner_ref = fields.Char(related='delivery_note_id.partner_ref')
@@ -104,6 +106,9 @@ class StockPicking(models.Model):
                                    "Please, make sure to check this information before continuing."
                     }
                 }
+        if self.delivery_note_id.name:
+            if self.delivery_note_type_id.sequence_id != self.delivery_note_sequence_id:
+                raise UserError(_('You cannot change type with a different sequence!'))
 
     @api.onchange('delivery_note_partner_shipping_id')
     def _onchange_delivery_note_partner_shipping(self):

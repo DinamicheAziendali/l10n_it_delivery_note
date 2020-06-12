@@ -159,6 +159,7 @@
                                                attrs="{'readonly': [('delivery_note_state', '=', 'done')]}" />
                                         <field name="transport_datetime"
                                                attrs="{'readonly': [('delivery_note_state', '=', 'done')]}" />
+                                        <field name="delivery_note_sequence_id" invisible="1"/>
                                     </group>
                                 </group>
                                 <group attrs="{'invisible': [('delivery_note_exists', '=', False)]}">

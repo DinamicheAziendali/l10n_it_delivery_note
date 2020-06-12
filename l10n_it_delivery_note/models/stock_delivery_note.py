@@ -127,7 +127,7 @@ class StockDeliveryNote(models.Model):
                               readonly=True,
                               required=True,
                               index=True)
-
+    sequence_id = fields.Many2one('ir.sequence')
     code = fields.Selection(string=_("Type of Operation"), related="type_id.code", store=True)
     parcels = fields.Integer(string=_("Parcels"), states=DRAFT_EDITABLE_STATE, readonly=True)
     volume = fields.Float(string=_("Volume"), states=DRAFT_EDITABLE_STATE, readonly=True)
@@ -312,6 +312,9 @@ class StockDeliveryNote(models.Model):
                                    "Please, make sure to check this information before continuing."
                     }
                 }
+        if self.name:
+            if self.type_id.sequence_id != self.sequence_id:
+                raise UserError(_('You cannot change type with a different sequence!'))
 
     @api.onchange('partner_id')
     def _onchange_partner(self):
@@ -382,6 +385,7 @@ class StockDeliveryNote(models.Model):
 
             if not note.name:
                 note.name = sequence.next_by_id()
+                note.sequence_id = sequence.id
 
     def _fix_quantities_to_invoice(self, lines):
         cache = {}
