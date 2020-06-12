@@ -16,6 +16,7 @@
                 <field name="type_code" invisible="True" />
                 <field name="picking_ids" invisible="True" />
                 <field name="sale_ids" invisible="True" />
+                <field name="sales_transport_check" invisible="True" />
                 <field name="show_product_information" invisible="True" />
                 <header>
                     <button name="action_draft"
@@ -27,7 +28,6 @@
                             type="object"
                             states="draft"
                             class="oe_highlight"
-                            groups="stock.group_stock_manager"
                             string="Validate" />
                     <button name="action_invoice"
                             type="object"
@@ -69,14 +69,6 @@
                             <field name="active" widget="boolean_button" options="{'terminology': 'archive'}" />
                         </button>
                     </div>
-
-		    <field name="sales_transport_check" invisible="True" />
-		    <div attrs="{'invisible': [('sales_transport_check', '=', True)]}" class="alert alert-warning mb0" role="alert">
-                        <p class="text-center mb0">
-                            Inconsistent DDT info in sale orders
-                        </p>
-                    </div>
-
                     <div class="oe_title">
                         <div attrs="{'invisible': [('name', 'not in', [False, ''])]}">
                             <label for="name" string="Draft document" />
@@ -86,13 +78,23 @@
                             <h1>
                                 <field name="name" class="oe_inline" />
                             </h1>
-                            <label for="name" string="Partner Document"
-                                   attrs="{'invisible': [('type_code', '!=', 'incoming')]}"/>
-                            <h1>
-                                <field name="partner_ref" class="oe_inline"
-                                       attrs="{'invisible': [('type_code', '!=', 'incoming')]}"/>
-                            </h1>
+                            <div attrs="{'invisible': [('type_code', '!=', 'incoming')]}">
+                                <label for="name" string="Partner document" />
+                                <h2>
+                                    <field name="partner_ref" class="oe_inline" />
+                                </h2>
+                            </div>
                         </div>
+                    </div>
+                    <div attrs="{'invisible': [('sales_transport_check', '=', False)]}"
+                         class="alert alert-warning mb0"
+                         role="alert">
+                        <p class="text-center mb0">
+                            <strong>
+                                <span class="fa fa-exclamation-triangle" /> Warning!
+                            </strong>
+                            Inconsistent DDT info in sale orders!
+                        </p>
                     </div>
                     <group>
                         <group>
@@ -118,6 +120,7 @@
                                 <field name="transport_datetime" />
                                 <button type="object"
                                         name="update_transport_datetime"
+                                        attrs="{'invisible': [('state', '=', 'done')]}"
                                         class="btn-secondary"
                                         icon="fa-clock-o"
                                         aria-label="Update to now"

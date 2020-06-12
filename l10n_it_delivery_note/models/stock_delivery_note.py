@@ -75,7 +75,7 @@ class StockDeliveryNote(models.Model):
 
     active = fields.Boolean(string=_("Active"), default=True)
     name = fields.Char(string=_("Name"), readonly=True, index=True, copy=False, track_visibility='onchange')
-    partner_ref = fields.Char(string=_("Partner Reference"),
+    partner_ref = fields.Char(string=_("Partner reference"),
                               index=True,
                               copy=False,
                               states=DONE_READONLY_STATE,
@@ -214,11 +214,11 @@ class StockDeliveryNote(models.Model):
                 create_date = note.create_date.strftime(DATETIME_FORMAT)
                 name = "{} - {}".format(partner_name, create_date)
 
-            elif note.code == 'incoming':
-                name = note.partner_ref
-
             else:
                 name = note.name
+
+                if note.partner_ref and note.type_code == 'incoming':
+                    name = "{} ({})".format(name, note.partner_ref)
 
             note.display_name = name
 

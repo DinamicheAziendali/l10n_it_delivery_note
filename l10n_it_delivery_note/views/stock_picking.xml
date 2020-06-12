@@ -13,8 +13,12 @@
         <field name="inherit_id" ref="stock.view_picking_form" />
         <field name="arch" type="xml">
             <data>
+                <xpath expr="//form/sheet" position="before">
+                    <field name="picking_type_code" invisible="True" />
+                    <field name="delivery_note_type_code" invisible="True" />
+                </xpath>
                 <xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('picking_type_code','=', 'internal')]}</attribute>
+                    <attribute name="attrs">{'invisible': [('picking_type_code', '=', 'internal')]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='%(stock.action_report_delivery)d']" position="attributes">
                     <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'done'), '&amp;', ('delivery_note_state', '!=', 'draft')]}</attribute>
@@ -54,7 +58,6 @@
                                             type="object"
                                             class="oe_highlight"
                                             attrs="{'invisible': [('delivery_note_state', '!=', 'draft')]}"
-                                            groups="stock.group_stock_manager"
                                             string="Validate" />
                                     <button name="action_delivery_note_invoice"
                                             type="object"
@@ -139,7 +142,7 @@
                                                     title="Go to delivery note" />
                                         </div>
                                         <field name="delivery_note_partner_ref"
-                                               attrs="{'required': [('delivery_note_exists', '=', True)],
+                                               attrs="{'invisible': [('delivery_note_type_code', '!=', 'incoming')],
                                                        'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         <field name="delivery_note_partner_shipping_id"
                                                attrs="{'required': [('delivery_note_exists', '=', True)],
@@ -158,14 +161,13 @@
                                                        'readonly': [('delivery_note_draft', '=', False)]}" />
                                         <field name="delivery_note_date"
                                                attrs="{'readonly': [('delivery_note_draft', '=', False)]}" />
-                                        <field name="transport_datetime"
-                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
-
                                         <label for="transport_datetime" />
                                         <div class="o_row">
-                                            <field name="transport_datetime" />
+                                            <field name="transport_datetime"
+                                                   attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                             <button type="object"
                                                     name="delivery_note_update_transport_datetime"
+                                                    attrs="{'invisible': [('delivery_note_readonly', '=', True)]}"
                                                     class="btn-secondary"
                                                     icon="fa-clock-o"
                                                     aria-label="Update to now"
