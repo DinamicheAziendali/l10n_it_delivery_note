@@ -128,6 +128,7 @@ class StockDeliveryNote(models.Model):
                               required=True,
                               index=True)
 
+    sequence_id = fields.Many2one('ir.sequence', readonly=True, copy=False)
     type_code = fields.Selection(string=_("Type of Operation"), related='type_id.code', store=True)
     parcels = fields.Integer(string=_("Parcels"), states=DONE_READONLY_STATE)
     volume = fields.Float(string=_("Volume"), states=DONE_READONLY_STATE)
@@ -294,9 +295,11 @@ class StockDeliveryNote(models.Model):
     @api.onchange('type_id')
     def _onchange_type(self):
         if self.type_id:
-            changed = self._update_generic_shipping_information(self.type_id)
+            if self.name and self.type_id.sequence_id != self.sequence_id:
+                raise UserError(_("You cannot set this delivery note type due"
+                                  " of a different numerator configuration."))
 
-            if changed:
+            if self._update_generic_shipping_information(self.type_id):
                 return {
                     'warning': {
                         'title': _("Warning!"),
@@ -375,6 +378,7 @@ class StockDeliveryNote(models.Model):
 
             if not note.name:
                 note.name = sequence.next_by_id()
+                note.sequence_id = sequence
 
     def _fix_quantities_to_invoice(self, lines):
         cache = {}

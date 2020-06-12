@@ -15,7 +15,6 @@
             <data>
                 <xpath expr="//form/sheet" position="before">
                     <field name="picking_type_code" invisible="True" />
-                    <field name="delivery_note_type_code" invisible="True" />
                 </xpath>
                 <xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="attributes">
                     <attribute name="attrs">{'invisible': [('picking_type_code', '=', 'internal')]}</attribute>
@@ -28,6 +27,8 @@
                           string="Delivery note"
                           attrs="{'invisible': [('use_delivery_note', '=', False)]}"
                           autofocus="autofocus">
+                        <field name="delivery_note_sequence_id" invisible="True" />
+                        <field name="delivery_note_type_code" invisible="True" />
                         <field name="use_delivery_note" invisible="True" />
                         <field name="use_advanced_behaviour" invisible="True" />
                         <field name="delivery_note_exists" invisible="True" />

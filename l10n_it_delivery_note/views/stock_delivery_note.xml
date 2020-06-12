@@ -13,6 +13,7 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form>
+                <field name="sequence_id" invisible="True"/>
                 <field name="type_code" invisible="True" />
                 <field name="picking_ids" invisible="True" />
                 <field name="sale_ids" invisible="True" />

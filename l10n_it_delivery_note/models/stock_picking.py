@@ -9,6 +9,7 @@ from odoo import _, api, fields, models
 
 from .stock_delivery_note import DOMAIN_DELIVERY_NOTE_STATES
 from ..mixins.picking_checker import DOMAIN_PICKING_TYPES, DONE_PICKING_STATE
+from odoo.exceptions import UserError
 
 CANCEL_MOVE_STATE = 'cancel'
 
@@ -18,6 +19,7 @@ class StockPicking(models.Model):
     _inherit = ['stock.picking', 'shipping.information.updater.mixin']
 
     delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), copy=False)
+    delivery_note_sequence_id = fields.Many2one('ir.sequence', related='delivery_note_id.sequence_id')
     delivery_note_state = fields.Selection(related='delivery_note_id.state', string="Delivery Note State")
     delivery_note_partner_ref = fields.Char(related='delivery_note_id.partner_ref')
     delivery_note_partner_shipping_id = fields.Many2one('res.partner', related='delivery_note_id.partner_shipping_id')
@@ -97,9 +99,11 @@ class StockPicking(models.Model):
     @api.onchange('delivery_note_type_id')
     def _onchange_delivery_note_type(self):
         if self.delivery_note_type_id:
-            changed = self._update_generic_shipping_information(self.delivery_note_type_id)
+            if self.delivery_note_id.name and self.delivery_note_type_id.sequence_id != self.delivery_note_sequence_id:
+                raise UserError(_("You cannot set this delivery note type due"
+                                  " of a different numerator configuration."))
 
-            if changed:
+            if self._update_generic_shipping_information(self.delivery_note_type_id):
                 return {
                     'warning': {
                         'title': _("Warning!"),
