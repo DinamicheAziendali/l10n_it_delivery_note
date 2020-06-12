@@ -12,9 +12,14 @@
         <field name="category_id" ref="base.module_category_hidden" />
     </record>
 
+    <record id="can_change_number" model="res.groups">
+        <field name="name">Allow user to change the delivery note number</field>
+        <field name="category_id" ref="module_category_inventory_checkboxes" />
+    </record>
+
     <record id="show_product_related_fields" model="res.groups">
         <field name="name">Show product information in the delivery note lines</field>
-        <field name="category_id" ref="base.module_category_hidden" />
+        <field name="category_id" ref="module_category_inventory_checkboxes" />
     </record>
 
 </odoo>

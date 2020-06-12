@@ -28,8 +28,10 @@
         'report/report_delivery_note.xml',
 
         'security/ir.model.access.csv',
+        'security/ir_module_category.xml',
         'security/ir_rule.xml',
         'security/res_groups.xml',
+        'security/res_users.xml',
 
         'views/account_invoice.xml',
         'views/assets.xml',

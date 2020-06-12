@@ -203,6 +203,7 @@ class StockDeliveryNote(models.Model):
     note = fields.Html(string=_("Internal note"),
                        states=DONE_READONLY_STATE)
 
+    can_change_number = fields.Boolean(compute='_compute_boolean_flags')
     show_product_information = fields.Boolean(compute='_compute_boolean_flags')
 
     @api.multi
@@ -283,9 +284,11 @@ class StockDeliveryNote(models.Model):
 
     @api.multi
     def _compute_boolean_flags(self):
+        can_change_number = self.user_has_groups('l10n_it_delivery_note.can_change_number')
         show_product_information = self.user_has_groups('l10n_it_delivery_note.show_product_related_fields')
 
         for note in self:
+            note.can_change_number = (note.state == 'draft' and can_change_number)
             note.show_product_information = show_product_information
 
     @api.onchange('type_id')
@@ -519,24 +522,19 @@ class StockDeliveryNote(models.Model):
 
         return super().unlink()
 
-    @api.multi
-    def ddt_get_location(self, location_id):
-        model_warehouse = self.env['stock.warehouse']
-        model_location = self.env['stock.location']
-        location = model_location.search([('id', '=', location_id)])
-        warehouse = model_warehouse.search([('lot_stock_id', '=', location_id)])
-        data = [warehouse.partner_id.id, warehouse.partner_id.name]
-        if warehouse.partner_id:
-            data = [
-                location.display_name + ' - ' +
-                warehouse.partner_id.name + ', ' +
-                warehouse.partner_id.street + ' - ' +
-                (warehouse.partner_id.zip + ' ' +
-                 warehouse.partner_id.city + ' ' +
-                 '(' + warehouse.partner_id.state_id.name + ')'
-                 if warehouse.partner_id.state_id else '')
-            ]
-        return data
+    @api.model
+    def get_location_address(self, location_id):
+        StockWarehouse = self.env['stock.warehouse']
+
+        warehouse = StockWarehouse.search([('lot_stock_id', '=', location_id)])
+
+        return warehouse.partner_id.name + ', ' + \
+            (warehouse.partner_id.street + ' - '
+             if warehouse.partner_id.street else '') + \
+            (warehouse.partner_id.zip + ' ' +
+             warehouse.partner_id.city + ' ' +
+             '(' + warehouse.partner_id.state_id.name + ')'
+             if warehouse.partner_id.state_id else '')
 
 
 class StockDeliveryNoteLine(models.Model):

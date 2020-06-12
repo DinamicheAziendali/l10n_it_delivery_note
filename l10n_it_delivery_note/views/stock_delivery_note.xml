@@ -17,6 +17,7 @@
                 <field name="picking_ids" invisible="True" />
                 <field name="sale_ids" invisible="True" />
                 <field name="sales_transport_check" invisible="True" />
+                <field name="can_change_number" invisible="True"/>
                 <field name="show_product_information" invisible="True" />
                 <header>
                     <button name="action_draft"
@@ -76,7 +77,9 @@
                         <div attrs="{'invisible': [('name', 'in', [False, ''])]}">
                             <label for="name" string="Document" />
                             <h1>
-                                <field name="name" class="oe_inline" />
+                                <field name="name"
+                                       class="oe_inline"
+                                       attrs="{'readonly': [('can_change_number', '=', False)]}" />
                             </h1>
                             <div attrs="{'invisible': [('type_code', '!=', 'incoming')]}">
                                 <label for="name" string="Partner document" />
@@ -86,7 +89,7 @@
                             </div>
                         </div>
                     </div>
-                    <div attrs="{'invisible': [('sales_transport_check', '=', False)]}"
+                    <div attrs="{'invisible': [('sales_transport_check', '=', True)]}"
                          class="alert alert-warning mb0"
                          role="alert">
                         <p class="text-center mb0">
@@ -307,7 +310,6 @@
         <field name="arch" type="xml">
             <tree decoration-muted="state == 'cancel'">
                 <field name="display_name" string="Name" />
-                <field name="partner_ref" />
                 <field name="partner_sender_id" />
                 <field name="partner_id" />
                 <field name="date" />
@@ -323,6 +325,7 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name" />
+                <field name="partner_ref" />
                 <field name="partner_id" />
                 <field name="partner_sender_id" />
                 <field name="carrier_id" />
