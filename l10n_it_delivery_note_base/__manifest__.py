@@ -20,8 +20,6 @@
 
     'data': [
         'data/delivery_note_data.xml',
-        # 'report/report_delivery_note.xml',
-
         'views/stock_delivery_note_type.xml',
         'views/stock_picking_goods_appearance.xml',
         'views/stock_picking_transport_condition.xml',
