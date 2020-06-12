@@ -560,7 +560,7 @@ class StockDeliveryNoteLine(models.Model):
     display_type = fields.Selection(LINE_DISPLAY_TYPES, string=_("Line type"), default=False)
     product_id = fields.Many2one('product.product', string=_("Product"))
     product_description = fields.Text(related='product_id.description_sale')
-    product_qty = fields.Float(string=_("Quantity"), digits=dp.get_precision('Unit of Measure'), default=1.0)
+    product_qty = fields.Float(string=_("Quantity"), digits=dp.get_precision('Product Unit of Measure'), default=1.0)
     product_uom_id = fields.Many2one('uom.uom', string=_("UoM"), default=_default_unit_uom)
     price_unit = fields.Monetary(string=_("Unit price"),
                                  currency_field='currency_id',
