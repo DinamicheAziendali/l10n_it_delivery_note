@@ -218,7 +218,7 @@ class StockDeliveryNote(models.Model):
     show_product_information = fields.Boolean(compute='_compute_boolean_flags')
 
     @api.multi
-    @api.depends('name', 'partner_id', 'partner_id.display_name')
+    @api.depends('name', 'partner_id', 'partner_ref', 'partner_id.display_name')
     def _compute_display_name(self):
         for note in self:
             if not note.name:

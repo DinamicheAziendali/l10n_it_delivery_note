@@ -40,6 +40,10 @@ class StockPickingCheckerMixin(models.AbstractModel):
 
     @api.model
     def _check_pickings_partners(self, pickings):
+        types = set(pickings.mapped('picking_type_code'))
+        if 'internal' in types:
+            return
+
         partners = pickings.mapped('partner_id')
 
         if not partners:
