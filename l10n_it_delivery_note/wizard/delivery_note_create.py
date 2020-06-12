@@ -43,7 +43,8 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
     def confirm(self):
         self.check_compliance(self.selected_picking_ids)
 
-        sale_order_id = self.mapped('selected_picking_ids.sale_id')[0]
+        sale_order_ids = self.mapped('selected_picking_ids.sale_id')
+        sale_order_id = sale_order_ids and sale_order_ids[0] or False
 
         delivery_note = self.env['stock.delivery.note'].create({
             'partner_sender_id': self.partner_sender_id.id,
@@ -53,16 +54,16 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
             'date': self.date,
 
             'delivery_method_id': self.partner_id.property_delivery_carrier_id.id,
-            'transport_condition_id': sale_order_id.default_transport_condition_id.id or
+            'transport_condition_id': sale_order_id and sale_order_id.default_transport_condition_id.id or
                                       self.partner_id.default_transport_condition_id.id or
                                       self.type_id.default_transport_condition_id.id,
-            'goods_appearance_id': sale_order_id.default_goods_appearance_id.id or
+            'goods_appearance_id': sale_order_id and sale_order_id.default_goods_appearance_id.id or
                                    self.partner_id.default_goods_appearance_id.id or
                                    self.type_id.default_goods_appearance_id.id,
-            'transport_reason_id': sale_order_id.default_transport_reason_id.id or
+            'transport_reason_id': sale_order_id and sale_order_id.default_transport_reason_id.id or
                                    self.partner_id.default_transport_reason_id.id or
                                    self.type_id.default_transport_reason_id.id,
-            'transport_method_id': sale_order_id.default_transport_method_id.id or
+            'transport_method_id': sale_order_id and sale_order_id.default_transport_method_id.id or
                                    self.partner_id.default_transport_method_id.id or
                                    self.type_id.default_transport_method_id.id
         })
