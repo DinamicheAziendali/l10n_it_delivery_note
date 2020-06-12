@@ -8,7 +8,7 @@
     'summary': "Crea i DdT partendo dai Gruppi di Trasferimenti",
 
     'author': "Marco Colombo",
-    'website': "https://github.com/TheMule71/l10n_it_delivery_note_batch",
+    'website': "https://github.com/DinamicheAziendali/l10n_it_delivery_note",
 
     'version': '12.0.1.0.0',
     'category': "Localization",
@@ -20,5 +20,7 @@
 
     'data': [
         'views/stock_picking_batch_views.xml',
-    ]
+    ],
+
+    'auto_install': True,
 }
