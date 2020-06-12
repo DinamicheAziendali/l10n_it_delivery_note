@@ -1,23 +1,19 @@
-This module manage the Italian DDT.
-Once the picking is in state done a button will enable the DDT report.
-The DDT is for internal transfers between warehouses, outgoing transfers to customers.
-The sequence is done by the DDT type sequence so it's possible to have different
-sequence depending on the typology of DDT.
+This module manage the Italian DDT (Delivery note).
 
-This module is similar to DDT :code:`l10n_it_ddt` but i'ts easier (I believe) to use by
-warehouse worker.
-Unfortunately it's not possible to add on the fly product like the DDT module does.
-It's also possible to do a transfer between different warehouses.
+From a Picking is possible to generate a Delivery note, group more picking in one delivery note. Is possible to invoice the Delivery note.
 
-For a correct report layout set the address on warehouse.
+Questo modulo consente di gestire i DDT.
 
-Next improvement is to add to a picking a DDT sequence of another picking with the
-same destination.
+Ci sono due impostazioni possibili:
+Base di default un picking un DDT.
+Avanzato più picking in un DDT.
 
 
-In some situations, user need to add some service charge or some fees on top of what already invoiced.
-This module add new feature to "Add Debit Note" from customer invoice / vendor bill
+Funzionalità base.
+Quando un picking è validato si visualizza un tab DdT.
+Dal tab "Crea nuovo" si apre un wizard dove scegliere il tipo di DDT e poi conferma. Immettere i dati richiesti poi "Valida" per numerare il DDT.
+Una volta Validato il DDT è possibile emettere fattura direttamente dal DDT, se il DDT è di tipo consegna a cliente (outgoing).
+E' possibile annullare il DDT reimpostarlo in bozza e poi modificarlo. Se il DDT è fatturato il numero e data non sono modificabili.
 
-
-completato
+per i trasferimenti tra magazzini creare un picking di tipo interno, con i magazzini
 validato lo puoi fatturare
