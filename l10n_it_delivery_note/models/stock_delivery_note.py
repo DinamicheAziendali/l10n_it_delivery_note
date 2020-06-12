@@ -526,20 +526,16 @@ class StockDeliveryNote(models.Model):
     @api.multi
     def ddt_get_location(self, location_id):
         model_warehouse = self.env['stock.warehouse']
-        model_location = self.env['stock.location']
         warehouse = model_warehouse.search([('lot_stock_id', '=', location_id)])
-        data = [warehouse.partner_id.id, warehouse.partner_id.name]
-        if warehouse.partner_id:
-            data = [
-                warehouse.partner_id.name + ', ' +
-                (warehouse.partner_id.street + ' - '
-                 if warehouse.partner_id.street else '') +
-                (warehouse.partner_id.zip + ' ' +
-                 warehouse.partner_id.city + ' ' +
-                 '(' + warehouse.partner_id.state_id.name + ')'
-                 if warehouse.partner_id.state_id else '')
-            ]
-        return data
+        warehouse_address = \
+            warehouse.partner_id.name + ', ' + \
+            (warehouse.partner_id.street + ' - '
+             if warehouse.partner_id.street else '') + \
+            (warehouse.partner_id.zip + ' ' +
+             warehouse.partner_id.city + ' ' +
+             '(' + warehouse.partner_id.state_id.name + ')'
+             if warehouse.partner_id.state_id else '')
+        return warehouse_address
 
 
 class StockDeliveryNoteLine(models.Model):

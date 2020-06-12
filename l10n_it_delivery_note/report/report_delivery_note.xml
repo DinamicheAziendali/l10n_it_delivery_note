@@ -79,16 +79,12 @@
                             <h4>
                                 <strong>Warehouse:</strong>
                             </h4>
-                            <t t-set="location" t-value="0"/>
                             <t t-foreach="doc.picking_ids" t-as="pick">
                                 <t t-if="location != pick.location_id.id">
-                                    <t t-foreach="doc.ddt_get_location(pick.location_id.id)" t-as="loca">
-                                        <p>
-                                            <span t-esc="pick.location_id.name"/> - <t t-esc="loca"/>
-                                        </p>
-                                    </t>
+                                    <p>
+                                        <span t-esc="pick.location_id.display_name"/> - <t t-esc="doc.ddt_get_location(pick.location_id.id)"/>
+                                    </p>
                                 </t>
-                                <t t-set="location" t-value="pick.location_id.id"/>
                             </t>
                         </div>
 
@@ -127,11 +123,9 @@
                     <div t-if="doc.picking_type=='outgoing'">
                         <strong>Warehouse :</strong>
                         <t t-foreach="doc.picking_ids" t-as="pick">
-                            <t t-foreach="doc.ddt_get_location(pick.location_id.id)" t-as="loca">
-                                <p>
-                                    <t t-esc="loca"/>,
-                                </p>
-                            </t>
+                            <p>
+                                <t t-esc="doc.ddt_get_location(pick.location_id.id)"/>,
+                            </p>
                         </t>
                     </div>
                     <strong> Transport document: </strong>
