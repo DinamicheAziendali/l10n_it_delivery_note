@@ -18,8 +18,10 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
         active_ids = self.env.context['active_ids']
         picking_ids = self.env['stock.picking'].browse(active_ids)
         if picking_ids:
-            code = picking_ids[0].picking_type_id.code
-            return self.env['stock.delivery.note.type'].search([('code', '=', code)], limit=1)
+            type_code = picking_ids[0].picking_type_id.code
+
+            return self.env['stock.delivery.note.type'].search([('code', '=', type_code)], limit=1)
+
         else:
             return self.env['stock.delivery.note.type'].search([('code', '=', 'outgoing')], limit=1)
 
@@ -67,3 +69,6 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
         })
 
         self.selected_picking_ids.write({'delivery_note_id': delivery_note.id})
+
+        if self.user_has_groups('l10n_it_delivery_note.use_advanced_delivery_notes'):
+            return delivery_note.goto()

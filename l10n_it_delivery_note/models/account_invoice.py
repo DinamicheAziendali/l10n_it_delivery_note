@@ -94,7 +94,7 @@ class AccountInvoice(models.Model):
                 new_lines.append((0, False, {
                     'sequence': 99,
                     'display_type': 'line_note',
-                    'name': _("""Delivery note "{}" of {}""").format(note.name, note.transport_datetime.strftime(DATETIME_FORMAT)),
+                    'name': _("""Delivery note "{}" of {}""").format(note.name, note.date.strftime(DATETIME_FORMAT)),
                     'delivery_note_id': note.id
                 }))
 

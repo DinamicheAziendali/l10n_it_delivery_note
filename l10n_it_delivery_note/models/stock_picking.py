@@ -19,15 +19,16 @@ class StockPicking(models.Model):
 
     delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), copy=False)
     delivery_note_state = fields.Selection(related='delivery_note_id.state', string="Delivery Note State")
+    delivery_note_partner_ref = fields.Char(related='delivery_note_id.partner_ref')
     delivery_note_partner_shipping_id = fields.Many2one('res.partner', related='delivery_note_id.partner_shipping_id')
 
     delivery_note_carrier_id = fields.Many2one('res.partner', related='delivery_note_id.carrier_id')
     delivery_method_id = fields.Many2one('delivery.carrier', related='delivery_note_id.delivery_method_id')
 
     delivery_note_type_id = fields.Many2one('stock.delivery.note.type', related='delivery_note_id.type_id')
+    delivery_note_type_code = fields.Selection(related='delivery_note_type_id.code')
     delivery_note_date = fields.Date(related='delivery_note_id.date', string="Delivery Note Date")
     delivery_note_note = fields.Html(related='delivery_note_id.note')
-    delivery_note_partner_ref = fields.Char(related='delivery_note_id.partner_ref')
 
     transport_condition_id = fields.Many2one('stock.picking.transport.condition',
                                              related='delivery_note_id.transport_condition_id')
@@ -54,6 +55,7 @@ class StockPicking(models.Model):
     use_delivery_note = fields.Boolean(compute='_compute_boolean_flags')
     use_advanced_behaviour = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_exists = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_draft = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_readonly = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_visible = fields.Boolean(compute='_compute_boolean_flags')
     can_be_invoiced = fields.Boolean(compute='_compute_boolean_flags')
@@ -83,11 +85,13 @@ class StockPicking(models.Model):
             picking.delivery_note_visible = use_advanced_behaviour
             picking.use_advanced_behaviour = use_advanced_behaviour
 
+            picking.delivery_note_draft = False
             picking.delivery_note_readonly = True
 
             if picking.use_delivery_note and picking.delivery_note_id:
                 picking.delivery_note_exists = True
-                picking.delivery_note_readonly = (picking.delivery_note_id.state != DOMAIN_DELIVERY_NOTE_STATES[0])
+                picking.delivery_note_draft = (picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[0])
+                picking.delivery_note_readonly = (picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[3])
                 picking.can_be_invoiced = bool(picking.delivery_note_id.sale_ids)
 
     @api.onchange('delivery_note_type_id')
@@ -201,6 +205,9 @@ class StockPicking(models.Model):
 
         return res
 
+    def delivery_note_update_transport_datetime(self):
+        self.delivery_note_id.update_transport_datetime()
+
     @api.multi
     @api.returns('res.partner')
     def get_partners(self):
@@ -239,19 +246,22 @@ class StockPicking(models.Model):
 
         return (src_partner_id, dest_partner_id)
 
-    def goto_delivery_note(self, **kwargs):
+    def goto(self, **kwargs):
         self.ensure_one()
 
         return {
             'type': 'ir.actions.act_window',
-            'res_model': 'stock.delivery.note',
-            'res_id': self.delivery_note_id.id,
+            'res_model': self._name,
+            'res_id': self.id,
             'views': [(False, 'form')],
             'view_type': 'form',
             'view_mode': 'form',
             'target': 'current',
             **kwargs
         }
+
+    def goto_delivery_note(self, **kwargs):
+        return self.delivery_note_id.goto(**kwargs)
 
     def update_delivery_note_fields(self, vals):
         note_fields = self._delivery_note_fields

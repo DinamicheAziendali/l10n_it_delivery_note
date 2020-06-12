@@ -7,8 +7,8 @@ from odoo.exceptions import ValidationError
 DONE_PICKING_STATE = 'done'
 
 PICKING_TYPES = [
-    ('incoming', "Vendors"),
-    ('outgoing', "Customers"),
+    ('incoming', "Incoming"),
+    ('outgoing', "Outgoing"),
     ('internal', "Internal")
 ]
 DOMAIN_PICKING_TYPES = [t[0] for t in PICKING_TYPES]

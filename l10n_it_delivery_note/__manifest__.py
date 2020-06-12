@@ -18,14 +18,13 @@
 
     'depends': [
         'delivery',
+        'l10n_it_delivery_note_base',
         'mail',
         'sale_stock',
-        'stock_account',
-        'l10n_it_delivery_note_base'
+        'stock_account'
     ],
 
     'data': [
-        # 'data/delivery_note_data.xml',
         'report/report_delivery_note.xml',
 
         'security/ir.model.access.csv',
