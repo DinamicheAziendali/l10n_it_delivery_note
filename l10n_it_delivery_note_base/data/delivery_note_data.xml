@@ -19,6 +19,7 @@
     <record id="delivery_note_type_ddt" model="stock.delivery.note.type">
         <field name="name">DdT</field>
         <field name="sequence_id" ref="delivery_note_sequence_ddt" />
+        <field name="code">outgoing</field>
     </record>
 
     <!-- Conditions of transport -->
