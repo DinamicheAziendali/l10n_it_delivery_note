@@ -84,7 +84,7 @@
                                 <t t-if="location != pick.location_id.id">
                                     <t t-foreach="doc.ddt_get_location(pick.location_id.id)" t-as="loca">
                                         <p>
-                                            <t t-esc="loca"/>
+                                            <span t-esc="pick.location_id.name"/> - <t t-esc="loca"/>
                                         </p>
                                     </t>
                                 </t>
