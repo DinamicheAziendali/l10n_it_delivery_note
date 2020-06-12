@@ -32,23 +32,6 @@
                     </div>
                     <div class="col-12 col-lg-6 o_setting_box">
                         <div class="o_setting_left_pane">
-                            <field name="group_show_product_related_fields" />
-                        </div>
-                        <div class="o_setting_right_pane">
-                            <label for="group_show_product_related_fields" />
-                            <div class="text-muted">
-                                <p>
-                                    It defines whether is allowed to show all
-                                    product related information directly on the
-                                    delivery note both on the web interface
-                                    and on printed documents.
-                                </p>
-                                <i>(e.g. unit price, discount, taxes, etc...)</i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-6 o_setting_box">
-                        <div class="o_setting_left_pane">
                             <field name="draft_delivery_note_invoicing_notify" />
                         </div>
                         <div class="o_setting_right_pane">
