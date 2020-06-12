@@ -16,11 +16,8 @@
     'version': '12.0.1.0.0',
     'category': "Localization",
 
-    'depends': ['mail'],
-
     'data': [
         'data/delivery_note_data.xml',
-        # 'report/report_delivery_note.xml',
 
         'views/stock_delivery_note_type.xml',
         'views/stock_picking_goods_appearance.xml',

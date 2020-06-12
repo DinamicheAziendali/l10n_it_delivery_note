@@ -13,6 +13,7 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form>
+                <field name="type_code" invisible="True" />
                 <field name="picking_ids" invisible="True" />
                 <field name="sale_ids" invisible="True" />
                 <field name="show_product_information" invisible="True" />
@@ -101,7 +102,6 @@
                         </group>
                         <group>
                             <field name="type_id" widget="selection" />
-                            <field name="type_code"/>
                             <field name="date" />
                         </group>
                     </group>
@@ -235,18 +235,23 @@
                             </field>
                         </page>
                         <page name="pickings" string="Pickings">
-                            <field name="code" invisible="True" />
                             <field name="pickings_picker"
                                    context="{'from_delivery_note': True}"
                                    domain="[('delivery_note_id', '=', False),
                                             ('state', '=', 'done'),
-                                            ('picking_type_code', '=', code),
+                                            ('picking_type_code', '=', type_code),
                                             '|', '|',
                                                     '&amp;', ('picking_type_code', '=', 'incoming'), ('partner_id', '=', partner_sender_id),
                                                     '&amp;', ('picking_type_code', '=', 'outgoing'), ('partner_id', '=', partner_id),
                                                  ('picking_type_code', '=', 'internal'),
                                             ]">
                                 <tree decoration-success="id not in parent.picking_ids" editable="bottom">
+                                    <button type="object"
+                                            class="oe_button"
+                                            name="goto"
+                                            icon="fa-external-link"
+                                            aria-label="Open picking"
+                                            title="Open picking" />
                                     <field name="name" />
                                     <field name="location_dest_id" groups="stock.group_stock_multi_locations" />
                                     <field name="scheduled_date" readonly="True" />

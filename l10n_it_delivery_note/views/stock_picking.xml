@@ -27,6 +27,7 @@
                         <field name="use_delivery_note" invisible="True" />
                         <field name="use_advanced_behaviour" invisible="True" />
                         <field name="delivery_note_exists" invisible="True" />
+                        <field name="delivery_note_draft" invisible="True" />
                         <field name="delivery_note_readonly" invisible="True" />
                         <field name="delivery_note_visible" invisible="True" />
                         <field name="delivery_note_state" invisible="True" />
@@ -125,7 +126,7 @@
                                                    domain="[('state', '=', 'draft'),
                                                             ('partner_id', '=', partner_id)]"
                                                    attrs="{'required': [('delivery_note_exists', '=', True)],
-                                                           'readonly': [('delivery_note_readonly', '=', True)]}"
+                                                           'readonly': [('delivery_note_draft', '=', False)]}"
                                                    options="{'no_create': True, 'no_open': True}" />
                                             <button type="object"
                                                     name="goto_delivery_note"
@@ -151,11 +152,11 @@
                                         <field name="delivery_note_type_id"
                                                widget="selection"
                                                attrs="{'required': [('delivery_note_exists', '=', True)],
-                                                       'readonly': [('delivery_note_readonly', '=', True)]}" />
+                                                       'readonly': [('delivery_note_draft', '=', False)]}" />
                                         <field name="delivery_note_date"
-                                               attrs="{'readonly': [('delivery_note_state', '=', 'done')]}" />
+                                               attrs="{'readonly': [('delivery_note_draft', '=', False)]}" />
                                         <field name="transport_datetime"
-                                               attrs="{'readonly': [('delivery_note_state', '=', 'done')]}" />
+                                               attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
 
                                         <label for="transport_datetime" />
                                         <div class="o_row">
@@ -226,7 +227,7 @@
                                        attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
                                     <field name="delivery_note_note"
                                            nolabel="1"
-                                           attrs="{'readonly': [('delivery_note_state', '=', 'done')]}" />
+                                           attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                 </group>
                             </div>
                         </div>

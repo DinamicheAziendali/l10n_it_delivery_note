@@ -65,7 +65,7 @@ class Migrate_L10n_It_Ddt(EasyCommand):
 
     def _map_ref(self, map_dict, old_ext_id, new_ext_id):
         old_record = self.env.ref('l10n_it_ddt.{}'.format(old_ext_id))
-        new_record = self.env.ref('l10n_it_delivery_note.{}'.format(new_ext_id))
+        new_record = self.env.ref('l10n_it_delivery_note_base.{}'.format(new_ext_id))
 
         map_dict[old_record] = new_record
 
@@ -164,10 +164,8 @@ class Migrate_L10n_It_Ddt(EasyCommand):
         DeliveryNoteType = self.env['stock.delivery.note.type']
 
         old_type = self.env.ref('l10n_it_ddt.ddt_type_ddt')
-        new_priced_type = self.env.ref('l10n_it_delivery_note.delivery_note_priced_type_ddt')
-        new_priced_type.write({'sequence_id': old_type.sequence_id.id})
-        new_unpriced_type = self.env.ref('l10n_it_delivery_note.delivery_note_unpriced_type_ddt')
-        new_unpriced_type.write({'sequence_id': old_type.sequence_id.id})
+        new_type = self.env.ref('l10n_it_delivery_note.delivery_note_type_ddt')
+        new_type.write({'sequence_id': old_type.sequence_id.id})
 
         self.env.cr.execute("""DELETE FROM "ir_model_data" WHERE "module" = 'l10n_it_ddt' AND "name" = 'seq_ddt';""")
 

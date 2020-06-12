@@ -53,6 +53,7 @@ class StockPicking(models.Model):
     use_delivery_note = fields.Boolean(compute='_compute_boolean_flags')
     use_advanced_behaviour = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_exists = fields.Boolean(compute='_compute_boolean_flags')
+    delivery_note_draft = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_readonly = fields.Boolean(compute='_compute_boolean_flags')
     delivery_note_visible = fields.Boolean(compute='_compute_boolean_flags')
     can_be_invoiced = fields.Boolean(compute='_compute_boolean_flags')
@@ -82,11 +83,13 @@ class StockPicking(models.Model):
             picking.delivery_note_visible = use_advanced_behaviour
             picking.use_advanced_behaviour = use_advanced_behaviour
 
+            picking.delivery_note_draft = False
             picking.delivery_note_readonly = True
 
             if picking.use_delivery_note and picking.delivery_note_id:
                 picking.delivery_note_exists = True
-                picking.delivery_note_readonly = (picking.delivery_note_id.state != DOMAIN_DELIVERY_NOTE_STATES[0])
+                picking.delivery_note_draft = (picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[0])
+                picking.delivery_note_readonly = (picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[3])
                 picking.can_be_invoiced = bool(picking.delivery_note_id.sale_ids)
 
     @api.onchange('delivery_note_type_id')
@@ -241,19 +244,22 @@ class StockPicking(models.Model):
 
         return src_partner_id | dest_partner_id
 
-    def goto_delivery_note(self, **kwargs):
+    def goto(self, **kwargs):
         self.ensure_one()
 
         return {
             'type': 'ir.actions.act_window',
-            'res_model': 'stock.delivery.note',
-            'res_id': self.delivery_note_id.id,
+            'res_model': self._name,
+            'res_id': self.id,
             'views': [(False, 'form')],
             'view_type': 'form',
             'view_mode': 'form',
             'target': 'current',
             **kwargs
         }
+
+    def goto_delivery_note(self, **kwargs):
+        return self.delivery_note_id.goto(**kwargs)
 
     def update_delivery_note_fields(self, vals):
         note_fields = self._delivery_note_fields

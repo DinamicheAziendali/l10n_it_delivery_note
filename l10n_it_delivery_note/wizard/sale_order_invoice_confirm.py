@@ -8,6 +8,8 @@ class SaleAdvancePaymentInv(models.TransientModel):
     def create_invoices(self):
         states = self.mapped('delivery_note_ids.state')
 
-        import pdb; pdb.set_trace()
+        # TODO: Continuare da qui...
+        #
+        # import pdb; pdb.set_trace()
 
         return super().create_invoices()
