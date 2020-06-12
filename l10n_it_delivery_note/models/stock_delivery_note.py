@@ -128,7 +128,7 @@ class StockDeliveryNote(models.Model):
                               required=True,
                               index=True)
 
-    code = fields.Selection(string=_("Type of Operation"), related="type_id.code", store=True, required=True)
+    code = fields.Selection(string=_("Type of Operation"), related="type_id.code", store=True)
     parcels = fields.Integer(string=_("Parcels"), states=DRAFT_EDITABLE_STATE, readonly=True)
     volume = fields.Float(string=_("Volume"), states=DRAFT_EDITABLE_STATE, readonly=True)
 
