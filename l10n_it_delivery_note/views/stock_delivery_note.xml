@@ -232,10 +232,10 @@
                                    domain="[('delivery_note_id', '=', False),
                                             ('state', '=', 'done'),
                                             ('picking_type_code', '=', code),
-					    '|', '|',
-						    '&amp;', ('picking_type_code', '=', 'incoming'), ('partner_id', '=', partner_sender_id),
-						    '&amp;', ('picking_type_code', '=', 'outgoing'), ('partner_id', '=', partner_id),
-						 ('picking_type_code', '=', 'internal'),
+                                            '|', '|',
+                                                    '&amp;', ('picking_type_code', '=', 'incoming'), ('partner_id', '=', partner_sender_id),
+                                                    '&amp;', ('picking_type_code', '=', 'outgoing'), ('partner_id', '=', partner_id),
+                                                 ('picking_type_code', '=', 'internal'),
                                             ]">
                                 <tree decoration-success="id not in parent.picking_ids" editable="bottom">
                                     <field name="name" />
