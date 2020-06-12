@@ -27,6 +27,7 @@ class StockPicking(models.Model):
     delivery_note_type_id = fields.Many2one('stock.delivery.note.type', related='delivery_note_id.type_id')
     delivery_note_date = fields.Date(related='delivery_note_id.date', string="Delivery Note Date")
     delivery_note_note = fields.Html(related='delivery_note_id.note')
+    delivery_note_partner_ref = fields.Char(related='delivery_note_id.partner_ref')
 
     transport_condition_id = fields.Many2one('stock.picking.transport.condition',
                                              related='delivery_note_id.transport_condition_id')
@@ -236,7 +237,7 @@ class StockPicking(models.Model):
         elif not dest_partner_id:
             dest_partner_id = partner_id
 
-        return src_partner_id | dest_partner_id
+        return (src_partner_id, dest_partner_id)
 
     def goto_delivery_note(self, **kwargs):
         self.ensure_one()

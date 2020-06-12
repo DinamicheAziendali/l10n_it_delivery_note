@@ -19,6 +19,7 @@ class StockDeliveryNoteType(models.Model):
     code = fields.Selection([('incoming', 'Incoming'), ('outgoing', 'Outgoing'), ('internal', 'Internal')],
         string='Type of Operation',
         required=True,
+        default='outgoing',
     )
     default_transport_condition_id = fields.Many2one('stock.picking.transport.condition',
                                                      string=_("Condition of transport"))

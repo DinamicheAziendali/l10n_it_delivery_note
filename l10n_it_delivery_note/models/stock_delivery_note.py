@@ -216,9 +216,20 @@ class StockDeliveryNote(models.Model):
                        states=DONE_READONLY_STATE)
 
     show_product_information = fields.Boolean(compute='_compute_boolean_flags')
+    check_login = fields.Boolean(string='Check Login', compute='_check_login')
+
+    @api.depends('check_login')
+    def _check_login(self):
+        for ddt in self:
+            user = self.env['res.users'].browse(self.env.uid)
+            if user.has_group('l10n_it_delivery_note.can_change_name_ddt'):
+                if ddt.state == 'draft':
+                    ddt.check_login = True
+                else:
+                    ddt.check_login = False
 
     @api.multi
-    @api.depends('name', 'partner_id', 'partner_id.display_name')
+    @api.depends('name', 'partner_id', 'partner_ref', 'partner_id.display_name')
     def _compute_display_name(self):
         for note in self:
             if not note.name:
@@ -523,7 +534,8 @@ class StockDeliveryNote(models.Model):
             data = [
                 location.display_name + ' - ' +
                 warehouse.partner_id.name + ', ' +
-                warehouse.partner_id.street + ' - ' +
+                (warehouse.partner_id.street + ' - '
+                 if warehouse.partner_id.street else '') +
                 (warehouse.partner_id.zip + ' ' +
                  warehouse.partner_id.city + ' ' +
                  '(' + warehouse.partner_id.state_id.name + ')'
