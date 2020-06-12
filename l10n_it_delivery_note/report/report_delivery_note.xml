@@ -232,10 +232,12 @@
                                             <span t-field="lot_line.lot_id" />
                                         </strong>
                                         <t t-if="'use_date' in lot_line.lot_id.fields_get()">
-                                            best before
-                                            <strong>
-                                                <span t-field="lot_line.lot_id.use_date" t-options='{"format": "dd/MM/yyyy"}'/>
-                                            </strong>
+                                            <t t-if="lot_line.lot_id.use_date">
+                                                best before
+                                                <strong>
+                                                    <span t-field="lot_line.lot_id.use_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                                </strong>
+                                            </t>
                                         </t>
                                         <t t-if="line.product_qty != lot_line.qty_done">
                                             qty
