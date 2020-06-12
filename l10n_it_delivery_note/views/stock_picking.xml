@@ -137,6 +137,9 @@
                                                     aria-label="Go to delivery note"
                                                     title="Go to delivery note" />
                                         </div>
+                                        <field name="delivery_note_partner_ref"
+                                               attrs="{'required': [('delivery_note_exists', '=', True)],
+                                                       'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         <field name="delivery_note_partner_shipping_id"
                                                attrs="{'required': [('delivery_note_exists', '=', True)],
                                                        'readonly': [('delivery_note_readonly', '=', True)]}" />

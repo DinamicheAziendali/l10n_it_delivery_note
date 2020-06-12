@@ -31,7 +31,7 @@ class StockPickingBatch(models.Model):
             # poor man's group by - group by homogeneous pickings
             todo_list = {}
             for p in pickings:
-                key = tuple(p.get_partners().mapped('id'))
+                key = tuple(p.id for p in p.get_partners())
                 todo_list[key] = todo_list.get(key, self.env['stock.picking']) | p
 
             for partner_ids, pickings in todo_list.items():

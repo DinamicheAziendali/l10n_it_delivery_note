@@ -128,7 +128,7 @@ class StockDeliveryNote(models.Model):
                               required=True,
                               index=True)
 
-    code = fields.Selection(string=_("Type of Operation"), related="type_id.code", store=True, required=True)
+    code = fields.Selection(string=_("Type of Operation"), related="type_id.code", store=True)
     parcels = fields.Integer(string=_("Parcels"), states=DRAFT_EDITABLE_STATE, readonly=True)
     volume = fields.Float(string=_("Volume"), states=DRAFT_EDITABLE_STATE, readonly=True)
 
@@ -218,7 +218,7 @@ class StockDeliveryNote(models.Model):
     show_product_information = fields.Boolean(compute='_compute_boolean_flags')
 
     @api.multi
-    @api.depends('name', 'partner_id', 'partner_id.display_name')
+    @api.depends('name', 'partner_id', 'partner_ref', 'partner_id.display_name')
     def _compute_display_name(self):
         for note in self:
             if not note.name:
