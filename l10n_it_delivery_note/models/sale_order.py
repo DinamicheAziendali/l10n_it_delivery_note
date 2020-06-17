@@ -18,7 +18,7 @@ class SaleOrder(models.Model):
     default_transport_method_id = fields.Many2one('stock.picking.transport.method', string=_("Method of transport"), default=False)
 
     @api.onchange('partner_id')
-    def onchange_partner_id(self):
+    def onchange_partner_id_shipping_info(self):
         if self.partner_id:
             values = {
                 'default_transport_condition_id': self.partner_id.default_transport_condition_id,
@@ -34,6 +34,7 @@ class SaleOrder(models.Model):
                 'default_transport_reason_id': False,
                 'default_transport_method_id': False,
             }
+
         self.update(values)
 
     @api.multi
