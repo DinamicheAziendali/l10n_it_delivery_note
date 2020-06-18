@@ -206,6 +206,8 @@ class StockDeliveryNote(models.Model):
 
     can_change_number = fields.Boolean(compute='_compute_boolean_flags')
     show_product_information = fields.Boolean(compute='_compute_boolean_flags')
+    company_id = fields.Many2one('res.company', required=True,
+                                 default=lambda self: self.env.company)
 
     @api.multi
     @api.depends('name', 'partner_id', 'partner_ref', 'partner_id.display_name')
