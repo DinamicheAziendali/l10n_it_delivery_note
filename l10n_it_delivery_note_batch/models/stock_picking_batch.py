@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo import api, fields, models
+# from odoo.exceptions import UserError
+
 
 class StockPickingBatch(models.Model):
     _inherit = "stock.picking.batch"
 
     delivery_note_ids = fields.One2many(
-            'stock.delivery.note', 'stock_picking_batch_id', string='Delivery Notes', copy=False)
+        'stock.delivery.note', 'stock_picking_batch_id',
+        string='Delivery Notes', copy=False)
 
-    delivery_note_count = fields.Integer(compute='_compute_delivery_note_count')
+    delivery_note_count = \
+        fields.Integer(compute='_compute_delivery_note_count')
 
     @api.multi
     def _compute_delivery_note_count(self):
@@ -21,18 +24,21 @@ class StockPickingBatch(models.Model):
     def create_delivery_notes(self, **kwargs):
         for rec in self:
             if rec.state != 'done':
-                # TODO check state - when are we allowed to create draft delivery notes?
+                # TODO check state - when are we allowed to
+                # create draft delivery notes?
                 pass
 
             # select only pickings that don't already have a delivery note
             # TODO state check on individual pickings?
-            pickings = self.mapped('picking_ids').search([('delivery_note_id', '=', False), ('batch_id', '=', rec.id)])
+            pickings = self.mapped('picking_ids').search(
+                [('delivery_note_id', '=', False), ('batch_id', '=', rec.id)])
 
             # poor man's group by - group by homogeneous pickings
             todo_list = {}
             for p in pickings:
                 key = tuple(p.id for p in p.get_partners())
-                todo_list[key] = todo_list.get(key, self.env['stock.picking']) | p
+                todo_list[key] = todo_list.get(key,
+                                               self.env['stock.picking']) | p
 
             for partner_ids, pickings in todo_list.items():
                 dn = self.env['stock.delivery.note'].create({
@@ -48,14 +54,17 @@ class StockPickingBatch(models.Model):
     @api.multi
     def goto_delivery_notes(self, **kwargs):
         delivery_notes = self.mapped('delivery_note_ids')
-        action = self.env.ref('l10n_it_delivery_note.stock_delivery_note_action').read()[0]
+        action = self.env.ref(
+            'l10n_it_delivery_note.stock_delivery_note_action').read()[0]
         action.update(kwargs)
 
         if len(delivery_notes) > 1:
             action['domain'] = [('id', 'in', delivery_notes.ids)]
 
         elif len(delivery_notes) == 1:
-            action['views'] = [(self.env.ref('l10n_it_delivery_note.stock_delivery_note_form_view').id, 'form')]
+            action['views'] = [(self.env.ref(
+                'l10n_it_delivery_note.stock_delivery_note_form_view').id,
+                                'form')]
             action['res_id'] = delivery_notes.id
 
         else:

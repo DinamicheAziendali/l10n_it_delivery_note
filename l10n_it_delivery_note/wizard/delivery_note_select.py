@@ -9,12 +9,17 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
     _inherit = 'stock.delivery.note.base.wizard'
     _description = "Delivery note selector"
 
-    delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), required=True)
+    delivery_note_id = \
+        fields.Many2one('stock.delivery.note',
+                        string=_("Delivery note"), required=True)
 
-    partner_shipping_id = fields.Many2one('res.partner', related='delivery_note_id.partner_shipping_id')
+    partner_shipping_id = \
+        fields.Many2one('res.partner',
+                        related='delivery_note_id.partner_shipping_id')
 
     date = fields.Date(related='delivery_note_id.date')
-    type_id = fields.Many2one('stock.delivery.note.type', related='delivery_note_id.type_id')
+    type_id = fields.Many2one('stock.delivery.note.type',
+                              related='delivery_note_id.type_id')
 
     picking_ids = fields.Many2many('stock.picking', compute='_compute_fields')
 
@@ -35,7 +40,9 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
 
     def confirm(self):
         self.check_compliance(self.picking_ids)
-        self.selected_picking_ids.write({'delivery_note_id': self.delivery_note_id.id})
+        self.selected_picking_ids.write(
+            {'delivery_note_id': self.delivery_note_id.id})
 
-        if self.user_has_groups('l10n_it_delivery_note.use_advanced_delivery_notes'):
+        if self.user_has_groups(
+                'l10n_it_delivery_note.use_advanced_delivery_notes'):
             return self.delivery_note_id.goto()

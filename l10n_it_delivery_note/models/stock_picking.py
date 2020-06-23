@@ -1,4 +1,5 @@
-# Copyright 2014-2019 Dinamiche Aziendali srl (http://www.dinamicheaziendali.it/)
+# Copyright 2014-2019 Dinamiche Aziendali srl
+# (http://www.dinamicheaziendali.it/)
 # @author: Marco Calcagni <mcalcagni@dinamicheaziendali.it>
 # @author: Gianmarco Conte <gconte@dinamicheaziendali.it>
 # Copyright (c) 2019, Link IT Europe Srl
@@ -18,40 +19,63 @@ class StockPicking(models.Model):
     _name = 'stock.picking'
     _inherit = ['stock.picking', 'shipping.information.updater.mixin']
 
-    delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), copy=False)
-    delivery_note_sequence_id = fields.Many2one('ir.sequence', related='delivery_note_id.sequence_id')
-    delivery_note_state = fields.Selection(related='delivery_note_id.state', string="Delivery Note State")
-    delivery_note_partner_ref = fields.Char(related='delivery_note_id.partner_ref')
-    delivery_note_partner_shipping_id = fields.Many2one('res.partner', related='delivery_note_id.partner_shipping_id')
+    delivery_note_id = fields.Many2one('stock.delivery.note',
+                                       string=_("Delivery note"), copy=False)
+    delivery_note_sequence_id = \
+        fields.Many2one('ir.sequence', related='delivery_note_id.sequence_id')
+    delivery_note_state = fields.Selection(related='delivery_note_id.state',
+                                           string="Delivery Note State")
+    delivery_note_partner_ref = fields.Char(
+        related='delivery_note_id.partner_ref')
+    delivery_note_partner_shipping_id = \
+        fields.Many2one('res.partner',
+                        related='delivery_note_id.partner_shipping_id')
 
-    delivery_note_carrier_id = fields.Many2one('res.partner', related='delivery_note_id.carrier_id')
-    delivery_method_id = fields.Many2one('delivery.carrier', related='delivery_note_id.delivery_method_id')
+    delivery_note_carrier_id = \
+        fields.Many2one('res.partner', related='delivery_note_id.carrier_id')
+    delivery_method_id = \
+        fields.Many2one('delivery.carrier',
+                        related='delivery_note_id.delivery_method_id')
 
-    delivery_note_type_id = fields.Many2one('stock.delivery.note.type', related='delivery_note_id.type_id')
-    delivery_note_type_code = fields.Selection(related='delivery_note_type_id.code')
-    delivery_note_date = fields.Date(related='delivery_note_id.date', string="Delivery Note Date")
+    delivery_note_type_id = fields.Many2one('stock.delivery.note.type',
+                                            related='delivery_note_id.type_id')
+    delivery_note_type_code = fields.Selection(
+        related='delivery_note_type_id.code')
+    delivery_note_date = fields.Date(related='delivery_note_id.date',
+                                     string="Delivery Note Date")
     delivery_note_note = fields.Html(related='delivery_note_id.note')
 
-    transport_condition_id = fields.Many2one('stock.picking.transport.condition',
-                                             related='delivery_note_id.transport_condition_id')
-    goods_appearance_id = fields.Many2one('stock.picking.goods.appearance',
-                                          related='delivery_note_id.goods_appearance_id')
-    transport_reason_id = fields.Many2one('stock.picking.transport.reason',
-                                          related='delivery_note_id.transport_reason_id')
-    transport_method_id = fields.Many2one('stock.picking.transport.method',
-                                          related='delivery_note_id.transport_method_id')
+    transport_condition_id = fields.Many2one(
+        'stock.picking.transport.condition',
+        related='delivery_note_id.transport_condition_id')
+    goods_appearance_id = \
+        fields.Many2one('stock.picking.goods.appearance',
+                        related='delivery_note_id.goods_appearance_id')
+    transport_reason_id = \
+        fields.Many2one('stock.picking.transport.reason',
+                        related='delivery_note_id.transport_reason_id')
+    transport_method_id = \
+        fields.Many2one('stock.picking.transport.method',
+                        related='delivery_note_id.transport_method_id')
 
-    transport_datetime = fields.Datetime(related='delivery_note_id.transport_datetime')
+    transport_datetime = fields.Datetime(
+        related='delivery_note_id.transport_datetime')
 
     parcels = fields.Integer(related='delivery_note_id.parcels')
     delivery_note_volume = fields.Float(related='delivery_note_id.volume')
-    delivery_note_volume_uom_id = fields.Many2one('uom.uom', related='delivery_note_id.volume_uom_id')
+    delivery_note_volume_uom_id = \
+        fields.Many2one('uom.uom', related='delivery_note_id.volume_uom_id')
     gross_weight = fields.Float(related='delivery_note_id.gross_weight')
-    gross_weight_uom_id = fields.Many2one('uom.uom', related='delivery_note_id.gross_weight_uom_id')
+    gross_weight_uom_id = \
+        fields.Many2one('uom.uom',
+                        related='delivery_note_id.gross_weight_uom_id')
     net_weight = fields.Float(related='delivery_note_id.net_weight')
-    net_weight_uom_id = fields.Many2one('uom.uom', related='delivery_note_id.net_weight_uom_id')
+    net_weight_uom_id = \
+        fields.Many2one('uom.uom',
+                        related='delivery_note_id.net_weight_uom_id')
 
-    valid_move_ids = fields.One2many('stock.move', 'picking_id', domain=[('state', '!=', CANCEL_MOVE_STATE)])
+    valid_move_ids = fields.One2many('stock.move', 'picking_id', domain=[
+        ('state', '!=', CANCEL_MOVE_STATE)])
     picking_type_code = fields.Selection(related='picking_type_id.code')
 
     use_delivery_note = fields.Boolean(compute='_compute_boolean_flags')
@@ -79,10 +103,12 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_boolean_flags(self):
         from_delivery_note = self.env.context.get('from_delivery_note')
-        use_advanced_behaviour = self.user_has_groups('l10n_it_delivery_note.use_advanced_delivery_notes')
+        use_advanced_behaviour = self.user_has_groups(
+            'l10n_it_delivery_note.use_advanced_delivery_notes')
 
         for picking in self:
-            picking.use_delivery_note = not from_delivery_note and picking.state == DONE_PICKING_STATE
+            picking.use_delivery_note = not from_delivery_note \
+                                        and picking.state == DONE_PICKING_STATE
 
             picking.delivery_note_visible = use_advanced_behaviour
             picking.use_advanced_behaviour = use_advanced_behaviour
@@ -92,39 +118,54 @@ class StockPicking(models.Model):
 
             if picking.use_delivery_note and picking.delivery_note_id:
                 picking.delivery_note_exists = True
-                picking.delivery_note_draft = (picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[0])
-                picking.delivery_note_readonly = (picking.delivery_note_id.state == DOMAIN_DELIVERY_NOTE_STATES[3])
-                picking.can_be_invoiced = bool(picking.delivery_note_id.sale_ids)
+                picking.delivery_note_draft = \
+                    (picking.delivery_note_id.state ==
+                     DOMAIN_DELIVERY_NOTE_STATES[0])
+                picking.delivery_note_readonly = \
+                    (picking.delivery_note_id.state ==
+                     DOMAIN_DELIVERY_NOTE_STATES[3])
+                picking.can_be_invoiced = bool(
+                    picking.delivery_note_id.sale_ids)
 
     @api.onchange('delivery_note_type_id')
     def _onchange_delivery_note_type(self):
         if self.delivery_note_type_id:
-            if self.delivery_note_id.name and self.delivery_note_type_id.sequence_id != self.delivery_note_sequence_id:
+            if self.delivery_note_id.name and \
+                            self.delivery_note_type_id.sequence_id != \
+                            self.delivery_note_sequence_id:
                 raise UserError(_("You cannot set this delivery note type due"
                                   " of a different numerator configuration."))
 
-            if self._update_generic_shipping_information(self.delivery_note_type_id):
+            if self._update_generic_shipping_information(
+                    self.delivery_note_type_id):
                 return {
                     'warning': {
                         'title': _("Warning!"),
-                        'message': "Some of the shipping configuration have been overwritten with"
-                                   " the default ones of the selected delivery note type.\n"
-                                   "Please, make sure to check this information before continuing."
+                        'message': "Some of the shipping configuration have "
+                                   "been overwritten with"
+                                   " the default ones of the selected "
+                                   "delivery note type.\n"
+                                   "Please, make sure to check this "
+                                   "information before continuing."
                     }
                 }
 
     @api.onchange('delivery_note_partner_shipping_id')
     def _onchange_delivery_note_partner_shipping(self):
         if self.delivery_note_partner_shipping_id:
-            changed = self._update_partner_shipping_information(self.delivery_note_partner_shipping_id)
+            changed = self._update_partner_shipping_information(
+                self.delivery_note_partner_shipping_id)
 
             if changed:
                 return {
                     'warning': {
                         'title': _("Warning!"),
-                        'message': "Some of the shipping configuration have been overwritten with"
-                                   " the default ones of the selected shipping partner address.\n"
-                                   "Please, make sure to check this information before continuing."
+                        'message': "Some of the shipping configuration have "
+                                   "been overwritten with"
+                                   " the default ones of the selected shipping"
+                                   " partner address.\n"
+                                   "Please, make sure to check this "
+                                   "information before continuing."
                     }
                 }
 
@@ -134,7 +175,8 @@ class StockPicking(models.Model):
     def _add_delivery_cost_to_so(self):
         self.ensure_one()
 
-        super(StockPicking, self.with_context(default_delivery_picking_id=self.id))._add_delivery_cost_to_so()
+        super(StockPicking, self.with_context(
+            default_delivery_picking_id=self.id))._add_delivery_cost_to_so()
 
     def action_delivery_note_create(self):
         self.ensure_one()
@@ -198,7 +240,8 @@ class StockPicking(models.Model):
         res = super().action_done()
 
         if self.picking_type_code != DOMAIN_PICKING_TYPES[0] and \
-           not self.user_has_groups('l10n_it_delivery_note.use_advanced_delivery_notes'):
+                not self.user_has_groups(
+                    'l10n_it_delivery_note.use_advanced_delivery_notes'):
             partners = self.get_partners()
 
             self.delivery_note_id = self.env['stock.delivery.note'].create({
@@ -218,20 +261,27 @@ class StockPicking(models.Model):
         partner_id = self.mapped('partner_id')
 
         if len(partner_id) != 1 and self.location_dest_id.usage == 'customer':
-            raise ValueError("You have just called this method on an heterogeneous set of pickings.\n"
-                             "All pickings should have the same 'partner_id' field value.")
+            raise ValueError(
+                "You have just called this method on an heterogeneous set "
+                "of pickings.\n"
+                "All pickings should have the same 'partner_id' field value.")
 
         src_location_id = self.mapped('location_id')
 
         if len(src_location_id) != 1:
-            raise ValueError("You have just called this method on an heterogeneous set of pickings.\n"
-                             "All pickings should have the same 'location_id' field value.")
+            raise ValueError(
+                "You have just called this method on an heterogeneous set "
+                "of pickings.\n"
+                "All pickings should have the same 'location_id' field value.")
 
         dest_location_id = self.mapped('location_dest_id')
 
         if len(dest_location_id) != 1:
-            raise ValueError("You have just called this method on an heterogeneous set of pickings.\n"
-                             "All pickings should have the same 'location_dest_id' field value.")
+            raise ValueError(
+                "You have just called this method on an heterogeneous "
+                "set of pickings.\n"
+                "All pickings should have the same 'location_dest_id' "
+                "field value.")
 
         src_warehouse_id = src_location_id.get_warehouse()
         dest_warehouse_id = dest_location_id.get_warehouse()
@@ -243,7 +293,9 @@ class StockPicking(models.Model):
             src_partner_id = partner_id
 
             if not dest_partner_id:
-                raise ValueError("Fields 'src_partner_id' and 'dest_partner_id' cannot be both unset.")
+                raise ValueError(
+                    "Fields 'src_partner_id' and 'dest_partner_id' "
+                    "cannot be both unset.")
 
         elif not dest_partner_id:
             dest_partner_id = partner_id
@@ -271,7 +323,9 @@ class StockPicking(models.Model):
         note_fields = self._delivery_note_fields
 
         if any(key in note_fields for key in vals.keys()):
-            delivery_note_vals = {note_fields[key].related[1]: value for key, value in vals.items() if key in note_fields}
+            delivery_note_vals = {note_fields[key].related[1]: value for
+                                  key, value in vals.items() if
+                                  key in note_fields}
 
             self.mapped('delivery_note_id').write(delivery_note_vals)
 

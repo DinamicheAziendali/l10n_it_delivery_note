@@ -1,4 +1,5 @@
-# Copyright 2014-2019 Dinamiche Aziendali srl (http://www.dinamicheaziendali.it/)
+# Copyright 2014-2019 Dinamiche Aziendali srl
+# (http://www.dinamicheaziendali.it/)
 # @author: Marco Calcagni <mcalcagni@dinamicheaziendali.it>
 # @author: Gianmarco Conte <gconte@dinamicheaziendali.it>
 # Copyright (c) 2019, Link IT Europe Srl
@@ -11,8 +12,8 @@
     'summary': "Crea, gestisci e fattura i DdT partendo dalle Consegne",
 
     'author': "Marco Calcagni, Gianmarco Conte, Link IT Europe Srl",
-    'website': "http://www.dinamicheaziendali.it/",
-
+    'website': 'https://github.com/OCA/l10n-italy/tree/12.0/'
+               'l10n_it_delivery_note',
     'version': '12.0.1.0.0',
     'category': "Localization",
 

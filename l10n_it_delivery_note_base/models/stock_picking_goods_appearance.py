@@ -1,4 +1,5 @@
-# Copyright 2014-2019 Dinamiche Aziendali srl (http://www.dinamicheaziendali.it/)
+# Copyright 2014-2019 Dinamiche Aziendali srl
+# (http://www.dinamicheaziendali.it/)
 # @author: Marco Calcagni <mcalcagni@dinamicheaziendali.it>
 # @author: Gianmarco Conte <gconte@dinamicheaziendali.it>
 # @author: Giuseppe Borruso <gborruso@dinamicheaziendali.it>
@@ -14,7 +15,8 @@ class StockPickingGoodsAppearance(models.Model):
 
     active = fields.Boolean(string=_("Active"), default=True)
     sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
-    name = fields.Char(string=_("Appearance name"), index=True, required=True, translate=True)
+    name = fields.Char(string=_("Appearance name"), index=True,
+                       required=True, translate=True)
     note = fields.Html(string=_("Internal note"))
 
     _sql_constraints = [(

@@ -1,4 +1,5 @@
-# Copyright 2014-2019 Dinamiche Aziendali srl (http://www.dinamicheaziendali.it/)
+# Copyright 2014-2019 Dinamiche Aziendali srl
+# (http://www.dinamicheaziendali.it/)
 # @author: Marco Calcagni <mcalcagni@dinamicheaziendali.it>
 # @author: Gianmarco Conte <gconte@dinamicheaziendali.it>
 # @author: Giuseppe Borruso <gborruso@dinamicheaziendali.it>
@@ -21,7 +22,8 @@ class StockPickingTransportCondition(models.Model):
 
     active = fields.Boolean(string=_("Active"), default=True)
     sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
-    name = fields.Char(string=_("Condition name"), index=True, required=True, translate=True)
+    name = fields.Char(string=_("Condition name"), index=True,
+                       required=True, translate=True)
     price_to_show = fields.Selection(PRICES_TO_SHOW,
                                      string=_("Price to show"),
                                      required=True,

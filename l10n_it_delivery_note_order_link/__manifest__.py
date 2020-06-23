@@ -1,4 +1,5 @@
-# Copyright 2014-2019 Dinamiche Aziendali srl (http://www.dinamicheaziendali.it/)
+# Copyright 2014-2019 Dinamiche Aziendali srl
+# (http://www.dinamicheaziendali.it/)
 # @author: Andrea Piovesana <andrea.m.piovesana@gmail.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
@@ -7,7 +8,8 @@
     'name': 'ITA - Documento di Trasporto link from purchase order',
     'summary': 'Delivery Note link from purchase order',
     'author': 'Openindustry.it Sas',
-    'website': 'https://openindustry.it/',
+    'website': "https://github.com/OCA/l10n-italy/tree/12.0/"
+               "l10n_it_delivery_note_order_link",
     'version': '12.0.1.0.0',
     'category': 'Localization',
     'depends': [

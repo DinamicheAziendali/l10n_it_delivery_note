@@ -117,6 +117,7 @@ Contributors
 * Marco Calcagni <mcalcagni@dinamicheaziendali.it>
 * Marco Colombo <marco.colombo@gmail.com>
 * Gianmarco Conte <gconte@dinamicheaziendali.it>
+* Letizia Freda <letizia.freda@netfarm.it>
 * Andrea Piovesana <andrea.m.piovesana@gmail.com>
 
 Maintainers

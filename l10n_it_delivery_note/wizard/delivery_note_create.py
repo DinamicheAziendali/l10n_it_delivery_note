@@ -20,15 +20,19 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
         if picking_ids:
             type_code = picking_ids[0].picking_type_id.code
 
-            return self.env['stock.delivery.note.type'].search([('code', '=', type_code)], limit=1)
+            return self.env['stock.delivery.note.type'].search(
+                [('code', '=', type_code)], limit=1)
 
         else:
-            return self.env['stock.delivery.note.type'].search([('code', '=', 'outgoing')], limit=1)
+            return self.env['stock.delivery.note.type'].search(
+                [('code', '=', 'outgoing')], limit=1)
 
     partner_shipping_id = fields.Many2one('res.partner', required=True)
 
     date = fields.Date(default=_default_date)
-    type_id = fields.Many2one('stock.delivery.note.type', default=_default_type, required=True)
+    type_id = fields.Many2one('stock.delivery.note.type',
+                              default=_default_type,
+                              required=True)
 
     @api.model
     def check_compliance(self, pickings):
@@ -54,21 +58,30 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
             'date': self.date,
 
             'delivery_method_id': self.partner_id.property_delivery_carrier_id.id,
-            'transport_condition_id': sale_order_id and sale_order_id.default_transport_condition_id.id or
-                                      self.partner_id.default_transport_condition_id.id or
-                                      self.type_id.default_transport_condition_id.id,
-            'goods_appearance_id': sale_order_id and sale_order_id.default_goods_appearance_id.id or
-                                   self.partner_id.default_goods_appearance_id.id or
-                                   self.type_id.default_goods_appearance_id.id,
-            'transport_reason_id': sale_order_id and sale_order_id.default_transport_reason_id.id or
-                                   self.partner_id.default_transport_reason_id.id or
-                                   self.type_id.default_transport_reason_id.id,
-            'transport_method_id': sale_order_id and sale_order_id.default_transport_method_id.id or
-                                   self.partner_id.default_transport_method_id.id or
-                                   self.type_id.default_transport_method_id.id
+            'transport_condition_id':
+                sale_order_id and
+                sale_order_id.default_transport_condition_id.id or
+                self.partner_id.default_transport_condition_id.id or
+                self.type_id.default_transport_condition_id.id,
+            'goods_appearance_id':
+                sale_order_id and
+                sale_order_id.default_goods_appearance_id.id or
+                self.partner_id.default_goods_appearance_id.id or
+                self.type_id.default_goods_appearance_id.id,
+            'transport_reason_id':
+                sale_order_id and
+                sale_order_id.default_transport_reason_id.id or
+                self.partner_id.default_transport_reason_id.id or
+                self.type_id.default_transport_reason_id.id,
+            'transport_method_id':
+                sale_order_id and
+                sale_order_id.default_transport_method_id.id or
+                self.partner_id.default_transport_method_id.id or
+                self.type_id.default_transport_method_id.id
         })
 
         self.selected_picking_ids.write({'delivery_note_id': delivery_note.id})
 
-        if self.user_has_groups('l10n_it_delivery_note.use_advanced_delivery_notes'):
+        if self.user_has_groups(
+                'l10n_it_delivery_note.use_advanced_delivery_notes'):
             return delivery_note.goto()
