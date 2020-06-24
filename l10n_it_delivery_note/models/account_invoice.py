@@ -1,4 +1,5 @@
-# Copyright 2014-2019 Dinamiche Aziendali srl (http://www.dinamicheaziendali.it/)
+# Copyright 2014-2019 Dinamiche Aziendali srl
+# (http://www.dinamicheaziendali.it/)
 # @author: Marco Calcagni <mcalcagni@dinamicheaziendali.it>
 # @author: Gianmarco Conte <gconte@dinamicheaziendali.it>
 # Copyright (c) 2019, Link IT Europe Srl
@@ -13,14 +14,15 @@ from .stock_delivery_note import DATETIME_FORMAT
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
-    delivery_note_ids = fields.Many2many('stock.delivery.note',
-                                         'stock_delivery_note_account_invoice_rel',
-                                         'invoice_id',
-                                         'delivery_note_id',
-                                         string=_("Delivery notes"),
-                                         copy=False)
+    delivery_note_ids = \
+        fields.Many2many('stock.delivery.note',
+                         'stock_delivery_note_account_invoice_rel',
+                         'invoice_id',
+                         'delivery_note_id',
+                         string=_("Delivery notes"), copy=False)
 
-    delivery_note_count = fields.Integer(compute='_compute_delivery_note_count')
+    delivery_note_count = \
+        fields.Integer(compute='_compute_delivery_note_count')
 
     @api.multi
     def _compute_delivery_note_count(self):
@@ -30,14 +32,17 @@ class AccountInvoice(models.Model):
     @api.multi
     def goto_delivery_notes(self, **kwargs):
         delivery_notes = self.mapped('delivery_note_ids')
-        action = self.env.ref('l10n_it_delivery_note.stock_delivery_note_action').read()[0]
+        action = self.env.ref
+        ('l10n_it_delivery_note.stock_delivery_note_action').read()[0]
         action.update(kwargs)
 
         if len(delivery_notes) > 1:
             action['domain'] = [('id', 'in', delivery_notes.ids)]
 
         elif len(delivery_notes) == 1:
-            action['views'] = [(self.env.ref('l10n_it_delivery_note.stock_delivery_note_form_view').id, 'form')]
+            action['views'] = \
+                [(self.env.ref('l10n_it_delivery_note.'
+                               'stock_delivery_note_form_view').id, 'form')]
             action['res_id'] = delivery_notes.id
 
         else:
@@ -71,16 +76,17 @@ class AccountInvoice(models.Model):
 
         for invoice in self.filtered(lambda i: i.delivery_note_ids):
             new_lines = []
-            old_lines = invoice.invoice_line_ids.filtered(lambda l: l.delivery_note_id)
+            old_lines = \
+                invoice.invoice_line_ids.filtered(lambda l: l.delivery_note_id)
             old_lines.unlink()
 
             #
             # TODO: Come bisogna comportarsi nel caso in
             #        cui il DdT non sia un DdT "valido"?
             #       Al momento, potrebbe essere possibile avere
-            #        sia sei DdT senza numero (non ancora confermati)
-            #        così come è possibile avere dei DdT senza, necessariamente,
-            #        data di trasporto (non è un campo obbligatorio).
+            #       sia sei DdT senza numero (non ancora confermati)
+            #       così come è possibile avere dei DdT senza, necessariamente,
+            #       data di trasporto (non è un campo obbligatorio).
             #
 
             #
@@ -94,7 +100,9 @@ class AccountInvoice(models.Model):
                 new_lines.append((0, False, {
                     'sequence': 99,
                     'display_type': 'line_note',
-                    'name': _("""Delivery note "{}" of {}""").format(note.name, note.date.strftime(DATETIME_FORMAT)),
+                    'name':
+                        _("""Delivery note "{}" of {}""").
+                        format(note.name, note.date.strftime(DATETIME_FORMAT)),
                     'delivery_note_id': note.id
                 }))
 
@@ -104,4 +112,6 @@ class AccountInvoice(models.Model):
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
 
-    delivery_note_id = fields.Many2one('stock.delivery.note', string=_("Delivery note"), readonly=True, copy=False)
+    delivery_note_id = fields.Many2one('stock.delivery.note',
+                                       string=_("Delivery note"),
+                                       readonly=True, copy=False)

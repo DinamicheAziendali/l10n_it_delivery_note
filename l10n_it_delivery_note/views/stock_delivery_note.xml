@@ -102,6 +102,7 @@
                     </div>
                     <group>
                         <group>
+                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                             <field name="partner_sender_id" attrs="{'readonly': [('pickings_picker', '!=', [])]}" />
                             <field name="partner_id" attrs="{'readonly': [('pickings_picker', '!=', [])]}" />
                             <field name="partner_shipping_id" />
@@ -316,6 +317,7 @@
                 <field name="date" />
                 <field name="state" />
                 <field name="type_code" />
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>

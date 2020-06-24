@@ -195,10 +195,13 @@
                             <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
                                 <t t-if="not line.display_type">
                                     <td>
-                                        <span t-field="line.product_id" />
+                                        <span t-field="line.product_id.default_code" />
                                     </td>
                                     <td>
                                         <span t-field="line.name" />
+                                        <t t-foreach="line.product_id.attribute_value_ids" t-as="attrib_value">
+                                          <span t-esc=" '%s: %s' % (attrib_value.attribute_id.name,attrib_value.name)"/>
+                                        </t>
                                     </td>
                                     <td class="text-right">
                                         <span t-field="line.product_qty" />

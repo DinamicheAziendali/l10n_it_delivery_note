@@ -15,11 +15,16 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
 
         return self.env['stock.picking'].browse(active_ids)
 
-    selected_picking_ids = fields.Many2many('stock.picking', default=_default_stock_pickings, readonly=True)
+    selected_picking_ids = fields.Many2many('stock.picking',
+                                            default=_default_stock_pickings,
+                                            readonly=True)
 
-    partner_sender_id = fields.Many2one('res.partner', string=_("Sender"), compute='_compute_fields')
-    partner_id = fields.Many2one('res.partner', string=_("Recipient"), compute='_compute_fields')
-    partner_shipping_id = fields.Many2one('res.partner', string=_("Shipping address"))
+    partner_sender_id = fields.Many2one('res.partner', string=_("Sender"),
+                                        compute='_compute_fields')
+    partner_id = fields.Many2one('res.partner', string=_("Recipient"),
+                                 compute='_compute_fields')
+    partner_shipping_id = fields.Many2one('res.partner',
+                                          string=_("Shipping address"))
 
     date = fields.Date(string=_("Date"))
     type_id = fields.Many2one('stock.delivery.note.type', string=_("Type"))
@@ -58,11 +63,14 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
         except ValidationError:
             values = {
                 'title': _("Warning!"),
-                'errors': self._get_validation_errors(self.selected_picking_ids)
+                'errors':
+                    self._get_validation_errors(self.selected_picking_ids)
             }
 
             self.error_message = self.env['ir.ui.view'] \
-                .render_template('l10n_it_delivery_note.stock_delivery_note_wizard_error_message_template', values)
+                .render_template(
+                'l10n_it_delivery_note.stock_delivery_note_wizard_error_message_template',
+                values)
 
         else:
             partners = self.selected_picking_ids.get_partners()
@@ -71,4 +79,5 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
             self.partner_id = partners[1]
 
     def confirm(self):
-        raise NotImplementedError("This functionality isn't ready yet. Please, come back later.")
+        raise NotImplementedError(
+            "This functionality isn't ready yet. Please, come back later.")
