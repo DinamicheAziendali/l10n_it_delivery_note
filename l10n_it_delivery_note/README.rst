@@ -10,34 +10,35 @@ ITA - Documento di Trasporto
 .. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
     :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/github-OCA%2F/Users/mcalcagni/odoo/As400it/l10n_it_delivery_note-lightgray.png?logo=github
-    :target: https://github.com/OCA//Users/mcalcagni/odoo/As400it/l10n_it_delivery_note/tree/12.0/l10n_it_delivery_note
-    :alt: OCA//Users/mcalcagni/odoo/As400it/l10n_it_delivery_note
+.. |badge2| image:: https://img.shields.io/badge/github-OCA%2Fl10n_it_delivery_note-lightgray.png?logo=github
+    :target: https://github.com/OCA/l10n_it_delivery_note/tree/12.0/l10n_it_delivery_note
+    :alt: OCA/l10n_it_delivery_note
 .. |badge3| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects//Users/mcalcagni/odoo/As400it/l10n_it_delivery_note-12-0//Users/mcalcagni/odoo/As400it/l10n_it_delivery_note-12-0-l10n_it_delivery_note
+    :target: https://translation.odoo-community.org/projects/l10n_it_delivery_note-12-0/l10n_it_delivery_note-12-0-l10n_it_delivery_note
     :alt: Translate me on Weblate
 
 |badge1| |badge2| |badge3| 
 
+**English**
+
 This module manage the Italian DDT (Delivery note).
 
-From a Picking is possible to generate a Delivery note, group more picking in one delivery note. Is possible to invoice the Delivery note.
+From a Picking is possible to generate a Delivery note, group more picking in one delivery note. Is possible to invoice from the Delivery note form.
+
+This module is alternative to DDT :code:`l10n_it_ddt` it follow the odoo way to process sale order, picking and invoice.
+
+
+**Italiano**
 
 Questo modulo consente di gestire i DDT.
+
+Questo modulo è un alternativa al modulo DDT :code:`l10n_it_ddt` segue la modalità di odoo di gestire ordini di vendita, picking e fatture.
+Non è possibile avere installato contemporaneamente  :code:`l10n_it_ddt` e :code:`l10n_it_delivery_note`.
 
 Ci sono due impostazioni possibili:
 Base di default un picking un DDT.
 Avanzato più picking in un DDT.
 
-
-Funzionalità base.
-Quando un picking è validato si visualizza un tab DdT.
-Dal tab "Crea nuovo" si apre un wizard dove scegliere il tipo di DDT e poi conferma. Immettere i dati richiesti poi "Valida" per numerare il DDT.
-Una volta Validato il DDT è possibile emettere fattura direttamente dal DDT, se il DDT è di tipo consegna a cliente (outgoing).
-E' possibile annullare il DDT reimpostarlo in bozza e poi modificarlo. Se il DDT è fatturato il numero e data non sono modificabili.
-
-per i trasferimenti tra magazzini creare un picking di tipo interno, con i magazzini
-validato lo puoi fatturare
 
 **Table of contents**
 
@@ -68,7 +69,7 @@ Funzionalità base.
 
 Quando un picking è validato si visualizza un tab DdT.
 Dal tab "Crea nuovo" si apre un wizard dove scegliere il tipo di DDT e poi conferma. Immettere i dati richiesti poi "Valida" per numerare il DDT.
-Una volta Validato il DDT è possibile emettere fattura direttamente dal DDT, se il DDT è di tipo consegna a cliente (outgoing).
+Una volta Validato il DDT è possibile emettere fattura direttamente dal DDT, se il DDT è di tipo consegna a cliente (outgoing) e si hanno i permessi sull'utente.
 E' possibile annullare il DDT reimpostarlo in bozza e poi modificarlo. Se il DDT è fatturato il numero e data non sono modificabili.
 per i trasferimenti tra magazzini creare un picking di tipo interno, con le ubicazioni relative, validare il picking e il tab DDT viene visualizzato.
 è possibile anche avere i ddt in ingresso ovvero validato il picking si apre il tab DDT per indicare il numero DDT fornitore e data .
@@ -88,13 +89,42 @@ La visibilità dei prezzi è sui permessi dell'utente.
 
 Le fatture generate dai DDT hanno nelle righe note i riferimenti al DDT.
 
+
+Se è installato :code: “l10n_it_ddt” seguire i seguenti passi.
+
+Migrazione dei dati da “l10n_it_ddt”
+Il modulo presenta una funzione di migrazione dei dati dal modulo OCA “l10n_it_ddt” da eseguire manualmente.
+Al momento, non è ancora presente un menù oppure una voce in interfaccia che permetta di eseguire questa operazione; bensì, è stato definito un CLI da eseguire all’avvio di Odoo.
+Di seguito, una piccola lista di passi da seguire per portare a termine la migrazione:
+
+Eseguire un back-up del database.
+Questa procedura di migrazione dei dati è stata, sì, sviluppata e testata MA solamente per un numero limitato di casi.
+NON mi sento, assolutamente, confidente nel definirla una feature production-ready.
+
+
+Installare il modulo “l10n_it_delivery_note” SENZA prima disinstallare il modulo OCA “l10n_it_ddt”.
+
+NON iniziare ad usare il modulo “l10n_it_delivery_note” senza aver prima migrato i dati.
+Potrebbero verificarsi, in prima battuta, problemi legati alla numerazione dei documenti creati.
+Inoltre, la procedura di migrazione stessa, è progettata affinché verifichi non siano presenti documenti di “l10n_it_delivery_note”; qualora ne rilevi alcuni, si interromperà non eseguendo alcuna migrazione.
+
+
+Terminata l’installazione del modulo, terminate in sicurezza il processo di Odoo.
+Lanciare, nella maniera in cui si è soliti fare, Odoo aggiungendo alcuni parametri al comando d’avvio:
+
+./odoo-bin migrate_ddt_data --database <nome_database> [...]
+
+Una volta terminata l’esecuzione della procedura, verificare che tutti i documenti siano stati migrati con successo e nella maniera in cui ci si aspetterebbe.
+Verificata l’esattezza dei dati migrati, disinstallare il modulo “l10n_it_ddt”.
+È possibile iniziare ad utilizzare “l10n_it_delivery_note”.
+
 Bug Tracker
 ===========
 
-Bugs are tracked on `GitHub Issues <https://github.com/OCA//Users/mcalcagni/odoo/As400it/l10n_it_delivery_note/issues>`_.
+Bugs are tracked on `GitHub Issues <https://github.com/OCA/l10n_it_delivery_note/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us smashing it by providing a detailed and welcomed
-`feedback <https://github.com/OCA//Users/mcalcagni/odoo/As400it/l10n_it_delivery_note/issues/new?body=module:%20l10n_it_delivery_note%0Aversion:%2012.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/l10n_it_delivery_note/issues/new?body=module:%20l10n_it_delivery_note%0Aversion:%2012.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -133,6 +163,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA//Users/mcalcagni/odoo/As400it/l10n_it_delivery_note <https://github.com/OCA//Users/mcalcagni/odoo/As400it/l10n_it_delivery_note/tree/12.0/l10n_it_delivery_note>`_ project on GitHub.
+This module is part of the `OCA/l10n_it_delivery_note <https://github.com/OCA/l10n_it_delivery_note/tree/12.0/l10n_it_delivery_note>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
