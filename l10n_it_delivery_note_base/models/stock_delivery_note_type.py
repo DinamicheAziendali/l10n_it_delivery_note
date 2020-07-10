@@ -7,7 +7,7 @@
 # @author: Matteo Bilotta <mbilotta@linkeurope.it>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import _, fields, models
+from odoo import fields, models
 
 DELIVERY_NOTE_TYPE_CODES = [
     ('incoming', "Incoming"),
@@ -22,33 +22,33 @@ class StockDeliveryNoteType(models.Model):
     _description = "Delivery note type"
     _order = 'sequence, name, id'
 
-    active = fields.Boolean(string=_("Active"), default=True)
-    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
-    name = fields.Char(string=_("Name"), index=True, required=True,
+    active = fields.Boolean(string="Active", default=True)
+    sequence = fields.Integer(string="Sequence", index=True, default=10)
+    name = fields.Char(string="Name", index=True, required=True,
                        translate=True)
-    print_prices = fields.Boolean(string=_("Print prices on report"),
+    print_prices = fields.Boolean(string="Print prices on report",
                                   default=False)
     code = fields.Selection(DELIVERY_NOTE_TYPE_CODES,
-                            string=_("Type of Operation"),
+                            string="Type of Operation",
                             required=True,
                             default=DOMAIN_DELIVERY_NOTE_TYPE_CODES[1])
 
     default_transport_condition_id = fields.Many2one(
         'stock.picking.transport.condition',
-        string=_("Condition of transport"))
+        string="Condition of transport")
     default_goods_appearance_id = fields.Many2one(
-        'stock.picking.goods.appearance', string=_("Appearance of goods"))
+        'stock.picking.goods.appearance', string="Appearance of goods")
     default_transport_reason_id = fields.Many2one(
-        'stock.picking.transport.reason', string=_("Reason of transport"))
+        'stock.picking.transport.reason', string="Reason of transport")
     default_transport_method_id = fields.Many2one(
-        'stock.picking.transport.method', string=_("Method of transport"))
+        'stock.picking.transport.method', string="Method of transport")
 
     sequence_id = fields.Many2one('ir.sequence', required=True)
     next_sequence_number = fields.Integer(
         related='sequence_id.number_next_actual')
-    company_id = fields.Many2one('res.company', string=_("Company"),
+    company_id = fields.Many2one('res.company', string="Company",
                                  default=lambda self: self.env.user.company_id)
-    note = fields.Html(string=_("Internal note"))
+    note = fields.Html(string="Internal note")
 
     _sql_constraints = [(
         'name_uniq',

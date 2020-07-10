@@ -1,8 +1,8 @@
-from odoo import _, fields, models
+from odoo import fields, models
 
 
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
     draft_delivery_note_invoicing_notify = \
-        fields.Boolean(string=_("Notify if delivery note isn't validated"))
+        fields.Boolean(string="Notify if delivery note isn't validated")

@@ -1,7 +1,7 @@
 # Copyright (c) 2019, Link IT Europe Srl
 # @author: Matteo Bilotta <mbilotta@linkeurope.it>
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 
 class StockDeliveryNoteSelectWizard(models.TransientModel):
@@ -11,7 +11,7 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
 
     delivery_note_id = \
         fields.Many2one('stock.delivery.note',
-                        string=_("Delivery note"), required=True)
+                        string="Delivery note", required=True)
 
     partner_shipping_id = \
         fields.Many2one('res.partner',

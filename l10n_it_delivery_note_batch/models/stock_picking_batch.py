@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
@@ -62,9 +61,11 @@ class StockPickingBatch(models.Model):
             action['domain'] = [('id', 'in', delivery_notes.ids)]
 
         elif len(delivery_notes) == 1:
-            action['views'] = [(self.env.ref(
-                'l10n_it_delivery_note.stock_delivery_note_form_view').id,
-                                'form')]
+            action['views'] = [(
+                self.env.ref(
+                    'l10n_it_delivery_note.stock_delivery_note_form_view'
+                ).id, 'form'
+            )]
             action['res_id'] = delivery_notes.id
 
         else:

@@ -1,7 +1,7 @@
 # Copyright (c) 2019, Link IT Europe Srl
 # @author: Matteo Bilotta <mbilotta@linkeurope.it>
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 from .stock_delivery_note import DOMAIN_INVOICE_STATUSES
 
@@ -15,16 +15,16 @@ class SaleOrder(models.Model):
 
     default_transport_condition_id = fields.Many2one(
         'stock.picking.transport.condition',
-        string=_("Condition of transport"),
+        string="Condition of transport",
         default=False)
     default_goods_appearance_id = fields.Many2one(
-        'stock.picking.goods.appearance', string=_("Appearance of goods"),
+        'stock.picking.goods.appearance', string="Appearance of goods",
         default=False)
     default_transport_reason_id = fields.Many2one(
-        'stock.picking.transport.reason', string=_("Reason of transport"),
+        'stock.picking.transport.reason', string="Reason of transport",
         default=False)
     default_transport_method_id = fields.Many2one(
-        'stock.picking.transport.method', string=_("Method of transport"),
+        'stock.picking.transport.method', string="Method of transport",
         default=False)
 
     @api.onchange('partner_id')
@@ -112,9 +112,11 @@ class SaleOrder(models.Model):
             action['domain'] = [('id', 'in', delivery_notes.ids)]
 
         elif len(delivery_notes) == 1:
-            action['views'] = [(self.env.ref(
-                'l10n_it_delivery_note.stock_delivery_note_form_view').id,
-                                'form')]
+            action['views'] = [(
+                self.env.ref(
+                    'l10n_it_delivery_note.stock_delivery_note_form_view'
+                ).id, 'form'
+            )]
             action['res_id'] = delivery_notes.id
 
         else:
@@ -147,8 +149,7 @@ class SaleOrderLine(models.Model):
 
     @property
     def need_to_be_invoiced(self):
-        return self.product_uom_qty != \
-               (self.qty_to_invoice + self.qty_invoiced)
+        return self.product_uom_qty != (self.qty_to_invoice + self.qty_invoiced)
 
     def fix_qty_to_invoice(self, new_qty_to_invoice=0):
         self.ensure_one()

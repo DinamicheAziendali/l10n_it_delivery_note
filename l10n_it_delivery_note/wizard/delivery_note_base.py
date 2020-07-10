@@ -19,15 +19,15 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
                                             default=_default_stock_pickings,
                                             readonly=True)
 
-    partner_sender_id = fields.Many2one('res.partner', string=_("Sender"),
+    partner_sender_id = fields.Many2one('res.partner', string="Sender",
                                         compute='_compute_fields')
-    partner_id = fields.Many2one('res.partner', string=_("Recipient"),
+    partner_id = fields.Many2one('res.partner', string="Recipient",
                                  compute='_compute_fields')
     partner_shipping_id = fields.Many2one('res.partner',
-                                          string=_("Shipping address"))
+                                          string="Shipping address")
 
-    date = fields.Date(string=_("Date"))
-    type_id = fields.Many2one('stock.delivery.note.type', string=_("Type"))
+    date = fields.Date(string="Date")
+    type_id = fields.Many2one('stock.delivery.note.type', string="Type")
 
     error_message = fields.Html(compute='_compute_fields')
 
@@ -67,10 +67,11 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
                     self._get_validation_errors(self.selected_picking_ids)
             }
 
-            self.error_message = self.env['ir.ui.view'] \
-                .render_template(
-                'l10n_it_delivery_note.stock_delivery_note_wizard_error_message_template',
-                values)
+            self.error_message = self.env['ir.ui.view'].render_template(
+                'l10n_it_delivery_note.'
+                'stock_delivery_note_wizard_error_message_template',
+                values
+            )
 
         else:
             partners = self.selected_picking_ids.get_partners()

@@ -5,7 +5,7 @@
 # @author: Giuseppe Borruso <gborruso@dinamicheaziendali.it>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import _, fields, models
+from odoo import fields, models
 
 
 class StockPickingGoodsAppearance(models.Model):
@@ -13,11 +13,11 @@ class StockPickingGoodsAppearance(models.Model):
     _description = "Appearance of goods"
     _order = 'sequence, name, id'
 
-    active = fields.Boolean(string=_("Active"), default=True)
-    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
-    name = fields.Char(string=_("Appearance name"), index=True,
+    active = fields.Boolean(string="Active", default=True)
+    sequence = fields.Integer(string="Sequence", index=True, default=10)
+    name = fields.Char(string="Appearance name", index=True,
                        required=True, translate=True)
-    note = fields.Html(string=_("Internal note"))
+    note = fields.Html(string="Internal note")
 
     _sql_constraints = [(
         'name_uniq',

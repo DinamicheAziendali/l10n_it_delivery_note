@@ -49,7 +49,7 @@ class EasyCommand(Command):
         self.is_debugging = False
 
     def _commit(self):
-        self.env.cr.commit()
+        self.env.cr.commit()  # pylint: disable=invalid-commit
 
     def _rollback(self):
         self.env.cr.rollback()

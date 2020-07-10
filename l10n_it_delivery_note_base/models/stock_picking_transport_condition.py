@@ -5,7 +5,7 @@
 # @author: Giuseppe Borruso <gborruso@dinamicheaziendali.it>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import _, fields, models
+from odoo import fields, models
 
 PRICES_TO_SHOW = [
     ('unit', "Unit price"),
@@ -20,12 +20,12 @@ class StockPickingTransportCondition(models.Model):
     _description = "Condition of transport"
     _order = 'sequence, name, id'
 
-    active = fields.Boolean(string=_("Active"), default=True)
-    sequence = fields.Integer(string=_("Sequence"), index=True, default=10)
-    name = fields.Char(string=_("Condition name"), index=True,
+    active = fields.Boolean(string="Active", default=True)
+    sequence = fields.Integer(string="Sequence", index=True, default=10)
+    name = fields.Char(string="Condition name", index=True,
                        required=True, translate=True)
     price_to_show = fields.Selection(PRICES_TO_SHOW,
-                                     string=_("Price to show"),
+                                     string="Price to show",
                                      required=True,
                                      default=DOMAIN_PRICES_TO_SHOW[0])
 
@@ -35,7 +35,7 @@ class StockPickingTransportCondition(models.Model):
     #        solo ed esclusivamente nelle stampe del DdT?
     #
 
-    note = fields.Html(string=_("Internal note"))
+    note = fields.Html(string="Internal note")
 
     _sql_constraints = [(
         'name_uniq',

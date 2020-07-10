@@ -20,7 +20,7 @@ class StockPicking(models.Model):
     _inherit = ['stock.picking', 'shipping.information.updater.mixin']
 
     delivery_note_id = fields.Many2one('stock.delivery.note',
-                                       string=_("Delivery note"), copy=False)
+                                       string="Delivery note", copy=False)
     delivery_note_sequence_id = \
         fields.Many2one('ir.sequence', related='delivery_note_id.sequence_id')
     delivery_note_state = fields.Selection(related='delivery_note_id.state',
@@ -107,8 +107,8 @@ class StockPicking(models.Model):
             'l10n_it_delivery_note.use_advanced_delivery_notes')
 
         for picking in self:
-            picking.use_delivery_note = not from_delivery_note \
-                                        and picking.state == DONE_PICKING_STATE
+            picking.use_delivery_note = \
+                not from_delivery_note and picking.state == DONE_PICKING_STATE
 
             picking.delivery_note_visible = use_advanced_behaviour
             picking.use_advanced_behaviour = use_advanced_behaviour
@@ -130,9 +130,9 @@ class StockPicking(models.Model):
     @api.onchange('delivery_note_type_id')
     def _onchange_delivery_note_type(self):
         if self.delivery_note_type_id:
-            if self.delivery_note_id.name and \
-                            self.delivery_note_type_id.sequence_id != \
-                            self.delivery_note_sequence_id:
+            if self.delivery_note_id.name \
+                and self.delivery_note_type_id.sequence_id != \
+                    self.delivery_note_sequence_id:
                 raise UserError(_("You cannot set this delivery note type due"
                                   " of a different numerator configuration."))
 
@@ -238,17 +238,20 @@ class StockPicking(models.Model):
     @api.multi
     def action_done(self):
         res = super().action_done()
+        codes = self.mapped('picking_type_code')
 
-        if self.picking_type_code != DOMAIN_PICKING_TYPES[0] and \
+        if all(code != DOMAIN_PICKING_TYPES[0] for code in codes) and \
                 not self.user_has_groups(
                     'l10n_it_delivery_note.use_advanced_delivery_notes'):
-            partners = self.get_partners()
 
-            self.delivery_note_id = self.env['stock.delivery.note'].create({
+            partners = self.get_partners()
+            delivery_note = self.env['stock.delivery.note'].create({
                 'partner_sender_id': partners[0].id,
                 'partner_id': partners[1].id,
                 'partner_shipping_id': partners[1].id
             })
+
+            self.write({'delivery_note_id': delivery_note.id})
 
         return res
 

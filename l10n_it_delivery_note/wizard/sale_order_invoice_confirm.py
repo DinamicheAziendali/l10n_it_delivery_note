@@ -6,7 +6,7 @@ class SaleAdvancePaymentInv(models.TransientModel):
 
     @api.multi
     def create_invoices(self):
-        states = self.mapped('delivery_note_ids.state')
+        # states = self.mapped('delivery_note_ids.state')
 
         # TODO: Continuare da qui...
         #
