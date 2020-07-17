@@ -11,7 +11,7 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
     _description = "Delivery note base"
 
     def _default_stock_pickings(self):
-        active_ids = self.env.context['active_ids']
+        active_ids = self.env.context.get('active_ids', [])
 
         return self.env['stock.picking'].browse(active_ids)
 

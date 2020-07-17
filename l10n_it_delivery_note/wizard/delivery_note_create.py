@@ -15,7 +15,7 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
         return datetime.date.today()
 
     def _default_type(self):
-        active_ids = self.env.context['active_ids']
+        active_ids = self.env.context.get('active_ids', [])
         picking_ids = self.env['stock.picking'].browse(active_ids)
         if picking_ids:
             type_code = picking_ids[0].picking_type_id.code

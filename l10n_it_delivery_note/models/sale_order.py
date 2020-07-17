@@ -3,7 +3,7 @@
 
 from odoo import api, fields, models
 
-from .stock_delivery_note import DOMAIN_INVOICE_STATUSES
+from .stock_delivery_note import DOMAIN_DELIVERY_NOTE_STATES, DOMAIN_INVOICE_STATUSES
 
 
 class SaleOrder(models.Model):
@@ -13,19 +13,19 @@ class SaleOrder(models.Model):
                                          compute='_compute_delivery_notes')
     delivery_note_count = fields.Integer(compute='_compute_delivery_notes')
 
-    default_transport_condition_id = fields.Many2one(
-        'stock.picking.transport.condition',
-        string="Condition of transport",
-        default=False)
-    default_goods_appearance_id = fields.Many2one(
-        'stock.picking.goods.appearance', string="Appearance of goods",
-        default=False)
-    default_transport_reason_id = fields.Many2one(
-        'stock.picking.transport.reason', string="Reason of transport",
-        default=False)
-    default_transport_method_id = fields.Many2one(
-        'stock.picking.transport.method', string="Method of transport",
-        default=False)
+    default_transport_condition_id = \
+        fields.Many2one('stock.picking.transport.condition',
+                        string="Condition of transport",
+                        default=False)
+    default_goods_appearance_id = fields.Many2one('stock.picking.goods.appearance',
+                                                  string="Appearance of goods",
+                                                  default=False)
+    default_transport_reason_id = fields.Many2one('stock.picking.transport.reason',
+                                                  string="Reason of transport",
+                                                  default=False)
+    default_transport_method_id = fields.Many2one('stock.picking.transport.method',
+                                                  string="Method of transport",
+                                                  default=False)
 
     @api.onchange('partner_id')
     def onchange_partner_id_shipping_info(self):
@@ -54,37 +54,49 @@ class SaleOrder(models.Model):
     @api.multi
     def _compute_delivery_notes(self):
         for order in self:
-            delivery_notes = self.order_line.mapped(
-                'delivery_note_line_ids.delivery_note_id')
+            delivery_notes = self.order_line.mapped('delivery_note_line_ids.'
+                                                    'delivery_note_id')
 
             order.delivery_note_ids = delivery_notes
             order.delivery_note_count = len(delivery_notes)
 
     @api.multi
     def _assign_delivery_notes_invoices(self, invoice_ids):
-        order_lines = self.mapped('order_line').filtered(
-            lambda l: l.is_invoiced and l.delivery_note_line_ids)
-        delivery_note_lines = order_lines.mapped(
-            'delivery_note_line_ids').filtered(lambda l: l.is_invoiceable)
-        delivery_note_lines.write(
-            {'invoice_status': DOMAIN_INVOICE_STATUSES[2]})
+        order_lines = self.mapped('order_line') \
+            .filtered(lambda l: l.is_invoiced and l.delivery_note_line_ids)
 
-        #
-        # TODO #1: È necessario gestire il caso di fatturazione splittata
-        #           di una stessa riga d'ordine associata ad una sola
-        #           picking (e di conseguenza, ad un solo DdT)?
-        #          Può essere, invece, un caso "borderline"
-        #           da lasciar gestire all'operatore?
-        #          Personalmente, non lo gestirei e delegherei
-        #           all'operatore questa responsabilità...
-        #
-        # TODO #2: È necessario controllare che il DdT associato alle
-        #           righe sia stato validato prima di fatturare?
-        #
-
+        delivery_note_lines = order_lines.mapped('delivery_note_line_ids') \
+            .filtered(lambda l: l.is_invoiceable)
         delivery_notes = delivery_note_lines.mapped('delivery_note_id')
-        delivery_notes.write(
-            {'invoice_ids': [(4, invoice_id) for invoice_id in invoice_ids]})
+
+        ready_delivery_notes = delivery_notes \
+            .filtered(lambda n: n.state != DOMAIN_DELIVERY_NOTE_STATES[0])
+
+        draft_delivery_notes = delivery_notes - ready_delivery_notes
+        draft_delivery_note_lines = \
+            draft_delivery_notes.mapped('line_ids') & delivery_note_lines
+
+        ready_delivery_note_lines = delivery_note_lines - draft_delivery_note_lines
+
+        #
+        # TODO: È necessario gestire il caso di fatturazione splittata
+        #        di una stessa riga d'ordine associata ad una sola
+        #        picking (e di conseguenza, ad un solo DdT)?
+        #       Può essere, invece, un caso "borderline"
+        #        da lasciar gestire all'operatore?
+        #       Personalmente, non lo gestirei e delegherei
+        #        all'operatore questa responsabilità...
+        #
+
+        draft_delivery_note_lines.write({
+            'invoice_status': DOMAIN_INVOICE_STATUSES[0],
+            'sale_line_id': None
+        })
+
+        ready_delivery_note_lines.write({'invoice_status': DOMAIN_INVOICE_STATUSES[2]})
+        ready_delivery_notes.write({
+            'invoice_ids': [(4, invoice_id) for invoice_id in invoice_ids]
+        })
 
     @api.multi
     def _generate_delivery_note_lines(self, invoice_ids):
@@ -104,8 +116,8 @@ class SaleOrder(models.Model):
     @api.multi
     def goto_delivery_notes(self, **kwargs):
         delivery_notes = self.mapped('delivery_note_ids')
-        action = self.env.ref(
-            'l10n_it_delivery_note.stock_delivery_note_action').read()[0]
+        action = self.env.ref('l10n_it_delivery_note.'
+                              'stock_delivery_note_action').read()[0]
         action.update(kwargs)
 
         if len(delivery_notes) > 1:
@@ -139,13 +151,13 @@ class SaleOrderLine(models.Model):
 
     @property
     def is_invoiceable(self):
-        return self.invoice_status == DOMAIN_INVOICE_STATUSES[
-            1] and self.qty_to_invoice != 0
+        return self.invoice_status == DOMAIN_INVOICE_STATUSES[1] and \
+               self.qty_to_invoice != 0
 
     @property
     def is_invoiced(self):
-        return self.invoice_status != DOMAIN_INVOICE_STATUSES[
-            1] and self.qty_invoiced != 0
+        return self.invoice_status != DOMAIN_INVOICE_STATUSES[1] and \
+               self.qty_invoiced != 0
 
     @property
     def need_to_be_invoiced(self):

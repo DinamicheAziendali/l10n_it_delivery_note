@@ -289,8 +289,7 @@ class StockDeliveryNote(models.Model):
             # SMELLS: Perché solo quelli 'da fatturare'?
             #
             sales = self.mapped('picking_ids.sale_id') \
-                .filtered(
-                lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1])
+                .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1])
 
             note.sale_ids = sales
             note.sale_count = len(sales)
@@ -299,8 +298,8 @@ class StockDeliveryNote(models.Model):
             ga = sales.mapped('default_goods_appearance_id')
             tr = sales.mapped('default_transport_reason_id')
             tm = sales.mapped('default_transport_method_id')
-            note.sales_transport_check = all(
-                [len(x) < 2 for x in [tc, ga, tr, tm]])
+
+            note.sales_transport_check = all([len(x) < 2 for x in [tc, ga, tr, tm]])
 
     @api.multi
     def _compute_boolean_flags(self):
