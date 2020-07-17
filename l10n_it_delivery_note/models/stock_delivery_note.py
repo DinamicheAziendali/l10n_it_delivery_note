@@ -299,14 +299,13 @@ class StockDeliveryNote(models.Model):
 
     @api.multi
     def _compute_boolean_flags(self):
-        can_change_number = self.user_has_groups(
-            'l10n_it_delivery_note.can_change_number')
-        show_product_information = self.user_has_groups(
-            'l10n_it_delivery_note_base.show_product_related_fields')
+        can_change_number = self.user_has_groups('l10n_it_delivery_note.'
+                                                 'can_change_number')
+        show_product_information = self.user_has_groups('l10n_it_delivery_note_base.'
+                                                        'show_product_related_fields')
 
         for note in self:
-            note.can_change_number = \
-                (note.state == 'draft' and can_change_number)
+            note.can_change_number = (note.state == 'draft' and can_change_number)
             note.show_product_information = show_product_information
 
     @api.onchange('type_id')
@@ -589,7 +588,7 @@ class StockDeliveryNoteLine(models.Model):
 
     sequence = fields.Integer(string="Sequence", required=True, default=10,
                               index=True)
-    name = fields.Html(string="Description", required=True)
+    name = fields.Text(string="Description", required=True)
     display_type = fields.Selection(LINE_DISPLAY_TYPES, string="Line type",
                                     default=False)
     product_id = fields.Many2one('product.product', string="Product")

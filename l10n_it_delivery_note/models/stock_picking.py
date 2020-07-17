@@ -112,8 +112,8 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_boolean_flags(self):
         from_delivery_note = self.env.context.get('from_delivery_note')
-        use_advanced_behaviour = self.user_has_groups(
-            'l10n_it_delivery_note.use_advanced_delivery_notes')
+        use_advanced_behaviour = self.user_has_groups('l10n_it_delivery_note.'
+                                                      'use_advanced_delivery_notes')
 
         for picking in self:
             picking.use_delivery_note = \
@@ -250,8 +250,8 @@ class StockPicking(models.Model):
         codes = self.mapped('picking_type_code')
 
         if all(code != DOMAIN_PICKING_TYPES[0] for code in codes) and \
-                not self.user_has_groups(
-                    'l10n_it_delivery_note.use_advanced_delivery_notes'):
+                not self.user_has_groups('l10n_it_delivery_note.'
+                                         'use_advanced_delivery_notes'):
 
             partners = self.get_partners()
             delivery_note = self.env['stock.delivery.note'].create({

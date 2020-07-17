@@ -40,9 +40,10 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
 
     def confirm(self):
         self.check_compliance(self.picking_ids)
-        self.selected_picking_ids.write(
-            {'delivery_note_id': self.delivery_note_id.id})
+        self.selected_picking_ids.write({
+            'delivery_note_id': self.delivery_note_id.id
+        })
 
-        if self.user_has_groups(
-                'l10n_it_delivery_note.use_advanced_delivery_notes'):
+        if self.user_has_groups('l10n_it_delivery_note'
+                                '.use_advanced_delivery_notes'):
             return self.delivery_note_id.goto()

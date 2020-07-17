@@ -82,6 +82,6 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
 
         self.selected_picking_ids.write({'delivery_note_id': delivery_note.id})
 
-        if self.user_has_groups(
-                'l10n_it_delivery_note.use_advanced_delivery_notes'):
+        if self.user_has_groups('l10n_it_delivery_note.'
+                                'use_advanced_delivery_notes'):
             return delivery_note.goto()

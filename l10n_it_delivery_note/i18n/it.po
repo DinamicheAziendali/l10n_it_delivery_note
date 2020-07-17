@@ -648,7 +648,7 @@ msgstr "Riga fattura"
 #: code:addons/l10n_it_delivery_note/wizard/sale_advance_payment_inv.py:43
 #, python-format
 msgid "Invoice Order"
-msgstr "Fattura ordine"
+msgstr "Ordine fattura"
 
 #. module: l10n_it_delivery_note
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note__invoice_status
