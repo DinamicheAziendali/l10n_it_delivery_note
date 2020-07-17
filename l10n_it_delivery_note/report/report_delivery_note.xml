@@ -121,7 +121,7 @@
 
                 <div>
                     <div t-if="doc.picking_type=='outgoing'">
-                        <strong>Warehouse :</strong>
+                        <strong>Warehouse:</strong>
                         <t t-foreach="doc.picking_ids" t-as="pick">
                             <p>
                                 <t t-esc="doc.get_location_address(pick.location_id.id)"/>,

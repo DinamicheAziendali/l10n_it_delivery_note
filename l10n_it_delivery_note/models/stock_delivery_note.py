@@ -285,11 +285,7 @@ class StockDeliveryNote(models.Model):
     @api.multi
     def _compute_sales(self):
         for note in self:
-            #
-            # SMELLS: Perché solo quelli 'da fatturare'?
-            #
-            sales = note.mapped('picking_ids.sale_id') \
-                .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1])
+            sales = note.mapped('picking_ids.sale_id')
 
             note.sale_ids = sales
             note.sale_count = len(sales)
@@ -439,7 +435,9 @@ class StockDeliveryNote(models.Model):
             if order_lines.filtered(lambda l: l.need_to_be_invoiced):
                 cache[downpayment] = downpayment.fix_qty_to_invoice()
 
-        self.sale_ids.action_invoice_create(final=True)
+        self.sale_ids \
+            .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1]) \
+            .action_invoice_create(final=True)
 
         for line, vals in cache.items():
             line.write(vals)

@@ -95,9 +95,10 @@
                          role="alert">
                         <p class="text-center mb0">
                             <strong>
-                                <span class="fa fa-exclamation-triangle" /> Warning!
+                                <span class="fa fa-warning" /> Warning!
                             </strong>
-                            Inconsistent DDT info in sale orders!
+                            There are some inconsistencies in the delivery
+                            notes' information in related sales orders!
                         </p>
                     </div>
                     <group>
