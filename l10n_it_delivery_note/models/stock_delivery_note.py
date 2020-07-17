@@ -288,7 +288,7 @@ class StockDeliveryNote(models.Model):
             #
             # SMELLS: Perché solo quelli 'da fatturare'?
             #
-            sales = self.mapped('picking_ids.sale_id') \
+            sales = note.mapped('picking_ids.sale_id') \
                 .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1])
 
             note.sale_ids = sales
@@ -591,7 +591,7 @@ class StockDeliveryNoteLine(models.Model):
 
     sequence = fields.Integer(string="Sequence", required=True, default=10,
                               index=True)
-    name = fields.Text(string="Description", required=True)
+    name = fields.Html(string="Description", required=True)
     display_type = fields.Selection(LINE_DISPLAY_TYPES, string="Line type",
                                     default=False)
     product_id = fields.Many2one('product.product', string="Product")
