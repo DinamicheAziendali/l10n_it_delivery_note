@@ -70,6 +70,38 @@ class AccountInvoice(models.Model):
             **kwargs
         }
 
+    def _prepare_for_delivery_note_line(self, delivery_note):
+        index = 0
+        found = False
+        lines = self.invoice_line_ids
+        count = len(lines)
+
+        while not found and index < count:
+            order_lines = lines[index].sale_line_ids
+            note_lines = order_lines.mapped('delivery_note_line_ids')
+            notes = note_lines.mapped('delivery_note_id')
+            found = notes & delivery_note
+
+            if not found:
+                index += 1
+
+        record = {
+            'sequence': 99,
+            'display_type': 'line_note',
+            'name':
+                _("""Delivery note "{}" of {}""")
+                .format(delivery_note.name, delivery_note.date.strftime(DATE_FORMAT)),
+            'delivery_note_id': delivery_note.id
+        }
+
+        if found:
+            record['sequence'] = lines[index].sequence
+
+            for j in range(index, count):
+                lines[j].sequence += 1
+
+        return record
+
     @api.multi
     def update_delivery_note_lines(self):
         context = {}
@@ -81,15 +113,6 @@ class AccountInvoice(models.Model):
             old_lines.unlink()
 
             #
-            # TODO: Come bisogna comportarsi nel caso in
-            #        cui il DdT non sia un DdT "valido"?
-            #       Al momento, potrebbe essere possibile avere
-            #       sia sei DdT senza numero (non ancora confermati)
-            #       così come è possibile avere dei DdT senza, necessariamente,
-            #       data di trasporto (non è un campo obbligatorio).
-            #
-
-            #
             # THIS ALLOWS TO CHANGE TRANSLATION LANGUAGE FOR EVERY INVOICE!
             #
             #   See: odoo/tools/translate.py -> 'def _get_lang(self, frame):'
@@ -97,14 +120,9 @@ class AccountInvoice(models.Model):
             context['lang'] = invoice.partner_id.lang
 
             for note in invoice.delivery_note_ids:
-                new_lines.append((0, False, {
-                    'sequence': 99,
-                    'display_type': 'line_note',
-                    'name':
-                        _("""Delivery note "{}" of {}""").
-                        format(note.name, note.date.strftime(DATE_FORMAT)),
-                    'delivery_note_id': note.id
-                }))
+                record = invoice._prepare_for_delivery_note_line(note)
+
+                new_lines.append((0, False, record))
 
             invoice.write({'invoice_line_ids': new_lines})
 
