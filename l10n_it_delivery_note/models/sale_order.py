@@ -98,6 +98,8 @@ class SaleOrder(models.Model):
             'invoice_ids': [(4, invoice_id) for invoice_id in invoice_ids]
         })
 
+        ready_delivery_notes._compute_invoice_status()
+
     @api.multi
     def _generate_delivery_note_lines(self, invoice_ids):
         invoices = self.env['account.invoice'].browse(invoice_ids)

@@ -443,8 +443,6 @@ class StockDeliveryNote(models.Model):
 
         orders_lines._get_to_invoice_qty()
 
-        self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[2]})
-
     @api.multi
     def action_done(self):
         self.write({'state': DOMAIN_DELIVERY_NOTE_STATES[3]})
