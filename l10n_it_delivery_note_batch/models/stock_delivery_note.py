@@ -2,7 +2,6 @@
 # @author: Marco Colombo <marco.colombo@gmail.com>
 
 from odoo import fields, models
-# from odoo.exceptions import UserError
 
 
 class StockDeliveryNote(models.Model):

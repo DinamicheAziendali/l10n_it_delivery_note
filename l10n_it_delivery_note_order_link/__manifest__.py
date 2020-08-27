@@ -1,5 +1,4 @@
-# Copyright 2014-2019 Dinamiche Aziendali srl
-# (http://www.dinamicheaziendali.it/)
+# Copyright (c) 2019, Openindustry.it Sas
 # @author: Andrea Piovesana <andrea.m.piovesana@gmail.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
@@ -12,6 +11,7 @@
                "l10n_it_delivery_note_order_link",
     'version': '12.0.1.0.0',
     'license': 'AGPL-3',
+    'maintainers': ['As400it', 'Byloth'],
     'category': 'Localization',
     'depends': [
         'purchase_stock',

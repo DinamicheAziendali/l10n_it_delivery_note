@@ -43,18 +43,4 @@
         </field>
     </record>
 
-<!--    <record id="stock_picking_transport_reason_action" model="ir.actions.act_window">-->
-<!--        <field name="name">Reasons of transport</field>-->
-<!--        <field name="res_model">stock.picking.transport.reason</field>-->
-<!--        <field name="type">ir.actions.act_window</field>-->
-<!--        <field name="view_type">form</field>-->
-<!--        <field name="view_mode">tree,form</field>-->
-<!--    </record>-->
-
-<!--    <menuitem id="stock_picking_transport_reason_menu"-->
-<!--              parent="stock_delivery_note_config_menu"-->
-<!--              action="stock_picking_transport_reason_action"-->
-<!--              name="Reasons of transport"-->
-<!--              sequence="40" />-->
-
 </odoo>

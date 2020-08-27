@@ -7,4 +7,4 @@ class StockDeliveryNoteLine(models.Model):
 
     purchase_line_id = fields.Many2one('purchase.order.line',
                                        related='move_id.purchase_line_id',
-                                       store=True, copy=False)
+                                       store=True)

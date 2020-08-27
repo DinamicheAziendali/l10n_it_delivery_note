@@ -70,18 +70,4 @@
         </field>
     </record>
 
-<!--    <record id="stock_delivery_note_type_action" model="ir.actions.act_window">-->
-<!--        <field name="name">Delivery note types</field>-->
-<!--        <field name="res_model">stock.delivery.note.type</field>-->
-<!--        <field name="type">ir.actions.act_window</field>-->
-<!--        <field name="view_type">form</field>-->
-<!--        <field name="view_mode">tree,form</field>-->
-<!--    </record>-->
-
-<!--    <menuitem id="stock_delivery_note_type_menu"-->
-<!--              parent="stock.menu_warehouse_config"-->
-<!--              action="stock_delivery_note_type_action"-->
-<!--              name="Delivery note types"-->
-<!--              sequence="10" />-->
-
 </odoo>

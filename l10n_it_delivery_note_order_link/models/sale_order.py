@@ -1,5 +1,5 @@
-# Copyright (c) 2019, Link IT Europe Srl
-# @author: Andrea Piovesana <mbilotta@linkeurope.it>
+# Copyright (c) 2019, Openindustry.it Sas
+# @author: Andrea Piovesana <andrea.m.piovesana@gmail.com>
 
 from odoo import api, fields, models
 
