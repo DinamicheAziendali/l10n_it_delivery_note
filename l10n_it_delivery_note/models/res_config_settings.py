@@ -8,7 +8,7 @@ class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
     group_use_advanced_delivery_notes = fields.Boolean(
-        string="Use the advanced delivery notes behaviour",
+        string="Use Advanced DN Features",
         implied_group='l10n_it_delivery_note.'
                       'use_advanced_delivery_notes')
 

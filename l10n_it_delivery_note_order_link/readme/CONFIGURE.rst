@@ -1,8 +1,8 @@
 **English**
 
-To configure this module, you need only to install
+No configuration required after module installation
 
 **Italiano**
 
-Per configurare questo modulo hai bisogno solo di installarlo
+Dopo l'installazione del modulo non sono necessarie ulteriori configurazioni
 

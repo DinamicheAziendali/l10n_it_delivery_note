@@ -20,7 +20,7 @@ class StockPicking(models.Model):
     _inherit = ['stock.picking', 'shipping.information.updater.mixin']
 
     delivery_note_id = fields.Many2one('stock.delivery.note',
-                                       string="Delivery note", copy=False)
+                                       string="Delivery Note", copy=False)
     delivery_note_sequence_id = \
         fields.Many2one('ir.sequence', related='delivery_note_id.sequence_id')
     delivery_note_state = fields.Selection(related='delivery_note_id.state',
@@ -45,7 +45,7 @@ class StockPicking(models.Model):
     delivery_note_type_code = fields.Selection(
         related='delivery_note_type_id.code')
     delivery_note_date = fields.Date(related='delivery_note_id.date',
-                                     string="Delivery Note Date")
+                                     string="DN Date")
     delivery_note_note = fields.Html(related='delivery_note_id.note')
 
     transport_condition_id = fields.Many2one(
@@ -112,8 +112,8 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_boolean_flags(self):
         from_delivery_note = self.env.context.get('from_delivery_note')
-        use_advanced_behaviour = self.user_has_groups('l10n_it_delivery_note.'
-                                                      'use_advanced_delivery_notes')
+        use_advanced_behaviour = self.user_has_groups(
+            'l10n_it_delivery_note.use_advanced_delivery_notes')
 
         for picking in self:
             picking.use_delivery_note = \
@@ -250,8 +250,8 @@ class StockPicking(models.Model):
         codes = self.mapped('picking_type_code')
 
         if all(code != DOMAIN_PICKING_TYPES[0] for code in codes) and \
-                not self.user_has_groups('l10n_it_delivery_note.'
-                                         'use_advanced_delivery_notes'):
+                not self.user_has_groups(
+                    'l10n_it_delivery_note.use_advanced_delivery_notes'):
 
             partners = self.get_partners()
             delivery_note = self.env['stock.delivery.note'].create({

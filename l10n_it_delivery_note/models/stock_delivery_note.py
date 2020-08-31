@@ -46,7 +46,7 @@ class StockDeliveryNote(models.Model):
         'stock.picking.checker.mixin',
         'shipping.information.updater.mixin'
     ]
-    _description = "Delivery note"
+    _description = "Delivery Note"
     _order = 'date DESC, id DESC'
 
     def _default_company(self):
@@ -73,7 +73,7 @@ class StockDeliveryNote(models.Model):
 
         return [('category_id', '=', uom_category_id.id)]
 
-    active = fields.Boolean(string="Active", default=True)
+    active = fields.Boolean(default=True)
     name = fields.Char(string="Name", readonly=True, index=True, copy=False,
                        track_visibility='onchange')
     partner_ref = fields.Char(string="Partner reference",
@@ -134,7 +134,7 @@ class StockDeliveryNote(models.Model):
     sequence_id = fields.Many2one('ir.sequence', readonly=True, copy=False)
     type_code = fields.Selection(string="Type of Operation",
                                  related='type_id.code', store=True)
-    parcels = fields.Integer(string="Parcels", states=DONE_READONLY_STATE)
+    parcels = fields.Integer(string="Packages", states=DONE_READONLY_STATE)
     volume = fields.Float(string="Volume", states=DONE_READONLY_STATE)
 
     volume_uom_id = fields.Many2one('uom.uom',
@@ -294,18 +294,20 @@ class StockDeliveryNote(models.Model):
             ga = sales.mapped('default_goods_appearance_id')
             tr = sales.mapped('default_transport_reason_id')
             tm = sales.mapped('default_transport_method_id')
-
-            note.sales_transport_check = all([len(x) < 2 for x in [tc, ga, tr, tm]])
+            note.sales_transport_check = all([
+                len(x) < 2 for x in [tc, ga, tr, tm]
+            ])
 
     @api.multi
     def _compute_boolean_flags(self):
-        can_change_number = self.user_has_groups('l10n_it_delivery_note.'
-                                                 'can_change_number')
-        show_product_information = self.user_has_groups('l10n_it_delivery_note_base.'
-                                                        'show_product_related_fields')
+        can_change_number = self.user_has_groups(
+            'l10n_it_delivery_note.can_change_number')
+        show_product_information = self.user_has_groups(
+            'l10n_it_delivery_note_base.show_product_related_fields')
 
         for note in self:
-            note.can_change_number = (note.state == 'draft' and can_change_number)
+            note.can_change_number = \
+                (note.state == 'draft' and can_change_number)
             note.show_product_information = show_product_information
 
     @api.onchange('type_id')
@@ -435,7 +437,7 @@ class StockDeliveryNote(models.Model):
                 cache[downpayment] = downpayment.fix_qty_to_invoice()
 
         self.sale_ids \
-            .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1]) \
+            .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1])\
             .action_invoice_create(final=True)
 
         for line, vals in cache.items():
@@ -570,7 +572,7 @@ class StockDeliveryNote(models.Model):
 
 class StockDeliveryNoteLine(models.Model):
     _name = 'stock.delivery.note.line'
-    _description = "Delivery note line"
+    _description = "Delivery Note Line"
     _order = 'sequence, id'
 
     def _default_currency(self):
@@ -580,7 +582,7 @@ class StockDeliveryNoteLine(models.Model):
         return self.env.ref('uom.product_uom_unit', raise_if_not_found=False)
 
     delivery_note_id = fields.Many2one('stock.delivery.note',
-                                       string="Delivery note",
+                                       string="Delivery Note",
                                        required=True,
                                        ondelete='cascade')
 

@@ -6,7 +6,7 @@ from odoo import models
 
 class ShippingInformationUpdaterMixin(models.AbstractModel):
     _name = 'shipping.information.updater.mixin'
-    _description = "Shipping information updater mixin"
+    _description = "Shipping Information Updater Mixin"
 
     def _update_generic_shipping_information(self, record):
         changed = False

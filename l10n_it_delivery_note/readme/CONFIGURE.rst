@@ -1,13 +1,18 @@
-To configure this module, you need to:
-- Inventory -> Configuration -> Settings - Delivery note
+To configure this module, go to:
 
-Use the advanced delivery notes behaviour allow to menage more picking on one delivery note.
-- Inventory -> Configuration -> Warehouse Management -> Delivery note types
+- Inventory -> Configuration -> Settings - Delivery Notes
 
-is possible to indicate in delivery note type if the product price have to be printed in the delivery note report/slip
-- Inventory -> Configuration -> Delivery notes -> Condition of trasport
-- Inventory -> Configuration -> Delivery notes -> Appearances of goods
-- Inventory -> Configuration -> Delivery notes -> Reasons of trasport
-- Inventory -> Configuration -> Delivery notes -> Methods of trasport
+Checking 'Use Advanced DN Features' allows you to manage more picking on one delivery note.
 
-- Settings -> User & Companies -> Users - "Show product information in the delivery note lines" allow to show the price in the form
+- Inventory -> Configuration -> Warehouse Management -> Delivery Note Types
+
+In delivery note type you can specify if the product price have to be printed in the delivery note report/slip
+
+- Inventory -> Configuration -> Delivery Notes -> Conditions of Transport
+- Inventory -> Configuration -> Delivery Notes -> Appearances of Goods
+- Inventory -> Configuration -> Delivery Notes -> Reasons of Transport
+- Inventory -> Configuration -> Delivery Notes -> Methods of Transport
+
+- Settings -> User & Companies -> Users
+
+In the user profile settings, "Show product information in DN lines" allows showing prices in the form

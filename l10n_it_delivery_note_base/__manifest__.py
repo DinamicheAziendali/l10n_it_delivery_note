@@ -8,8 +8,8 @@
 #  Copyright 2015 Associazione Odoo Italia (<http://www.odoo-italia.org>)
 # noinspection PyStatementEffect
 {
-    'name': "ITA - Documento di Trasporto Base",
-    'summary': "Crea, gestisci e fattura i DdT partendo dalle Consegne",
+    'name': "ITA - Documento di trasporto - Base",
+    'summary': "Crea e gestisce tabelle principali per gestire i DDT",
 
     'author': "Marco Calcagni, Gianmarco Conte, Link IT Europe Srl, "
               "Odoo Community Association (OCA)",

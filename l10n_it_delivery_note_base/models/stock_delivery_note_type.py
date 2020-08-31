@@ -12,7 +12,7 @@ from odoo import fields, models, api
 
 class StockDeliveryNoteType(models.Model):
     _name = 'stock.delivery.note.type'
-    _description = "Delivery note type"
+    _description = "Delivery Note Type"
     _order = 'sequence, name, id'
 
     active = fields.Boolean(default=True)

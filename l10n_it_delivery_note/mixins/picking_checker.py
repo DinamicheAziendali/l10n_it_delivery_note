@@ -16,7 +16,7 @@ DOMAIN_PICKING_TYPES = [t[0] for t in PICKING_TYPES]
 
 class StockPickingCheckerMixin(models.AbstractModel):
     _name = 'stock.picking.checker.mixin'
-    _description = "Picking checker mixin"
+    _description = "Picking Checker Mixin"
 
     @api.model
     def _check_pickings(self, pickings):

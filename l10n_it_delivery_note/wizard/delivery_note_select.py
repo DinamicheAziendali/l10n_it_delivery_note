@@ -7,11 +7,11 @@ from odoo import api, fields, models
 class StockDeliveryNoteSelectWizard(models.TransientModel):
     _name = 'stock.delivery.note.select.wizard'
     _inherit = 'stock.delivery.note.base.wizard'
-    _description = "Delivery note selector"
+    _description = "Delivery Note Selector"
 
     delivery_note_id = \
         fields.Many2one('stock.delivery.note',
-                        string="Delivery note", required=True)
+                        string="Delivery Note", required=True)
 
     partner_shipping_id = \
         fields.Many2one('res.partner',
@@ -44,6 +44,6 @@ class StockDeliveryNoteSelectWizard(models.TransientModel):
             'delivery_note_id': self.delivery_note_id.id
         })
 
-        if self.user_has_groups('l10n_it_delivery_note'
-                                '.use_advanced_delivery_notes'):
+        if self.user_has_groups(
+                'l10n_it_delivery_note.use_advanced_delivery_notes'):
             return self.delivery_note_id.goto()

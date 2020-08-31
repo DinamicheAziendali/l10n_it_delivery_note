@@ -128,8 +128,8 @@
                             </p>
                         </t>
                     </div>
-                    <strong> Transport document: </strong>
-                    Ai sensi del DPR 472-96 del 14.08.1996
+                    <strong> Delivery Note: </strong>
+                    Under the terms of Italian Presidential Decree 472-96 of 14.08.1996
                 </div>
 
                 <h2>
@@ -155,7 +155,7 @@
                             <div t-field="doc.transport_condition_id" />
                         </td>
                         <td width="33%">
-                            <div name="method_trasport" style="font-size:12px;">Method of Transportation / Carrier</div>
+                            <div name="method_transport" style="font-size:12px;">Method of Transportation / Carrier</div>
                             <div t-field="doc.transport_method_id" name="transport_method_id" />
                         </td>
                     </tr>
@@ -269,11 +269,11 @@
                             <div class="text-right" style="font-size:12px;" t-field="doc.net_weight"/>
                         </td>
                         <td>
-                            <div name="trasport_date" style="font-size:10px;">Delivery note date</div>
+                            <div name="transport_date" style="font-size:10px;">DN date</div>
                             <div class="m-0" style="font-size:12px;" t-field="doc.transport_datetime"/>
                         </td>
                         <td>
-                            <div name="parcel" style="font-size:10px;">Parcels</div>
+                            <div name="parcel" style="font-size:10px;">Packages</div>
                             <div class="text-right" style="font-size:12px;" t-field="doc.parcels"/>
                         </td>
                     </tr>
@@ -326,7 +326,7 @@
             name="l10n_it_delivery_note.delivery_note_report_main_template"
             file="l10n_it_delivery_note.delivery_note_report_main_template"
             report_type="qweb-pdf"
-            string="Delivery note"
+            string="Delivery Note"
             print_report_name="'Delivery Note - %s' % object.display_name" />
 
 </odoo>

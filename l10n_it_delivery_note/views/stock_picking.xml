@@ -24,7 +24,7 @@
                 </xpath>
                 <xpath expr="//page[1]" position="before">
                     <page name="delivery_note"
-                          string="Delivery note"
+                          string="Delivery Note"
                           attrs="{'invisible': [('use_delivery_note', '=', False)]}"
                           autofocus="autofocus">
                         <field name="delivery_note_sequence_id" invisible="True" />
@@ -231,7 +231,7 @@
                                                attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                     </group>
                                 </group>
-                                <group string="Delivery notes"
+                                <group string="Delivery Notes"
                                        attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
                                     <field name="delivery_note_note"
                                            nolabel="1"
@@ -273,9 +273,9 @@
         <field name="arch" type="xml">
             <xpath expr="//filter[last()]" position="after">
                 <separator/>
-                <filter string="No Delivery Note" name="no_delivery_note" domain="[('delivery_note_id', '=', False)]"/>
-                <filter string="Draft Delivery Note" name="draft_delivery_note" domain="[('delivery_note_state', '=', 'draft')]"/>
-                <filter string="Validated Delivery Note" name="validated_delivery_note" domain="[('delivery_note_state', '=', 'confirm')]"/>
+                <filter string="No DN" name="no_delivery_note" domain="[('delivery_note_id', '=', False)]"/>
+                <filter string="Draft DN" name="draft_delivery_note" domain="[('delivery_note_state', '=', 'draft')]"/>
+                <filter string="Validated DN" name="validated_delivery_note" domain="[('delivery_note_state', '=', 'confirm')]"/>
             </xpath>
         </field>
     </record>

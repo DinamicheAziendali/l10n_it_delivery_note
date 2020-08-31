@@ -1,6 +1,6 @@
 **Italiano**
 
-Questo modulo permette la creazione di DdT a partire da gruppi di trasferimenti
+Questo modulo permette la creazione di DDT a partire da gruppi di prelievi
 
 **English**
 

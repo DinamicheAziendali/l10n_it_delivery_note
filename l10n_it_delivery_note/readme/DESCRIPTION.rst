@@ -2,19 +2,22 @@
 
 This module manage the Italian DDT (Delivery note).
 
-From a Picking is possible to generate a Delivery note, group more picking in one delivery note. Is possible to invoice from the Delivery note form.
+From a picking is possible to generate a Delivery Note and group more picking in one delivery note. It's also possible to invoice from the delivery note form.
 
-This module is alternative to DDT :code:`l10n_it_ddt` it follow the odoo way to process sale order, picking and invoice.
+This module is alternative to :code:`l10n_it_ddt`, it follows the Odoo way to process sale orders, pickings and invoices.
 
 
 **Italiano**
 
 Questo modulo consente di gestire i DDT.
 
-Questo modulo è un alternativa al modulo DDT :code:`l10n_it_ddt` segue la modalità di odoo di gestire ordini di vendita, picking e fatture.
-Non è possibile avere installato contemporaneamente  :code:`l10n_it_ddt` e :code:`l10n_it_delivery_note`.
+Da un prelievo è possibile generare un DN e raggruppare più prelievi in un DN. È anche possibile fatturare dalla scheda del DN.
+
+Questo modulo è un alternativa al modulo :code:`l10n_it_ddt`, segue la modalità Odoo di gestire ordini di vendita, prelievi e fatture.
+Non è possibile avere installati contemporaneamente  :code:`l10n_it_ddt` e :code:`l10n_it_delivery_note`.
 
 Ci sono due impostazioni possibili:
-Base di default un picking un DDT.
-Avanzato più picking in un DDT.
+
+- Base di default un picking un DDT.
+- Avanzato più picking in un DDT.
 

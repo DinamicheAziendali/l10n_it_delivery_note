@@ -9,7 +9,7 @@ from odoo import api, fields, models
 class StockDeliveryNoteCreateWizard(models.TransientModel):
     _name = 'stock.delivery.note.create.wizard'
     _inherit = 'stock.delivery.note.base.wizard'
-    _description = "Delivery note creator"
+    _description = "Delivery Note Creator"
 
     def _default_date(self):
         return datetime.date.today()
@@ -57,7 +57,8 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
             'type_id': self.type_id.id,
             'date': self.date,
 
-            'delivery_method_id': self.partner_id.property_delivery_carrier_id.id,
+            'delivery_method_id':
+                self.partner_id.property_delivery_carrier_id.id,
             'transport_condition_id':
                 sale_order_id and
                 sale_order_id.default_transport_condition_id.id or
@@ -82,6 +83,6 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
 
         self.selected_picking_ids.write({'delivery_note_id': delivery_note.id})
 
-        if self.user_has_groups('l10n_it_delivery_note.'
-                                'use_advanced_delivery_notes'):
+        if self.user_has_groups(
+                'l10n_it_delivery_note.use_advanced_delivery_notes'):
             return delivery_note.goto()

@@ -6,7 +6,5 @@ To use this module, you need to:
 
 **Italiano**
 
-Per usere questo modulo hai bisogno di :
-
-* su ordini di acquisto c'è uno smart button che collega ai DDT.
+Su ciascun ordine di acquisto comparirà un pulsante (smart button) che permette di collegarlo ai DDT.
 

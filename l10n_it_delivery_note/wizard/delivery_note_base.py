@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 class StockDeliveryNoteBaseWizard(models.AbstractModel):
     _name = 'stock.delivery.note.base.wizard'
     _inherit = 'stock.picking.checker.mixin'
-    _description = "Delivery note base"
+    _description = "Delivery Note Base"
 
     def _default_stock_pickings(self):
         active_ids = self.env.context.get('active_ids', [])

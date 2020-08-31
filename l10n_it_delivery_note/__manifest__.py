@@ -8,8 +8,8 @@
 
 # noinspection PyStatementEffect
 {
-    'name': "ITA - Documento di Trasporto",
-    'summary': "Crea, gestisci e fattura i DdT partendo dalle Consegne",
+    'name': "ITA - Documento di trasporto",
+    'summary': "Crea, gestisce e fattura i DDT partendo dalle consegne",
 
     'author': "Marco Calcagni, Gianmarco Conte, Link IT Europe Srl, "
               "Odoo Community Association (OCA)",
@@ -18,6 +18,7 @@
     'version': '12.0.1.0.0',
     'category': "Localization",
     'license': 'AGPL-3',
+    'maintainers': ['As400it', 'Byloth'],
 
     'depends': [
         'delivery',

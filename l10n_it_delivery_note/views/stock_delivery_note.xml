@@ -95,10 +95,9 @@
                          role="alert">
                         <p class="text-center mb0">
                             <strong>
-                                <span class="fa fa-warning" /> Warning!
+                                <span class="fa fa-exclamation-triangle" /> Warning!
                             </strong>
-                            There are some inconsistencies in the delivery
-                            notes' information in related sales orders!
+                            Inconsistent DN info in sale orders!
                         </p>
                     </div>
                     <group>
@@ -377,7 +376,7 @@
     </record>
 
     <record id="stock_delivery_note_action" model="ir.actions.act_window">
-        <field name="name">Delivery notes</field>
+        <field name="name">Delivery Notes</field>
         <field name="res_model">stock.delivery.note</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="stock_delivery_note_search_view" />
@@ -395,16 +394,16 @@
               parent="stock.menu_stock_warehouse_mgmt"
               action="stock_delivery_note_action"
               groups="l10n_it_delivery_note.use_advanced_delivery_notes"
-              name="Delivery notes"
+              name="Delivery Notes"
               sequence="10" />
 
     <menuitem id="stock_delivery_note_config_menu"
               parent="stock.menu_stock_config_settings"
-              name="Delivery notes"
+              name="Delivery Notes"
               sequence="25" />
 
     <record id="stock_delivery_note_type_action" model="ir.actions.act_window">
-        <field name="name">Delivery note types</field>
+        <field name="name">Delivery Note Types</field>
         <field name="res_model">stock.delivery.note.type</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_type">form</field>
@@ -414,7 +413,7 @@
     <menuitem id="stock_delivery_note_type_menu"
               parent="stock.menu_warehouse_config"
               action="stock_delivery_note_type_action"
-              name="Delivery note types"
+              name="Delivery Note Types"
               sequence="10" />
 
 </odoo>

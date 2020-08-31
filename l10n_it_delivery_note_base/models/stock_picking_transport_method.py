@@ -10,10 +10,10 @@ from odoo import fields, models
 
 class StockPickingTransportMethod(models.Model):
     _name = 'stock.picking.transport.method'
-    _description = "Method of transport"
+    _description = "Method of Transport"
     _order = 'sequence, name, id'
 
-    active = fields.Boolean(string="Active", default=True)
+    active = fields.Boolean(default=True)
     sequence = fields.Integer(string="Sequence", index=True, default=10)
     name = fields.Char(string="Method name", index=True,
                        required=True, translate=True)

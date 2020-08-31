@@ -4,8 +4,8 @@
 
 # noinspection PyStatementEffect
 {
-    'name': 'ITA - Documento di Trasporto link from purchase order',
-    'summary': 'Delivery Note link from purchase order',
+    'name': 'ITA - Documento di trasporto - Collegamento con ordine di vendita',
+    'summary': 'Crea collegamento tra i DDT e ordine di vendita',
     'author': 'Openindustry.it Sas, Odoo Community Association (OCA)',
     'website': "https://github.com/OCA/l10n-italy/tree/12.0/"
                "l10n_it_delivery_note_order_link",

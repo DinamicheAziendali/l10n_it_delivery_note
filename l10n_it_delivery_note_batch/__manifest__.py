@@ -4,8 +4,8 @@
 
 # noinspection PyStatementEffect
 {
-    'name': "ITA - Documento di Trasporto Batch Picking",
-    'summary': "Crea i DdT partendo dai Gruppi di Trasferimenti",
+    'name': "ITA - Documento di trasporto - Prelievo raggruppato",
+    'summary': "Crea i DDT partendo da gruppi di prelievi",
 
     'author': "Marco Colombo, Odoo Community Association (OCA)",
     'website': "https://github.com/OCA/l10n-italy/tree/12.0/"
