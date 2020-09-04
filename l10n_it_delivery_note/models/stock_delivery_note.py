@@ -560,17 +560,22 @@ class StockDeliveryNote(models.Model):
 
     @api.model
     def get_location_address(self, location_id):
-        StockWarehouse = self.env['stock.warehouse']
+        location_address = ""
+        warehouse = self.env['stock.warehouse'] \
+                        .search([('lot_stock_id', '=', location_id)])
 
-        warehouse = StockWarehouse.search([('lot_stock_id', '=', location_id)])
+        if warehouse and warehouse.partner_id:
+            partner = warehouse.partner_id
 
-        return \
-            warehouse.partner_id.name + ', ' + \
-            (warehouse.partner_id.street + ' - '
-                if warehouse.partner_id.street else '') + \
-            (warehouse.partner_id.zip + ' ' + warehouse.partner_id.city + ' ' +
-                '(' + warehouse.partner_id.state_id.name + ')'
-                if warehouse.partner_id.state_id else '')
+            location_address += "{}, ".format(partner.name)
+            if partner.street:
+                location_address += "{} - ".format(partner.street)
+
+            location_address += "{} {}".format(partner.zip, partner.city)
+            if partner.state_id:
+                location_address += " ({})".format(partner.state_id.name)
+
+        return location_address
 
 
 class StockDeliveryNoteLine(models.Model):
