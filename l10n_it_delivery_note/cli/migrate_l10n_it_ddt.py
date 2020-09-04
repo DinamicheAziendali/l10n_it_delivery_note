@@ -109,9 +109,11 @@ class MigrateL10nItDdt(EasyCommand):
         CarriageCondition = self.env['stock.picking.carriage_condition']
         TransportCondition = self.env['stock.picking.transport.condition']
 
-        pf = self._map_ref(self._carriage_conditions, 'carriage_condition_PF',
+        pf = self._map_ref(self._carriage_conditions,
+                           'carriage_condition_PF',
                            'transport_condition_PF')
-        pa = self._map_ref(self._carriage_conditions, 'carriage_condition_PA',
+        pa = self._map_ref(self._carriage_conditions,
+                           'carriage_condition_PA',
                            'transport_condition_PA')
         paf = self._map_ref(self._carriage_conditions,
                             'carriage_condition_PAF',
@@ -132,13 +134,17 @@ class MigrateL10nItDdt(EasyCommand):
         GoodsDescription = self.env['stock.picking.goods_description']
         GoodsAppearance = self.env['stock.picking.goods.appearance']
 
-        car = self._map_ref(self._goods_descriptions, 'goods_description_CAR',
+        car = self._map_ref(self._goods_descriptions,
+                            'goods_description_CAR',
                             'goods_appearance_CAR')
-        ban = self._map_ref(self._goods_descriptions, 'goods_description_BAN',
+        ban = self._map_ref(self._goods_descriptions,
+                            'goods_description_BAN',
                             'goods_appearance_BAN')
-        sfu = self._map_ref(self._goods_descriptions, 'goods_description_SFU',
+        sfu = self._map_ref(self._goods_descriptions,
+                            'goods_description_SFU',
                             'goods_appearance_SFU')
-        cba = self._map_ref(self._goods_descriptions, 'goods_description_CBA',
+        cba = self._map_ref(self._goods_descriptions,
+                            'goods_description_CBA',
                             'goods_appearance_CBA')
 
         records = GoodsDescription.search(
@@ -219,7 +225,9 @@ class MigrateL10nItDdt(EasyCommand):
         records = DocumentType.search([('id', 'not in', [old_type.id])],
                                       order='id ASC')
 
-        self._map_create(self._document_types, records, DeliveryNoteType,
+        self._map_create(self._document_types,
+                         records,
+                         DeliveryNoteType,
                          lambda r: {
                              'name': r.name,
                              'sequence_id': r.sequence_id.id,
@@ -266,17 +274,17 @@ class MigrateL10nItDdt(EasyCommand):
                 'net_weight_uom_id':
                     record.weight_manual_uom_id.id or
                     self._default_weight_uom.id,
-                'goods_appearance_id': self._goods_descriptions[
-                    record.goods_description_id].id,
-                'transport_reason_id': self._transportation_reasons[
-                    record.transportation_reason_id].id,
-                'transport_condition_id': self._carriage_conditions[
-                    record.carriage_condition_id].id,
-                'transport_method_id': self._transportation_methods[
-                    record.transportation_method_id].id,
+                'goods_appearance_id':
+                    self._goods_descriptions[record.goods_description_id].id,
+                'transport_reason_id':
+                    self._transportation_reasons[record.transportation_reason_id].id,
+                'transport_condition_id':
+                    self._carriage_conditions[record.carriage_condition_id].id,
+                'transport_method_id':
+                    self._transportation_methods[record.transportation_method_id].id,
                 'picking_ids': [(4, p.id) for p in record.picking_ids],
-                'invoice_ids': [
-                    (4, record.invoice_id.id)] if record.invoice_id else [],
+                'invoice_ids':
+                    [(4, record.invoice_id.id)] if record.invoice_id else [],
                 'note': record.note
             }
 
