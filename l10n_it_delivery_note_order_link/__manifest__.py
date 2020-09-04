@@ -11,7 +11,7 @@
                "l10n_it_delivery_note_order_link",
     'version': '12.0.1.0.0',
     'license': 'AGPL-3',
-    'maintainers': ['As400it', 'Byloth'],
+    'maintainers': ['As400it', 'andreampiovesana'],
     'category': 'Localization',
     'depends': [
         'purchase_stock',

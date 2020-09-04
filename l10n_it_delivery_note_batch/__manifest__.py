@@ -14,7 +14,7 @@
     'version': '12.0.1.0.0',
     'category': "Localization",
     'license': 'AGPL-3',
-    'maintainers': ['As400it', 'Byloth'],
+    'maintainers': ['As400it', 'TheMule71'],
 
     'depends': [
         'stock_picking_batch',
