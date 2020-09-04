@@ -124,7 +124,7 @@
                         <strong>Warehouse:</strong>
                         <t t-foreach="doc.picking_ids" t-as="pick">
                             <p>
-                                <t t-esc="doc.get_location_address(pick.location_id.id)"/>,
+                                <t t-esc="doc.get_location_address(pick.location_id.id)"/><br/>
                             </p>
                         </t>
                     </div>
@@ -156,7 +156,9 @@
                         </td>
                         <td width="33%">
                             <div name="method_transport" style="font-size:12px;">Method of Transportation / Carrier</div>
-                            <div t-field="doc.transport_method_id" name="transport_method_id" />
+                            <span t-field="doc.transport_method_id" name="transport_method_id" />
+                            <t t-if="doc.transport_method_id and doc.carrier_id"> / </t>
+                            <span t-field="doc.carrier_id" name="carrier_id" />
                         </td>
                     </tr>
                 </table>

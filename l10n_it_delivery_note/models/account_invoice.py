@@ -97,24 +97,15 @@ class AccountInvoice(models.Model):
             context['lang'] = invoice.partner_id.lang
 
             for note in invoice.delivery_note_ids:
-                if note.name and note.date:
-                    new_lines.append((0, False, {
-                        'sequence': 99,
-                        'display_type': 'line_note',
-                        'name':
-                            _("""Delivery Note "{}" of {}""").
-                            format(note.name, note.date.strftime(DATE_FORMAT)),
-                        'delivery_note_id': note.id
-                    }))
-                    invoice.write({'invoice_line_ids': new_lines})
-                elif note.name and not note.date:
-                    new_lines.append((0, False, {
-                        'sequence': 99,
-                        'display_type': 'line_note',
-                        'name': _("""Delivery Note "{}" """).format(note.name),
-                        'delivery_note_id': note.id
-                    }))
-                    invoice.write({'invoice_line_ids': new_lines})
+                new_lines.append((0, False, {
+                    'sequence': 99, 'display_type': 'line_note',
+                    'name':
+                        _("""Delivery Note "{}" of {}""").
+                        format(note.name, note.date.strftime(DATE_FORMAT)),
+                    'delivery_note_id': note.id
+                }))
+
+            invoice.write({'invoice_line_ids': new_lines})
 
 
 class AccountInvoiceLine(models.Model):
