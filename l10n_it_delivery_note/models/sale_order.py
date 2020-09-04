@@ -160,12 +160,12 @@ class SaleOrderLine(models.Model):
     @property
     def is_invoiceable(self):
         return self.invoice_status == DOMAIN_INVOICE_STATUSES[1] and \
-               self.qty_to_invoice != 0
+            self.qty_to_invoice != 0
 
     @property
     def is_invoiced(self):
         return self.invoice_status != DOMAIN_INVOICE_STATUSES[1] and \
-               self.qty_invoiced != 0
+            self.qty_invoiced != 0
 
     @property
     def need_to_be_invoiced(self):

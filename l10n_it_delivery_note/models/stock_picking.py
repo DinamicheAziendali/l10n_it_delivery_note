@@ -137,7 +137,7 @@ class StockPicking(models.Model):
     def _onchange_delivery_note_type(self):
         if self.delivery_note_type_id:
             if self.delivery_note_id.name \
-                and self.delivery_note_type_id.sequence_id != \
+                    and self.delivery_note_type_id.sequence_id != \
                     self.delivery_note_sequence_id:
                 raise UserError(_("You cannot set this delivery note type due"
                                   " of a different numerator configuration."))
@@ -181,7 +181,7 @@ class StockPicking(models.Model):
         self.ensure_one()
 
         super(StockPicking, self.with_context(default_delivery_picking_id=self.id)) \
-                                ._add_delivery_cost_to_so()
+            ._add_delivery_cost_to_so()
 
     def action_delivery_note_create(self):
         self.ensure_one()

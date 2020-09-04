@@ -35,14 +35,14 @@ Di seguito, una piccola lista di passi da seguire per portare a termine la migra
 
 1. Eseguire un back-up del database.
 
-Questa procedura di migrazione dei dati è stata sì sviluppata e testata, MA solamente per un numero limitato di casi.
-NON è consigliata in alcun modo come funzionalità production-ready.
+    Questa procedura di migrazione dei dati è stata sì sviluppata e testata, MA solamente per un numero limitato di casi.
+    NON è consigliata in alcun modo come funzionalità production-ready.
 
 2. Installare il modulo *l10n_it_delivery_note* SENZA prima disinstallare il modulo OCA *l10n_it_ddt*.
 
-N.B.: NON iniziare ad usare il modulo *l10n_it_delivery_note* senza aver prima migrato i dati.
-Potrebbero verificarsi, in prima battuta, problemi legati alla numerazione dei documenti creati.
-Inoltre, la procedura di migrazione stessa è progettata affinché verifichi che non siano presenti documenti di *l10n_it_delivery_note*; qualora ne rilevi alcuni, si interromperà non eseguendo alcuna migrazione.
+    N.B.: NON iniziare ad usare il modulo *l10n_it_delivery_note* senza aver prima migrato i dati.
+    Potrebbero verificarsi, in prima battuta, problemi legati alla numerazione dei documenti creati.
+    Inoltre, la procedura di migrazione stessa è progettata affinché verifichi che non siano presenti documenti di *l10n_it_delivery_note*; qualora ne rilevi alcuni, si interromperà non eseguendo alcuna migrazione.
 
 3. Terminata l’installazione del modulo, terminare in sicurezza il processo di Odoo.
 
