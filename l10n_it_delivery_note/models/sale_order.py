@@ -135,10 +135,8 @@ class SaleOrder(models.Model):
 
         elif len(delivery_notes) == 1:
             action['views'] = [(
-                self.env.ref(
-                    'l10n_it_delivery_note.stock_delivery_note_form_view'
-                ).id, 'form'
-            )]
+                self.env.ref('l10n_it_delivery_note.'
+                             'stock_delivery_note_form_view').id, 'form')]
             action['res_id'] = delivery_notes.id
 
         else:

@@ -70,8 +70,7 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
             self.error_message = self.env['ir.ui.view'].render_template(
                 'l10n_it_delivery_note.'
                 'stock_delivery_note_wizard_error_message_template',
-                values
-            )
+                values)
 
         else:
             partners = self.selected_picking_ids.get_partners()
@@ -80,5 +79,5 @@ class StockDeliveryNoteBaseWizard(models.AbstractModel):
             self.partner_id = partners[1]
 
     def confirm(self):
-        raise NotImplementedError(
-            "This functionality isn't ready yet. Please, come back later.")
+        raise NotImplementedError("This functionality isn't ready yet. "
+                                  "Please, come back later.")

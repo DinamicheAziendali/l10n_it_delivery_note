@@ -19,9 +19,7 @@
     'category': "Localization",
     'license': 'AGPL-3',
     'maintainers': ['As400it', 'Byloth'],
-    'depends': [
-        'base'
-    ],
+    'depends': ['base'],
     'data': [
         'data/delivery_note_data.xml',
 

@@ -66,8 +66,7 @@ class MigrateL10nItDdt(EasyCommand):
 
     def _map_ref(self, map_dict, old_ext_id, new_ext_id):
         old_record = self.env.ref('l10n_it_ddt.{}'.format(old_ext_id))
-        new_record = self.env.ref(
-            'l10n_it_delivery_note_base.{}'.format(new_ext_id))
+        new_record = self.env.ref('l10n_it_delivery_note_base.{}'.format(new_ext_id))
 
         map_dict[old_record] = new_record
 
@@ -76,9 +75,10 @@ class MigrateL10nItDdt(EasyCommand):
     def check_database_integrity(self):
         _logger.info("Checking database integrity before run data migration..")
 
-        self.env.cr.execute(
-            """SELECT "id", "state" FROM "ir_module_module"
-            WHERE "name" = 'l10n_it_ddt';""")
+        self.env.cr.execute("""
+            SELECT "id", "state" FROM "ir_module_module"
+            WHERE "name" = 'l10n_it_ddt';
+        """)
         old_module = self.env.cr.fetchone()
         if not old_module or old_module[1] != 'installed':
             raise UserError(_(
@@ -93,8 +93,7 @@ class MigrateL10nItDdt(EasyCommand):
                 "You don't need to run this command."
             ))
 
-        new_sequence = self.env.ref(
-            'l10n_it_delivery_note.delivery_note_sequence_ddt')
+        new_sequence = self.env.ref('l10n_it_delivery_note.delivery_note_sequence_ddt')
         if new_sequence.number_next_actual > 1:
             raise ValidationError(_(
                 "It seems that at least one delivery note has been "
@@ -118,8 +117,9 @@ class MigrateL10nItDdt(EasyCommand):
                             'carriage_condition_PAF',
                             'transport_condition_PAF')
 
-        records = CarriageCondition.search(
-            [('id', 'not in', [pf.id, pa.id, paf.id])], order='id ASC')
+        records = \
+            CarriageCondition.search([('id', 'not in', [pf.id, pa.id, paf.id])],
+                                     order='id ASC')
 
         self._map_create(self._carriage_conditions,
                          records, TransportCondition)
@@ -165,8 +165,9 @@ class MigrateL10nItDdt(EasyCommand):
                             'transportation_reason_RES',
                             'transport_reason_RES')
 
-        records = TransportationReason.search(
-            [('id', 'not in', [ven.id, vis.id, res.id])], order='id ASC')
+        records = \
+            TransportationReason.search([('id', 'not in', [ven.id, vis.id, res.id])],
+                                        order='id ASC')
 
         self._map_create(self._transportation_reasons,
                          records, TransportReason)
@@ -189,8 +190,9 @@ class MigrateL10nItDdt(EasyCommand):
                             'transportation_method_COR',
                             'transport_method_COR')
 
-        records = TransportationMethod.search(
-            [('id', 'not in', [mit.id, des.id, cor.id])], order='id ASC')
+        records = \
+            TransportationMethod.search([('id', 'not in', [mit.id, des.id, cor.id])],
+                                        order='id ASC')
 
         self._map_create(self._transportation_methods,
                          records, TransportMethod)
@@ -207,9 +209,10 @@ class MigrateL10nItDdt(EasyCommand):
         new_type = self.env.ref('l10n_it_delivery_note.delivery_note_type_ddt')
         new_type.write({'sequence_id': old_type.sequence_id.id})
 
-        self.env.cr.execute(
-            """DELETE FROM "ir_model_data"
-            WHERE "module" = 'l10n_it_ddt' AND "name" = 'seq_ddt';""")
+        self.env.cr.execute("""
+            DELETE FROM "ir_model_data"
+            WHERE "module" = 'l10n_it_ddt' AND "name" = 'seq_ddt';
+        """)
 
         self._document_types[old_type] = new_type
 

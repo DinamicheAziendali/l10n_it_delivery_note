@@ -34,8 +34,7 @@ class StockPicking(models.Model):
     delivery_note_carrier_id = fields.Many2one(
         'res.partner',
         string="Delivery note carrier",
-        related='delivery_note_id.carrier_id'
-    )
+        related='delivery_note_id.carrier_id')
     delivery_method_id = \
         fields.Many2one('delivery.carrier',
                         related='delivery_note_id.delivery_method_id')
@@ -67,8 +66,7 @@ class StockPicking(models.Model):
     parcels = fields.Integer(related='delivery_note_id.parcels')
     delivery_note_volume = fields.Float(
         related='delivery_note_id.volume',
-        string="Delivery note volume"
-    )
+        string="Delivery note volume")
     delivery_note_volume_uom_id = \
         fields.Many2one('uom.uom', related='delivery_note_id.volume_uom_id')
     gross_weight = fields.Float(related='delivery_note_id.gross_weight')
@@ -84,8 +82,7 @@ class StockPicking(models.Model):
         ('state', '!=', CANCEL_MOVE_STATE)])
     picking_type_code = fields.Selection(
         related='picking_type_id.code',
-        string="Delivery note operation type"
-    )
+        string="Delivery note operation type")
 
     use_delivery_note = fields.Boolean(compute='_compute_boolean_flags')
     use_advanced_behaviour = fields.Boolean(compute='_compute_boolean_flags')
@@ -112,8 +109,8 @@ class StockPicking(models.Model):
     @api.multi
     def _compute_boolean_flags(self):
         from_delivery_note = self.env.context.get('from_delivery_note')
-        use_advanced_behaviour = self.user_has_groups(
-            'l10n_it_delivery_note.use_advanced_delivery_notes')
+        use_advanced_behaviour = self.user_has_groups('l10n_it_delivery_note.'
+                                                      'use_advanced_delivery_notes')
 
         for picking in self:
             picking.use_delivery_note = \
@@ -133,8 +130,8 @@ class StockPicking(models.Model):
                 picking.delivery_note_readonly = \
                     (picking.delivery_note_id.state ==
                      DOMAIN_DELIVERY_NOTE_STATES[3])
-                picking.can_be_invoiced = bool(
-                    picking.delivery_note_id.sale_ids)
+                picking.can_be_invoiced = \
+                    bool(picking.delivery_note_id.sale_ids)
 
     @api.onchange('delivery_note_type_id')
     def _onchange_delivery_note_type(self):
@@ -145,8 +142,7 @@ class StockPicking(models.Model):
                 raise UserError(_("You cannot set this delivery note type due"
                                   " of a different numerator configuration."))
 
-            if self._update_generic_shipping_information(
-                    self.delivery_note_type_id):
+            if self._update_generic_shipping_information(self.delivery_note_type_id):
                 return {
                     'warning': {
                         'title': _("Warning!"),
@@ -184,8 +180,8 @@ class StockPicking(models.Model):
     def _add_delivery_cost_to_so(self):
         self.ensure_one()
 
-        super(StockPicking, self.with_context(
-            default_delivery_picking_id=self.id))._add_delivery_cost_to_so()
+        super(StockPicking, self.with_context(default_delivery_picking_id=self.id)) \
+                                ._add_delivery_cost_to_so()
 
     def action_delivery_note_create(self):
         self.ensure_one()
@@ -250,8 +246,8 @@ class StockPicking(models.Model):
         codes = self.mapped('picking_type_code')
 
         if all(code != DOMAIN_PICKING_TYPES[0] for code in codes) and \
-                not self.user_has_groups(
-                    'l10n_it_delivery_note.use_advanced_delivery_notes'):
+                not self.user_has_groups('l10n_it_delivery_note.'
+                                         'use_advanced_delivery_notes'):
 
             partners = self.get_partners()
             delivery_note = self.env['stock.delivery.note'].create({
