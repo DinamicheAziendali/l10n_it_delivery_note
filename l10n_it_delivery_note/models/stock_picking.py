@@ -224,7 +224,6 @@ class StockPicking(models.Model):
 
         return self.delivery_note_id.action_invoice()
 
-    @api.multi
     def action_delivery_note_done(self):
         self.ensure_one()
 

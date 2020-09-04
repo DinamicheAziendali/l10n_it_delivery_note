@@ -7,7 +7,14 @@
 # @author: Matteo Bilotta <mbilotta@linkeurope.it>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import fields, models, api
+from odoo import fields, models
+
+DELIVERY_NOTE_TYPE_CODES = [
+    ('incoming', "Incoming"),
+    ('outgoing', "Outgoing"),
+    ('internal', "Internal")
+]
+DOMAIN_DELIVERY_NOTE_TYPE_CODES = [s[0] for s in DELIVERY_NOTE_TYPE_CODES]
 
 
 class StockDeliveryNoteType(models.Model):
@@ -21,11 +28,10 @@ class StockDeliveryNoteType(models.Model):
                        translate=True)
     print_prices = fields.Boolean(string="Print prices on report",
                                   default=False)
-    code = fields.Selection([
-        ('incoming', "Incoming"),
-        ('outgoing', "Outgoing"),
-        ('internal', "Internal")
-    ], string="Type of Operation", required=True, default='outgoing')
+    code = fields.Selection(DELIVERY_NOTE_TYPE_CODES,
+                            string="Type of Operation",
+                            required=True,
+                            default=DOMAIN_DELIVERY_NOTE_TYPE_CODES[1])
 
     default_transport_condition_id = fields.Many2one(
         'stock.picking.transport.condition',
@@ -57,7 +63,6 @@ class StockDeliveryNoteType(models.Model):
         "This delivery note type already exists!"
     )]
 
-    @api.multi
     def goto_sequence(self, **kwargs):
         self.ensure_one()
 
