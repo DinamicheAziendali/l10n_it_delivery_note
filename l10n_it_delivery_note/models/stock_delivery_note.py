@@ -244,10 +244,11 @@ class StockDeliveryNote(models.Model):
 
             if all(line.invoice_status == DOMAIN_INVOICE_STATUSES[2]
                    for line in lines):
+                note.state = DOMAIN_DELIVERY_NOTE_STATES[2]
                 note.invoice_status = DOMAIN_INVOICE_STATUSES[2]
 
-            elif any(line.invoice_status == DOMAIN_INVOICE_STATUSES[1] for line
-                     in lines):
+            elif any(line.invoice_status == DOMAIN_INVOICE_STATUSES[1]
+                     for line in lines):
                 note.invoice_status = DOMAIN_INVOICE_STATUSES[1]
 
             else:
@@ -300,10 +301,11 @@ class StockDeliveryNote(models.Model):
 
     @api.multi
     def _compute_boolean_flags(self):
-        can_change_number = self.user_has_groups(
-            'l10n_it_delivery_note.can_change_number')
-        show_product_information = self.user_has_groups(
-            'l10n_it_delivery_note_base.show_product_related_fields')
+        can_change_number = \
+            self.user_has_groups('l10n_it_delivery_note.can_change_number')
+        show_product_information = \
+            self.user_has_groups('l10n_it_delivery_note_base.'
+                                 'show_product_related_fields')
 
         for note in self:
             note.can_change_number = \
@@ -350,8 +352,8 @@ class StockDeliveryNote(models.Model):
     @api.onchange('partner_shipping_id')
     def _onchange_partner_shipping(self):
         if self.partner_shipping_id:
-            changed = self._update_partner_shipping_information(
-                self.partner_shipping_id)
+            changed = \
+                self._update_partner_shipping_information(self.partner_shipping_id)
 
             if changed:
                 return {
@@ -421,23 +423,25 @@ class StockDeliveryNote(models.Model):
     def action_invoice(self):
         self.ensure_one()
 
-        orders_lines = self.mapped('sale_ids.order_line').filtered(
-            lambda l: l.product_id)
+        orders_lines = self.mapped('sale_ids.order_line') \
+                           .filtered(lambda l: l.product_id)
+
         downpayment_lines = orders_lines.filtered(lambda l: l.is_downpayment)
         invoiceable_lines = orders_lines.filtered(lambda l: l.is_invoiceable)
-        cache = self._fix_quantities_to_invoice(
-            invoiceable_lines - downpayment_lines)
+
+        cache = \
+            self._fix_quantities_to_invoice(invoiceable_lines - downpayment_lines)
 
         for downpayment in downpayment_lines:
             order = downpayment.order_id
-            order_lines = order.order_line.filtered(
-                lambda l: l.product_id and not l.is_downpayment)
+            order_lines = order.order_line \
+                .filtered(lambda l: l.product_id and not l.is_downpayment)
 
             if order_lines.filtered(lambda l: l.need_to_be_invoiced):
                 cache[downpayment] = downpayment.fix_qty_to_invoice()
 
         self.sale_ids \
-            .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1])\
+            .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1]) \
             .action_invoice_create(final=True)
 
         for line, vals in cache.items():
@@ -457,9 +461,8 @@ class StockDeliveryNote(models.Model):
 
     @api.multi
     def action_print(self):
-        return self.env.ref(
-            'l10n_it_delivery_note.delivery_note_report_action').report_action(
-            self)
+        return self.env.ref('l10n_it_delivery_note.'
+                            'delivery_note_report_action').report_action(self)
 
     def update_transport_datetime(self):
         self.transport_datetime = datetime.datetime.now()
@@ -511,8 +514,8 @@ class StockDeliveryNote(models.Model):
         if not move_ids:
             return
 
-        lines = self.env['stock.delivery.note.line'].search(
-            [('move_id', 'in', move_ids)])
+        lines = self.env['stock.delivery.note.line'] \
+                    .search([('move_id', 'in', move_ids)])
 
         self.write({'line_ids': [(2, line.id, False) for line in lines]})
 
@@ -593,8 +596,10 @@ class StockDeliveryNoteLine(models.Model):
                                     default=False)
     product_id = fields.Many2one('product.product', string="Product")
     product_description = fields.Text(related='product_id.description_sale')
-    product_qty = fields.Float(string="Quantity", digits=dp.get_precision(
-        'Product Unit of Measure'), default=1.0)
+    product_qty = fields.Float(
+        string="Quantity",
+        digits=dp.get_precision('Product Unit of Measure'),
+        default=1.0)
     product_uom_id = fields.Many2one('uom.uom', string="UoM",
                                      default=_default_unit_uom)
     price_unit = fields.Monetary(string="Unit price",
@@ -684,12 +689,13 @@ class StockDeliveryNoteLine(models.Model):
 
     @api.multi
     def write(self, vals):
-        if 'display_type' in vals and self.filtered(
-                lambda l: l.display_type != vals['display_type']):
-            raise UserError(
-                _("You cannot change the type of a delivery note line. "
-                  "Instead you should delete the current line"
-                  " and create a new line of the proper type."))
+        if 'display_type' in vals and \
+                self.filtered(lambda l: l.display_type != vals['display_type']):
+            raise UserError(_(
+                "You cannot change the type of a delivery note line. "
+                "Instead you should delete the current line"
+                " and create a new line of the proper type."
+            ))
 
         return super().write(vals)
 
