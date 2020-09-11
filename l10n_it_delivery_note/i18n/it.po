@@ -371,7 +371,7 @@ msgstr ""
 
 #. module: l10n_it_delivery_note
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_note_state
-msgid "Delivery Note State"
+msgid "DN State"
 msgstr "Stato DDT"
 
 #. module: l10n_it_delivery_note
@@ -409,17 +409,22 @@ msgstr "Metodo di consegna"
 
 #. module: l10n_it_delivery_note
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_note_carrier_id
-msgid "Delivery note carrier"
+msgid "DN Carrier"
 msgstr "Corriere DdT"
 
 #. module: l10n_it_delivery_note
+#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__parcels
+msgid "DN Packages"
+msgstr "Colli DdT"
+
+#. module: l10n_it_delivery_note
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__picking_type_code
-msgid "Delivery note operation type"
+msgid "DN Operation Type"
 msgstr ""
 
 #. module: l10n_it_delivery_note
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_note_volume
-msgid "Delivery note volume"
+msgid "DN Volume"
 msgstr "Volume DdT"
 
 #. module: l10n_it_delivery_note

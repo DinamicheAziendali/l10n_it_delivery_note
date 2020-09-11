@@ -7,10 +7,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 from .stock_delivery_note import DOMAIN_DELIVERY_NOTE_STATES
 from ..mixins.picking_checker import DOMAIN_PICKING_TYPES, DONE_PICKING_STATE
-from odoo.exceptions import UserError
 
 CANCEL_MOVE_STATE = 'cancel'
 
@@ -23,33 +23,29 @@ class StockPicking(models.Model):
                                        string="Delivery Note", copy=False)
     delivery_note_sequence_id = \
         fields.Many2one('ir.sequence', related='delivery_note_id.sequence_id')
-    delivery_note_state = fields.Selection(related='delivery_note_id.state',
-                                           string="Delivery Note State")
-    delivery_note_partner_ref = fields.Char(
-        related='delivery_note_id.partner_ref')
+    delivery_note_state = fields.Selection(string="DN State",
+                                           related='delivery_note_id.state')
+    delivery_note_partner_ref = fields.Char(related='delivery_note_id.partner_ref')
     delivery_note_partner_shipping_id = \
         fields.Many2one('res.partner',
                         related='delivery_note_id.partner_shipping_id')
 
-    delivery_note_carrier_id = fields.Many2one(
-        'res.partner',
-        string="Delivery note carrier",
-        related='delivery_note_id.carrier_id')
+    delivery_note_carrier_id = fields.Many2one('res.partner',
+                                               string="DN Carrier",
+                                               related='delivery_note_id.carrier_id')
     delivery_method_id = \
         fields.Many2one('delivery.carrier',
                         related='delivery_note_id.delivery_method_id')
 
     delivery_note_type_id = fields.Many2one('stock.delivery.note.type',
                                             related='delivery_note_id.type_id')
-    delivery_note_type_code = fields.Selection(
-        related='delivery_note_type_id.code')
-    delivery_note_date = fields.Date(related='delivery_note_id.date',
-                                     string="DN Date")
+    delivery_note_type_code = fields.Selection(related='delivery_note_type_id.code')
+    delivery_note_date = fields.Date(string="DN Date", related='delivery_note_id.date')
     delivery_note_note = fields.Html(related='delivery_note_id.note')
 
-    transport_condition_id = fields.Many2one(
-        'stock.picking.transport.condition',
-        related='delivery_note_id.transport_condition_id')
+    transport_condition_id = \
+        fields.Many2one('stock.picking.transport.condition',
+                        related='delivery_note_id.transport_condition_id')
     goods_appearance_id = \
         fields.Many2one('stock.picking.goods.appearance',
                         related='delivery_note_id.goods_appearance_id')
@@ -60,13 +56,11 @@ class StockPicking(models.Model):
         fields.Many2one('stock.picking.transport.method',
                         related='delivery_note_id.transport_method_id')
 
-    transport_datetime = fields.Datetime(
-        related='delivery_note_id.transport_datetime')
+    transport_datetime = fields.Datetime(related='delivery_note_id.transport_datetime')
 
-    parcels = fields.Integer(related='delivery_note_id.parcels')
-    delivery_note_volume = fields.Float(
-        related='delivery_note_id.volume',
-        string="Delivery note volume")
+    parcels = fields.Integer(string="DN Packages", related='delivery_note_id.parcels')
+    delivery_note_volume = fields.Float(string="DN Volume",
+                                        related='delivery_note_id.volume')
     delivery_note_volume_uom_id = \
         fields.Many2one('uom.uom', related='delivery_note_id.volume_uom_id')
     gross_weight = fields.Float(related='delivery_note_id.gross_weight')
@@ -78,11 +72,11 @@ class StockPicking(models.Model):
         fields.Many2one('uom.uom',
                         related='delivery_note_id.net_weight_uom_id')
 
-    valid_move_ids = fields.One2many('stock.move', 'picking_id', domain=[
-        ('state', '!=', CANCEL_MOVE_STATE)])
-    picking_type_code = fields.Selection(
-        related='picking_type_id.code',
-        string="Delivery note operation type")
+    valid_move_ids = fields.One2many('stock.move',
+                                     'picking_id',
+                                     domain=[('state', '!=', CANCEL_MOVE_STATE)])
+    picking_type_code = fields.Selection(string="DN Operation Type",
+                                         related='picking_type_id.code')
 
     use_delivery_note = fields.Boolean(compute='_compute_boolean_flags')
     use_advanced_behaviour = fields.Boolean(compute='_compute_boolean_flags')
