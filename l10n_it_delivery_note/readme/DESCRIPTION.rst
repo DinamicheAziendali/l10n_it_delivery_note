@@ -11,7 +11,7 @@ This module is alternative to :code:`l10n_it_ddt`, it follows the Odoo way to pr
 
 Questo modulo consente di gestire i DDT.
 
-Da un prelievo è possibile generare un DN e raggruppare più prelievi in un DN. È anche possibile fatturare dalla scheda del DN.
+Da un prelievo è possibile generare un DDT e raggruppare più prelievi in un DDT. È anche possibile fatturare dalla scheda del DDT.
 
 Questo modulo è un alternativa al modulo :code:`l10n_it_ddt`, segue la modalità Odoo di gestire ordini di vendita, prelievi e fatture.
 Non è possibile avere installati contemporaneamente  :code:`l10n_it_ddt` e :code:`l10n_it_delivery_note`.

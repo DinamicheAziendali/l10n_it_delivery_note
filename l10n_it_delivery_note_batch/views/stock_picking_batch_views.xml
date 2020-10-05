@@ -11,7 +11,7 @@
                 <button class="oe_highlight"
                         name="create_delivery_notes"
                         type="object"
-                        string="Create DDTs"
+                        string="Create DNs"
                         style="margin-left:10px;"
                         attrs="{'invisible': [('state', '!=', 'done')]}" />
                 <!-- attrs="{'invisible': ['|', ('state', '!=', 'done'), ('delivery_note_count', '!=', 0)]}" -->

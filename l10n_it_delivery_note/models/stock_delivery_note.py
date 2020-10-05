@@ -207,7 +207,7 @@ class StockDeliveryNote(models.Model):
                                    string="Invoices",
                                    copy=False)
 
-    print_prices = fields.Boolean(string="Print prices on report",
+    print_prices = fields.Boolean(string="Show prices on printed DN",
                                   related="type_id.print_prices",
                                   store=True)
     note = fields.Html(string="Internal note",

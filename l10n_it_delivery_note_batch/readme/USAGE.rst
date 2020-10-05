@@ -1,5 +1,5 @@
 **Italiano**
-Da fare
+Da fare.
 
 **English**
 TBD

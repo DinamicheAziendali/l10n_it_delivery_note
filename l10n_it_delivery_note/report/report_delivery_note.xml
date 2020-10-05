@@ -147,7 +147,7 @@
                 <table style="padding-top:10px;" class="table table-condensed delivery_data">
                     <tr>
                         <td width="33%">
-                            <div name="transport" style="font-size:12px;">Transportation Reason</div>
+                            <div name="transport" style="font-size:12px;">Reason of Transport</div>
                             <div t-field="doc.transport_reason_id" />
                         </td>
                         <td width="33%">
@@ -155,7 +155,7 @@
                             <div t-field="doc.transport_condition_id" />
                         </td>
                         <td width="33%">
-                            <div name="method_transport" style="font-size:12px;">Method of Transportation / Carrier</div>
+                            <div name="method_transport" style="font-size:12px;">Method of Transport / Carrier</div>
                             <span t-field="doc.transport_method_id" name="transport_method_id" />
                             <t t-if="doc.transport_method_id and doc.carrier_id"> / </t>
                             <span t-field="doc.carrier_id" name="carrier_id" />
