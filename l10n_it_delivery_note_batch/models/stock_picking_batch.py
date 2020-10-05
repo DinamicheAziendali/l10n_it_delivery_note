@@ -37,6 +37,9 @@ class StockPickingBatch(models.Model):
                 key = tuple(p.id for p in p.get_partners())
                 todo_list[key] = todo_list.get(key,
                                                self.env['stock.picking']) | p
+            type_id = self.env['stock.delivery.note.type'].search([
+                ('code', '=', rec.picking_type_id.code)
+            ], limit=1)
 
             for partner_ids, pickings in todo_list.items():
                 dn = self.env['stock.delivery.note'].create({
@@ -44,6 +47,7 @@ class StockPickingBatch(models.Model):
                     'partner_id': partner_ids[1],
                     'partner_shipping_id': partner_ids[1],
                     'stock_picking_batch_id': rec.id,
+                    'type_id': type_id.id,
                 })
                 pickings.write({'delivery_note_id': dn.id})
 
