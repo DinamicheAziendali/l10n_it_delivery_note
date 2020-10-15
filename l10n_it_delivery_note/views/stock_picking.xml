@@ -179,7 +179,7 @@
                                 </group>
                                 <group attrs="{'invisible': [('delivery_note_exists', '=', False)]}">
                                     <group>
-                                        <field name="parcels"
+                                        <field name="packages"
                                                attrs="{'readonly': [('delivery_note_readonly', '=', True)]}" />
                                         <label for="volume" />
                                         <div class="o_row">

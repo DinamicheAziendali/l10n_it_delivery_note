@@ -58,7 +58,7 @@ class StockPicking(models.Model):
 
     transport_datetime = fields.Datetime(related='delivery_note_id.transport_datetime')
 
-    parcels = fields.Integer(string="DN Packages", related='delivery_note_id.parcels')
+    packages = fields.Integer(string="DN Packages", related='delivery_note_id.packages')
     delivery_note_volume = fields.Float(string="DN Volume",
                                         related='delivery_note_id.volume')
     delivery_note_volume_uom_id = \

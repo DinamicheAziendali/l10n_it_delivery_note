@@ -262,7 +262,7 @@ class MigrateL10nItDdt(EasyCommand):
                 'delivery_method_id':
                     record.partner_id.property_delivery_carrier_id.id,
                 'transport_datetime': record.date_done,
-                'parcels': record.parcels,
+                'packages': record.parcels,
                 'volume': record.volume,
                 'volume_uom_id':
                     record.volume_uom_id.id or self._default_volume_uom.id,

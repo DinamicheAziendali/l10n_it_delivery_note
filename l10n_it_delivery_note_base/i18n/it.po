@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-31 14:00+0000\n"
-"PO-Revision-Date: 2020-08-31 14:00+0000\n"
+"POT-Creation-Date: 2020-10-15 08:40+0000\n"
+"PO-Revision-Date: 2020-10-15 08:40+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -282,11 +282,6 @@ msgid "Price to show"
 msgstr ""
 
 #. module: l10n_it_delivery_note_base
-#: model:ir.model.fields,field_description:l10n_it_delivery_note_base.field_stock_delivery_note_type__print_prices
-msgid "Print prices on report"
-msgstr "Stampa prezzi sul documento"
-
-#. module: l10n_it_delivery_note_base
 #: model:ir.model.fields,field_description:l10n_it_delivery_note_base.field_stock_picking_transport_reason__name
 msgid "Reason name"
 msgstr ""
@@ -329,6 +324,11 @@ msgstr "Mittente"
 #: model:ir.model.fields,field_description:l10n_it_delivery_note_base.field_stock_picking_transport_reason__sequence
 msgid "Sequence"
 msgstr "Sequenza"
+
+#. module: l10n_it_delivery_note_base
+#: model:ir.model.fields,field_description:l10n_it_delivery_note_base.field_stock_delivery_note_type__print_prices
+msgid "Show prices on printed DN"
+msgstr ""
 
 #. module: l10n_it_delivery_note_base
 #: model:res.groups,name:l10n_it_delivery_note_base.show_product_related_fields

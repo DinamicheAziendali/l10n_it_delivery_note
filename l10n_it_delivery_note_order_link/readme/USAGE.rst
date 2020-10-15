@@ -1,8 +1,6 @@
 **English**
 
-To use this module, you need to:
-
-* from the purchase order a smart button link to delivery notes.
+A smart button will appear on each purchase order, so you can link them to DNs.
 
 **Italiano**
 

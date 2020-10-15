@@ -134,7 +134,7 @@ class StockDeliveryNote(models.Model):
     sequence_id = fields.Many2one('ir.sequence', readonly=True, copy=False)
     type_code = fields.Selection(string="Type of Operation",
                                  related='type_id.code', store=True)
-    parcels = fields.Integer(string="Packages", states=DONE_READONLY_STATE)
+    packages = fields.Integer(string="Packages", states=DONE_READONLY_STATE)
     volume = fields.Float(string="Volume", states=DONE_READONLY_STATE)
 
     volume_uom_id = fields.Many2one('uom.uom',
