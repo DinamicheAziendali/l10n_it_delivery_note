@@ -9,7 +9,8 @@ DONE_PICKING_STATE = 'done'
 PICKING_TYPES = [
     ('incoming', "Incoming"),
     ('outgoing', "Outgoing"),
-    ('internal', "Internal")
+    ('internal', "Internal"),
+    ('mrp_operation', "Manufacturing Operation")
 ]
 DOMAIN_PICKING_TYPES = [t[0] for t in PICKING_TYPES]
 
