@@ -300,12 +300,26 @@ class StockDeliveryNote(models.Model):
                 (note.state == 'draft' and can_change_number)
             note.show_product_information = show_product_information
 
+    @api.onchange('picking_type')
+    def _onchange_picking_type(self):
+        if self.picking_type:
+            type_domain = [('code', '=', self.picking_type)]
+
+        else:
+            type_domain = []
+
+        return {'domain': {'type_id': type_domain}}
+
     @api.onchange('type_id')
     def _onchange_type(self):
         if self.type_id:
             if self.name and self.type_id.sequence_id != self.sequence_id:
                 raise UserError(_("You cannot set this delivery note type due"
                                   " of a different numerator configuration."))
+
+            if self.type_id.code != self.picking_type:
+                raise UserError(_("You cannot set this delivery note type due"
+                                  " of a different type with related pickings."))
 
             if self._update_generic_shipping_information(self.type_id):
                 return {
@@ -648,15 +662,17 @@ class StockDeliveryNoteLine(models.Model):
     @api.onchange('product_id')
     def _onchange_product_id(self):
         if self.product_id:
-            domain = [
-                ('category_id', '=', self.product_id.uom_id.category_id.id)]
             self.name = \
                 self.product_id.get_product_multiline_description_sale()
 
-        else:
-            domain = []
+            product_uom_domain = [
+                ('category_id', '=', self.product_id.uom_id.category_id.id)
+            ]
 
-        return {'domain': {'product_uom_id': domain}}
+        else:
+            product_uom_domain = []
+
+        return {'domain': {'product_uom_id': product_uom_domain}}
 
     @api.model
     def _prepare_detail_lines(self, moves):
