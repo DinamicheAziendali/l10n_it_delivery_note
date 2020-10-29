@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-31 13:59+0000\n"
-"PO-Revision-Date: 2020-08-31 13:59+0000\n"
+"POT-Creation-Date: 2020-10-15 08:35+0000\n"
+"PO-Revision-Date: 2020-10-15 08:35+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -132,13 +132,13 @@ msgid "Archived"
 msgstr "Archiviati"
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:96
+#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:105
 #, python-format
 msgid "At least one picking you've selected appears to be already related to another delivery note."
 msgstr "Almeno un prelievo tra quelli selezionati è già legato ad un altro DdT."
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:31
+#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:32
 #, python-format
 msgid "At least one picking you've selected doesn't appear to be completed."
 msgstr "Almeno un prelievo tra quelli selezionati non è stato completato."
@@ -237,7 +237,7 @@ msgid "Contact"
 msgstr "Contatto"
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/models/stock_picking.py:194
+#: code:addons/l10n_it_delivery_note/models/stock_picking.py:184
 #: model:ir.actions.act_window,name:l10n_it_delivery_note.stock_delivery_note_create_action
 #, python-format
 msgid "Create a new delivery note"
@@ -281,8 +281,33 @@ msgid "Current step"
 msgstr "Passo corrente"
 
 #. module: l10n_it_delivery_note
+#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_note_carrier_id
+msgid "DN Carrier"
+msgstr ""
+
+#. module: l10n_it_delivery_note
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_note_date
 msgid "DN Date"
+msgstr ""
+
+#. module: l10n_it_delivery_note
+#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__picking_type_code
+msgid "DN Operation Type"
+msgstr ""
+
+#. module: l10n_it_delivery_note
+#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__packages
+msgid "DN Packages"
+msgstr ""
+
+#. module: l10n_it_delivery_note
+#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_note_state
+msgid "DN State"
+msgstr ""
+
+#. module: l10n_it_delivery_note
+#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_note_volume
+msgid "DN Volume"
 msgstr ""
 
 #. module: l10n_it_delivery_note
@@ -316,13 +341,7 @@ msgid "Delivery Note"
 msgstr "DdT"
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/models/account_invoice.py:114
-#, python-format
-msgid "Delivery Note \"{}\" "
-msgstr ""
-
-#. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/models/account_invoice.py:105
+#: code:addons/l10n_it_delivery_note/models/account_invoice.py:103
 #, python-format
 msgid "Delivery Note \"{}\" of {}"
 msgstr ""
@@ -370,11 +389,6 @@ msgid "Delivery Note Selector"
 msgstr ""
 
 #. module: l10n_it_delivery_note
-#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_note_state
-msgid "DN State"
-msgstr "Stato DDT"
-
-#. module: l10n_it_delivery_note
 #: model:ir.actions.act_window,name:l10n_it_delivery_note.stock_delivery_note_type_action
 #: model:ir.ui.menu,name:l10n_it_delivery_note.stock_delivery_note_type_menu
 msgid "Delivery Note Types"
@@ -406,26 +420,6 @@ msgstr "Prelievo DdT"
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_method_id
 msgid "Delivery method"
 msgstr "Metodo di consegna"
-
-#. module: l10n_it_delivery_note
-#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_note_carrier_id
-msgid "DN Carrier"
-msgstr "Corriere DdT"
-
-#. module: l10n_it_delivery_note
-#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__parcels
-msgid "DN Packages"
-msgstr "Colli DdT"
-
-#. module: l10n_it_delivery_note
-#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__picking_type_code
-msgid "DN Operation Type"
-msgstr ""
-
-#. module: l10n_it_delivery_note
-#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__delivery_note_volume
-msgid "DN Volume"
-msgstr "Volume DdT"
 
 #. module: l10n_it_delivery_note
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note_line__name
@@ -681,7 +675,7 @@ msgstr "Estende il comportamento standard della gestione dei\n"
 "                                    DdT introducendo funzionalità aggiuntive."
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/cli/migrate_l10n_it_ddt.py:99
+#: code:addons/l10n_it_delivery_note/cli/migrate_l10n_it_ddt.py:98
 #, python-format
 msgid "It seems that at least one delivery note has been already created. You can't migrate any data on an already used database."
 msgstr "Sembra che sia stato già creato almeno un DdT. Non puoi migrare nessun dato se il database è già in uso."
@@ -746,7 +740,7 @@ msgstr "Messaggi"
 
 #. module: l10n_it_delivery_note
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.delivery_note_report_template
-msgid "Method of Transportation / Carrier"
+msgid "Method of Transport / Carrier"
 msgstr "Metodo di trasporto / Corriere"
 
 #. module: l10n_it_delivery_note
@@ -879,8 +873,7 @@ msgid "Overdue"
 msgstr "In ritardo"
 
 #. module: l10n_it_delivery_note
-#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note__parcels
-#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__parcels
+#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note__packages
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.delivery_note_report_template
 msgid "Packages"
 msgstr "Colli"
@@ -946,11 +939,6 @@ msgid "Print"
 msgstr "Stampa"
 
 #. module: l10n_it_delivery_note
-#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note__print_prices
-msgid "Print prices on report"
-msgstr "Stampa prezzi sul documento"
-
-#. module: l10n_it_delivery_note
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note_line__product_id
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.delivery_note_report_template
 msgid "Product"
@@ -961,6 +949,11 @@ msgstr "Prodotto"
 #: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.delivery_note_report_template
 msgid "Quantity"
 msgstr "Quantità"
+
+#. module: l10n_it_delivery_note
+#: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.delivery_note_report_template
+msgid "Reason of Transport"
+msgstr ""
 
 #. module: l10n_it_delivery_note
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_res_partner__default_transport_reason_id
@@ -1062,7 +1055,7 @@ msgid "Section name (e.g. Products, Services)"
 msgstr "Nome sezione (es. Prodotti, Servizi)"
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/models/stock_picking.py:207
+#: code:addons/l10n_it_delivery_note/models/stock_picking.py:197
 #: model:ir.actions.act_window,name:l10n_it_delivery_note.stock_delivery_note_select_action
 #, python-format
 msgid "Select an existing delivery note"
@@ -1131,6 +1124,11 @@ msgid "Show Product Information"
 msgstr "Mostra le informazioni di prodotto"
 
 #. module: l10n_it_delivery_note
+#: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note__print_prices
+msgid "Show prices on printed DN"
+msgstr ""
+
+#. module: l10n_it_delivery_note
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note__state
 msgid "State"
 msgstr "Provincia"
@@ -1174,25 +1172,25 @@ msgid "Taxes"
 msgstr "Imposte"
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:69
+#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:75
 #, python-format
 msgid "The pickings you've selected don't seem to have any location of departure."
 msgstr "I prelievi che hai selezionato non sembrano avere nessun luogo di partenza."
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:83
+#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:91
 #, python-format
 msgid "The pickings you've selected don't seem to have any location of destination."
 msgstr "I prelievi che hai selezionato non sembrano avere nessun luogo di destinazione."
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:57
+#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:60
 #, python-format
 msgid "The pickings you've selected don't seem to have any partner or the selected warehouse doesn't have a valid address."
 msgstr "I prelievi che hai selezionato non sembrano avere nessun partner oppure il magazzino selezionato non ha un indirizzo valido."
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:41
+#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:42
 #, python-format
 msgid "The pickings you've selected don't seem to have any type."
 msgstr "I prelievi che hai selezionato non sembrano avere nessun tipo."
@@ -1254,11 +1252,6 @@ msgstr "Trasferimento"
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_picking__transport_datetime
 msgid "Transport date"
 msgstr "Data di trasporto"
-
-#. module: l10n_it_delivery_note
-#: model_terms:ir.ui.view,arch_db:l10n_it_delivery_note.delivery_note_report_template
-msgid "Transportation Reason"
-msgstr "Causale trasporto"
 
 #. module: l10n_it_delivery_note
 #: model:ir.model.fields,field_description:l10n_it_delivery_note.field_stock_delivery_note__type_id
@@ -1375,10 +1368,10 @@ msgid "Warehouse movement"
 msgstr "Movimento di magazzino"
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/models/stock_delivery_note.py:323
-#: code:addons/l10n_it_delivery_note/models/stock_delivery_note.py:359
-#: code:addons/l10n_it_delivery_note/models/stock_picking.py:152
-#: code:addons/l10n_it_delivery_note/models/stock_picking.py:171
+#: code:addons/l10n_it_delivery_note/models/stock_delivery_note.py:325
+#: code:addons/l10n_it_delivery_note/models/stock_delivery_note.py:361
+#: code:addons/l10n_it_delivery_note/models/stock_picking.py:142
+#: code:addons/l10n_it_delivery_note/models/stock_picking.py:161
 #: code:addons/l10n_it_delivery_note/wizard/delivery_note_base.py:65
 #, python-format
 msgid "Warning!"
@@ -1400,44 +1393,44 @@ msgid "You cannot assign the same warehouse movement to different delivery notes
 msgstr "Non puoi assegnare lo stesso movimento di magazzino a DdT differenti!"
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/models/stock_delivery_note.py:380
+#: code:addons/l10n_it_delivery_note/models/stock_delivery_note.py:382
 #, python-format
 msgid "You cannot cancel this delivery note. There is at least one invoice related to this delivery note."
 msgstr "Non puoi cancellare questo DdT. È presente, almeno, una fattura legata a questo DdT."
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/models/stock_delivery_note.py:690
+#: code:addons/l10n_it_delivery_note/models/stock_delivery_note.py:699
 #, python-format
 msgid "You cannot change the type of a delivery note line. Instead you should delete the current line and create a new line of the proper type."
 msgstr "Non puoi cambiare il tipo della riga del DdT. Dovresti, invece, eliminare la riga corrente e creare una riga nuova del tipo corretto."
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/models/stock_delivery_note.py:317
-#: code:addons/l10n_it_delivery_note/models/stock_picking.py:145
+#: code:addons/l10n_it_delivery_note/models/stock_delivery_note.py:319
+#: code:addons/l10n_it_delivery_note/models/stock_picking.py:136
 #, python-format
 msgid "You cannot set this delivery note type due of a different numerator configuration."
 msgstr "Non puoi cambiare il tipo del DdT a causa dell'uso di un numeratore differente."
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:74
+#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:81
 #, python-format
 msgid "You need to select pickings with all the same location of departure."
 msgstr "È necessario selezionare prelievi con lo stesso luogo di destinazione."
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:88
+#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:97
 #, python-format
 msgid "You need to select pickings with all the same location of destination."
 msgstr "È necessario selezionare prelievi con lo stesso luogo di destinazione."
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:62
+#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:66
 #, python-format
 msgid "You need to select pickings with all the same recipient."
 msgstr "È necessario selezionare prelievi con lo stesso destinatario."
 
 #. module: l10n_it_delivery_note
-#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:45
+#: code:addons/l10n_it_delivery_note/mixins/picking_checker.py:47
 #, python-format
 msgid "You need to select pickings with all the same type."
 msgstr "È necessario selezionare prelievi con lo stesso tipo."

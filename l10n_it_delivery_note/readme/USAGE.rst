@@ -1,5 +1,5 @@
 Funzionalità base
------------------
+~~~~~~~~~~~~~~~~~
 
 Quando un prelievo viene validato compare una scheda DDT.
 
@@ -14,7 +14,7 @@ Per i trasferimenti tra magazzini creare un prelievo di tipo interno con le rela
 È possibile anche avere DDT in ingresso, ovvero dopo la validazione del prelievo selezionare la scheda per indicare il numero del DDT fornitore e la data.
 
 Funzionalità avanzata
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 Vengono attivate varie funzionalità aggiuntive:
 
@@ -32,7 +32,7 @@ Le fatture generate dai DDT contengono i riferimenti al DDT stesso nelle righe n
 
 
 Migrazione dei dati da *l10n_it_ddt*
-------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Il modulo presenta una funzione di migrazione dei dati dal modulo OCA *l10n_it_ddt* da eseguire manualmente.
 Al momento, non è ancora presente un menù oppure una voce da interfaccia che permetta di eseguire questa operazione; bensì, è stato definito un comando da CLI da eseguire all’avvio di Odoo.

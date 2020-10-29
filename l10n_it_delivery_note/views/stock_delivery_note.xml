@@ -135,7 +135,7 @@
                     </group>
                     <group>
                         <group>
-                            <field name="parcels" />
+                            <field name="packages" />
                             <label for="volume" />
                             <div class="o_row">
                                 <field name="volume" />
