@@ -242,7 +242,12 @@ class StockPicking(models.Model):
                 not self.user_has_groups('l10n_it_delivery_note.'
                                          'use_advanced_delivery_notes'):
 
-            partners = self.get_partners()
+            try:
+                partners = self.get_partners()
+
+            except ValueError as exc:
+                raise UserError(exc)
+
             delivery_note = self.env['stock.delivery.note'].create({
                 'partner_sender_id': partners[0].id,
                 'partner_id': partners[1].id,

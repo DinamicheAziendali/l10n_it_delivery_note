@@ -219,22 +219,10 @@ class StockDeliveryNote(models.Model):
                                  default=_default_company)
 
     @api.multi
-    @api.depends('name', 'partner_id',
-                 'partner_ref', 'partner_id.display_name')
+    @api.depends('name', 'partner_ref',
+                 'partner_id', 'partner_id.display_name')
     def _compute_display_name(self):
-        for note in self:
-            if not note.name:
-                partner_name = note.partner_id.display_name
-                create_date = note.create_date.strftime(DATETIME_FORMAT)
-                name = "{} - {}".format(partner_name, create_date)
-
-            else:
-                name = note.name
-
-                if note.partner_ref and note.type_code == 'incoming':
-                    name = "{} ({})".format(name, note.partner_ref)
-
-            note.display_name = name
+        return super()._compute_display_name()
 
     @api.multi
     @api.depends('state', 'line_ids', 'line_ids.invoice_status')
@@ -370,6 +358,25 @@ class StockDeliveryNote(models.Model):
 
         else:
             self.delivery_method_id = False
+
+    @api.multi
+    def name_get(self):
+        result = []
+
+        for note in self:
+            name = note.name
+
+            if not note.name:
+                partner_name = note.partner_id.display_name
+                create_date = note.create_date.strftime(DATETIME_FORMAT)
+                name = "{} - {}".format(partner_name, create_date)
+
+            elif note.partner_ref and note.type_code == 'incoming':
+                name = "{} ({})".format(name, note.partner_ref)
+
+            result.append((note.id, name))
+
+        return result
 
     def check_compliance(self, pickings):
         super().check_compliance(pickings)
