@@ -12,6 +12,7 @@ class ResConfigSettings(models.TransientModel):
         implied_group='l10n_it_delivery_note.'
                       'use_advanced_delivery_notes')
 
-    draft_delivery_note_invoicing_notify = fields.Boolean(
-        related='company_id.draft_delivery_note_invoicing_notify',
-        readonly=False)
+    group_draft_delivery_note_invoicing_notify = fields.Boolean(
+        string="Notify if delivery note isn't validated",
+        implied_group='l10n_it_delivery_note.'
+                      'draft_delivery_note_invoicing_notify')

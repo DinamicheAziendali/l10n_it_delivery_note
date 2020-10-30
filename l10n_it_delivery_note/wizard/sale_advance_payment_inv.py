@@ -17,7 +17,8 @@ class SaleAdvancePaymentInv(models.TransientModel):
         states = self.sale_order_ids.mapped('delivery_note_ids.state')
 
         if any(s == 'draft' for s in states) and \
-                self.env.user.company_id.draft_delivery_note_invoicing_notify:
+                self.user_has_groups('l10n_it_delivery_note.'
+                                     'draft_delivery_note_invoicing_notify'):
             return DOMAIN_WIZARD_STEPS[1]
 
         return DOMAIN_WIZARD_STEPS[0]
