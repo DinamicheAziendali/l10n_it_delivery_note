@@ -7,7 +7,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 from .stock_delivery_note import DOMAIN_DELIVERY_NOTE_STATES
 from ..mixins.picking_checker import DOMAIN_PICKING_TYPES, DONE_PICKING_STATE
@@ -234,20 +234,61 @@ class StockPicking(models.Model):
         return self.delivery_note_id.action_print()
 
     @api.multi
+    def _check_delivery_note_consistency(self):
+        if len(set(self.mapped('picking_type_code'))) != 1:
+            raise ValidationError(
+                "You have just called this method on an "
+                "heterogeneous set of pickings.\n"
+                "All pickings should have the same "
+                "'picking_type_code' field value.")
+
+        if len(self.mapped('partner_id')) != 1 and self.location_dest_id.usage == 'customer':
+            raise ValidationError(
+                "You have just called this method on an heterogeneous set "
+                "of pickings.\n"
+                "All pickings should have the same 'partner_id' field value.")
+
+        if len(self.mapped('location_id')) != 1:
+            raise ValidationError(
+                "You have just called this method on an heterogeneous set "
+                "of pickings.\n"
+                "All pickings should have the same 'location_id' field value.")
+
+        if len(self.mapped('location_dest_id')) != 1:
+            raise ValidationError(
+                "You have just called this method on an heterogeneous "
+                "set of pickings.\n"
+                "All pickings should have the same 'location_dest_id' "
+                "field value.")
+
+    @api.multi
+    def _must_create_delivery_note(self):
+        use_advanced_behaviour = self.user_has_groups('l10n_it_delivery_note.'
+                                                      'use_advanced_delivery_notes')
+        if use_advanced_behaviour:
+            return False
+
+        type_code = list(set(self.mapped('picking_type_code')))[0]
+        if type_code == DOMAIN_PICKING_TYPES[0]:
+            return False
+
+        elif type_code != DOMAIN_PICKING_TYPES[1]:
+            src_location_id = self.mapped('location_id')
+            dest_location_id = self.mapped('location_dest_id')
+
+            if src_location_id.is_virtual() or dest_location_id.is_virtual():
+                return False
+
+        return True
+
+    @api.multi
     def action_done(self):
+        self._check_delivery_note_consistency()
+
         res = super().action_done()
-        codes = self.mapped('picking_type_code')
 
-        if all(code != DOMAIN_PICKING_TYPES[0] for code in codes) and \
-                not self.user_has_groups('l10n_it_delivery_note.'
-                                         'use_advanced_delivery_notes'):
-
-            try:
-                partners = self.get_partners()
-
-            except ValueError as exc:
-                raise UserError(exc)
-
+        if self._must_create_delivery_note():
+            partners = self._get_partners()
             delivery_note = self.env['stock.delivery.note'].create({
                 'partner_sender_id': partners[0].id,
                 'partner_id': partners[1].id,
@@ -263,31 +304,10 @@ class StockPicking(models.Model):
 
     @api.multi
     @api.returns('res.partner')
-    def get_partners(self):
+    def _get_partners(self):
         partner_id = self.mapped('partner_id')
-
-        if len(partner_id) != 1 and self.location_dest_id.usage == 'customer':
-            raise ValueError(
-                "You have just called this method on an heterogeneous set "
-                "of pickings.\n"
-                "All pickings should have the same 'partner_id' field value.")
-
         src_location_id = self.mapped('location_id')
-
-        if len(src_location_id) != 1:
-            raise ValueError(
-                "You have just called this method on an heterogeneous set "
-                "of pickings.\n"
-                "All pickings should have the same 'location_id' field value.")
-
         dest_location_id = self.mapped('location_dest_id')
-
-        if len(dest_location_id) != 1:
-            raise ValueError(
-                "You have just called this method on an heterogeneous "
-                "set of pickings.\n"
-                "All pickings should have the same 'location_dest_id' "
-                "field value.")
 
         src_warehouse_id = src_location_id.get_warehouse()
         dest_warehouse_id = dest_location_id.get_warehouse()
@@ -307,6 +327,13 @@ class StockPicking(models.Model):
             dest_partner_id = partner_id
 
         return (src_partner_id, dest_partner_id)
+
+    @api.multi
+    @api.returns('res.partner')
+    def get_partners(self):
+        self._check_delivery_note_consistency()
+
+        return self._get_partners()
 
     def goto(self, **kwargs):
         self.ensure_one()
