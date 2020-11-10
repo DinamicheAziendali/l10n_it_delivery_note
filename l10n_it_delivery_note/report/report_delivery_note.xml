@@ -13,7 +13,7 @@
             <div class="page">
 
                 <!--if is an outgoing move -->
-                <div t-if="doc.picking_type=='outgoing'" style="display:table;width:100%;padding:1px;">
+                <div id="partner_outgoing" t-if="doc.picking_type=='outgoing'" style="display:table;width:100%;padding:1px;">
                     <div style="display:table-row;width:100%;">
                         <div class="well" style="display:table-cell;width:49%;padding:10px;vertical-align:top;">
                             <h4>
@@ -73,7 +73,7 @@
                 </div>
 
                 <!--if is an internal move -->
-                <div t-if="doc.picking_type=='internal'" style="display:table;width:100%;padding:1px;">
+                <div id="partner_internal" t-if="doc.picking_type=='internal'" style="display:table;width:100%;padding:1px;">
                     <div style="display:table-row;width:100%;">
                         <div class="well" style="display:table-cell;width:49%;padding:10px;vertical-align:top;">
                             <h4>
@@ -95,31 +95,101 @@
                             <h4>
                                 <strong>Delivery address:</strong>
                             </h4>
-                            <strong>
-                                <span t-field="doc.partner_id.display_name" />
-                            </strong>
-                            <br/>
-                            <span t-field="doc.partner_id.street" />
-                            <span t-field="doc.partner_id.street2" />
-                            <br/>
-                            <span t-field="doc.partner_id.zip" />
-                            <span t-field="doc.partner_id.city" />
-                            (<span t-field="doc.partner_id.state_id.code" />)
-                            <span t-field="doc.partner_id.country_id" />
-                            <br/>
-                            <t t-if="doc.partner_id.phone">
-                                <span>Phone:</span>
-                                <span t-field="doc.partner_id.phone" />
-                            </t><br/>
-                            <t t-if="doc.partner_id.vat">
-                                <span>VAT:</span>
-                                <span t-field="doc.partner_shipping_id.vat" />
+                            <t t-if="doc.partner_id.id == doc.partner_sender_id.id">
+                                <strong>
+                                    <span t-field="doc.partner_shipping_id.display_name" />
+                                </strong>
+                                <br/>
+                                <span t-field="doc.partner_shipping_id.street" />
+                                <span t-field="doc.partner_shipping_id.street2" />
+                                <br/>
+                                <span t-field="doc.partner_shipping_id.zip" />
+                                <span t-field="doc.partner_shipping_id.city" />
+                                (<span t-field="doc.partner_shipping_id.state_id.code" />)
+                                <span t-field="doc.partner_shipping_id.country_id" />
+                                <br/>
+                                <t t-if="doc.partner_shipping_id.phone">
+                                    <span>Phone:</span>
+                                    <span t-field="doc.partner_shipping_id.phone" />
+                                </t><br/>
+                                <t t-if="doc.partner_shipping_id.vat">
+                                    <span>VAT:</span>
+                                    <span t-field="doc.partner_shipping_id.vat" />
+                                </t>
+                            </t>
+                            <t t-if="doc.partner_id.id != doc.partner_sender_id.id">
+                                <t t-if="doc.partner_sender_id.id != doc.partner_shipping_id.id">
+                                    <small>
+                                        <strong>
+                                            <span t-field="doc.partner_sender_id.display_name" />
+                                        </strong>
+                                        <br/>
+                                        <span t-field="doc.partner_sender_id.street" />
+                                        <span t-field="doc.partner_sender_id.street2" />
+                                        <br/>
+                                        <span t-field="doc.partner_sender_id.zip" />
+                                        <span t-field="doc.partner_sender_id.city" />
+                                        (<span t-field="doc.partner_sender_id.state_id.code" />)
+                                        <span t-field="doc.partner_sender_id.country_id" />
+                                        <br/>
+                                        <t t-if="doc.partner_sender_id.phone">
+                                            <span>Phone:</span>
+                                            <span t-field="doc.partner_sender_id.phone" />
+                                        </t><br/>
+                                        <t t-if="doc.partner_sender_id.vat">
+                                            <span>VAT:</span>
+                                            <span t-field="doc.partner_shipping_id.vat" />
+                                        </t>
+                                    </small>
+                                    <strong>
+                                        <span t-field="doc.partner_shipping_id.display_name" />
+                                    </strong>
+                                    <br/>
+                                    <span t-field="doc.partner_shipping_id.street" />
+                                    <span t-field="doc.partner_shipping_id.street2" />
+                                    <br/>
+                                    <span t-field="doc.partner_shipping_id.zip" />
+                                    <span t-field="doc.partner_shipping_id.city" />
+                                    (<span t-field="doc.partner_shipping_id.state_id.code" />)
+                                    <span t-field="doc.partner_shipping_id.country_id" />
+                                    <br/>
+                                    <t t-if="doc.partner_shipping_id.phone">
+                                        <span>Phone:</span>
+                                        <span t-field="doc.partner_shipping_id.phone" />
+                                    </t><br/>
+                                    <t t-if="doc.partner_shipping_id.vat">
+                                        <span>VAT:</span>
+                                        <span t-field="doc.partner_shipping_id.vat" />
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <strong>
+                                        <span t-field="doc.partner_sender_id.display_name" />
+                                    </strong>
+                                    <br/>
+                                    <span t-field="doc.partner_sender_id.street" />
+                                    <span t-field="doc.partner_sender_id.street2" />
+                                    <br/>
+                                    <span t-field="doc.partner_sender_id.zip" />
+                                    <span t-field="doc.partner_sender_id.city" />
+                                    (<span t-field="doc.partner_sender_id.state_id.code" />)
+                                    <span t-field="doc.partner_sender_id.country_id" />
+                                    <br/>
+                                    <t t-if="doc.partner_sender_id.phone">
+                                        <span>Phone:</span>
+                                        <span t-field="doc.partner_sender_id.phone" />
+                                    </t><br/>
+                                    <t t-if="doc.partner_sender_id.vat">
+                                        <span>VAT:</span>
+                                        <span t-field="doc.partner_shipping_id.vat" />
+                                    </t>
+                                </t>
                             </t>
                         </div>
                     </div>
                 </div>
 
-                <div>
+                <div id="warehouse_outgoing">
                     <div t-if="doc.picking_type=='outgoing'">
                         <strong>Warehouse:</strong>
                         <t t-foreach="doc.picking_ids" t-as="pick">
@@ -128,11 +198,13 @@
                             </p>
                         </t>
                     </div>
+                </div>
+                <div id="dn_terms">
                     <strong> Delivery Note: </strong>
                     Under the terms of Italian Presidential Decree 472-96 of 14.08.1996
                 </div>
 
-                <h2>
+                <h2 id="document_title">
                     <span t-if="doc.state in ['draft']">Draft document:</span>
                     <span t-if="doc.state not in ['draft']">Document:</span>
                     <small>
@@ -144,7 +216,7 @@
                     </small>
                 </h2>
 
-                <table style="padding-top:10px;" class="table table-condensed delivery_data">
+                <table id="delivery_data" style="padding-top:10px;" class="table table-condensed delivery_data">
                     <tr>
                         <td width="33%">
                             <div name="transport" style="font-size:12px;">Reason of Transport</div>
@@ -163,7 +235,7 @@
                     </tr>
                 </table>
 
-                <table class="mt32 mb32 o_main_table table table-sm">
+                <table id="product_data" class="mt32 mb32 o_main_table table table-sm">
                     <thead>
                         <tr>
                             <t t-set="colspan" t-value="5"/>
@@ -256,7 +328,7 @@
                     </tbody>
                 </table>
 
-                <table class="table table-condensed table-bordered delivery_data">
+                <table id="parcel_info" class="table table-condensed table-bordered delivery_data">
                     <tr>
                         <td>
                             <div name="good_description" style="font-size:10px;">Goods Description</div>
