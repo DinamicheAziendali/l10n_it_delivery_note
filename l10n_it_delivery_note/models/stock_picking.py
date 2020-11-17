@@ -288,14 +288,8 @@ class StockPicking(models.Model):
         res = super().action_done()
 
         if self._must_create_delivery_note():
-            partners = self._get_partners()
-            delivery_note = self.env['stock.delivery.note'].create({
-                'partner_sender_id': partners[0].id,
-                'partner_id': partners[1].id,
-                'partner_shipping_id': partners[1].id
-            })
-
-            self.write({'delivery_note_id': delivery_note.id})
+            self.env['stock.delivery.note.create.wizard'] \
+                .create_delivery_note(self)
 
         return res
 
