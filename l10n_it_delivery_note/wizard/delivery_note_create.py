@@ -91,22 +91,26 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
                 sale_order_id and
                 sale_order_id.default_transport_condition_id.id or
                 recipient.default_transport_condition_id.id or
-                delivery_note_type.default_transport_condition_id.id,
+                delivery_note_type.default_transport_condition_id.id
+                    if delivery_note_type else None,
             'goods_appearance_id':
                 sale_order_id and
                 sale_order_id.default_goods_appearance_id.id or
                 recipient.default_goods_appearance_id.id or
-                delivery_note_type.default_goods_appearance_id.id,
+                delivery_note_type.default_goods_appearance_id.id
+                    if delivery_note_type else None,
             'transport_reason_id':
                 sale_order_id and
                 sale_order_id.default_transport_reason_id.id or
                 recipient.default_transport_reason_id.id or
-                delivery_note_type.default_transport_reason_id.id,
+                delivery_note_type.default_transport_reason_id.id
+                    if delivery_note_type else None,
             'transport_method_id':
                 sale_order_id and
                 sale_order_id.default_transport_method_id.id or
                 recipient.default_transport_method_id.id or
                 delivery_note_type.default_transport_method_id.id
+                    if delivery_note_type else None
         })
 
         pickings.write({'delivery_note_id': delivery_note.id})
@@ -120,7 +124,7 @@ class StockDeliveryNoteCreateWizard(models.TransientModel):
     def confirm(self):
         delivery_note = self.create_delivery_note(self, self.selected_picking_ids,
             partner_sender=self.partner_sender_id,
-            partner=self.partner,
+            partner=self.partner_id,
             partner_shipping=self.partner_shipping_id,
             delivery_note_type=self.type_id,
             date=self.date)
