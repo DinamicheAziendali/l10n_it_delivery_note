@@ -24,25 +24,30 @@
         'delivery',
         'l10n_it_delivery_note_base',
         'mail',
-        'sale_stock',
-        'stock_account'
     ],
 
     'data': [
+        'data/delivery_note_data.xml',
+
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
         'security/res_groups.xml',
         'security/res_users.xml',
+        'security/ir_module_category.xml',
 
         'report/report_delivery_note.xml',
 
-        'views/account_invoice.xml',
         'views/assets.xml',
         'views/res_config_settings.xml',
         'views/res_partner.xml',
-        'views/sale_order.xml',
         'views/stock_delivery_note.xml',
         'views/stock_picking.xml',
+
+        'views/stock_delivery_note_type.xml',
+        'views/stock_picking_goods_appearance.xml',
+        'views/stock_picking_transport_condition.xml',
+        'views/stock_picking_transport_method.xml',
+        'views/stock_picking_transport_reason.xml'
 
         'wizard/delivery_note_create.xml',
         'wizard/delivery_note_select.xml',

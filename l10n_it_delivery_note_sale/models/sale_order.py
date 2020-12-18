@@ -1,9 +1,10 @@
 # Copyright (c) 2019, Link IT Europe Srl
+# Copyright (c) 2020, DataBooz ltd - Luigi Di Naro
 # @author: Matteo Bilotta <mbilotta@linkeurope.it>
 
 from odoo import api, fields, models
 
-from .stock_delivery_note import \
+from odoo.addons.l10n_it_delivery_note.models.stock_delivery_note import \
     DOMAIN_DELIVERY_NOTE_STATES, DOMAIN_INVOICE_STATUSES
 
 
