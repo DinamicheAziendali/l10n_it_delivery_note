@@ -17,4 +17,9 @@
         <field name="category_id" ref="l10n_it_delivery_note_base.module_category_inventory_checkboxes" />
     </record>
 
+    <record id="show_product_related_fields" model="res.groups">
+        <field name="name">Show product information in delivery note lines</field>
+        <field name="category_id" ref="module_category_inventory_checkboxes" />
+    </record>
+
 </odoo>

@@ -196,11 +196,6 @@ class StockDeliveryNote(models.Model):
                                     compute='_compute_picking_type',
                                     store=True)
 
-    sale_ids = fields.Many2many('sale.order', compute='_compute_sales')
-    sale_count = fields.Integer(compute='_compute_sales')
-    sales_transport_check = fields.Boolean(compute='_compute_sales',
-                                           default=True)
-
     invoice_ids = fields.Many2many('account.invoice',
                                    'stock_delivery_note_account_invoice_rel',
                                    'delivery_note_id',
@@ -271,22 +266,6 @@ class StockDeliveryNote(models.Model):
                     "'picking_type_code' field value.")
 
             note.picking_type = picking_types[0]
-
-    @api.multi
-    def _compute_sales(self):
-        for note in self:
-            sales = note.mapped('picking_ids.sale_id')
-
-            note.sale_ids = sales
-            note.sale_count = len(sales)
-
-            tc = sales.mapped('default_transport_condition_id')
-            ga = sales.mapped('default_goods_appearance_id')
-            tr = sales.mapped('default_transport_reason_id')
-            tm = sales.mapped('default_transport_method_id')
-            note.sales_transport_check = all([
-                len(x) < 2 for x in [tc, ga, tr, tm]
-            ])
 
     @api.multi
     def _compute_boolean_flags(self):
