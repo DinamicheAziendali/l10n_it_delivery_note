@@ -289,10 +289,35 @@ class StockPicking(models.Model):
 
         if self._must_create_delivery_note():
             partners = self._get_partners()
+
+            type_id = self.env['stock.delivery.note.type'] \
+                .search([('code', '=', self.picking_type_code)], limit=1)
+
             delivery_note = self.env['stock.delivery.note'].create({
                 'partner_sender_id': partners[0].id,
                 'partner_id': partners[1].id,
-                'partner_shipping_id': partners[1].id
+                'partner_shipping_id': partners[1].id,
+                'type_id': type_id.id,
+                'date': self.date_done,
+
+                'delivery_method_id':
+                    self.partner_id.property_delivery_carrier_id.id,
+                'transport_condition_id':
+                    self.sale_id.default_transport_condition_id.id or
+                    partners[1].default_transport_condition_id.id or
+                    type_id.default_transport_condition_id.id,
+                'goods_appearance_id':
+                    self.sale_id.default_goods_appearance_id.id or
+                    partners[1].default_goods_appearance_id.id or
+                    type_id.default_goods_appearance_id.id,
+                'transport_reason_id':
+                    self.sale_id.default_transport_reason_id.id or
+                    partners[1].default_transport_reason_id.id or
+                    type_id.default_transport_reason_id.id,
+                'transport_method_id':
+                    self.sale_id.default_transport_method_id.id or
+                    partners[1].default_transport_method_id.id or
+                    type_id.default_transport_method_id.id
             })
 
             self.write({'delivery_note_id': delivery_note.id})

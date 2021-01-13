@@ -96,16 +96,32 @@ class AccountInvoice(models.Model):
             #
             context['lang'] = invoice.partner_id.lang
 
-            for note in invoice.delivery_note_ids:
-                new_lines.append((0, False, {
-                    'sequence': 99, 'display_type': 'line_note',
-                    'name':
-                        _("""Delivery Note "{}" of {}""").
-                        format(note.name, note.date.strftime(DATE_FORMAT)),
-                    'delivery_note_id': note.id
-                }))
+            for line in invoice.invoice_line_ids:
+                for sale in line.sale_line_ids:
+                    for note_line in sale.delivery_note_line_ids:
+                        new_lines.append((0, False, {
+                            'sequence': line.sequence - 1,
+                            'display_type': 'line_note',
+                            'name':
+                                _("""Delivery Note "{}" of {}""").format(
+                                    note_line.delivery_note_id.name,
+                                    note_line.delivery_note_id.date.strftime(
+                                        DATE_FORMAT)
+                                ),
+                            'delivery_note_id': note_line.delivery_note_id.id
+                        }))
 
             invoice.write({'invoice_line_ids': new_lines})
+
+    @api.multi
+    def unlink(self):
+        # Ripristino il valore delle delivery note line
+        # per poterle rifatturare
+        inv_lines = self.mapped('invoice_line_ids')
+        dnls = inv_lines.mapped('sale_line_ids').mapped('delivery_note_line_ids')
+        res = super().unlink()
+        dnls.sync_invoice_status()
+        return res
 
 
 class AccountInvoiceLine(models.Model):
