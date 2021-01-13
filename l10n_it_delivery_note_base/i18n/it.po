@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-15 08:40+0000\n"
-"PO-Revision-Date: 2020-10-15 08:40+0000\n"
+"POT-Creation-Date: 2021-01-13 16:03+0000\n"
+"PO-Revision-Date: 2021-01-13 16:03+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -116,11 +116,6 @@ msgstr "Creato da"
 #: model:ir.model.fields,field_description:l10n_it_delivery_note_base.field_stock_picking_transport_reason__create_date
 msgid "Created on"
 msgstr "Creato il"
-
-#. module: l10n_it_delivery_note_base
-#: model:stock.delivery.note.type,name:l10n_it_delivery_note_base.delivery_note_type_ddt
-msgid "DdT"
-msgstr ""
 
 #. module: l10n_it_delivery_note_base
 #: model:ir.module.category,description:l10n_it_delivery_note_base.module_category_inventory_checkboxes
@@ -263,6 +258,7 @@ msgstr ""
 
 #. module: l10n_it_delivery_note_base
 #: selection:stock.delivery.note.type,code:0
+#: model:stock.delivery.note.type,name:l10n_it_delivery_note_base.delivery_note_type_ddt
 msgid "Outgoing"
 msgstr "In uscita"
 
