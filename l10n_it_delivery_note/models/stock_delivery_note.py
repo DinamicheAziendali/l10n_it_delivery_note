@@ -7,7 +7,8 @@ from odoo import _, api, fields, models
 from odoo.addons import decimal_precision as dp
 from odoo.exceptions import UserError
 
-from ..mixins.picking_checker import DONE_PICKING_STATE, PICKING_TYPES, DOMAIN_PICKING_TYPES
+from ..mixins.picking_checker import \
+    DONE_PICKING_STATE, PICKING_TYPES, DOMAIN_PICKING_TYPES
 
 DATE_FORMAT = '%d/%m/%Y'
 DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S'

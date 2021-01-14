@@ -20,7 +20,7 @@ STATES_MAPPING = {
 
 
 # noinspection PyPep8Naming
-class Migrate_L10n_It_Ddt(EasyCommand):
+class MigrateL10nItDdt(EasyCommand):
     _carriage_conditions = None
     _goods_descriptions = None
     _transportation_reasons = None
@@ -235,16 +235,20 @@ class Migrate_L10n_It_Ddt(EasyCommand):
                              'sequence_id': r.sequence_id.id,
                              'default_goods_appearance_id':
                                  self._goods_descriptions[
-                                     r.default_goods_description_id].id if r.default_goods_description_id else None,
+                                     r.default_goods_description_id].id
+                                 if r.default_goods_description_id else None,
                              'default_transport_reason_id':
                                  self._transportation_reasons[
-                                     r.default_transportation_reason_id].id if r.default_transportation_reason_id else None,
+                                     r.default_transportation_reason_id].id
+                                 if r.default_transportation_reason_id else None,
                              'default_transport_condition_id':
                                  self._carriage_conditions[
-                                     r.default_carriage_condition_id].id if r.default_carriage_condition_id else None,
+                                     r.default_carriage_condition_id].id
+                                 if r.default_carriage_condition_id else None,
                              'default_transport_method_id':
                                  self._transportation_methods[
-                                     r.default_transportation_method_id].id if r.default_transportation_method_id else None,
+                                     r.default_transportation_method_id].id
+                                 if r.default_transportation_method_id else None,
                              'note': r.note
                          })
 

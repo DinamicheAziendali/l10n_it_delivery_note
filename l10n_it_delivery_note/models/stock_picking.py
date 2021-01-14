@@ -236,30 +236,31 @@ class StockPicking(models.Model):
     @api.multi
     def _check_delivery_note_consistency(self):
         if len(set(self.mapped('picking_type_code'))) != 1:
-            raise ValidationError(
+            raise ValidationError(_(
                 "You have just called this method on an "
                 "heterogeneous set of pickings.\n"
                 "All pickings should have the same "
-                "'picking_type_code' field value.")
+                "'picking_type_code' field value."))
 
-        if len(self.mapped('partner_id')) != 1 and self.location_dest_id.usage == 'customer':
-            raise ValidationError(
+        if len(self.mapped('partner_id')) != 1 \
+                and self.location_dest_id.usage == 'customer':
+            raise ValidationError(_(
                 "You have just called this method on an heterogeneous set "
                 "of pickings.\n"
-                "All pickings should have the same 'partner_id' field value.")
+                "All pickings should have the same 'partner_id' field value."))
 
         if len(self.mapped('location_id')) != 1:
-            raise ValidationError(
+            raise ValidationError(_(
                 "You have just called this method on an heterogeneous set "
                 "of pickings.\n"
-                "All pickings should have the same 'location_id' field value.")
+                "All pickings should have the same 'location_id' field value."))
 
         if len(self.mapped('location_dest_id')) != 1:
-            raise ValidationError(
+            raise ValidationError(_(
                 "You have just called this method on an heterogeneous "
                 "set of pickings.\n"
                 "All pickings should have the same 'location_dest_id' "
-                "field value.")
+                "field value."))
 
     @api.multi
     def _must_create_delivery_note(self):
