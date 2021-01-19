@@ -664,8 +664,12 @@ class StockDeliveryNoteLine(models.Model):
     @api.onchange('product_id')
     def _onchange_product_id(self):
         if self.product_id:
-            self.name = \
-                self.product_id.get_product_multiline_description_sale()
+
+            name = self.product_id.name
+            if self.product_id.description_sale:
+                name += '\n' + self.product_id.description_sale
+
+            self.name = name
 
             product_uom_domain = [
                 ('category_id', '=', self.product_id.uom_id.category_id.id)
@@ -680,9 +684,14 @@ class StockDeliveryNoteLine(models.Model):
     def _prepare_detail_lines(self, moves):
         lines = []
         for move in moves:
+
+            name = move.product_id.name
+            if move.product_id.description_sale:
+                name += '\n' + move.product_id.description_sale
+
             line = {
                 'move_id': move.id,
-                'name': move.product_id.get_product_multiline_description_sale(),
+                'name': name,
                 'product_id': move.product_id.id,
                 'product_qty': move.product_uom_qty,
                 'product_uom_id': move.product_uom.id
