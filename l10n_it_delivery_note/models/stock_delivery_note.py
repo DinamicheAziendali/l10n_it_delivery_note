@@ -438,7 +438,7 @@ class StockDeliveryNote(models.Model):
             move_ids = line.move_ids & pickings_move_ids
             qty_to_invoice = sum(move_ids.mapped('quantity_done'))
 
-            if qty_to_invoice < (line.product_uom_qty - line.qty_to_invoice):
+            if qty_to_invoice < line.qty_to_invoice:
                 cache[line] = line.fix_qty_to_invoice(qty_to_invoice)
 
         return cache
@@ -463,7 +463,7 @@ class StockDeliveryNote(models.Model):
             if order_lines.filtered(lambda l: l.need_to_be_invoiced):
                 cache[downpayment] = downpayment.fix_qty_to_invoice()
 
-        self.sale_ids \
+        invoice_ids = self.sale_ids \
             .filtered(lambda o: o.invoice_status == DOMAIN_INVOICE_STATUSES[1]) \
             .action_invoice_create(final=True)
 
@@ -471,6 +471,18 @@ class StockDeliveryNote(models.Model):
             line.write(vals)
 
         orders_lines._get_to_invoice_qty()
+
+        for line in self.line_ids:
+            line.write({
+                'invoice_status': 'invoiced'
+            })
+        if all(line.invoice_status == 'invoiced' for line in self.line_ids):
+            self.write({
+                'invoice_ids': [(4, invoice_id) for invoice_id in invoice_ids]
+            })
+            self._compute_invoice_status()
+            invoices = self.env['account.invoice'].browse(invoice_ids)
+            invoices.update_delivery_note_lines()
 
     @api.multi
     def action_done(self):

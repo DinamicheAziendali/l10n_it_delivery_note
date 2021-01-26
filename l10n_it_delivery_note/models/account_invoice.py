@@ -8,7 +8,8 @@
 
 from odoo import _, api, fields, models
 
-from .stock_delivery_note import DATE_FORMAT
+from .stock_delivery_note import \
+    DATE_FORMAT, DOMAIN_DELIVERY_NOTE_STATES, DOMAIN_INVOICE_STATUSES
 
 
 class AccountInvoice(models.Model):
@@ -98,7 +99,11 @@ class AccountInvoice(models.Model):
 
             for line in invoice.invoice_line_ids:
                 for sale in line.sale_line_ids:
-                    for note_line in sale.delivery_note_line_ids:
+                    delivery_note_line = \
+                        invoice.delivery_note_ids.mapped('line_ids') \
+                        & sale.delivery_note_line_ids
+                    for note_line in delivery_note_line.filtered(
+                            lambda l: l.invoice_status == DOMAIN_INVOICE_STATUSES[2]):
                         new_lines.append((0, False, {
                             'sequence': line.sequence - 1,
                             'display_type': 'line_note',
@@ -115,12 +120,17 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def unlink(self):
-        # Ripristino il valore delle delivery note line
+        # Ripristino il valore delle delivery note
         # per poterle rifatturare
         inv_lines = self.mapped('invoice_line_ids')
-        dnls = inv_lines.mapped('sale_line_ids').mapped('delivery_note_line_ids')
+        all_dnls = inv_lines.mapped('sale_line_ids').mapped('delivery_note_line_ids')
+        inv_dnls = self.mapped('delivery_note_ids').mapped('line_ids')
+        dnls_to_unlink = all_dnls & inv_dnls
         res = super().unlink()
-        dnls.sync_invoice_status()
+        dnls_to_unlink.sync_invoice_status()
+        dnls_to_unlink.mapped('delivery_note_id')._compute_invoice_status()
+        for dn in dnls_to_unlink.mapped('delivery_note_id'):
+            dn.state = 'confirm'
         return res
 
 
