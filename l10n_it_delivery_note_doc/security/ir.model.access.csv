@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_delivery_note_doc_user,access_delivery_note_doc user,model_delivery_note_doc,group_delivery_note_user,1,0,0,0
+access_delivery_note_doc_line_user,access_delivery_note_doc_line user,model_delivery_note_doc_line,group_delivery_note_user,1,0,0,0
