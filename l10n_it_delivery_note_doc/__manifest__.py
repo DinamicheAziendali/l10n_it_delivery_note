@@ -6,7 +6,7 @@
 #  Copyright 2015 Associazione Odoo Italia (<http://www.odoo-italia.org>)
 # noinspection PyStatementEffect
 {
-    'name': 'ITA - Documento di trasporto - senza gestione del magazzino',
+    "name": "ITA - Documento di trasporto - Senza gestione del magazzino",
     "summary": "Gestione dei DDT senza avere il magazzino installato",
     "author": "Marco Calcagni, Gianmarco Conte, "
               "Odoo Community Association (OCA)",
@@ -15,17 +15,16 @@
     "category": "Localization/Italy",
     "license": "AGPL-3",
     "maintainers": ["As400it", "Byloth"],
-    "depends": ["base",
-                "l10n_it_delivery_note_base",
-                ],
-    'data': [
-        'security/delivery_note_group.xml',
-        'security/ir.model.access.csv',
-        # 'views/delivery_note_doc.xml',
-        # 'views/report_delivery_note_doc.xml',
+    "depends": [
+        "base",
+        "mail",
+        "l10n_it_delivery_note_base",
     ],
-    'installable': True,
+    "data": [
+        "security/delivery_note_group.xml",
+        "security/ir.model.access.csv",
+        "views/delivery_note_doc.xml",
+        # "views/report_delivery_note_doc.xml",
+    ],
+    "installable": True,
 }
-
-# da fare mail.tread che non va
-# form e report xml che non girano

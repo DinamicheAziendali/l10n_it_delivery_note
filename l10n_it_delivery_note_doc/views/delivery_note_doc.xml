@@ -8,46 +8,61 @@
             <field name="arch" type="xml">
                 <form string="Delivery Note Document">
                     <header>
-                        <button name="get_dn_number"
-                                string="Print Delivery Note"
-                                groups="l10n_it_delivery_note_doc.group_delivery_note_user"
-                                type="object"/>
+                        <button
+                            name="get_dn_number"
+                            string="Print Delivery Note"
+                            groups="l10n_it_delivery_note_doc.group_delivery_note_doc_user"
+                            type="object"
+                        />
                     </header>
                     <sheet string="Delivery Note Document">
-                        <field string="Description"
-                               name="name"
-                               placeholder="Memo title" />
+                        <widget
+                            name="web_ribbon"
+                            text="Archived"
+                            bg_color="bg-danger"
+                            attrs="{'invisible': [('active', '=', True)]}"
+                        />
+                        <div class="oe_title">
+                            <field name="active" invisible="1" />
+                            <label for="name" string="Document" />
+                            <h1>
+                                <field name="name" class="oe_inline" />
+                            </h1>
+                        </div>
                         <group>
                             <group>
                                 <field string="Destination" name="partner_id"/>
                                 <field name="ddt_number" readonly="1"/>
-                                <field name="type_id" widget="selection"
-                                       attrs="{'readonly': [('ddt_number', '!=', False)]}"/>
+                                <field name="type_id" widget="selection" attrs="{'readonly': [('ddt_number', '!=', False)]}"/>
                                 <field name="date_ddt"/>
-                                <field name="parcels"/>
-                                <field name="gross_w"/>
-                                <field name="net_w"/>
+                                <field name="packages"/>
+                                <field name="gross_weight"/>
+                                <field name="net_weight"/>
                             </group>
                             <group>
-                                <field name="goods_appearance_id"
-                                       widget="selection"/>
-                                <field name="transport_condition_id"
-                                       widget="selection"/>
-                                <field name="transport_reason_id"
-                                       widget="selection"/>
-                                <field name="transport_method_id"
-                                       widget="selection"/>
+                                <field name="goods_appearance_id" widget="selection"/>
+                                <field name="transport_condition_id" widget="selection"/>
+                                <field name="transport_reason_id" widget="selection"/>
+                                <field name="transport_method_id" widget="selection"/>
                                 <field name="date_transport_ddt"/>
-                                <field name="time_transport_ddt"
-                                       widget="float_time"/>
+                                <label for="date_transport_ddt" />
+                                <div class="o_row">
+                                    <field name="date_transport_ddt" />
+                                    <button
+                                        type="object"
+                                        name="update_date_transport_ddt"
+                                        class="btn-secondary"
+                                        icon="fa-clock-o"
+                                        aria-label="Update to now"
+                                        title="Update to now"
+                                    />
+                                </div>
                             </group>
                         </group>
-
                         <notebook>
-                            <page string="Delvery Lines">
-                                <field name="line_ids"
-                                       widget="one2many_list" readonly="False">
-                                    <tree string="Delvery Lines" editable="bottom">
+                            <page name="delivery_line" string="Delivery Lines">
+                                <field name="line_ids">
+                                    <tree string="Delivery Lines" editable="bottom">
                                         <field name="sequence" widget="handle"/>
                                         <field name="name"/>
                                         <field name="quantity"/>
@@ -56,11 +71,12 @@
                             </page>
                         </notebook>
                         <field name="ddt_notes"/>
+                        <field name="company_id" readonly="True" />
                     </sheet>
                     <div class="oe_chatter">
-                        <field name="message_follower_ids" groups="base.group_user"/>
-                        <field name="activity_ids"/>
-                        <field name="message_ids"/>
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="activity_ids" widget="mail_activity" />
+                        <field name="message_ids" widget="mail_thread" />
                     </div>
                 </form>
             </field>
@@ -69,7 +85,6 @@
         <record id="delivery_note_doc_tree" model="ir.ui.view">
             <field name="name">delivery.note.doc.tree</field>
             <field name="model">delivery.note.doc</field>
-            <field name="view_mode">tree,form</field>
             <field name="arch" type="xml">
                 <tree string="Delivery Note">
                     <field name="partner_id" groups="base.group_user"/>
@@ -82,29 +97,33 @@
         </record>
 
         <record id="delivery_note_doc_action" model="ir.actions.act_window">
-        <field name="name">Delivery Notes Doc</field>
-        <field name="res_model">delivery.note.doc</field>
-        <field name="view_mode">tree,form</field>
-<!--        <field name="search_view_id" ref="stock_delivery_note_search_view" />-->
-    </record>
+            <field name="name">Delivery Notes Document</field>
+            <field name="res_model">delivery.note.doc</field>
+            <field name="view_mode">tree,form</field>
+        </record>
 
-        <menuitem id="delivery_note_doc_root"
-                  sequence="50"
-                  name="Delivery Note"
-        groups="group_delivery_note_user"
-        web_icon="static/description/icon.jpg"/>
+        <menuitem
+            id="delivery_note_doc_root"
+            sequence="50"
+            name="Delivery Note Document"
+            groups="group_delivery_note_doc_user"
+            web_icon="static/description/icon.jpg"
+        />
 
-        <menuitem id="delivery_note_doc"
-                  name="Delivery Note Document"
-                  parent="delivery_note_doc_root"
-                  sequence="1"/>
+        <menuitem
+            id="delivery_note_doc"
+            name="Delivery Note Document"
+            parent="delivery_note_doc_root"
+            sequence="1"
+        />
 
+        <menuitem
+            id="menu_delivery_note_doc_tree"
+            parent="delivery_note_doc"
+            action="delivery_note_doc_action"
+            name="Delivery Note"
+            sequence="10"
+        />
 
-
-        <menuitem id="menu_delivery_note_doc_tree"
-                  parent="delivery_note_doc"
-                  action="delivery_note_doc_action"
-                  name="Delivery Note"
-                  sequence="10"/>
     </data>
 </odoo>
