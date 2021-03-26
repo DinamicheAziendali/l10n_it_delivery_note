@@ -30,87 +30,79 @@ class DeliveryNoteDoc(models.Model):
     name = fields.Char(
         string="Description",
         required=True,
-        track_visibility="always",
+        tracking=True,
     )
     ddt_number = fields.Char(
         string="DdT Number",
         copy=False,
-        track_visibility="change",
+        tracking=True,
     )
-    date_ddt = fields.Date(string="Date", copy=False, track_visibility="always")
-    date_transport_ddt = fields.Datetime(string="Transport date", rack_visibility="always")
+    date_ddt = fields.Date(string="Date", copy=False, tracking=True, default=fields.Date.context_today)
+    date_transport_ddt = fields.Datetime(string="Transport date", tracking=True)
     packages = fields.Integer(string="Packages")
     gross_weight = fields.Float(string="Gross Weight")
     net_weight = fields.Float(string="Net Weight")
-    ddt_notes = fields.Html(string="Delivery Note Notes", track_visibility="always")
+    ddt_notes = fields.Html(string="Delivery Note Notes", tracking=True)
+    state = fields.Selection(selection=[
+        ("draft", "Draft"),
+        ("done", "Done"),
+        ("cancel", "Cancelled"),
+    ], string="Status", required=True, readonly=True, copy=False, tracking=True, default="draft")
     partner_id = fields.Many2one(
         "res.partner",
-        string="Recipient",
-        # states={"draft": [("readonly", False)]},
+        string="Destination",
         required=True,
         index=True,
-        track_visibility="always",
+        tracking=True,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
     )
     line_ids = fields.One2many(
         "delivery.note.doc.line", "delivery_note_doc_id", string="Lines"
     )
-
     type_id = fields.Many2one(
         "stock.delivery.note.type",
         string="Type",
         default=_default_type,
-        # states={"draft": [("readonly", False)]},
         required=True,
         index=True,
     )
     transport_condition_id = fields.Many2one(
         "stock.picking.transport.condition",
         string="Condition of transport",
-        # states={"done": [("readonly", True)]},
     )
     goods_appearance_id = fields.Many2one(
         "stock.picking.goods.appearance",
         string="Appearance of goods",
-        # states={"done": [("readonly", True)]},
     )
     transport_reason_id = fields.Many2one(
         "stock.picking.transport.reason",
         string="Reason of transport",
-        # states={"done": [("readonly", True)]},
     )
     transport_method_id = fields.Many2one(
         "stock.picking.transport.method",
         string="Method of transport",
-        # states={"done": [("readonly", True)]},
     )
     company_id = fields.Many2one("res.company", required=True, default=_default_company)
 
-    def _valid_field_parameter(self, field, name):
-        return name == "track_visibility" or super()._valid_field_parameter(field, name)
-
     def get_dn_number(self):
-        # for dn in self:
-        #     if not dn.ddt_number and dn.type_id:
-        #         sequence = dn.type_id.sequence_id
-        #         dn.ddt_number = sequence.next_by_id()
-        #     return self.env["report"].\
-        #         get_action(
-        #         self, "l10n_it_delivery_note_doc.report_delivery_note_doc")
-        return True
-
-    def dn_time_report(self, time_ddt):
-        # hh = int(time_ddt)
-        # mm = time_ddt - hh
-        # mms = str(int(round(mm*60)))
-        # if(len(mms) == 1):
-        #     mms = "0" + mms
-        # data = str(hh)+":"+mms
-        # return data
+        for dn in self:
+            if not dn.ddt_number and dn.type_id:
+                sequence = dn.type_id.sequence_id
+                dn.ddt_number = sequence.next_by_id()
+            return self.env.ref('l10n_it_delivery_note_doc.action_report_delivery_note_doc').report_action(self)
         return True
 
     def update_date_transport_ddt(self):
         self.date_transport_ddt = datetime.datetime.now()
+
+    def action_done(self):
+        self.write({"state": "done"})
+
+    def action_cancel(self):
+        self.write({"state": 'cancel'})
+
+    def action_draft(self):
+        self.write({"state": 'draft'})
 
 
 class DeliveryNoteDocLine(models.Model):
@@ -119,12 +111,12 @@ class DeliveryNoteDocLine(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "sequence asc"
 
-    name = fields.Text(string="Description", required=True, track_visibility="always")
+    name = fields.Text(string="Description", required=True, tracking=True)
     quantity = fields.Float(
         string="Quantity",
         digits="Product Unit of Measure",
         default=1.0,
-        track_visibility="always",
+        tracking=True,
     )
     sequence = fields.Integer(string="Sequence", required=True, default=10, index=True)
     delivery_note_doc_id = fields.Many2one(

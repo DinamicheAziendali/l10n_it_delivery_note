@@ -24,7 +24,7 @@
         "security/delivery_note_group.xml",
         "security/ir.model.access.csv",
         "views/delivery_note_doc.xml",
-        # "views/report_delivery_note_doc.xml",
+        "views/report_delivery_note_doc.xml",
     ],
     "installable": True,
 }
