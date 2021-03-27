@@ -8,8 +8,7 @@
 {
     "name": "ITA - Documento di trasporto - Senza gestione del magazzino",
     "summary": "Gestione dei DDT senza avere il magazzino installato",
-    "author": "Marco Calcagni, Gianmarco Conte, "
-              "Odoo Community Association (OCA)",
+    "author": "Marco Calcagni, Gianmarco Conte, " "Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/l10n-italy",
     "version": "14.0.1.0.0",
     "category": "Localization/Italy",

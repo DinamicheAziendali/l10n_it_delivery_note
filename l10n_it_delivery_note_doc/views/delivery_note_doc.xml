@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
 
@@ -41,7 +41,11 @@
                             states="done"
                             string="Cancel"
                         />
-                        <field name="state" widget="statusbar" statusbar_visible="draft,done" />
+                        <field
+                            name="state"
+                            widget="statusbar"
+                            statusbar_visible="draft,done"
+                        />
                     </header>
                     <sheet string="Delivery Note Document">
                         <widget
@@ -54,30 +58,58 @@
                             <field name="active" invisible="1" />
                             <label for="name" string="Document" />
                             <h1>
-                                <field name="name" class="oe_inline"
-                                       attrs="{'readonly': [('state', 'in', ['done','cancel'])]}" />
+                                <field
+                                    name="name"
+                                    class="oe_inline"
+                                    attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                />
                             </h1>
                         </div>
                         <group>
                             <group>
-                                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company" />
-                                <field name="partner_id" attrs="{'readonly': [('state', 'in', ['done','cancel'])]}" />
+                                <field
+                                    name="company_id"
+                                    options="{'no_create': True}"
+                                    groups="base.group_multi_company"
+                                />
+                                <field
+                                    name="partner_id"
+                                    attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                />
                             </group>
                             <group>
-                                <field name="type_id" widget="selection"
-                                       attrs="{'readonly': [('ddt_number', '!=', False)]}" />
-                                <field name="date_ddt" attrs="{'readonly': [('state', 'in', ['done','cancel'])]}" />
-                                <field name="ddt_number" readonly="1"/>
+                                <field
+                                    name="type_id"
+                                    widget="selection"
+                                    attrs="{'readonly': [('ddt_number', '!=', False)]}"
+                                />
+                                <field
+                                    name="date_ddt"
+                                    attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                />
+                                <field name="ddt_number" readonly="1" />
                             </group>
                         </group>
                         <group>
                             <group>
-                                <field name="packages" attrs="{'readonly': [('state', 'in', ['done','cancel'])]}" />
-                                <field name="gross_weight" attrs="{'readonly': [('state', 'in', ['done','cancel'])]}" />
-                                <field name="net_weight" attrs="{'readonly': [('state', 'in', ['done','cancel'])]}" />
+                                <field
+                                    name="packages"
+                                    attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                />
+                                <field
+                                    name="gross_weight"
+                                    attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                />
+                                <field
+                                    name="net_weight"
+                                    attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                />
                                 <label for="date_transport_ddt" />
                                 <div class="o_row">
-                                    <field name="date_transport_ddt" attrs="{'readonly': [('state', 'in', ['done','cancel'])]}" />
+                                    <field
+                                        name="date_transport_ddt"
+                                        attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                    />
                                     <button
                                         type="object"
                                         name="update_date_transport_ddt"
@@ -90,19 +122,35 @@
                                 </div>
                             </group>
                             <group>
-                                <field name="goods_appearance_id" widget="selection"
-                                       attrs="{'readonly': [('state', 'in', ['done','cancel'])]}" />
-                                <field name="transport_condition_id" widget="selection"
-                                       attrs="{'readonly': [('state', 'in', ['done','cancel'])]}" />
-                                <field name="transport_reason_id" widget="selection"
-                                       attrs="{'readonly': [('state', 'in', ['done','cancel'])]}" />
-                                <field name="transport_method_id" widget="selection"
-                                       attrs="{'readonly': [('state', 'in', ['done','cancel'])]}" />
+                                <field
+                                    name="goods_appearance_id"
+                                    widget="selection"
+                                    attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                />
+                                <field
+                                    name="transport_condition_id"
+                                    widget="selection"
+                                    attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                />
+                                <field
+                                    name="transport_reason_id"
+                                    widget="selection"
+                                    attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                />
+                                <field
+                                    name="transport_method_id"
+                                    widget="selection"
+                                    attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                />
                             </group>
                         </group>
                         <notebook>
                             <page name="delivery_line" string="Delivery Lines">
-                                <field name="line_ids" widgrt="section_and_note_one2many" attrs="{'readonly': [('state', 'in', ['done','cancel'])]}">
+                                <field
+                                    name="line_ids"
+                                    widgrt="section_and_note_one2many"
+                                    attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                >
                                     <tree string="Delivery Lines" editable="bottom">
                                         <field name="sequence" widget="handle" />
                                         <field name="name" />
@@ -119,7 +167,10 @@
                                 </field>
                             </page>
                             <page name="note" string="Notes">
-                                <field name="ddt_notes" attrs="{'readonly': [('state', 'in', ['done','cancel'])]}" />
+                                <field
+                                    name="ddt_notes"
+                                    attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"
+                                />
                             </page>
                         </notebook>
                     </sheet>
@@ -141,7 +192,11 @@
                     <field name="ddt_number" optional="show" />
                     <field name="partner_id" optional="show" />
                     <field name="date_ddt" optional="hide" widget="remaining_days" />
-                    <field name="date_transport_ddt" optional="show" widget="remaining_days" />
+                    <field
+                        name="date_transport_ddt"
+                        optional="show"
+                        widget="remaining_days"
+                    />
                     <field name="type_id" optional="hide" />
                     <field name="transport_condition_id" optional="hide" />
                     <field name="goods_appearance_id" optional="hide" />
@@ -150,10 +205,19 @@
                     <field name="ddt_notes" optional="hide" />
                     <field name="company_id" optional="show" />
                     <field name="packages" optional="hide" sum="Total Packages" />
-                    <field name="gross_weight" optional="hide" sum="Total Gross Weight" />
+                    <field
+                        name="gross_weight"
+                        optional="hide"
+                        sum="Total Gross Weight"
+                    />
                     <field name="net_weight" optional="hide" sum="Total Net Weight" />
-                    <field name="state" optional="show" widget="badge"
-                           decoration-success="state == 'done'" decoration-info="state == 'draft'"  />
+                    <field
+                        name="state"
+                        optional="show"
+                        widget="badge"
+                        decoration-success="state == 'done'"
+                        decoration-info="state == 'draft'"
+                    />
                 </tree>
             </field>
         </record>
@@ -172,46 +236,95 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <record id="stock_picking_transport_condition_action" model="ir.actions.act_window">
+        <record
+            id="stock_picking_transport_condition_action"
+            model="ir.actions.act_window"
+        >
             <field name="name">Conditions of transport</field>
             <field name="res_model">stock.picking.transport.condition</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <record id="stock_picking_goods_appearance_action" model="ir.actions.act_window">
+        <record
+            id="stock_picking_goods_appearance_action"
+            model="ir.actions.act_window"
+        >
             <field name="name">Appearances of goods</field>
             <field name="res_model">stock.picking.goods.appearance</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <record id="stock_picking_transport_reason_action" model="ir.actions.act_window">
+        <record
+            id="stock_picking_transport_reason_action"
+            model="ir.actions.act_window"
+        >
             <field name="name">Reasons of transport</field>
             <field name="res_model">stock.picking.transport.reason</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <record id="stock_picking_transport_method_action" model="ir.actions.act_window">
+        <record
+            id="stock_picking_transport_method_action"
+            model="ir.actions.act_window"
+        >
             <field name="name">Methods of transport</field>
             <field name="res_model">stock.picking.transport.method</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem name="Delivery Note Document"
+        <menuitem
+            name="Delivery Note Document"
             id="delivery_note_doc_root"
             groups="l10n_it_delivery_note_doc.group_delivery_note_doc_user"
             web_icon="l10n_it_delivery_note_doc,static/description/icon.jpg"
-            sequence="50">
-            <menuitem id="menu_delivery_note_doc_tree" name="Delivery Note" action="delivery_note_doc_action" sequence="10"/>
-            <menuitem id="menu_delivery_note_doc_configuration" name="Configuration" sequence="35" groups="l10n_it_delivery_note_doc.group_delivery_note_doc_manager">
-                <menuitem id="stock_delivery_note_type_menu" name="Delivery Note Types" action="stock_delivery_note_type_action" sequence="10" />
-                <menuitem id="stock_picking_transport_condition_menu" name="Conditions of transport" action="stock_picking_transport_condition_action" sequence="20" />
-                <menuitem id="stock_picking_good_appearance_menu" name="Appearances of goods" action="stock_picking_goods_appearance_action" sequence="30" />
-                <menuitem id="stock_picking_transport_reason_menu" name="Reasons of transport" action="stock_picking_transport_reason_action" sequence="40" />
-                <menuitem id="stock_picking_transport_method_menu" name="Methods of transport" action="stock_picking_transport_method_action" sequence="50" />
+            sequence="50"
+        >
+            <menuitem
+                id="menu_delivery_note_doc_tree"
+                name="Delivery Note"
+                action="delivery_note_doc_action"
+                sequence="10"
+            />
+            <menuitem
+                id="menu_delivery_note_doc_configuration"
+                name="Configuration"
+                sequence="35"
+                groups="l10n_it_delivery_note_doc.group_delivery_note_doc_manager"
+            >
+                <menuitem
+                    id="stock_delivery_note_type_menu"
+                    name="Delivery Note Types"
+                    action="stock_delivery_note_type_action"
+                    sequence="10"
+                />
+                <menuitem
+                    id="stock_picking_transport_condition_menu"
+                    name="Conditions of transport"
+                    action="stock_picking_transport_condition_action"
+                    sequence="20"
+                />
+                <menuitem
+                    id="stock_picking_good_appearance_menu"
+                    name="Appearances of goods"
+                    action="stock_picking_goods_appearance_action"
+                    sequence="30"
+                />
+                <menuitem
+                    id="stock_picking_transport_reason_menu"
+                    name="Reasons of transport"
+                    action="stock_picking_transport_reason_action"
+                    sequence="40"
+                />
+                <menuitem
+                    id="stock_picking_transport_method_menu"
+                    name="Methods of transport"
+                    action="stock_picking_transport_method_action"
+                    sequence="50"
+                />
             </menuitem>
         </menuitem>
 

@@ -9,7 +9,7 @@
 
 import datetime
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class DeliveryNoteDoc(models.Model):
@@ -37,17 +37,27 @@ class DeliveryNoteDoc(models.Model):
         copy=False,
         tracking=True,
     )
-    date_ddt = fields.Date(string="Date", copy=False, tracking=True, default=fields.Date.context_today)
+    date_ddt = fields.Date(
+        string="Date", copy=False, tracking=True, default=fields.Date.context_today
+    )
     date_transport_ddt = fields.Datetime(string="Transport date", tracking=True)
     packages = fields.Integer(string="Packages")
     gross_weight = fields.Float(string="Gross Weight")
     net_weight = fields.Float(string="Net Weight")
     ddt_notes = fields.Html(string="Delivery Note Notes", tracking=True)
-    state = fields.Selection(selection=[
-        ("draft", "Draft"),
-        ("done", "Done"),
-        ("cancel", "Cancelled"),
-    ], string="Status", required=True, readonly=True, copy=False, tracking=True, default="draft")
+    state = fields.Selection(
+        selection=[
+            ("draft", "Draft"),
+            ("done", "Done"),
+            ("cancel", "Cancelled"),
+        ],
+        string="Status",
+        required=True,
+        readonly=True,
+        copy=False,
+        tracking=True,
+        default="draft",
+    )
     partner_id = fields.Many2one(
         "res.partner",
         string="Destination",
@@ -89,7 +99,9 @@ class DeliveryNoteDoc(models.Model):
             if not dn.ddt_number and dn.type_id:
                 sequence = dn.type_id.sequence_id
                 dn.ddt_number = sequence.next_by_id()
-            return self.env.ref('l10n_it_delivery_note_doc.action_report_delivery_note_doc').report_action(self)
+            return self.env.ref(
+                "l10n_it_delivery_note_doc.action_report_delivery_note_doc"
+            ).report_action(self)
         return True
 
     def update_date_transport_ddt(self):
@@ -99,10 +111,10 @@ class DeliveryNoteDoc(models.Model):
         self.write({"state": "done"})
 
     def action_cancel(self):
-        self.write({"state": 'cancel'})
+        self.write({"state": "cancel"})
 
     def action_draft(self):
-        self.write({"state": 'draft'})
+        self.write({"state": "draft"})
 
 
 class DeliveryNoteDocLine(models.Model):
